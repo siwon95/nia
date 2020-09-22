@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Mon Mar 09 09:56:23 KST 2020-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CmmCodeDao">
+	
+	<resultMap id="CmmCodeMap" type="egovframework.injeinc.boffice.sy.code.vo.CmmCodeVo">
+		<result property="code" column="CODE"/>
+		<result property="codeName" column="CODE_NAME"/>
+		<result property="codeUpr" column="CODE_UPR"/>
+		<result property="codeValue" column="CODE_VALUE"/>
+		<result property="ordNo" column="ORD_NO"/>
+	</resultMap>
+
+	<insert id="insertCmmCode" parameterType="CmmCodeVo">
+		<![CDATA[
+			INSERT INTO EZ_CMM_CODE
+			(
+				CODE
+				, CODE_NAME
+				, CODE_UPR
+				, CODE_VALUE
+				, ORD_NO
+				, REG_ID
+			)
+			VALUES
+			(
+				#{code}
+				, #{codeName}
+				, #{codeUpr}
+				, #{codeValue}
+				, #{ordNo}
+				, #{regId}
+			)
+		]]>
+	</insert>
+	
+	
+	<update id="updateCmmCode" parameterType="CmmCodeVo">
+		<![CDATA[
+			UPDATE EZ_CMM_CODE SET
+				CODE=#{code}
+				, CODE_NAME=#{codeName}
+				, CODE_UPR=#{codeUpr}
+				, CODE_VALUE=#{codeValue}
+				, ORD_NO=#{ordNo}
+			)
+			VALUES
+			(
+				#{code}
+				, #{codeName}
+				, #{codeUpr}
+				, #{codeValue}
+				, #{ordNo}
+				, #{regId}
+			)
+		]]>
+	</update>
+	
+	<delete id="deleteCmmCode" parameterType="CmmCodeVo">
+		<![CDATA[
+			DELETE EZ_CMM_CODE
+			WHERE 1 =1
+		]]>
+	</delete>
+	
+	<select id="selectCmmCode" parameterType="java.lang.String" resultMap="CmmCodeMap">
+		<![CDATA[
+			SELECT * FROM EZ_CMM_CODE
+			WHERE CODE = #{code}
+		]]>
+	</select>
+	
+	<select id="selectListCmmCode" parameterType="java.lang.String" resultMap="CmmCodeMap">
+		<![CDATA[
+			SELECT 
+				CODE
+				, CODE_NAME
+				, CODE_UPR
+				, CODE_VALUE
+				, ORD_NO
+			FROM EZ_CMM_CODE
+			WHERE CODE_UPR = #{codeUpr}
+			ORDER BY ORD_NO ASC
+		]]>
+	</select>
+	<select id="selectListSubCmmCode" parameterType="java.lang.String" resultMap="CmmCodeMap">
+		<![CDATA[
+			SELECT
+				CODE_NAME
+				, CODE_UPR
+				, CODE_VALUE
+				, ORD_NO
+			FROM EZ_CMM_CODE
+			WHERE CODE_UPR <> #{codeUpr}
+			START WITH CODE_UPR = #{codeUpr}
+		    CONNECT BY NOCYCLE PRIOR CODE = CODE_UPR
+			ORDER SIBLINGS BY ORD_NO ASC
+		]]>
+	</select>
+
+	<select id="selectListCmmCodeForResEtcCode" parameterType="java.util.HashMap" resultMap="CmmCodeMap">
+		<![CDATA[
+			SELECT 
+				CODE
+				, CODE_NAME
+				, CODE_UPR
+				, CODE_VALUE
+				, ORD_NO
+			FROM EZ_CMM_CODE
+			WHERE CODE_UPR = 'RES_ETC_CODE'
+			]]>
+			<if test="isAdmin == &quot;false&quot;">
+			<![CDATA[
+				AND CODE IN (
+			]]>
+					 <foreach collection="mgrSiteCdList" item="item" separator=",">
+						#{item}
+					</foreach>
+			<![CDATA[
+				)
+			]]>
+			</if>
+			<![CDATA[
+			ORDER BY ORD_NO ASC
+			]]>
+	</select>
+	
+</mapper>

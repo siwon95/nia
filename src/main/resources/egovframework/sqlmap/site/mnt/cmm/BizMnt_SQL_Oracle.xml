@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Mnt">
+
+	<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap" />
+	<typeAlias alias="MntVO" type="egovframework.site.mnt.service.MntVO" />
+	
+	<resultMap id="mntMap" class="egovframework.site.mnt.service.MntVO" >
+		<result property="mgr_idx" 			column="MGR_IDX"     		/>
+		<result property="mgr_id" 			column="MGR_ID"     		/>
+		<result property="mgr_pw" 			column="MGR_PW"     		/>
+		<result property="mgr_name" 		column="MGR_NAME"     		/>
+		<result property="status_cd" 		column="STATUS_CD"     		/>
+		<result property="reg_dt" 			column="REG_DT"     		/>
+		<result property="reg_id" 			column="REG_ID"     		/>
+	</resultMap>
+	
+	<resultMap id="mntMapChk" class="egovframework.site.mnt.service.MntVO" >
+		<result property="mgr_id" 			column="MGR_ID"     		/>
+	</resultMap>
+	
+	<resultMap id="mntCodeMap" class="egovframework.site.mnt.service.MntVO" >
+		<result property="code" 			column="CODE"     		/>
+		<result property="code_name" 			column="CODE_NAME"     		/>
+		<result property="code_als" 			column="CODE_ALS"     		/>
+		<result property="code_upr" 		column="CODE_UPR"     		/>
+	</resultMap>
+	
+	<select id="MntDAO.selectComCodeList" parameterClass="MntVO" resultMap="mntCodeMap">
+		<![CDATA[
+		SELECT
+		    CODE,CODE_NAME,CODE_ALS,CODE_UPR
+			FROM EZ_CMM_CODE
+		]]>
+		
+	</select>
+	<select id="MntDAO.selectMgrList" parameterClass="MntVO" resultMap="mntMap">
+		<![CDATA[
+	SELECT * FROM (SELECT ROWNUM AS rn, TB.* FROM (
+		SELECT
+			 M.MGR_IDX
+			,M.MGR_ID
+			,M.MGR_PW
+			,M.MGR_NAME
+			,C.CODE_NAME AS STATUS_CD
+			,M.REG_DT
+			,M.REG_ID
+			,M.MOD_DT
+			,M.MOD_ID
+			FROM EZ_MGR_LIST M
+			, EZ_CMM_CODE C
+			WHERE M.STATUS_CD = C.CODE
+			
+	  ]]>
+	
+	  <isNotEmpty prepend="AND" property="search_code">
+			<![CDATA[
+				C.CODE = #search_code#
+			]]>
+	  </isNotEmpty>	
+	  <isNotEmpty prepend="AND" property="search_id">
+			<![CDATA[
+				M.MGR_ID = #search_id#
+			]]>
+	  </isNotEmpty>		
+	
+	<![CDATA[
+		ORDER BY M.MGR_IDX DESC
+		) TB) TBL WHERE rn BETWEEN #firstIndex# + 1 AND #firstIndex# + #recordCountPerPage#
+		]]>
+		
+	</select>
+	
+	<select id="MntDAO.selectMgrListTotCnt" parameterClass="MntVO" resultClass="int">
+	<![CDATA[
+		
+			SELECT
+				COUNT(*)
+				FROM EZ_MGR_LIST M
+				, EZ_CMM_CODE C
+				WHERE M.STATUS_CD = C.CODE
+			  ]]>
+		
+		  <isNotEmpty prepend="AND" property="search_code">
+				<![CDATA[
+					C.CODE = #search_code#
+				]]>
+		  </isNotEmpty>	
+		  <isNotEmpty prepend="AND" property="search_id">
+				<![CDATA[
+					M.MGR_ID = #search_id#
+				]]>
+		  </isNotEmpty>		
+		
+		<![CDATA[
+		    ORDER BY M.MGR_IDX DESC
+			
+			]]>
+	</select>
+	
+	<select id="MntDAO.selectMgrIdCheck" parameterClass="MntVO" resultMap="mntMapChk">
+	<![CDATA[
+		SELECT 
+			CASE  WHEN MGR_ID IS NULL THEN 'N'
+			      WHEN MGR_ID IS NOT NULL THEN 'Y'
+			END AS MGR_ID 
+			FROM EZ_MGR_LIST WHERE MGR_ID = #mgr_id#
+		]]>
+	</select>
+	
+	<select id="MntDAO.selectMgrView" parameterClass="MntVO" resultMap="mntMap">
+		<![CDATA[
+		SELECT
+			 M.MGR_IDX
+			,M.MGR_ID
+			,M.MGR_PW
+			,M.MGR_NAME
+			,C.CODE_NAME AS STATUS_CD
+			,M.REG_DT
+			,M.REG_ID
+			,M.MOD_DT
+			,M.MOD_ID
+			FROM EZ_MGR_LIST M
+			, EZ_CMM_CODE C
+			WHERE M.STATUS_CD = C.CODE
+			AND M.MGR_ID = #mgr_id#
+		]]>
+		
+	</select>
+	<insert id="MntDAO.insertMgr" parameterClass="MntVO">
+		<![CDATA[
+			INSERT INTO EZ_MGR(
+				MGR_IDX
+				,MGR_ID
+				,MGR_PW
+				,MGR_NAME
+				,STATUS_CD
+				,REG_DT
+				)VALUES(
+				 (SELECT NVL(MAX(MGR_IDX),0)+1 FROM EZ_MGR)
+				,#mgr_id#
+				,#mgr_pw#
+				,#mgr_name#
+				,#status_cd#
+				,to_char(sysdate,'yyyymmddhh24miss')
+				)
+		]]>
+	</insert>
+	
+	<delete id="MntDAO.deleteMgr" parameterClass="MntVO">
+		<![CDATA[
+			DELETE FROM EZ_MGR
+			WHERE MGR_ID = #mgr_id#
+		]]>
+	</delete>	
+			
+	
+	<update id="MntDAO.updateMgr" parameterClass="MntVO">
+		<![CDATA[
+			UPDATE EZ_MGR_LIST SET 
+			  MGR_ID = #mgr_id#
+			, MGR_PW = #mgr_pw#
+			, MGR_NAME = #mgr_name#
+			, STATUS_CD = #status_cd#
+			, MOD_DT = to_char(sysdate,'yyyymmddhh24miss')
+			WHERE MGR_ID = #sampleId#
+		]]>
+	</update>
+			
+</sqlMap>

@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>Namo CrossEditor : Admin</title>
+<link href="./css/common.css" rel="stylesheet" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+	var ce$ = namo$.noConflict(true);
+	function addEvent(elm, pe_nt, fn) {
+		if (elm.addEventListener) {
+			elm.addEventListener(pe_nt, fn, false);
+		} else if (elm.attachEvent) {
+			elm.attachEvent('on' + pe_nt, fn);
+		} else {
+			elm['on' + pe_nt] = fn;
+		}
+	}
+	function pe_bw(){
+		var pe_aAs = document.getElementById("pe_aAs");
+		addEvent(pe_aAs, 'keydown', function(e){
+			if(e.keyCode == "13"){
+				login.pe_aXB.click();
+			}
+		});
+
+		var pe_bDK = document.getElementById("pe_aXH");
+		addEvent(pe_bDK, 'click', function(e){
+			login.pe_aXB.click();
+		});
+	}
+
+</script>
+<script type="text/javascript" src="./manage_common.js"></script>
+<script type="text/javascript" src="../js/namo_cengine.js"></script>
+<script type="text/javascript" src="../js/ext/namo_servletContextPath.js"></script>
+<script type="text/javascript" src="./manager.js"></script>
+</head>
+
+<body style="background-color:#eeeff0" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="pe_bw()">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+    <tr>
+        <td background="images/intro_bg.gif">
+
+            <table width="760" height="368" border="0" cellpadding="0" cellspacing="0" align="center">
+            	<tr>
+                    <td height="95">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td height="84"><img src="images/login_top.jpg" border="0"></td>
+                </tr>
+                <tr>
+                    <td height="180" background="images/login_bg.jpg">
+                    <table class="pe_eN">
+						 <tr>
+							<td id="pe_bEF">&nbsp;</td>
+							<td style="text-align:center">
+							
+								<table id="pe_aAs">
+									<tr>
+										<td class="pe_biS" >&nbsp;&nbsp;&nbsp;<span id="pe_Rz" style="font-weight: bold;"></span></td>
+										<td class="pe_biE" ><input type="text" class="pe_bio" name="m_id2" id="m_id2" /></td>
+										<td></td>
+									</tr>
+									<tr>
+										<td class="pe_bDE" colspan="3"></td>
+									<tr>
+									<tr>
+										<td class="pe_biS">&nbsp;&nbsp;&nbsp;<span id="pe_BX" style="font-weight: bold;"></span></td>
+										<td class="pe_biE"><input type="password" class="pe_bio" name="pe_brl" id="pe_brl"  autocomplete="off"/></td>
+										<td>
+											<ul>
+												<li class="pe_ic">
+													<input type="submit" id="pe_aXH" value="" class="pe_iy pe_hk" style="width:66px; height:26px;"/>
+												</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td></td>
+										<td class="pe_jk">
+											<table cellpadding="0" cellspacing="0" border="0">
+												<tr>
+													<td><input type="checkbox" id="pe_aFh" name="pe_aFh" /></td>
+													<td><span id="pe_bTL"></span></td>
+												</tr>
+											</table>
+										</td>
+										<td></td>
+									</tr>
+								</table>
+							
+							</td>
+							<td id="pe_bDo">&nbsp;</td>
+						</tr>
+					</table>
+                    <form method="post" id="login" name="login" action="" onsubmit="return pe_cl(this);" style='display:inline'>
+						<input type="hidden" name="m_id" id="m_id" value="" />
+						<input type="hidden" name="passwd" id="passwd" />
+						<input type="hidden" name="webPageKind" id="webPageKind" value="" />
+						<input type="hidden" name="pe_aNh" id="pe_aNh" />
+						<input type="hidden" name="pe_aVA" id="pe_aVA" />
+						<input type="submit" id="pe_aXB" name="pe_aXB" value="" class="pe_iy pe_hk" style="width:0px; height:0px; display:none;"/>
+					</form>
+                    
+                    </td>
+                </tr>
+                <tr>
+                    <td height="106"><img src="images/login_bottom.jpg" border="0"></td>
+                </tr>
+            </table>
+    
+		</td>
+	</tr>
+</table>
+
+<div id="pe_aRs">
+	<table border="0" style="width:610px;">
+		<tr style="height:40px;">
+			<td style="width:10px"><img src="images/popup_top_left.gif" /></td>
+			<td id="pe_bVB"><span id="pe_ML" style="color:#FFFFFF"></span></td>
+			<td style="width:10px"><img src="images/popup_top_right.gif" /></td>
+		</tr>
+		<tr>
+			<td id="pe_bUe"></td>
+			<td id="pe_bVg">
+			
+				<table class="pe_bUN">
+					<tr>
+						<td style="padding:10px;">
+							<b><span id="pe_Os"></span></b>
+							&nbsp;&nbsp;&nbsp;<input type="text" class="pe_bcK" name="contextPath" id="contextPath" /><br />
+							<span id="pe_NT" class="pe_bdp"></span>
+						</td>
+					</tr>
+					<tr>
+						<td class="pe_bci"></td>
+					</tr>
+					<tr style="height:">
+						<td style="padding:10px;">
+						<b><span id="pe_NU"></span></b>
+							&nbsp;&nbsp;&nbsp;<input type="text" class="pe_bcK" name="pe_bly" id="pe_bly" /><br />
+							<span id="pe_NO" class="pe_bdp"></span>
+						</td>
+					</tr>
+					<tr>
+						<td class="pe_bci"></td>
+					</tr>
+				</table>
+		
+			</td>
+			<td id="pe_bVX"></td>
+		</tr>
+		<tr style="height:50px">
+			<td style="width:10px"><img src="images/popup_bot_left.gif" /></td>
+			<td id="pe_bUW">
+				<ul style="margin:0 auto; width:80px;">
+					<li class="pe_ic">
+						<input type="submit" id="pe_bnH" value="" class="pe_iy pe_hk" style="width:66px; height:26px;" />
+					</li>
+				</ul>
+			</td>
+			<td style="width:10px"><img src="images/popup_bot_right.gif" /></td>
+		</tr>
+	</table>
+</div>
+
+<div id="bgDiv"></div>
+
+<script type="text/javascript" language="javascript">
+	pe_cz();
+	
+</script>
+
+</body>
+</html>

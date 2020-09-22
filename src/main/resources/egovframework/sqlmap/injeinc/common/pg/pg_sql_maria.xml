@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PgDao">
+	
+	<resultMap id="PgMap" type="egovframework.injeinc.common.pg.vo.PgVo">
+		<result property="cstMid" column="CST_MID"/>
+		<result property="pgAls" column="PG_ALS"/>
+		<result property="pgMemo" column="PG_MEMO"/>
+		<result property="lgdMertkey" column="LGD_MERTKEY"/>
+		<result property="lgdacomConfPath" column="LGDACOM_CONF_PATH"/>
+		<result property="mallConfPath" column="MALL_CONF_PATH"/>
+		<result property="pgTableName" column="PG_TABLE_NAME"/>
+		<result property="pgDeptNm" column="PG_DEPT_NM"/>
+		<result property="pgDeptTelNum" column="PG_DEPT_TEL_NUM"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+		<result property="lgdacomConfFullPath" column="LGDACOM_CONF_FULL_PATH"/>
+		<result property="mertCode" column="MERT_CODE"/>
+	</resultMap>
+	
+	<resultMap id="PgCmmMap" type="egovframework.injeinc.common.pg.vo.PgVo">
+		<result property="mertCode" column="MERT_CODE"/>
+	</resultMap>
+
+	<!-- PG  리스트 조회 -->
+	<select id="selectListPg" parameterType="PgVo" resultMap="PgMap">
+		<![CDATA[
+			SELECT * FROM (SELECT ROWNUM AS rn, TB.* FROM (
+				SELECT CST_MID
+					,PG_ALS
+					,PG_MEMO
+					,LGD_MERTKEY
+					,LGDACOM_CONF_PATH
+					,LGDACOM_CONF_FULL_PATH
+					,MALL_CONF_PATH
+					,PG_TABLE_NAME
+					,PG_DEPT_NM
+					,PG_DEPT_TEL_NUM
+					,REG_DT
+					,REG_ID
+					,MOD_DT
+					,MOD_ID
+					,MERT_CODE
+				FROM PG WHERE 1=1
+           ]]> 
+            <if test="searchKeyword != null and searchKeyword != ''">
+            	<if test="searchCondition == &quot;als&quot;">
+            	<![CDATA[
+            		AND
+	            		PG_ALS  LIKE CONCAT('%', #{searchKeyword} ,'%')
+	            ]]>	
+            	</if>
+            	<if test="searchCondition == &quot;id&quot;">
+            	<![CDATA[
+            		AND
+	            		CST_MID LIKE CONCAT('%', #{searchKeyword} ,'%')
+	            ]]>	
+            	</if>
+            	<if test="searchCondition == &quot;name&quot;">
+            	<![CDATA[
+            		AND
+	            		PG_DEPT_NM LIKE CONCAT('%', #{searchKeyword} ,'%')
+	            ]]>
+            	</if>
+            </if>
+        <![CDATA[
+            ORDER BY REG_DT DESC
+			) TB ) 
+			TBL WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	  	]]>
+	</select>
+	
+	<!--게시물 총 개수 -->
+	<select id="selectPagPg" parameterType="PgVo" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM PG
+			WHERE
+			1=1
+		]]>	  
+            <if test="searchKeyword != null and searchKeyword != ''">
+            	<if test="searchCondition == &quot;als&quot;">
+            	<![CDATA[
+            		AND
+	            		PG_ALS  LIKE CONCAT('%', #{searchKeyword} ,'%')
+	            ]]>
+            	</if>
+            	<if test="searchCondition == &quot;id&quot;">
+            	<![CDATA[
+            		AND
+	            		CST_MID LIKE CONCAT('%', #{searchKeyword} ,'%')
+	            ]]>
+            	</if>
+            	<if test="searchCondition == &quot;name&quot;">
+            	<![CDATA[
+            		AND
+	            		PG_DEPT_NM LIKE CONCAT('%', #{searchKeyword} ,'%')
+	            ]]>	
+            	</if>
+            </if>
+            <![CDATA[
+            ORDER BY REG_DT DESC
+	 		 ]]>	
+	</select>
+	
+	<!--등록 -->
+	<insert id="insertPg" parameterType="PgVo">
+		<![CDATA[
+			INSERT INTO PG (
+				CST_MID
+				,PG_ALS
+				,PG_MEMO
+				,LGD_MERTKEY
+				,LGDACOM_CONF_PATH
+				,MALL_CONF_PATH
+				,PG_TABLE_NAME
+				,PG_DEPT_NM
+				,PG_DEPT_TEL_NUM
+				,REG_DT
+				,REG_ID
+				,LGDACOM_CONF_FULL_PATH
+				,MERT_CODE
+				)VALUES(
+				#{cstMid}
+				,#{pgAls}
+				,#{pgMemo}
+				,#{lgdMertkey}
+				,#{lgdacomConfPath}
+				,#{mallConfPath}
+				,#{pgTableName}
+				,#{pgDeptNm}
+				,#{pgDeptTelNum}
+				,TO_DATE(TO_CHAR(SYSDATE,'yyyymmddhh24miss'),'yyyymmddhh24miss')
+				,#{regId}
+				,#{lgdacomConfFullPath}
+				,#{mertCode}
+				)
+		]]>
+	</insert>
+	
+	<insert id="insertMgrPg" parameterType="PgVo">
+		<![CDATA[
+				INSERT INTO PG_MGR(
+					 PG_OID
+					,PG_AMOUNT
+					,PG_NAME
+					,PG_USE
+					,PG_MID
+					,PG_RESPCODE
+					,PG_TID
+					,PG_RESPMSG
+					,PG_EMAIL
+					,REG_DT
+					,REG_ID
+					) VALUES (
+					 #{pgOid}
+					,#{pgAmount}
+					,#{pgName}
+					,#{pgUse}
+					,#{pgMid}
+					,#{pgRespcode}
+					,#{pgTid}
+					,#{pgRespmsg}
+					,#{lgdbuyerEmail}
+					,SYSDATE
+					,#{regId}
+					)
+		]]>
+	</insert>
+	
+	<!--아이디 조회 -->
+	<select id="selectCstMidCnt" parameterType="hashMap" resultType="int">
+		<![CDATA[
+			SELECT COUNT(CST_MID)
+			FROM PG
+			WHERE CST_MID = #{cstMid}
+		]]>
+	</select>
+
+	<!--수정 -->
+	<update id="updatePg" parameterType="PgVo">
+		<![CDATA[
+			UPDATE PG
+			SET CST_MID = #{cstMid}
+				,PG_ALS = #{pgAls}
+				,PG_MEMO = #{pgMemo}
+				,LGD_MERTKEY = #{lgdMertkey}
+				,MALL_CONF_PATH = #{mallConfPath}
+				,PG_TABLE_NAME = #{pgTableName}
+				,PG_DEPT_NM = #{pgDeptNm}
+				,PG_DEPT_TEL_NUM = #{pgDeptTelNum}
+				,MOD_DT = TO_DATE(TO_CHAR(SYSDATE,'yyyymmddhh24miss'),'yyyymmddhh24miss')
+				,MOD_ID = #{modId}
+				,MERT_CODE  = #{mertCode}
+			WHERE CST_MID = #{beforecstmid}
+			AND PG_ALS = #{pgAls}
+		]]>
+	</update>
+
+	<!--상세 조회 -->
+	<select id="selectPg" parameterType="PgVo" resultMap="PgMap">
+		<![CDATA[
+			SELECT CST_MID
+				,PG_ALS
+				,PG_MEMO
+				,LGD_MERTKEY
+				,LGDACOM_CONF_PATH
+				,LGDACOM_CONF_FULL_PATH
+				,MALL_CONF_PATH
+				,PG_TABLE_NAME
+				,PG_DEPT_NM
+				,PG_DEPT_TEL_NUM
+				,REG_DT
+				,REG_ID
+				,MOD_DT
+				,MOD_ID
+				,MERT_CODE
+			FROM PG
+			WHERE CST_MID = #{cstMid}
+			AND PG_ALS = #{pgAls}
+		]]>
+	</select>
+
+	<!--상세 조회 -->
+	<select id="selectMidPg" parameterType="PgVo" resultMap="PgMap">
+		<![CDATA[
+			SELECT  CST_MID
+				,PG_ALS
+				,PG_MEMO
+				,LGD_MERTKEY
+				,LGDACOM_CONF_PATH
+				,LGDACOM_CONF_FULL_PATH
+				,MALL_CONF_PATH
+				,PG_TABLE_NAME
+				,PG_DEPT_NM
+				,PG_DEPT_TEL_NUM
+				,REG_DT
+				,REG_ID
+				,MOD_DT
+				,MOD_ID
+				,MERT_CODE
+			FROM PG
+			WHERE MERT_CODE = #{mertCode}
+		]]>
+	</select>
+
+	<!--상점아이디로 PG공통코드 조회 구분자사용목적 -->
+	<select id="selectCmmPg" parameterType="PgVo" resultMap="PgCmmMap">
+		<![CDATA[
+			SELECT MERT_CODE FROM PG
+			WHERE CST_MID = #{pgMid}
+		]]>
+	</select>
+
+	<!-- path 조회 -->
+	<select id="selectConfPathCnt" parameterType="hashMap" resultType="int">
+		<![CDATA[
+			SELECT COUNT(CST_MID) FROM PG
+			WHERE LGDACOM_CONF_PATH = #{lgdacomConfPath}
+		]]>
+	</select>
+
+	<!-- pg 삭제 -->
+	<delete id="deletePg" parameterType="PgVo">
+		<![CDATA[
+			DELETE FROM PG WHERE CST_MID = #{cstMid} AND PG_ALS = #{pgAls}
+		]]>
+	</delete>
+
+	<!--수정 -->
+	<update id="updatePgMgr" parameterType="PgVo">
+		<if test="cmmCode == &quot;RM060000&quot;">
+			<![CDATA[
+				UPDATE PG_MGR SET
+					PG_RESPMSG = #{pgRespmsg}
+					,PG_RESPCODE = #{pgRespcode}
+				WHERE PG_TID = #{pgTid};
+	
+				UPDATE LECTURE_MEMBER SET 
+					LM_STATE = 'C'
+				    ,CAN_REASON = '결제취소'
+	                ,MOD_DT = TO_CHAR(SYSDATE,'yyyymmddhh24miss')
+	                ,MOD_ID = #{modId}
+				WHERE ORDER_NO = (SELECT PG_OID FROM PG_MGR WHERE PG_TID = #{pgTid});
+			]]>
+		</if>
+		<if test="cmmCode != &quot;RM060000&quot;">
+			<![CDATA[
+						UPDATE PG_MGR SET
+							PG_RESPMSG = #{pgRespmsg}
+							,PG_RESPCODE = #{pgRespcode}
+						WHERE PG_TID = #{pgTid};
+
+						UPDATE ROOM_ITEM SET
+							ITEM_STATE = '14000003'
+				    		,PRICE_STATUS = '취소완료'
+				 		WHERE PAYCODE = (SELECT PG_OID FROM PG_MGR WHERE PG_TID = #{pgTid});
+			]]>
+		</if>
+	</update>
+
+	<update id="updatePgMissMgr" parameterType="PgVo">
+		<if test="cmmCode == &quot;lt&quot;">
+			<![CDATA[
+				DELETE LECTURE_MEMBER_TEMP WHERE ORDER_NO = #{pgOid}
+			]]>	
+		</if>
+		<if test="cmmCode != &quot;lt&quot;">
+		<![CDATA[
+				UPDATE ROOM_ITEM SET
+					ITEM_STATE = '14000004'
+					, PRICE_STATUS = '미결재'
+				WHERE PAYCODE = #{pgOid}
+		]]>	
+		</if>
+		
+	</update>
+	
+	<select id="selectPgByMertCodeAx" parameterType="hashMap" resultType="PgVo">
+	<![CDATA[
+		SELECT CST_MID cstMid,
+		       PG_ALS pgAls,
+		       PG_MEMO pgMemo,
+		       LGD_MERTKEY lgdMertkey,
+		       LGDACOM_CONF_PATH lgdacomConfPath,
+		       MALL_CONF_PATH mallConfPath,
+		       PG_TABLE_NAME pgTableName,
+		       PG_DEPT_NM pgDeptNm,
+		       PG_DEPT_TEL_NUM pgDeptTelNum,
+		       REG_DT regDt,
+		       REG_ID regId,
+		       MOD_DT modDt,
+		       MOD_ID modId,
+		       LGDACOM_CONF_FULL_PATH lgdacomConfFullPath,
+		       MERT_CODE mertCode
+		FROM   PG
+		where  MERT_CODE = #{mertCode}
+	]]>
+	</select>
+
+</mapper>

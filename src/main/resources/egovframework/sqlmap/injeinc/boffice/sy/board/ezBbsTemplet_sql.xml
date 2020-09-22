@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed Mar 11 16:49:04 KST 2020-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EzBbsTempletDao">
+	<resultMap id="EzBbsTempletViewMap" type="egovframework.injeinc.boffice.sy.board.vo.EzBbsTempletVo">
+		<result property="bbsTempletGbn" column="BBS_TEMPLET_GBN"/>
+		<result property="listCode" column="LIST_CODE"/>
+		<result property="viewCode" column="VIEW_CODE"/>
+		<result property="registCode" column="REGIST_CODE"/>
+		<result property="codeName" column="CODE_NAME"/>
+	</resultMap>
+
+	<insert id="insertEzBbsTemplet" parameterType="EzBbsTempletVo">
+	<![CDATA[ 
+		INSERT INTO EZ_BBS_TEMPLET(
+			BBS_TEMPLET_GBN
+			,LIST_CODE
+			,VIEW_CODE
+			,REGIST_CODE
+		) VALUES(
+			#{bbsTempletGbn}
+			,#{listCode}
+			,#{viewCode}
+			,#{registCode}
+		)
+	]]>	
+	</insert>
+
+	<update id="modifyEzBbsTemplet" parameterType="EzBbsTempletVo">
+	<![CDATA[ 
+		UPDATE EZ_BBS_TEMPLET SET 
+			LIST_CODE=#{listCode}
+			,VIEW_CODE=#{viewCode}
+			,REGIST_CODE=#{registCode}
+		WHERE BBS_TEMPLET_GBN=#{bbsTempletGbn}
+	]]>
+	</update>
+
+	<delete id="deleteEzBbsTemplet" parameterType="EzBbsTempletVo">
+	<![CDATA[ 
+		DELETE FROM EZ_BBS_TEMPLET 
+		WHERE BBS_TEMPLET_GBN=#{bbsTempletGbn}
+	]]>
+	</delete>
+
+	<select id="selectEzBbsTemplet" parameterType="EzBbsTempletVo" resultMap="EzBbsTempletViewMap">
+	<![CDATA[ 
+		SELECT 
+			BBS_TEMPLET_GBN
+			,LIST_CODE
+			,VIEW_CODE
+			,REGIST_CODE
+			,'' as CODE_NAME
+		FROM EZ_BBS_TEMPLET 
+		WHERE BBS_TEMPLET_GBN=#{bbsTempletGbn}
+	]]>
+	</select>
+
+	<select id="selectTotalCountEzBbsTemplet" parameterType="EzBbsTempletVo" resultType="int">
+	<![CDATA[ 
+		SELECT COUNT(*)
+		FROM EZ_BBS_TEMPLET
+		WHERE BBS_TEMPLET_GBN=#{bbsTempletGbn} 
+	]]>
+	</select>
+	<select id="selectPageEzBbsTemplet" parameterType="EzBbsTempletVo" resultMap="EzBbsTempletViewMap">
+	<![CDATA[ 
+		SELECT 
+		  A1.CODE as BBS_TEMPLET_GBN
+		  ,B1.LIST_CODE
+		  ,B1.VIEW_CODE
+		  ,B1.REGIST_CODE
+		  ,A1.CODE_NAME
+		  ,A1.ORD_NO 
+		FROM 
+		  EZ_CMM_CODE A1,EZ_BBS_TEMPLET B1
+		WHERE A1.CODE=B1.BBS_TEMPLET_GBN(+) AND CODE_UPR='16050000'
+		ORDER BY A1.ORD_NO ASC
+	]]>
+	</select>
+</mapper>

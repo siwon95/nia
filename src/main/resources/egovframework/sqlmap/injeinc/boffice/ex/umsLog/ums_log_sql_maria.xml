@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UmsLogDao">
+	
+	<resultMap id="UmsLogMap" type="egovframework.injeinc.boffice.ex.umsLog.vo.UmsLogVo">
+		<result property="ulIdx" column="UL_IDX"/>
+		<result property="ulSiteCd" column="UL_SITE_CD"/>
+		<result property="ulSendtype" column="UL_SENDTYPE"/>
+		<result property="ulSubject" column="UL_SUBJECT"/>
+		<result property="ulAddress" column="UL_ADDRESS"/>
+		<result property="ulContent" column="UL_CONTENT"/>
+		<result property="ulCallbackNo" column="UL_CALLBACK_NO"/>
+		<result property="ulWorktypeNm" column="UL_WORKTYPE_NM"/>
+		<result property="ulScheduleType" column="UL_SCHEDULE_TYPE"/>
+		<result property="ulScheduleStime" column="UL_SCHEDULE_STIME"/>
+		<result property="regDt" column="REG_DT"/>
+	</resultMap>
+
+	<insert id="insertUmsLog" parameterType="UmsLogVo">
+		<![CDATA[
+			INSERT INTO EZ_UMS_LOG
+			(
+				UL_IDX
+				, UL_SITE_CD
+				, UL_SENDTYPE
+				, UL_SUBJECT
+				, UL_ADDRESS
+				, UL_CONTENT
+				, UL_CALLBACK_NO
+				, UL_WORKTYPE_NM
+				, UL_SCHEDULE_TYPE
+				, UL_SCHEDULE_STIME
+			)
+			VALUES
+			(
+				  #{ulIdx}
+				, #{ulSiteCd}
+				, #{ulSendtype}
+				, #{ulSubject}
+				, #{ulAddress}
+				, #{ulContent}
+				, #{ulCallbackNo}
+				, #{ulWorktypeNm}
+				, #{ulScheduleType}
+				, #{ulScheduleStime}
+			)
+		]]>
+	</insert>
+	
+	<select id="selectUmsLog" parameterType="UmsLogVo" resultMap="UmsLogMap">
+		<![CDATA[
+			SELECT * FROM EZ_UMS_LOG
+			WHERE UL_IDX = #{ulIdx}
+		]]>
+	</select>
+	
+	<sql id="searchUmsLog">
+		<if test="searchSiteCd != null and searchSiteCd != ''">
+			<![CDATA[
+				AND UL_SITE_CD = #{searchSiteCd}
+			]]>
+		</if>
+		<if test="searchStartDt != null and searchStartDt != ''">
+			<![CDATA[
+				AND DATE_FORMAT(#{searchStartDt}, '%Y-%m-%d') <= REG_DT
+			]]>
+		</if>
+		<if test="searchEndDt != null and searchEndDt != ''">
+			<![CDATA[
+				AND REG_DT < DATE_ADD(DATE_FORMAT(#{searchEndDt}, '%Y-%m-%d'), INTERVAL 1 DAY)
+			]]>
+		</if>
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 1">
+				<![CDATA[
+					AND UL_SUBJECT LIKE CONCAT( '%', #{searchKeyword} ,'%' ) 
+				]]>
+			</if>
+			<if test="searchCondition == 2">
+				<![CDATA[
+					AND UL_ADDRESS LIKE CONCAT( '%', #{searchKeyword} ,'%' ) 
+				]]>
+			</if>
+			<if test="searchCondition == 3">
+				<![CDATA[
+					AND UL_CALLBACK_NO LIKE CONCAT( '%', #{searchKeyword} ,'%' ) 
+				]]>
+			</if>
+		</if>
+	</sql>
+	
+	<select id="selectPagUmsLog" parameterType="UmsLogVo" resultMap="UmsLogMap">
+		<![CDATA[
+			SELECT A.*
+				FROM(
+					SELECT  B.* , @ROWNUM:=@ROWNUM+1 ROWNUM
+					FROM EZ_UMS_LOG B
+					WHERE (@ROWNUM:=0)=0
+					AND 1 = 1	
+		]]>
+		<include refid="searchUmsLog"/>
+		<![CDATA[
+					ORDER BY UL_IDX DESC
+				) A
+					WHERE ROWNUM BETWEEN #{firstIndex}+1 AND #{lastIndex}
+
+		]]>
+	</select>
+	
+	<select id="selectUmsLogCnt" parameterType="UmsLogVo" resultType="java.lang.Integer">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM EZ_UMS_LOG
+			WHERE 1 = 1
+		]]>
+		<include refid="searchUmsLog"/>
+	</select>
+	
+</mapper>

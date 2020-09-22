@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Fri Mar 13 10:12:56 KST 2020-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mainImageDAO">
+
+    <resultMap id="mainImage" type="egovframework.injeinc.boffice.ex.mainImage.vo.MainImageVO">
+        <result property="imageId" column="IMAGE_ID"/>
+        <result property="imageNm" column="IMAGE_NM"/>
+        <result property="image" column="IMAGE"/>
+        <result property="imageFile" column="IMAGE_FILE"/>
+        <result property="imageDc" column="IMAGE_DC"/>
+        <result property="reflctYn" column="REFLCT_YN"/>
+        <result property="userId" column="REG_ID"/>
+        <result property="regDt" column="REG_DT"/>
+        <result property="ntceBgnde" column="NTCE_BGNDE"/>
+        <result property="ntceEndde" column="NTCE_ENDDE"/>
+        <result property="ordtmNtceYn" column="ORDTM_NTCE_YN"/>
+        <result property="linkUrl" column="LINK_URL"/>
+        <result property="newWindowYn" column="NEW_WINDOW_YN"/>
+        <result property="ntceSttus" column="NTCE_STTUS"/>
+        <result property="type" column="TYPE"/>
+        <result property="sort" column="SORT"/>
+    </resultMap>
+
+    <resultMap id="image" type="egovframework.injeinc.boffice.ex.mainImage.vo.MainImageVO">
+        <result property="imageFile" column="IMAGE_FILE"/>
+    </resultMap>
+
+    <resultMap id="mainImageFile" type="egovframework.cmm.service.FileVO">
+        <result property="fileStreCours" column="FILE_STRE_COURS"/>
+        <result property="streFileNm" column="STRE_FILE_NM"/>
+    </resultMap>
+
+    <select id="selectMainImageList" parameterType="MainImageVO" resultMap="mainImage">
+        <![CDATA[
+            SELECT  *
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.*
+              FROM  (
+            SELECT IMAGE_ID,
+                   IMAGE_NM,
+                   IMAGE,
+                   IMAGE_FILE,
+                   IMAGE_DC,
+                   REFLCT_YN,
+                   REG_ID,
+                   REG_DT,
+                   NTCE_BGNDE,
+				   NTCE_ENDDE,
+				   ORDTM_NTCE_YN,
+				   LINK_URL,
+				   NEW_WINDOW_YN,
+				   CASE WHEN REFLCT_YN = 'N' THEN '3' /*게시중지*/
+					ELSE (CASE WHEN ORDTM_NTCE_YN = 'Y' THEN '1' /*상시게시*/
+							ELSE (CASE WHEN TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS') < TO_CHAR(TO_DATE(NTCE_BGNDE, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI:SS') THEN '2' /*게시예정*/
+									WHEN TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS') BETWEEN TO_CHAR(TO_DATE(NTCE_BGNDE, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI:SS') AND TO_CHAR(TO_DATE(NTCE_ENDDE, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI:SS') THEN '1' /*게시중*/
+									ELSE '4' END) /*게시종료*/
+							END)
+					END AS NTCE_STTUS,
+					(SELECT CODE_NAME FROM EZ_CMM_CODE WHERE CODE_UPR = '28000000' AND CODE = SUBSTR( mi.TYPE, 2, INSTR(mi.TYPE, ',',2)-2) ) TYPE,
+					SORT
+              FROM EZ_MAIN_IMAGE mi
+             WHERE 1=1
+        ]]>
+            <if test="searchCondition == 1">AND
+                IMAGE_NM LIKE '%'||#{searchKeyword}||'%'
+            </if>
+            <if test="searchKeywordTo != &quot;all&quot;">
+      <![CDATA[      
+            and TYPE LIKE '%'||#{searchKeywordTo}||'%'
+       ]]>
+       		</if>
+        <![CDATA[        
+           ORDER BY NTCE_STTUS ASC, SORT, IMAGE_ID DESC
+                    ) ALL_LIST
+                    )
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+       ]]> 
+    </select>
+
+    <select id="selectBnImageList" parameterType="MainImageVO" resultMap="mainImage">
+        <![CDATA[
+            SELECT  *
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.*
+              FROM  (
+            SELECT IMAGE_ID,
+                   IMAGE_NM,
+                   IMAGE,
+                   IMAGE_FILE,
+                   IMAGE_DC,
+                   REFLCT_YN,
+                   REG_ID,
+                   REG_DT,
+                   NTCE_BGNDE,
+				   NTCE_ENDDE,
+				   ORDTM_NTCE_YN,
+				   LINK_URL,
+				   NEW_WINDOW_YN,
+				   CASE WHEN REFLCT_YN = 'N' THEN '3' /*게시중지*/
+					ELSE (CASE WHEN ORDTM_NTCE_YN = 'Y' THEN '1' /*상시게시*/
+							ELSE (CASE WHEN TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS') < TO_CHAR(TO_DATE(NTCE_BGNDE, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI:SS') THEN '2' /*게시예정*/
+									WHEN TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS') BETWEEN TO_CHAR(TO_DATE(NTCE_BGNDE, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI:SS') AND TO_CHAR(TO_DATE(NTCE_ENDDE, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI:SS') THEN '1' /*게시중*/
+									ELSE '4' END) /*게시종료*/
+							END)
+					END AS NTCE_STTUS,
+					TYPE,
+					SORT
+              FROM EZ_MAIN_IMAGE
+             WHERE 1=1
+             ORDER BY NTCE_STTUS ASC, SORT, IMAGE_ID DESC
+                    ) ALL_LIST
+                    )
+             WHERE
+               NTCE_STTUS = '1'
+               AND RNUM  > #{firstIndex}
+               AND RNUM <= #{firstIndex} + #{recordCountPerPage}
+        ]]>
+    </select>
+
+    <select id="selectMainImageListTotCnt" parameterType="MainImageVO" resultType="int">
+	<![CDATA[
+            SELECT COUNT(*) totcnt
+            FROM EZ_MAIN_IMAGE
+            WHERE 1=1
+    ]]>
+            <if test="searchCondition == 1">AND
+                IMAGE_NM LIKE '%'||#{searchKeyword}||'%'
+            </if>
+             <if test="searchKeywordTo != &quot;all&quot;">
+    <![CDATA[        
+            	and TYPE LIKE '%'||#{searchKeywordTo}||'%'
+     ]]>
+     		</if>
+    </select>
+
+    <select id="selectMainImage" resultMap="mainImage">
+        <![CDATA[
+            SELECT IMAGE_ID,
+                   IMAGE_NM,
+                   IMAGE,
+                   IMAGE_FILE,
+                   IMAGE_DC,
+                   REFLCT_YN,
+                   REG_ID,
+                   REG_DT,
+                   NTCE_BGNDE,
+				   NTCE_ENDDE,
+				   ORDTM_NTCE_YN,
+				   LINK_URL,
+				   NEW_WINDOW_YN,
+				   CASE WHEN REFLCT_YN = 'N' THEN '3' /*게시중지*/
+					ELSE (CASE WHEN ORDTM_NTCE_YN = 'Y' THEN '1' /*상시게시*/
+							ELSE (CASE WHEN TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS') < TO_CHAR(TO_DATE(NTCE_BGNDE, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI:SS') THEN '2' /*게시예정*/
+									WHEN TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS') BETWEEN TO_CHAR(TO_DATE(NTCE_BGNDE, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI:SS') AND TO_CHAR(TO_DATE(NTCE_ENDDE, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI:SS') THEN '1' /*게시중*/
+									ELSE '4' END) /*게시종료*/
+							END)
+					END AS NTCE_STTUS,
+					TYPE,
+					SORT
+              FROM EZ_MAIN_IMAGE
+             WHERE IMAGE_ID = #{imageId}
+        ]]>
+    </select>
+    
+    <!-- 메인 페이지  -->
+    <select id="selectListMainImage" resultMap="mainImage">
+        <![CDATA[
+            SELECT IMAGE_ID,
+                   IMAGE_NM,
+                   IMAGE,
+                   IMAGE_FILE,
+                   IMAGE_DC,
+                   REFLCT_YN,
+                   REG_ID,
+                   REG_DT,
+                   NTCE_BGNDE,
+				   NTCE_ENDDE,
+				   ORDTM_NTCE_YN,
+				   LINK_URL,
+				   NEW_WINDOW_YN,
+				   'NONE' AS NTCE_STTUS,
+				   TYPE,
+				   SORT
+              FROM EZ_MAIN_IMAGE
+             WHERE REFLCT_YN = 'Y'
+             AND (TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS') BETWEEN TO_CHAR(TO_DATE(NTCE_BGNDE, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI:SS') AND TO_CHAR(TO_DATE(NTCE_ENDDE, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI:SS')
+              OR ORDTM_NTCE_YN = 'Y')
+              ORDER BY SORT ASC
+        ]]>
+    </select>
+
+    <insert id="insertMainImage" parameterType="MainImage">
+        <![CDATA[
+            INSERT INTO EZ_MAIN_IMAGE
+                       (IMAGE_ID,
+                        IMAGE_NM,
+                        IMAGE,
+                        IMAGE_FILE,
+                        IMAGE_DC,
+                        REFLCT_YN,
+                        REG_ID,
+                        REG_DT,
+                        NTCE_BGNDE,
+					    NTCE_ENDDE,
+					    ORDTM_NTCE_YN,
+					    LINK_URL,
+					    NEW_WINDOW_YN,
+					    TYPE)
+                VALUES (#{imageId},
+                        #{imageNm},
+                        #{image},
+                        #{imageFile},
+                        #{imageDc},
+                        #{reflctYn},
+                        #{userId},
+                        SYSDATE,
+                        #{ntceBgnde},
+                        #{ntceEndde},
+                        #{ordtmNtceYn},
+                        #{linkUrl},
+                        #{newWindowYn},
+                        #{type})
+       ]]> 
+    </insert>
+
+    <update id="updateMainImage" parameterType="MainImage">
+            UPDATE EZ_MAIN_IMAGE
+               SET IMAGE_NM = #{imageNm},
+                   <if test="isAtchFile == &quot;true&quot;">
+                   IMAGE = #{image},
+                   IMAGE_FILE = #{imageFile},
+                   </if>
+                   IMAGE_DC = #{imageDc},
+                   REFLCT_YN = #{reflctYn},
+                   LAST_UPDUSR_ID = #{userId},
+                   LAST_UPDT_PNTTM = SYSDATE,
+                   NTCE_BGNDE = #{ntceBgnde},
+				   NTCE_ENDDE = #{ntceEndde},
+				   ORDTM_NTCE_YN = #{ordtmNtceYn},
+				   LINK_URL = #{linkUrl},
+				   NEW_WINDOW_YN = #{newWindowYn},
+				   TYPE = #{type}
+             WHERE IMAGE_ID = #{imageId}
+    </update>
+
+    <delete id="deleteMainImage" parameterType="MainImage">
+        <![CDATA[
+            DELETE FROM EZ_MAIN_IMAGE
+             WHERE IMAGE_ID = #{imageId}
+        ]]>
+    </delete>
+
+    <select id="selectMainImageResult" resultMap="mainImage">
+       <![CDATA[ 
+        SELECT * FROM (
+            SELECT IMAGE_ID,
+                   IMAGE_NM,
+                   IMAGE,
+                   IMAGE_FILE,
+                   IMAGE_DC,
+                   REFLCT_YN,
+                   REG_ID,
+                   REG_DT,
+                   NTCE_BGNDE,
+				   NTCE_ENDDE,
+				   ORDTM_NTCE_YN,
+				   LINK_URL,
+				   NEW_WINDOW_YN,
+				   CASE WHEN REFLCT_YN = 'N' THEN '3' /*게시중지*/
+					ELSE (CASE WHEN ORDTM_NTCE_YN = 'Y' THEN '1' /*상시게시*/
+							ELSE (CASE WHEN TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS') < TO_CHAR(TO_DATE(NTCE_BGNDE, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI:SS') THEN '2' /*게시예정*/
+									WHEN TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS') BETWEEN TO_CHAR(TO_DATE(NTCE_BGNDE, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI:SS') AND TO_CHAR(TO_DATE(NTCE_ENDDE, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI:SS') THEN '1' /*게시중*/
+									ELSE '4' END) /*게시종료*/
+							END)
+					END AS NTCE_STTUS,
+					TYPE,
+					SORT
+              FROM EZ_MAIN_IMAGE
+          ) TBL
+             WHERE REFLCT_YN = 'Y'
+             	AND NTCE_STTUS = '1'
+             ORDER BY NTCE_STTUS ASC, SORT, IMAGE_ID DESC
+        ]]>
+    </select>
+
+    <select id="selectMainImageFile" parameterType="MainImage" resultMap="mainImageFile">
+        <![CDATA[
+            SELECT B.FILE_STRE_COURS AS FILE_STRE_COURS,
+                   B.STRE_FILE_NM AS STRE_FILE_NM
+              FROM EZ_MAIN_IMAGE A,
+                   COMTNFILEDETAIL B
+             WHERE 1 = 1
+               AND IMAGE_ID = #{imageId}
+               AND A.IMAGE_FILE = B.ATCH_FILE_ID
+        ]]>
+    </select>
+    
+    <resultMap id="mainImageSort" type="egovframework.injeinc.boffice.ex.mainImage.vo.MainImage">
+        <result property="tempImageId" column="IMAGE_ID"/>
+        <result property="tempSort" column="SORT"/>
+    </resultMap>
+    
+     <select id="selectMainImageStepUp" parameterType="MainImage" resultMap="mainImageSort">
+        <![CDATA[
+              SELECT IMAGE_ID, SORT
+ 				FROM EZ_MAIN_IMAGE
+ 				WHERE SORT =(
+							            SELECT MAX(SORT)
+							            FROM EZ_MAIN_IMAGE
+						            	WHERE SORT < #{sort}
+						            	AND (
+						            				(ORDTM_NTCE_YN = 'Y') OR
+													(TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS') < TO_CHAR(TO_DATE(NTCE_BGNDE, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI:SS')) OR
+													(TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS') BETWEEN TO_CHAR(TO_DATE(NTCE_BGNDE, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI:SS') AND TO_CHAR(TO_DATE(NTCE_ENDDE, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI:SS'))
+												)						            	
+		            					)
+        ]]>
+    </select>
+    
+    <select id="selectMainImageStepDown" parameterType="MainImage" resultMap="mainImageSort">
+        <![CDATA[
+             SELECT IMAGE_ID, SORT
+ 				FROM EZ_MAIN_IMAGE
+ 				WHERE SORT =(
+							            SELECT MIN(SORT)
+							            FROM EZ_MAIN_IMAGE
+						            	WHERE SORT > #{sort}
+						            	AND (
+						            				(ORDTM_NTCE_YN = 'Y') OR
+													(TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS') < TO_CHAR(TO_DATE(NTCE_BGNDE, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI:SS')) OR
+													(TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS') BETWEEN TO_CHAR(TO_DATE(NTCE_BGNDE, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI:SS') AND TO_CHAR(TO_DATE(NTCE_ENDDE, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI:SS'))
+												)						            	
+		            					)
+		            	
+        ]]>
+    </select>
+    
+    <update id="updateMainImageSort" parameterType="MainImage">
+        <![CDATA[
+            DECLARE 
+				BEGIN
+					
+					UPDATE EZ_MAIN_IMAGE SET
+					SORT = #{tempSort}
+					WHERE IMAGE_ID = #{imageId};
+					
+					UPDATE EZ_MAIN_IMAGE SET
+					SORT = #{sort}
+					WHERE IMAGE_ID = #{tempImageId};
+					
+				END;
+       ]]> 
+    </update>
+    
+    <resultMap id="mainImageMap" type="egovframework.injeinc.boffice.ex.mainImage.vo.MainImageVO">
+        <result property="imageId" column="IMAGE_ID"/>
+        <result property="imageNm" column="IMAGE_NM"/>
+        <result property="image" column="IMAGE"/>
+        <result property="imageFile" column="IMAGE_FILE"/>
+        <result property="imageDc" column="IMAGE_DC"/>
+        <result property="reflctYn" column="REFLCT_YN"/>
+        <result property="userId" column="REG_ID"/>
+        <result property="regDt" column="REG_DT"/>
+        <result property="ntceBgnde" column="NTCE_BGNDE"/>
+        <result property="ntceEndde" column="NTCE_ENDDE"/>
+        <result property="ordtmNtceYn" column="ORDTM_NTCE_YN"/>
+        <result property="linkUrl" column="LINK_URL"/>
+        <result property="newWindowYn" column="NEW_WINDOW_YN"/>
+        <result property="type" column="TYPE"/>
+        <result property="sort" column="SORT"/>
+    </resultMap>
+    
+    <select id="selectListMainImageAll" resultMap="mainImageMap">
+    <![CDATA[	
+    	SELECT IMAGE_ID,
+	          IMAGE_NM,
+	          IMAGE,
+	          IMAGE_FILE,
+	          IMAGE_DC,
+	          REFLCT_YN,
+	          REG_ID,
+	          REG_DT,
+	          NTCE_BGNDE,
+	          NTCE_ENDDE,
+	          ORDTM_NTCE_YN,
+	          LINK_URL,
+	          NEW_WINDOW_YN,
+	          TYPE,
+	          SORT
+        FROM EZ_MAIN_IMAGE
+        WHERE REFLCT_YN = 'Y'
+        AND NTCE_BGNDE <= TO_CHAR(sysdate, 'yyyymmddhh24mi')
+        AND NTCE_ENDDE >= TO_CHAR(sysdate, 'yyyymmddhh24mi')
+        ORDER BY REG_DT DESC
+    ]]>    
+    </select>
+
+</mapper>

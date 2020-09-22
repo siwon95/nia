@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LoginDao">
+	
+	<resultMap id="LoginMap" type="egovframework.injeinc.boffice.login.vo.LoginVo">
+		<result property="mgrIdx" column="MGR_IDX"/>
+		<result property="userId" column="MGR_ID"/>
+		<result property="userName" column="MGR_NAME"/>
+		<result property="permCd" column="PERM_CD"/>
+		<result property="permNm" column="PERM_NM"/>
+		<result property="deptCd" column="DEPT_CD"/>
+		<result property="deptNm" column="DEPT_NM"/>
+		<result property="pDeptCd" column="P_DEPT_CD"/>
+		<result property="roleIdx" column="ROLE_IDX"/>
+		<result property="mgrSiteCd" column="MGR_SITE_CD"/>
+		<result property="publishAuthYn" column="PUBLISH_AUTH_YN"/>
+	</resultMap>
+	
+	<select id="selectListlogin" parameterType="LoginVo" resultMap="LoginMap">
+		<![CDATA[
+			/* LoginDao.selectListlogin */
+			SELECT 
+				T.MGR_IDX
+			    , T.MGR_ID
+			    , T.MGR_NAME
+			    , T.PERM_CD
+			    , ( SELECT CODE_NAME FROM EZ_CMM_CODE WHERE CODE = T.PERM_CD ) 	AS PERM_NM
+			    , T.DEPT_CD
+			    , NVL( ( SELECT CD_SUBJECT FROM EZ_DEPARTMENT A WHERE A.CD_IDX = T.DEPT_CD ), '관리자' ) 	AS DEPT_NM
+			    , ( SELECT CD_IDX FROM EZ_DEPARTMENT WHERE CD_CODE = D.CD_UPR_CODE )   	AS P_DEPT_CD
+			    , T.ROLE_IDX
+			    , R.MGR_SITE_CD
+			    , R.PUBLISH_AUTH_YN
+			FROM   EZ_MGR_LIST T
+			LEFT JOIN EZ_DEPARTMENT D ON T.DEPT_CD = D.CD_IDX AND D.CD_USE = 'Y'
+			LEFT JOIN EZ_ROLE R ON R.ROLE_IDX = T.ROLE_IDX AND R.USE_YN = 'Y'
+			WHERE  T.USE_YN = 'Y'
+			AND    MGR_USE = 'Y'
+			AND MGR_ID = #{userId}
+			AND MGR_PW = #{passWd}
+		]]>
+	</select>
+
+	<select id="selectLectureDeptList" parameterType="hashMap" resultType="String">
+	<![CDATA[
+		/* selectLectureDeptList */
+		SELECT ORGCD
+		FROM   LECTURE_ORG_CONF
+		WHERE  CONFTYPE = 'MGDEPT'
+	]]>
+		<if test="permCd != &quot;05010000&quot;">
+		AND    CONFVAL1 = #{deptCd}
+		</if>
+	</select>
+	
+	<insert id="insertUserLog" parameterType="LoginVo">
+	<![CDATA[	
+			INSERT INTO EZ_MGR_USER_LOG
+			(
+				CU_ID
+				, UL_IDX
+				, IP
+				, REG_DT
+				, LOG_KD_CD
+				, LOGIN_SUC_YN
+			)
+			VALUES
+			(
+				#{userId}
+				, (SELECT NVL(MAX(UL_IDX),0)+1 FROM EZ_MGR_USER_LOG)
+				, #{ip}
+				, TO_CHAR(SYSDATE,'yyyymmddhh24miss')
+				, 'Y'
+				, 'Y'
+			)
+	]]>
+	</insert>
+	
+</mapper>

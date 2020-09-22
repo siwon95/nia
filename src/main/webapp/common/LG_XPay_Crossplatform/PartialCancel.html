@@ -1,0 +1,39 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>LG유플러스 전자결제 결제취소 샘플 페이지</title>
+</head>
+<body>
+    <form method="post" id="LGD_PAYINFO" action="PartialCancel.jsp">
+    <div>
+        <table>	
+            <tr>
+                <td>상점아이디(t를 제외한 아이디) </td>
+                <td><input type="text" name="CST_MID" value="heemoda"/></td>
+            </tr>
+            <tr>
+                <td>서비스,테스트 </td>
+                <td><input type="text" name="CST_PLATFORM" value="test"/></td>
+            </tr>
+            <tr>
+                <td>LG유플러스 거래번호 </td>
+                <td><input type="text" name="LGD_TID" value="theem2016081012025728807"/></td>
+            </tr>
+            <tr>
+                <td>부분취소금액</td>
+                <td><input type="text" name="LGD_CANCELAMOUNT" value="10"/></td>
+            </tr>
+            <tr>
+                <td>부분취소사유</td>
+                <td><input type="text" name="LGD_CANCELREASON" value="취소사유입력합니다."/></td>
+            </tr>
+            <tr>
+                <td>
+                <input type="submit" value="결제 취소"/><br/>
+                </td>
+            </tr>
+        </table>
+    </div>
+    </form>
+</body>
+</html>

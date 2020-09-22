@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Mon Mar 09 16:33:36 KST 2020-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserMenuContentsDao">
+
+	<resultMap id="UserMenuContentsMap" type="egovframework.injeinc.boffice.cn.menu.vo.UserMenuContentsVo">
+		<result property="siteCd" column="SITE_CD"/> <!--도메인CD-->
+		<result property="menuCode" column="MENU_CODE"/> <!--메뉴 코드-->
+		<result property="contentSeqNo" column="CONTENT_SEQ_NO"/> <!--컨텐츠일련번호-->
+		<result property="headContent" column="HEAD_CONTENT"/> <!--HEAD컨텐츠-->
+		<result property="bodyContent" column="BODY_CONTENT"/> <!--BODY컨텐츠-->
+		<result property="applyYn" column="APPLY_YN"/> <!--적용여부-->
+		<result property="regId" column="REG_ID"/> <!--등록자아이디-->
+		<result property="regNm" column="REG_NM"/> <!--등록자아이디-->
+		<result property="regDt" column="REG_DT"/> <!--등록 일시-->
+		<result property="modId" column="MOD_ID"/> <!--수정자아이디-->
+		<result property="modNm" column="MOD_NM"/> <!--수정자아이디-->
+		<result property="modDt" column="MOD_DT"/> <!--수정 일시-->
+		<result property="sitePath" column="SITE_PATH"/> <!--사이트경로-->
+		<result property="publishDt" column="PUBLISH_DT"/> <!--발행일시-->
+		<result property="publishReqDt" column="PUBLISH_REQ_DT"/> <!--발행요청일시-->
+		<result property="progressStatus" column="PROGRESS_STATUS"/> <!--진행상황-->
+		<result property="progressStatusNm" column="PROGRESS_STATUS_NM"/> <!--진행상황명-->
+	</resultMap>
+	
+	<resultMap id="UserMenuContentsProgressMap" type="egovframework.injeinc.boffice.cn.menu.vo.UserMenuContentsVo">
+		<result property="siteCd" column="SITE_CD"/> <!--도메인CD-->
+		<result property="menuCode" column="MENU_CODE"/> <!--메뉴 코드-->
+		<result property="sitePath" column="SITE_PATH"/> <!--사이트경로-->
+		<result property="progressStatusNm" column="PROGRESS_STATUS_NM"/> <!--진행상황명-->
+	</resultMap>
+	
+	<insert id="insertUserMenuContents" parameterType="UserMenuContentsVo">
+		<![CDATA[		
+			INSERT INTO EZ_USER_MENU_CONTENTS(
+				SITE_CD
+				, MENU_CODE
+				, CONTENT_SEQ_NO
+				, HEAD_CONTENT
+				, BODY_CONTENT
+				, APPLY_YN
+				, PROGRESS_STATUS
+				, REG_ID
+				, REG_DT
+				, MOD_ID
+				, MOD_DT
+			) VALUES(
+				 #{siteCd}
+				, #{menuCode}
+				, NVL((SELECT MAX(CONTENT_SEQ_NO) FROM EZ_USER_MENU_CONTENTS AS EUMC ),0)+1
+				, #{headContent}
+				, #{bodyContent}
+				, #{applyYn}
+				, #{progressStatus}
+				, #{regId}
+				, NOW()
+				, #{modId}
+				, NOW()
+			)
+		]]>
+	</insert>
+	<select id="selectUserMenuContents" parameterType="UserMenuContentsVo" resultMap="UserMenuContentsMap">
+		<![CDATA[		
+			SELECT
+				SITE_CD
+				, MENU_CODE
+				, CONTENT_SEQ_NO
+				, HEAD_CONTENT
+				, BODY_CONTENT
+				, APPLY_YN
+				, REG_ID
+				, ( 
+					SELECT 
+						MGR_NAME 
+					 FROM 
+					 	EZ_MGR_LIST 
+					WHERE 
+							USE_YN = 'Y' 
+						AND 
+							MGR_ID = A.REG_ID 
+				)     AS REG_NM
+				, REG_DT
+				, MOD_ID
+				, ( 
+					SELECT 
+						MGR_NAME 
+					 FROM 
+					 	EZ_MGR_LIST 
+					WHERE 
+							USE_YN = 'Y' 
+						AND 
+							MGR_ID = A.MOD_ID 
+				)     AS MOD_NM
+				, MOD_DT
+				, (
+					SELECT 
+						SITE_PATH 
+					 FROM 
+					 	EZ_SITE 
+					WHERE 
+						SITE_CD = A.SITE_CD
+				)     AS SITE_PATH
+				, PUBLISH_DT
+				, PUBLISH_REQ_DT
+				, PROGRESS_STATUS
+				, (
+					SELECT 
+						CODE_NAME 
+					 FROM 
+						EZ_CMM_CODE 
+					WHERE 
+							CODE_UPR = 'wf_status_code' 
+						AND 
+							USE_YN = 'Y' 
+						AND 
+							CODE = A.PROGRESS_STATUS 
+				)     AS PROGRESS_STATUS_NM
+			FROM EZ_USER_MENU_CONTENTS A
+			WHERE 
+					SITE_CD = #{siteCd}
+				AND 
+					MENU_CODE = #{menuCode}
+			ORDER BY CONTENT_SEQ_NO DESC
+		]]>
+	</select>
+	<select id="selectUserMenuContentsMax" parameterType="UserMenuContentsVo" resultMap="UserMenuContentsMap">
+		<![CDATA[		
+			SELECT A.* FROM (
+				SELECT
+					SITE_CD
+					, MENU_CODE
+					, CONTENT_SEQ_NO
+					, HEAD_CONTENT
+					, BODY_CONTENT
+					, APPLY_YN
+					, REG_ID
+					, (
+						SELECT 
+							MGR_NAME 
+						 FROM 
+						 	EZ_MGR_LIST 
+						WHERE 
+								USE_YN = 'Y' 
+							AND 
+								MGR_ID = A.REG_ID 
+					)     AS REG_NM
+					, REG_DT
+					, MOD_ID
+					, ( 
+						SELECT 
+							MGR_NAME 
+						 FROM 
+						 	EZ_MGR_LIST 
+						WHERE 
+								USE_YN = 'Y' 
+							AND 
+								MGR_ID = A.MOD_ID 
+					)     AS MOD_NM
+					, MOD_DT
+					, (
+						SELECT 
+							SITE_PATH 
+						 FROM 
+							EZ_SITE 
+						WHERE 
+							SITE_CD = A.SITE_CD
+					)     AS SITE_PATH
+					, PUBLISH_DT
+					, PUBLISH_REQ_DT
+					, PROGRESS_STATUS
+					, (
+						SELECT 
+							CODE_NAME 
+						 FROM 
+							EZ_CMM_CODE 
+						WHERE 
+								CODE_UPR = 'wf_status_code' 
+							AND 
+								USE_YN = 'Y' 
+							AND 
+								CODE = A.PROGRESS_STATUS 
+					)     AS PROGRESS_STATUS_NM
+					,  @ROWNUM:=@ROWNUM+1 ROWNUM
+				 FROM EZ_USER_MENU_CONTENTS A
+				WHERE SITE_CD = #{siteCd} 
+		 		  AND MENU_CODE = #{menuCode}
+		 		  AND (@ROWNUM:=0)=0
+		 		  AND 1 = 1
+				]]>	
+					<if test="contentSeqNo != null and contentSeqNo != ''">
+					<![CDATA[		
+						AND CONTENT_SEQ_NO = #{contentSeqNo}
+					]]>
+					</if>
+		<![CDATA[					
+				ORDER BY CONTENT_SEQ_NO DESC
+			) A WHERE ROWNUM = 1
+		]]>
+	</select>
+	<select id="selectPkUserMenuContentsCount" parameterType="UserMenuContentsVo" resultType="int">
+		<![CDATA[		
+			SELECT
+				count(*)
+			FROM EZ_USER_MENU_CONTENTS
+			WHERE
+	 				SITE_CD = #{siteCd} 
+	 			AND 
+	 				MENU_CODE = #{menuCode}
+		]]>
+	</select>
+	<select id="selectPkUserMenuContents" parameterType="UserMenuContentsVo" resultMap="UserMenuContentsMap">
+		<![CDATA[		
+			SELECT
+				SITE_CD
+				, MENU_CODE
+				, CONTENT_SEQ_NO
+				, HEAD_CONTENT
+				, BODY_CONTENT
+				, APPLY_YN
+				, REG_ID
+				, ( 
+					SELECT 
+						MGR_NAME 
+					 FROM 
+					 	EZ_MGR_LIST 
+					 WHERE 
+					 		USE_YN = 'Y' 
+					 	AND 
+					 		MGR_ID = A.REG_ID 
+				)     AS REG_NM
+				, REG_DT
+				, MOD_ID
+				, ( 
+					SELECT 
+						MGR_NAME 
+					 FROM 
+					 	EZ_MGR_LIST 
+					WHERE 
+							USE_YN = 'Y' 
+						AND 
+							MGR_ID = A.MOD_ID 
+				)     AS MOD_NM
+				, MOD_DT
+				, ( 
+					SELECT 
+						SITE_PATH 
+					 FROM 
+					 	EZ_SITE 
+					WHERE 
+						SITE_CD = A.SITE_CD 
+				)     AS SITE_PATH
+				, PUBLISH_DT
+				, PUBLISH_REQ_DT
+				, PROGRESS_STATUS
+				, (
+					SELECT 
+						CODE_NAME 
+					 FROM 
+						EZ_CMM_CODE 
+					WHERE 
+							CODE_UPR = 'wf_status_code' 
+						AND 
+							USE_YN = 'Y' 
+						AND 
+							CODE = A.PROGRESS_STATUS 
+				)     AS PROGRESS_STATUS_NM
+			FROM EZ_USER_MENU_CONTENTS A
+			WHERE
+	 			SITE_CD = #{siteCd}
+		  ]]>
+	</select>
+	<select id="selectUserMenuContentsNew" parameterType="UserMenuContentsVo" resultMap="UserMenuContentsMap">
+	<![CDATA[		
+			SELECT 
+				SITE_CD
+				, MENU_CODE
+				, ''     AS CONTENT_SEQ_NO
+				, ''     AS HEAD_CONTENT
+				, ( 
+					SELECT 
+						BODY_CONTENT 
+					 FROM 
+					 	EZ_USER_MENU_CONTENTS 
+					WHERE 
+							SITE_CD = B.SITE_CD 
+						AND 
+							CONTENT_SEQ_NO = B.CONTENT_SEQ_NO 
+				)     AS BODY_CONTENT
+				, ''     AS APPLY_YN
+				, ''     AS REG_ID
+				, ''     AS REG_NM
+				, ''     AS REG_DT
+				, ''     AS MOD_ID
+				, ''     AS MOD_NM
+				, ''     AS MOD_DT
+				, ( 
+					SELECT 
+						SITE_PATH 
+					 FROM 
+					 	EZ_SITE 
+					WHERE 
+						SITE_CD = B.SITE_CD 
+				)     AS SITE_PATH
+				, ''     AS PUBLISH_DT
+				, ''     AS PUBLISH_REQ_DT
+				, ''     AS PROGRESS_STATUS
+				, ''     AS PROGRESS_STATUS_NM
+			FROM (
+				SELECT 
+					SITE_CD
+					, MENU_CODE
+			    	, USER_MENU_URL 
+					, (
+						SELECT 
+							MAX(CONTENT_SEQ_NO) 
+						 FROM 
+						 	EZ_USER_MENU_CONTENTS 
+						WHERE 
+								MENU_CODE = A.MENU_CODE 
+							AND 
+								SITE_CD = A.SITE_CD
+					)     AS CONTENT_SEQ_NO
+				FROM 
+					EZ_USER_MENU A 
+				WHERE  
+						MENU_TYPE = 'contents' 
+					AND 
+						USER_MENU_URL LIKE '%jsp'
+			) B
+	  ]]>
+	</select>
+	<update id="updateUserMenuContents" parameterType="UserMenuContentsVo">
+	<![CDATA[		
+		UPDATE 
+			EZ_USER_MENU_CONTENTS 
+		SET
+			HEAD_CONTENT = #{headContent}
+			, BODY_CONTENT = #{bodyContent}
+			, APPLY_YN = #{applyYn}
+			, PROGRESS_STATUS = #{progressStatus}
+	]]>
+		<if test="progressStatus == &quot;publish_complete&quot;">
+		<![CDATA[		
+			, PUBLISH_DT = NOW()
+		]]>
+		
+		</if>
+		<if test="progressStatus == &quot;publish_req&quot;">
+		<![CDATA[		
+			, PUBLISH_REQ_DT = NOW()
+		]]>
+		</if>
+		<![CDATA[		
+			, MOD_ID = #{modId}
+			, MOD_DT = NOW()
+		WHERE
+ 				SITE_CD=#{siteCd} 
+ 			AND 
+ 				MENU_CODE=#{menuCode} 
+ 			AND 
+ 				CONTENT_SEQ_NO=#{contentSeqNo}
+	  ]]>
+	</update>
+	<delete id="deleteUserMenuContents" parameterType="UserMenuContentsVo">
+	<![CDATA[		
+		DELETE 
+		 FROM 
+		 	EZ_USER_MENU 
+		WHERE
+ 				SITE_CD = #{siteCd} 
+ 			AND 
+ 				MENU_CODE = #{menuCode} 
+ 			AND 
+ 				CONTENT_SEQ_NO = #{contentSeqNo}
+	  ]]>
+	</delete>
+	<select id="selectPublishReqContentsCount" parameterType="UserMenuContentsVo" resultType="int">
+	<![CDATA[			
+			SELECT
+				COUNT(*)
+			 FROM
+				EZ_USER_MENU_CONTENTS
+			WHERE
+				CONCAT(SITE_CD,MENU_CODE) IN (
+						SELECT CONCAT(MA_TYPE,MA_PKIDX)
+						 FROM
+							EZ_MGR_AUTHORITY 
+						WHERE
+							MA_TYPE IN (
+									WITH RECURSIVE REC (ROLE_IDX,MGR_SITE_CD,SITE_CD,LV) AS
+									( 
+									    
+										SELECT
+											ROLE_IDX
+											, MGR_SITE_CD
+											, CAST(REGEXP_SUBSTR(MGR_SITE_CD, '[^,]+') AS VARCHAR(100)) AS SITE_CD
+											, 0
+										 FROM EZ_ROLE
+										 
+										 UNION ALL
+										 
+										 SELECT
+											T.ROLE_IDX
+											, SUBSTR(R.MGR_SITE_CD, REGEXP_INSTR(R.MGR_SITE_CD,',')+1, LENGTH(R.MGR_SITE_CD))
+											, REGEXP_SUBSTR(SUBSTR(R.MGR_SITE_CD, REGEXP_INSTR(R.MGR_SITE_CD,',')+1, LENGTH(R.MGR_SITE_CD)), '[^,]+')
+											, LV+1
+										 FROM EZ_ROLE T,REC R
+										 WHERE LV < (LENGTH(T.MGR_SITE_CD) - LENGTH(REPLACE(T.MGR_SITE_CD, ',', ''))) / LENGTH(',')
+										 AND R.ROLE_IDX=T.ROLE_IDX
+									 )
+									 SELECT DISTINCT SITE_CD FROM REC
+									 ]]>
+									<where>
+									<if test="searchCondition!=&quot;05010000&quot;">
+									<![CDATA[		
+									
+											 ROLE_IDX = #{searchKeyword} 
+									]]>
+									</if>
+									</where>
+									<![CDATA[
+									)
+									]]>
+								<if test="searchCondition!=&quot;05010000&quot;">
+										 and MA_MLIDX = #{searchKeyword} 
+								</if>
+								<![CDATA[
+			            )
+			  AND
+			    PROGRESS_STATUS = 'publish_req'
+		]]>
+	</select>
+	<select id="selectUserContentsProgressList" parameterType="UserMenuContentsVo" resultMap="UserMenuContentsProgressMap">
+		<![CDATA[		
+			SELECT 
+				AA.* 
+			 FROM (
+				SELECT   
+					A.SITE_CD
+					, A.MENU_CODE
+					, B.CODE_NAME     AS PROGRESS_STATUS_NM
+					, C.MENU_PATH    AS SITE_PATH
+				 FROM 
+					EZ_USER_MENU_CONTENTS A
+				 LEFT JOIN 
+					EZ_CMM_CODE B ON A.PROGRESS_STATUS = B.CODE AND B.CODE_UPR = 'wf_status_code' AND B.USE_YN = 'Y'
+			     LEFT JOIN 
+			    	EZ_USER_MENU C ON A.MENU_CODE = C.MENU_CODE AND C.USE_YN = 'Y'
+			WHERE 
+				CONCAT(A.SITE_CD,A.MENU_CODE) IN (
+							SELECT 
+								CONCAT(MA_TYPE,MA_PKIDX)
+			                 FROM 
+								EZ_MGR_AUTHORITY 
+			                WHERE 
+			                    MA_TYPE IN (
+			                    	WITH RECURSIVE REC (ROLE_IDX,MGR_SITE_CD,SITE_CD,LV) AS
+									( 
+									    
+										SELECT
+											ROLE_IDX
+											, MGR_SITE_CD
+											, CAST(REGEXP_SUBSTR(MGR_SITE_CD, '[^,]+') AS VARCHAR(100)) AS SITE_CD
+											, 0
+										 FROM EZ_ROLE
+										 
+										 UNION ALL
+										 
+										 SELECT
+											T.ROLE_IDX
+											, SUBSTR(R.MGR_SITE_CD, REGEXP_INSTR(R.MGR_SITE_CD,',')+1, LENGTH(R.MGR_SITE_CD))
+											, REGEXP_SUBSTR(SUBSTR(R.MGR_SITE_CD, REGEXP_INSTR(R.MGR_SITE_CD,',')+1, LENGTH(R.MGR_SITE_CD)), '[^,]+')
+											, LV+1
+										 FROM EZ_ROLE T,REC R
+										 WHERE LV < (LENGTH(T.MGR_SITE_CD) - LENGTH(REPLACE(T.MGR_SITE_CD, ',', ''))) / LENGTH(',')
+										 AND R.ROLE_IDX=T.ROLE_IDX
+									 )
+									 SELECT DISTINCT SITE_CD FROM REC
+									 ]]>
+									<where>
+									<if test="searchCondition!=&quot;05010000&quot;">
+									<![CDATA[
+											 ROLE_IDX = #{searchKeyword} 
+									]]>
+									</if>
+									</where>
+								<![CDATA[
+									)
+			AND 
+				PROGRESS_STATUS IS NOT NULL
+				]]>
+				<if test="searchCondition!=&quot;05010000&quot;">
+						 and MA_MLIDX = #{searchKeyword} 
+				</if>
+				<![CDATA[
+						)
+			ORDER BY A.CONTENT_SEQ_NO, A.MOD_DT DESC
+			) AA 
+			LIMIT 0,10
+		]]>
+	</select>
+</mapper>

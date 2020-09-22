@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CmmFilesDao">
+	
+	<resultMap id="CmmFilesMap" type="egovframework.injeinc.common.files.vo.CmmFilesVo">
+		<result property="cfIdx" column="CF_IDX"/>
+		<result property="cfGroup" column="CF_GROUP"/>
+		<result property="cfPkidx" column="CF_PKIDX"/>
+		<result property="cfPath" column="CF_PATH"/>
+		<result property="cfName" column="CF_NAME"/>
+		<result property="cfRename" column="CF_RENAME"/>
+		<result property="cfSize" column="CF_SIZE"/>
+		<result property="cfMime" column="CF_MIME"/>
+		<result property="cfFormat" column="CF_FORMAT"/>
+		<result property="cfDown" column="CF_DOWN"/>
+		<result property="useYn" column="USE_YN"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+		<result property="subCont" column="SUB_CONT"/>
+		<result property="siteCd" column="SITE_CD"/>
+	</resultMap>
+
+	<insert id="insertCmmFiles" parameterType="CmmFilesVo">
+		<![CDATA[
+			INSERT INTO EZ_CMM_FILES
+			(
+				CF_IDX
+				, CF_GROUP
+				, CF_PKIDX
+				, CF_PATH
+				, CF_NAME
+				, CF_RENAME
+				, CF_SIZE
+				, CF_MIME
+				, CF_FORMAT
+				, CF_DOWN
+				, REG_ID
+				, CF_TYPE
+				, SUB_CONT
+				, SITE_CD
+			)
+			VALUES
+			(
+				#{cfIdx}
+				, #{cfGroup}
+				, #{cfPkidx}
+				, #{cfPath}
+				, #{cfName}
+				, #{cfRename}
+				, #{cfSize}
+				, #{cfMime}
+				, #{cfFormat}
+				, #{cfDown}
+				, #{regId}
+				, #{cfType}
+				, #{subCont}
+				, #{siteCd}
+			)
+		]]>
+	</insert>
+	
+	<update id="deleteCmmFiles" parameterType="CmmFilesVo">
+		<![CDATA[
+			UPDATE EZ_CMM_FILES
+			SET 
+				USE_YN = 'N'
+				, MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+			WHERE CF_IDX = #{cfIdx}
+		]]>
+	</update>
+	
+	<select id="selectCmmFiles" parameterType="CmmFilesVo" resultMap="CmmFilesMap">
+		<![CDATA[
+			SELECT * FROM EZ_CMM_FILES
+			WHERE USE_YN = 'Y'
+			AND CF_IDX = #{cfIdx}
+		]]>
+	</select>
+	
+	<update id="deleteCmmFilesByGroupAndRename" parameterType="CmmFilesVo">
+		<![CDATA[
+			UPDATE EZ_CMM_FILES
+			SET 
+				USE_YN = 'N'
+				, MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+			WHERE CF_IDX = #{cfIdx}
+			AND CF_GROUP = #{cfGroup}
+			AND CF_RENAME = #{cfRename}
+		]]>
+	</update>
+	
+	<select id="selectCmmFilesByGroupAndRename" parameterType="CmmFilesVo" resultMap="CmmFilesMap">
+		<![CDATA[
+			SELECT * FROM EZ_CMM_FILES
+			WHERE USE_YN = 'Y'
+			AND CF_IDX = #{cfIdx}
+			AND CF_GROUP = #{cfGroup}
+			AND CF_RENAME = #{cfRename}
+		]]>
+	</select>
+	
+	<sql id="searchCmmFiles">
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 1">
+			<![CDATA[
+				AND
+					CF_NAME LIKE '%'||#{searchKeyword}||'%'
+			]]>
+			</if>
+			<if test="searchCondition == 2">
+			<![CDATA[
+				AND
+					CF_RENAME LIKE '%'||#{searchKeyword}||'%'
+			]]>
+			</if>
+			<if test="searchCondition == 3">
+			<![CDATA[
+				AND
+					CF_IDX = #{searchKeyword}
+			]]>	
+			</if>
+			<if test="searchCondition == 4">
+			<![CDATA[
+				AND
+					SUB_CONT LIKE '%'||#{searchKeyword}||'%'
+			]]>	
+			</if>
+		</if>
+		<if test="siteCd != null and siteCd != ''">
+			<![CDATA[
+				AND SITE_CD = #{siteCd}
+			]]>
+		</if>
+	</sql>
+	
+	<select id="selectPagCmmFiles" parameterType="CmmFilesVo" resultMap="CmmFilesMap">
+		<![CDATA[
+			SELECT * FROM (
+				SELECT /*+ FIRST_ROWS */ A.*, ROWNUM RN FROM (
+					SELECT *
+					FROM EZ_CMM_FILES
+					WHERE USE_YN = 'Y'
+					AND CF_GROUP = #{cfGroup}
+		]]>
+		<include refid="searchCmmFiles"/>
+		<![CDATA[
+					ORDER BY CF_IDX DESC
+				) A WHERE ROWNUM <= #{lastIndex}
+			) WHERE RN > #{firstIndex}
+		]]>
+	</select>
+	
+	<select id="selectCmmFilesCnt" parameterType="CmmFilesVo" resultType="java.lang.Integer">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM EZ_CMM_FILES
+			WHERE USE_YN = 'Y'
+			AND CF_GROUP = #{cfGroup}
+		]]>
+		<include refid="searchCmmFiles"/>
+	</select>
+	
+	<select id="selectListCmmFiles" parameterType="CmmFilesVo" resultMap="CmmFilesMap">
+		<![CDATA[
+			SELECT *
+			FROM EZ_CMM_FILES
+			WHERE USE_YN = 'Y'
+			AND CF_GROUP = #{cfGroup}
+			AND CF_PKIDX = #{cfPkidx}
+			ORDER BY CF_IDX ASC
+		]]>
+	</select>
+	
+	<select id="selectListCmmFilesOne" parameterType="CmmFilesVo" resultMap="CmmFilesMap">
+		<![CDATA[
+			SELECT * FROM (
+				SELECT A.*, ROWNUM RN FROM (
+					SELECT *
+					FROM EZ_CMM_FILES
+					WHERE USE_YN = 'Y'
+					AND CF_GROUP = #{cfGroup}
+					AND CF_PKIDX = #{cfPkidx}
+					ORDER BY CF_IDX ASC
+				) A
+			) WHERE RN = 1
+		]]>
+	</select>
+
+	<select id="selectListCmmFilesByCfType" parameterType="CmmFilesVo" resultMap="CmmFilesMap">
+		<![CDATA[
+			SELECT *
+			FROM EZ_CMM_FILES
+			WHERE USE_YN = 'Y'
+			AND CF_GROUP = #{cfGroup}
+			AND CF_PKIDX = #{cfPkidx}
+			AND CF_TYPE = #{cfType}
+			ORDER BY CF_IDX ASC
+		]]>
+	</select>
+	
+	<update id="updateCmmFilesDown" parameterType="CmmFilesVo">
+		<![CDATA[
+			UPDATE EZ_CMM_FILES 
+			SET CF_DOWN = CF_DOWN + 1
+			WHERE CF_IDX = #{cfIdx}
+		]]>
+	</update>
+	
+	<select id="selectCmmFilesByCfIdx" parameterType="String" resultMap="CmmFilesMap">
+		<![CDATA[
+			SELECT *
+			FROM EZ_CMM_FILES
+			WHERE USE_YN = 'Y'
+			AND CF_IDX = #{cfIdx}
+		]]>
+	</select>
+	
+</mapper>

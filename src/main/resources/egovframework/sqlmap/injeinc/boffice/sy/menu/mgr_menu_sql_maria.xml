@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MgrMenuDao">
+	
+	<resultMap id="TreeMenuMap" type="egovframework.injeinc.boffice.sy.menu.vo.TreeMenuVo">
+		<result property="id" column="MM_CD"/>
+		<result property="parent" column="MM_UPR_CD"/>
+		<result property="text" column="MM_NAME"/>
+		<result property="position" column="ORD_NO"/>
+		<result property="mmIdx" column="MM_IDX"/>
+		<result property="mgrUrl" column="MGR_URL"/>
+		<result property="publicYn" column="PUBLIC_YN"/>
+		<result property="mmImg" column="MM_IMG_CD"/>
+		<result property="mmDepth" column="MM_DEPTH"/>
+		<result property="mmMgrSiteCd" column="MGR_SITE_CD"/>
+		<result property="mmHelp" column="MM_HELP"/>
+		<result property="mmPath" column="MM_PATH"/>
+	</resultMap>
+	
+	<resultMap id="EzMenuMap" type="egovframework.injeinc.boffice.sy.menu.vo.MgrMenuVo">
+		<result property="mmIdx" column="MM_IDX"/>
+		<result property="mmCd" column="MM_CD"/>
+		<result property="mmUprCd" column="MM_UPR_CD"/>
+		<result property="mmName" column="MM_NAME"/>
+		<result property="ordNo" column="ORD_NO"/>
+		<result property="mgrUrl" column="MGR_URL"/>
+		<result property="publicYn" column="PUBLIC_YN"/>
+		<result property="useYn" column="USE_YN"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+		<result property="mmImgCd" column="MM_IMG_CD"/>
+		<result property="mmDepth" column="MM_DEPTH"/>
+		<result property="mmHelp" column="MM_HELP" javaType="java.lang.String" jdbcType="CLOB"/>
+	</resultMap>
+	
+	<insert id="insertMgrMenu" parameterType="MgrMenuVo">
+		<![CDATA[
+			INSERT INTO EZ_MGR_MENU
+			(
+				MM_IDX
+				, MM_CD
+				, MM_UPR_CD
+				, MM_NAME
+				, MM_IMG_CD
+				, ORD_NO
+				, MGR_URL
+				, PUBLIC_YN
+				, REG_ID
+				, MM_DEPTH
+				, MM_HELP
+				, MGR_SITE_CD
+			)
+			VALUES
+			(
+				(SELECT NVL(MAX(MM_IDX), 0)+1 FROM EZ_MGR_MENU EMM)
+				, #{mmCd}
+				, #{mmUprCd}
+				, #{mmName}
+				, #{mmImgCd}
+				, #{ordNo}
+				, #{mgrUrl}
+				, #{publicYn}
+				, #{regId}
+				, #{mmDepth}
+				, #{mmHelp}
+				, #{mgrSiteCd}
+			)
+		]]>
+	</insert>
+	
+	<update id="updateMgrMenu" parameterType="MgrMenuVo">
+		<![CDATA[
+			UPDATE 
+				EZ_MGR_MENU
+			SET 
+				MM_CD = #{mmCd}
+				, MM_UPR_CD = #{mmUprCd}
+				, MM_NAME = #{mmName}
+				, MM_IMG_CD = #{mmImgCd}
+				, ORD_NO = #{ordNo}
+				, MGR_URL = #{mgrUrl}
+				, PUBLIC_YN = #{publicYn}
+				, USE_YN = 'Y'
+				, MM_DEPTH = #{mmDepth}
+				, MOD_DT = NOW()
+				, MOD_ID = #{modId}
+				, MM_HELP = #{mmHelp}
+				, MGR_SITE_CD = #{mgrSiteCd}
+			WHERE 
+					MM_IDX = #{mmIdx}
+		]]>
+	</update>
+	
+	<update id="updateMgrMenuHelp" parameterType="MgrMenuVo">
+		<![CDATA[
+			UPDATE 
+				EZ_MGR_MENU
+			SET 
+				MOD_DT = NOW()
+				, MOD_ID = #{modId}
+				, MM_HELP = #{mmHelp}
+			WHERE 
+					MM_CD = #{mmCd}
+		]]>
+	</update> 
+	
+	<delete id="deleteMgrMenu" parameterType="MgrMenuVo">
+		<![CDATA[
+			UPDATE 
+				EZ_MGR_MENU
+			SET 
+				ORD_NO = 9999
+				, USE_YN = 'N'
+				, MOD_DT = NOW()
+				, MOD_ID = #{modId}
+			WHERE 
+					USE_YN = 'Y'
+		]]>
+	</delete>
+	
+	<select id="selectMgrMenuCnt" parameterType="MgrMenuVo" resultType="java.lang.Integer">
+		<![CDATA[
+			SELECT 
+				COUNT(*)
+			 FROM 
+				EZ_MGR_MENU
+			WHERE 
+					USE_YN = 'Y'
+				AND 
+					MM_CD = #{mmCd}
+		]]>
+	</select>
+	
+	<select id="selectListMgrMenu" resultMap="TreeMenuMap">
+		<![CDATA[
+			WITH RECURSIVE REC (MM_IDX,MM_CD,MM_UPR_CD,MM_NAME,ORD_NO) AS
+			( 
+				SELECT  '' AS MM_IDX
+			         ,  '' AS MM_CD
+			         ,  '' AS MM_UPR_CD
+			         ,  '' AS MM_NAME
+			         ,  CAST('' AS VARCHAR(100)) AS ORD_NO                   
+			    
+			    UNION ALL
+			    
+			    SELECT  MM_IDX
+			         ,  MM_CD
+			         ,  MM_UPR_CD
+			         ,  MM_NAME
+			         ,  LPAD(CONCAT(MM_IDX), 8,'0') AS ORD_NO
+			      FROM  EZ_MGR_MENU 
+			      WHERE MM_UPR_CD = '#' 
+			      AND USE_YN = 'Y'
+			
+			     UNION ALL
+			    
+			    SELECT  T.MM_IDX
+			    	 ,  T.MM_CD
+			    	 ,  T.MM_UPR_CD
+			    	 ,  CONCAT(R.MM_NAME , '>', T.MM_NAME)
+			    	 ,  CONCAT(R.ORD_NO , LPAD(T.MM_IDX,8,'0'))
+			      FROM  EZ_MGR_MENU T 
+			      INNER JOIN REC R ON T.MM_UPR_CD = R.MM_CD 
+			)
+			SELECT B.MM_IDX 
+				 , B.MM_CD
+			     , B.MM_UPR_CD
+				 , B.MM_NAME
+			 	 , CAST(B.MM_IDX AS CHAR) AS MM_IDX
+				 , B.MGR_URL
+				 , B.PUBLIC_YN
+				 , B.MM_IMG_CD
+				 , B.MM_DEPTH
+				 , B.MGR_SITE_CD
+				 , B.MM_HELP
+				 , R.MM_NAME AS MM_PATH
+				 , B.ORD_NO
+			FROM  REC R	
+			LEFT JOIN EZ_MGR_MENU B ON R.MM_IDX = B.MM_IDX 
+			WHERE  B.MM_IDX != ''
+			AND USE_YN = 'Y'
+			ORDER BY B.ORD_NO ASC	
+		]]>
+	</select>
+	
+	<select id="selectListMgrMenuTop" parameterType="LoginVo" resultType="hashMap">
+		<![CDATA[
+			SELECT DISTINCT MM_CD
+				,  MM_UPR_CD
+				,  MM_NAME
+				,  MM_IMG_CD
+				,  MM_DEPTH
+		 ]]>
+		<if test="permCd == &quot;05010000&quot;">
+			<![CDATA[
+				, 'Y' AS SAVE_CHK
+			]]>
+		</if>
+		<if test="permCd != &quot;05010000&quot;">
+		<![CDATA[
+			
+				, CASE 
+			           WHEN A.PUBLIC_YN = 'Y' 
+			           THEN 'Y' 
+			           ELSE NVL2(B.MA_PKIDX, 'Y', 'N') 
+			       END AS SAVE_CHK 
+		]]>
+		</if>
+		<![CDATA[
+			    , ORD_NO
+			    , 
+	            ( WITH TEMP_EZ_MENU AS 
+			     (WITH RECURSIVE REC (MM_IDX,MM_CD,MM_UPR_CD,USE_YN) AS
+					( 
+					    SELECT  MM_IDX
+					         ,  MM_CD
+					         ,  MM_UPR_CD
+					         ,  USE_YN
+					      FROM  EZ_MGR_MENU 
+					      WHERE MM_UPR_CD = 'AD000000'
+					
+					     UNION ALL
+					    
+					    SELECT  T.MM_IDX
+					    	 ,  T.MM_CD
+					    	 ,  T.MM_UPR_CD
+					    	 ,  T.USE_YN
+					      FROM  EZ_MGR_MENU T 
+					      INNER JOIN REC R ON T.MM_UPR_CD = R.MM_CD 
+					)
+						SELECT  AA.MGR_URL 
+						     ,  AA.MM_CD 
+						     ,  AA.MM_UPR_CD 
+						  FROM  REC R	
+						  LEFT  JOIN EZ_MGR_MENU AA ON R.MM_IDX = AA.MM_IDX 
+					]]>  
+						<if test="permCd != &quot;05010000&quot;"> 
+							  <![CDATA[
+								INNER JOIN EZ_MGR_AUTHORITY BB ON R.MM_IDX = BB.MA_PKIDX
+							   ]]>
+								 AND BB.MA_TYPE = 'menu'
+							<if test="roleIdx != null and roleIdx != ''">
+							 <![CDATA[
+								AND BB.MA_MLIDX = #{roleIdx}
+							  ]]>
+							</if>
+						</if>
+						<![CDATA[
+						WHERE R.USE_YN = 'Y' AND MGR_URL IS NOT NULL		
+						ORDER BY AA.ORD_NO ASC
+				  )
+				SELECT (SELECT URL FROM EZ_PROGRM_LIST WHERE PROGRM_FILE_NM = MGR_URL)
+				FROM TEMP_EZ_MENU TEM 
+				WHERE TEM.MM_CD = A.MM_CD 
+				LIMIT 1
+		          ) AS MGR_URL
+			FROM EZ_MGR_MENU A
+				LEFT OUTER JOIN EZ_MGR_AUTHORITY B ON A.MM_IDX = B.MA_PKIDX AND B.MA_TYPE = 'menu'
+				]]>
+				<if test="roleIdx != null and roleIdx != ''">
+				<![CDATA[
+					AND B.MA_MLIDX = #{roleIdx}
+				]]>
+			  </if>
+		<![CDATA[
+			WHERE USE_YN = 'Y'
+			 AND  MM_CD <> 'AD000000'
+			ORDER BY ORD_NO ASC
+		]]>
+	</select>
+	
+	<select id="selectParentDepth" parameterType="String" resultType="String">
+		<![CDATA[
+			SELECT
+				MM_DEPTH+1
+			 FROM 
+				EZ_MGR_MENU
+			WHERE 
+					MM_CD = #{parent}
+		]]>
+	</select>
+	
+	
+	<select id="selectMgrMenu" parameterType="MgrMenuVo" resultMap="EzMenuMap">
+		<![CDATA[
+			SELECT
+				MM_IDX
+				, MM_CD
+				, MM_UPR_CD
+				, MM_NAME
+				, ORD_NO
+				, MGR_URL
+				, PUBLIC_YN
+				, USE_YN
+				, REG_DT
+				, REG_ID
+				, MOD_DT
+				, MOD_ID
+				, MM_IMG_CD
+				, MM_DEPTH
+				, MM_HELP
+			 FROM 
+				EZ_MGR_MENU 
+		]]>
+		<where>
+			<if test="mmCd != null and mmCd != ''">
+				MM_CD = #{mmCd}
+			</if>
+			<if test="mmIdx != null and mmIdx != ''">
+				MM_IDX = #{mmIdx}
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectMgrMenuCode" parameterType="String" resultType="String">
+		<![CDATA[
+			SELECT
+				MM_CD
+			 FROM 
+			 	EZ_MGR_MENU
+			WHERE 
+					USE_YN = 'Y'
+				AND
+					MGR_URL = #{url}
+		]]>
+	</select>
+	
+</mapper>

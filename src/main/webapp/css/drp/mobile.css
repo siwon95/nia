@@ -1,0 +1,27 @@
+@charset "utf-8";
+@media all and (max-width:768px){
+	.login{display:none;}
+	.member_login{display:none;}
+	.member_join{display:none;}
+	.info_use{display:none;}
+/*
+	.table_type { width:inherit; }	
+	.div_table { display:block; width:inherit; }
+	.div_table-column-group { display:none; }
+	.div_thead { display:none; }
+	.div_tbody { display:block; background:none; }
+	.div_tbody>.div_tr>.div_td.left a { width:100%; }
+	.div_tr { position:relative; display:block; border:solid 1px #ddd; margin:2%; border-radius:5px; box-shadow:2px 5px 5px  #ccc; }
+	.div_td { display:block; border:none; }
+	.div_th, .div_td { text-align:left; }
+	.hits { position:absolute; top:5px; right:5px; }
+	.hits:before {  content:"조회수 : "; }
+	.div_tbody>.div_tr>.div_td:first-child {display:inline-block; border-radius:10px; background:#ffbde2; color:#fff; margin:5px; }
+*/
+	
+}
+
+@media all and (max-width:640px){
+}
+@media all and (max-width:320px){
+}

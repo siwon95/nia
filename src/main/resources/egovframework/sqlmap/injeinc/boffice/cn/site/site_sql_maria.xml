@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SiteDao">
+	
+	<resultMap id="SiteMap" type="egovframework.injeinc.boffice.cn.site.vo.SiteVo">
+		<result property="siteIdx" column="SITE_IDX"/>		<!--사이트키-->
+		<result property="siteCd" column="SITE_CD"/>		<!--사이트코드-->
+		<result property="siteNm" column="SITE_NM"/>		<!--사이트명-->
+		<result property="siteDomain" column="SITE_DOMAIN"/>		<!--사이트도메인-->
+		<result property="siteKdNm" column="SITE_KD_NM"/>		<!--사이트 유형이름-->			
+		<result property="regNm" column="REG_NM"/>		<!--등록자이름-->
+		<result property="regDt" column="REG_DT"/>		<!--등록일시-->		
+		<result property="modDt" column="MOD_DT"/>		<!--수정일시-->
+		<result property="sitePath" column="SITE_PATH"/>		<!--사이트경로-->
+	</resultMap>
+	
+	<resultMap id="SiteMapAll" type="egovframework.injeinc.boffice.cn.site.vo.SiteVo">
+		<result property="siteCd" column="SITE_CD"/>		<!--사이트코드-->
+		<result property="siteNm" column="SITE_NM"/>		<!--사이트명-->
+		<result property="siteDomain" column="SITE_DOMAIN"/>		<!--사이트도메인-->
+		<result property="siteKdNm" column="SITE_KD_NM"/>		<!--사이트 유형이름-->			
+	</resultMap>
+	
+	<resultMap id="SiteMapDefault" type="egovframework.injeinc.boffice.cn.site.vo.SiteVo">
+		<result property="siteCd" column="SITE_CD"/>		<!--사이트코드-->
+		<result property="siteNm" column="SITE_NM"/>		<!--사이트명-->
+		<result property="siteDomain" column="SITE_DOMAIN"/>		<!--사이트도메인-->
+	</resultMap>
+	
+	<resultMap id="siteCodeMap" type="egovframework.injeinc.boffice.cn.site.vo.SiteVo">
+		<result property="code" column="CODE"/>  <!-- CODE-->
+		<result property="codeName" column="CODE_NAME"/>	<!-- 코드이름-->
+		<result property="codeUpr" column="CODE_UPR"/>	<!-- 자식 CODE-->
+	</resultMap>
+	
+	<resultMap id="SiteViewMap" type="egovframework.injeinc.boffice.cn.site.vo.SiteVo">
+		<result property="siteIdx" column="SITE_IDX"/>		<!--사이트키-->
+		<result property="siteCd" column="SITE_CD"/>		<!--사이트코드-->
+		<result property="siteKdCd" column="SITE_KD_CD"/>		<!--사이트 유형코드-->		
+		<result property="siteNm" column="SITE_NM"/>		<!--사이트명-->
+		<result property="siteDomain" column="SITE_DOMAIN"/>		<!--사이트도메인-->
+		<result property="regDt" column="REG_DT"/>		<!--등록일시-->		
+		<result property="modDt" column="MOD_DT"/>		<!--수정일시-->
+		<result property="sitePath" column="SITE_PATH"/>		<!--사이트경로-->		
+	</resultMap>
+
+
+	<select id="selectComSiteCode" resultMap="siteCodeMap">
+		<![CDATA[	
+			SELECT
+				CODE,
+				CODE_NAME,
+				CODE_UPR
+			FROM EZ_CMM_CODE 
+			WHERE 
+				CODE_UPR = (SELECT CODE FROM EZ_CMM_CODE WHERE CODE = 'SITECODE')
+		]]>
+	</select>
+	
+	
+	<select id="selectSiteListTotCnt" parameterType="SiteVo" resultType="int">
+		<![CDATA[	
+			SELECT
+				COUNT(*)
+			FROM EZ_SITE
+		]]>
+		<where>
+			<if test="searchCondition != null and searchCondition != ''">	
+					and SITE_KD_CD = #{searchCondition}
+			</if>
+			<if test="searchKeyword != null and searchKeyword != ''">
+					and SITE_NM LIKE CONCAT('%', #{searchKeyword} ,'%' )
+			</if>
+		</where>
+	</select>
+	
+	
+	<select id="selectListSite" parameterType="SiteVo" resultMap="SiteMap">
+			<![CDATA[	
+			SELECT * FROM (SELECT  @rownum:=@rownum+1 AS rn, TB.* FROM (
+				SELECT
+					S.SITE_IDX
+			        ,S.SITE_CD
+			        ,S.SITE_NM
+			        ,S.SITE_DOMAIN
+			        ,C.CODE_NAME AS SITE_KD_NM
+			        ,M.MGR_NAME AS REG_NM
+			        ,DATE_FORMAT( S.REG_DT ,'%Y.%m.%d') as REG_DT 
+			        ,DATE_FORMAT( S.MOD_DT ,'%Y.%m.%d') as MOD_DT 
+			        ,S.SITE_PATH
+			    FROM
+			    	EZ_SITE S, EZ_CMM_CODE C, EZ_MGR_LIST M, (SELECT @ROWNUM := 0) TMP
+			    WHERE
+			        	S.SITE_KD_CD = C.CODE
+			        AND
+			        	S.REG_ID = M.MGR_ID
+	  		]]>
+			<if test="searchCondition != null and searchCondition != ''">
+				<![CDATA[	
+					and S.SITE_KD_CD = #{searchCondition}
+				]]>
+			</if>		
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<![CDATA[	
+					and SITE_NM LIKE CONCAT('%', #{searchKeyword} ,'%' )
+				]]>							
+			</if>
+			<![CDATA[	
+			       ORDER BY S.SITE_IDX DESC
+			       ) TB) TBL
+			      
+	  		]]>
+	</select>
+	
+	<select id="selectListSiteAll" parameterType="SiteVo" resultMap="SiteMapAll">
+			<![CDATA[	
+				SELECT S.SITE_CD
+			         , S.SITE_NM
+			         , S.SITE_DOMAIN
+			         , (SELECT MAX(CODE_NAME) FROM EZ_CMM_CODE WHERE CODE=S.SITE_KD_CD and CODE_UPR='SITECODE') AS SITE_KD_NM
+			      FROM EZ_SITE S
+			]]>     
+			    <if test="roleIdx != null and roleIdx != ''">
+			<![CDATA[	    
+			     WHERE INSTR( CONCAT(',',(SELECT MGR_SITE_CD FROM EZ_ROLE WHERE ROLE_IDX=#{roleIdx}),',') , CONCAT(',',SITE_CD,',') ) >0
+			       AND SITE_CD IN(SELECT MA_TYPE FROM EZ_MGR_AUTHORITY WHERE MA_MLIDX=#{roleIdx})
+			]]>     
+			    </if>
+			<![CDATA[					    
+			    ORDER BY SITE_KD_CD asc,SITE_IDX ASC
+	  	 	]]>
+	</select>   
+	
+	<select id="selectSiteDefault" resultMap="SiteMapDefault">
+		<![CDATA[	
+			SELECT SITE_CD 
+				 , SITE_NM
+				 , SITE_DOMAIN
+			 FROM  EZ_SITE 
+			ORDER BY SITE_KD_CD ASC 
+				, SITE_IDX ASC 
+		    LIMIT 1
+	  	 ]]>
+	</select>
+	
+	<insert id="insertSite" parameterType="SiteVo">
+		<![CDATA[	
+			INSERT INTO EZ_SITE(
+				SITE_IDX
+				,SITE_CD
+				,SITE_NM
+				,SITE_DOMAIN
+				,SITE_KD_CD
+				,REG_DT
+				,REG_ID
+				,SITE_PATH
+				)VALUES(
+				 (SELECT NVL(MAX(SITE_IDX),0)+1 FROM EZ_SITE ES)
+				,#{siteCd}
+				,#{siteNm}
+				,#{siteDomain}
+				,#{siteKdCd}
+				,CAST(DATE_FORMAT(NOW(),'%Y%m%d%H%i%s') AS CHAR) 
+				,#{regId}
+				,#{sitePath}
+				)
+		]]>
+	</insert>
+	
+	<select id="viewSite" resultMap="SiteViewMap">
+	<![CDATA[	
+		SELECT SITE_IDX
+			 , SITE_CD
+			 , SITE_KD_CD
+			 , SITE_NM
+			 , SITE_DOMAIN
+			 , DATE_FORMAT( REG_DT ,'%Y.%m.%d')as REG_DT
+			 , DATE_FORMAT( MOD_DT ,'%Y.%m.%d')as MOD_DT
+			 , MOD_ID
+			 , SITE_PATH
+		 FROM  EZ_SITE
+		WHERE  SITE_IDX = #{idx}
+	]]>
+	</select>
+	
+	<select id="selectSiteInfo" parameterType="SiteVo" resultMap="SiteViewMap">
+	<![CDATA[	
+		SELECT SITE_IDX
+			 , SITE_CD
+			 , SITE_KD_CD
+			 , SITE_NM
+			 , SITE_DOMAIN
+			 , DATE_FORMAT( REG_DT ,'%Y.%m.%d')as REG_DT
+			 , DATE_FORMAT( MOD_DT ,'%Y.%m.%d')as MOD_DT
+			 , MOD_ID
+			 , SITE_PATH
+		 FROM  EZ_SITE
+		WHERE  SITE_CD = #{siteCd}
+	]]>
+	</select>
+	
+	
+	<update id="updateSite" parameterType="SiteVo">
+	<![CDATA[	
+		UPDATE EZ_SITE SET 
+			   SITE_NM = #{siteNm}
+			 , SITE_CD = #{siteCd}
+			 , SITE_DOMAIN = #{siteDomain}
+			 , SITE_KD_CD = #{siteKdCd}
+			 , MOD_ID = #{modId}
+			 , MOD_DT = DATE_FORMAT( NOW(),'%Y%m%d%H%i%s')
+			 , SITE_PATH = #{sitePath}
+		 WHERE SITE_IDX = #{siteIdx}
+	]]>
+	</update>
+	
+	<delete id="deleteSite" parameterType="int">
+	<![CDATA[	
+		DELETE FROM EZ_SITE
+			  WHERE SITE_IDX = #{idx}
+	]]>
+	</delete>
+	
+	<select id="selectSiteCnt" parameterType="SiteVo" resultType="int">
+		<![CDATA[	
+			SELECT COUNT(*)
+			  FROM EZ_SITE
+			 WHERE SITE_CD = #{siteCd}
+		]]>
+	</select>
+</mapper>

@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BizSample">
+
+	<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap" />
+	<typeAlias alias="sampleVO" type="site.mnt.biz.sample.service.SampleVO" />
+	
+	<resultMap id="sampleMap" class="site.mnt.biz.sample.service.SampleVO" >
+		<result property="sampleId" 		column="SAMPLE_ID"     		/><!-- 샘플ID -->
+		<result property="upperClCode" 		column="UPPER_CL_CODE"      /><!-- 상위분류코드 -->
+		<result property="upperClCodeNm" 	column="UPPER_CL_CODE_NM"   /><!-- 상위분류코드명 -->
+		<result property="clCode" 			column="CL_CODE"       		/><!-- 분류코드 -->
+		<result property="clCodeNm"			column="CL_CODE_NM"       	/><!-- 분류코드명 -->
+		<result property="sj" 				column="SJ"       			/><!-- 제목 -->
+		<result property="cn" 				column="CN"     			/><!-- 내용 -->
+		<result property="rdcnt" 			column="RDCNT"     			/><!-- 조회수 -->
+		<result property="atchFileId" 		column="ATCH_FILE_ID"     	/><!-- 첨부파일ID -->
+		<result property="frstRegisterId" 	column="FRST_REGISTER_ID"  	/><!-- 최종수정자ID -->
+		<result property="frstRegistPnttm" 	column="FRST_REGIST_PNTTM"  /><!-- 최초등록시점 -->
+		<result property="lastUpdusrId" 	column="LAST_UPDUSR_ID"  	/><!-- 최종수정자ID -->
+		<result property="lastUpdtPnttm" 	column="LAST_UPDT_PNTTM"  	/><!-- 최종수정시점 -->
+		<result property="frstRegisterNm" 	column="FRST_REGISTER_NM"  	/><!-- 작성자 -->
+	</resultMap>
+		
+	<select id="BizSampleDAO.selectSampleList" parameterClass="sampleVO" resultMap="sampleMap">
+		<![CDATA[
+		SELECT * FROM (SELECT ROWNUM AS rn, TB.* FROM (
+			SELECT 
+				A.SAMPLE_ID
+				, A.UPPER_CL_CODE
+				, (SELECT CODE_NM FROM COMTCCMMNDETAILCODE WHERE USE_AT = 'Y' AND CODE_ID = 'BIZ001' AND CODE = A.UPPER_CL_CODE) AS UPPER_CL_CODE_NM
+				, A.CL_CODE
+				, (SELECT CODE_NM FROM COMTCCMMNDETAILCODE WHERE USE_AT = 'Y' AND CODE_ID = A.UPPER_CL_CODE AND CODE = A.CL_CODE) AS CL_CODE_NM			
+				, A.SJ
+				, A.CN
+				, NVL(A.RDCNT, 0) AS RDCNT
+				, A.ATCH_FILE_ID
+				, A.FRST_REGISTER_ID
+				, A.FRST_REGIST_PNTTM
+				, A.LAST_UPDUSR_ID
+				, A.LAST_UPDT_PNTTM
+				, X.USER_NM AS FRST_REGISTER_NM
+			FROM BIZTN_SAMPLE A
+				LEFT OUTER JOIN COMVNUSERMASTER X ON A.FRST_REGISTER_ID = X.ESNTL_ID
+		]]>
+		<dynamic prepend="WHERE">
+		<isNotEmpty prepend="AND" property="searchUpperClCode">
+			<![CDATA[
+				A.UPPER_CL_CODE = #searchUpperClCode#
+			]]>
+		</isNotEmpty>		
+		<isNotEmpty prepend="AND" property="searchClCode">
+			<![CDATA[
+				A.CL_CODE = #searchClCode#
+			]]>
+		</isNotEmpty>		
+		<isNotEmpty property="searchKeyword">
+			<isEqual prepend="AND" property="searchCondition" compareValue="sj">
+				<![CDATA[
+					A.SJ LIKE '%' || #searchKeyword# || '%'
+				]]>
+			</isEqual>
+			<isEqual prepend="AND" property="searchCondition" compareValue="cn">
+				<![CDATA[
+					A.CN LIKE '%' || #searchKeyword# || '%'
+				]]>
+			</isEqual>
+			<isEqual prepend="AND" property="searchCondition" compareValue="nm">
+				<![CDATA[
+					X.USER_NM LIKE '%' || #searchKeyword# || '%'
+				]]>
+			</isEqual>
+			<isEqual prepend="AND" property="searchCondition" compareValue="all">
+				<![CDATA[
+					(A.SJ LIKE '%' || #searchKeyword# || '%' OR A.CN LIKE '%' || #searchKeyword# || '%')
+				]]>
+			</isEqual>
+		</isNotEmpty>
+		</dynamic>
+		<![CDATA[
+			ORDER BY A.SAMPLE_ID DESC
+		) TB) TBL WHERE rn BETWEEN #firstIndex# + 1 AND #firstIndex# + #recordCountPerPage#
+		]]>
+	</select>
+	
+	<select id="BizSampleDAO.selectSampleListTotCnt" parameterClass="sampleVO" resultClass="int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM BIZTN_SAMPLE A
+				LEFT OUTER JOIN COMVNUSERMASTER X ON A.FRST_REGISTER_ID = X.ESNTL_ID 
+		]]>
+		<dynamic prepend="WHERE">
+		<isNotEmpty prepend="AND" property="searchUpperClCode">
+			<![CDATA[
+				A.UPPER_CL_CODE = #searchUpperClCode#
+			]]>
+		</isNotEmpty>		
+		<isNotEmpty prepend="AND" property="searchClCode">
+			<![CDATA[
+				A.CL_CODE = #searchClCode#
+			]]>
+		</isNotEmpty>		
+		<isNotEmpty property="searchKeyword">
+			<isEqual prepend="AND" property="searchCondition" compareValue="sj">
+				<![CDATA[
+					A.SJ LIKE '%' || #searchKeyword# || '%'
+				]]>
+			</isEqual>
+			<isEqual prepend="AND" property="searchCondition" compareValue="cn">
+				<![CDATA[
+					A.CN LIKE '%' || #searchKeyword# || '%'
+				]]>
+			</isEqual>
+			<isEqual prepend="AND" property="searchCondition" compareValue="nm">
+				<![CDATA[
+					X.USER_NM LIKE '%' || #searchKeyword# || '%'
+				]]>
+			</isEqual>
+			<isEqual prepend="AND" property="searchCondition" compareValue="all">
+				<![CDATA[
+					(A.SJ LIKE '%' || #searchKeyword# || '%' OR A.CN LIKE '%' || #searchKeyword# || '%')
+				]]>
+			</isEqual>
+		</isNotEmpty>
+		</dynamic>
+	</select>
+	
+	<select id="BizSampleDAO.selectSample" parameterClass="sampleVO" resultMap="sampleMap">
+		<![CDATA[
+			SELECT
+				A.SAMPLE_ID
+				, A.UPPER_CL_CODE
+				, (SELECT CODE_NM FROM COMTCCMMNDETAILCODE WHERE USE_AT = 'Y' AND CODE_ID = 'BIZ001' AND CODE = A.UPPER_CL_CODE) AS UPPER_CL_CODE_NM
+				, A.CL_CODE
+				, (SELECT CODE_NM FROM COMTCCMMNDETAILCODE WHERE USE_AT = 'Y' AND CODE_ID = A.UPPER_CL_CODE AND CODE = A.CL_CODE) AS CL_CODE_NM	
+				, A.SJ
+				, A.CN
+				, NVL(A.RDCNT, 0) AS RDCNT
+				, A.ATCH_FILE_ID
+				, A.FRST_REGISTER_ID
+				, A.FRST_REGIST_PNTTM
+				, A.LAST_UPDUSR_ID
+				, A.LAST_UPDT_PNTTM
+				, X.USER_NM AS FRST_REGISTER_NM
+			FROM BIZTN_SAMPLE A
+				LEFT OUTER JOIN COMVNUSERMASTER X ON A.FRST_REGISTER_ID = X.ESNTL_ID
+			WHERE A.SAMPLE_ID = #sampleId#
+		]]>
+	</select>
+	
+	<insert id="BizSampleDAO.insertSample" parameterClass="sampleVO">
+		<![CDATA[
+			INSERT INTO BIZTN_SAMPLE (
+				SAMPLE_ID
+				, UPPER_CL_CODE
+				, CL_CODE
+				, SJ
+				, CN
+				, ATCH_FILE_ID
+				, FRST_REGISTER_ID
+				, FRST_REGIST_PNTTM
+			) VALUES (
+				#sampleId#
+				, #upperClCode#
+				, #clCode#
+				, #sj#
+				, #cn#
+				, #atchFileId#
+				, #frstRegisterId#
+				, SYSDATETIME
+			)				
+		]]>
+	</insert>
+	
+	<update id="BizSampleDAO.updateSample" parameterClass="sampleVO">
+		<![CDATA[
+			UPDATE BIZTN_SAMPLE SET 
+				UPPER_CL_CODE = #upperClCode#
+				, CL_CODE = #clCode#
+				, SJ = #sj#
+				, CN = #cn#
+				, ATCH_FILE_ID = #atchFileId#
+				, LAST_UPDUSR_ID = #lastUpdusrId#
+				, LAST_UPDT_PNTTM = SYSDATETIME
+			WHERE SAMPLE_ID = #sampleId#
+		]]>
+	</update>
+	
+	<delete id="BizSampleDAO.deleteSample" parameterClass="sampleVO">
+		<![CDATA[
+			DELETE FROM BIZTN_SAMPLE
+			WHERE SAMPLE_ID = #sampleId#
+		]]>
+	</delete>	
+
+	<update id="BizSampleDAO.updateSampleRdcnt" parameterClass="sampleVO">
+		<![CDATA[
+			UPDATE BIZTN_SAMPLE SET 
+				RDCNT = NVL(RDCNT, 0) + 1
+			WHERE SAMPLE_ID = #sampleId#
+		]]>
+	</update>
+
+	<resultMap id="sampleNextAndPrev" class="site.mnt.biz.sample.service.SampleVO" >
+		<result property="sampleId" 		column="SAMPLE_ID"     		/><!-- 샘플ID -->
+		<result property="sj" 				column="SJ"       			/><!-- 제목 -->
+	</resultMap>
+		
+	<select id="BizSampleDAO.selectSampleNext" parameterClass="sampleVO" resultMap="sampleNextAndPrev">
+		<![CDATA[
+			SELECT
+				A.SAMPLE_ID
+				, A.SJ
+			FROM BIZTN_SAMPLE A
+			WHERE A.SAMPLE_ID = (
+				SELECT 
+					MIN(A.SAMPLE_ID)
+				FROM BIZTN_SAMPLE A
+					LEFT OUTER JOIN COMVNUSERMASTER X ON A.FRST_REGISTER_ID = X.ESNTL_ID
+				WHERE A.SAMPLE_ID > #sampleId#	
+		]]>
+			<isNotEmpty prepend="AND" property="searchUpperClCode">
+				<![CDATA[
+					A.UPPER_CL_CODE = #searchUpperClCode#
+				]]>
+			</isNotEmpty>		
+			<isNotEmpty prepend="AND" property="searchClCode">
+				<![CDATA[
+					A.CL_CODE = #searchClCode#
+				]]>
+			</isNotEmpty>		
+			<isNotEmpty property="searchKeyword">
+				<isEqual prepend="AND" property="searchCondition" compareValue="sj">
+					<![CDATA[
+						A.SJ LIKE '%' || #searchKeyword# || '%'
+					]]>
+				</isEqual>
+				<isEqual prepend="AND" property="searchCondition" compareValue="cn">
+					<![CDATA[
+						A.CN LIKE '%' || #searchKeyword# || '%'
+					]]>
+				</isEqual>
+				<isEqual prepend="AND" property="searchCondition" compareValue="nm">
+					<![CDATA[
+						X.USER_NM LIKE '%' || #searchKeyword# || '%'
+					]]>
+				</isEqual>
+				<isEqual prepend="AND" property="searchCondition" compareValue="all">
+					<![CDATA[
+						(A.SJ LIKE '%' || #searchKeyword# || '%' OR A.CN LIKE '%' || #searchKeyword# || '%')
+					]]>
+				</isEqual>
+			</isNotEmpty>
+		<![CDATA[
+			)
+		]]>		
+	</select>
+
+	<select id="BizSampleDAO.selectSamplePrev" parameterClass="sampleVO" resultMap="sampleNextAndPrev">
+		<![CDATA[
+			SELECT
+				A.SAMPLE_ID
+				, A.SJ
+			FROM BIZTN_SAMPLE A
+			WHERE A.SAMPLE_ID = (
+				SELECT 
+					MAX(A.SAMPLE_ID)
+				FROM BIZTN_SAMPLE A
+					LEFT OUTER JOIN COMVNUSERMASTER X ON A.FRST_REGISTER_ID = X.ESNTL_ID
+				WHERE A.SAMPLE_ID < #sampleId#	
+		]]>
+			<isNotEmpty prepend="AND" property="searchUpperClCode">
+				<![CDATA[
+					A.UPPER_CL_CODE = #searchUpperClCode#
+				]]>
+			</isNotEmpty>		
+			<isNotEmpty prepend="AND" property="searchClCode">
+				<![CDATA[
+					A.CL_CODE = #searchClCode#
+				]]>
+			</isNotEmpty>		
+			<isNotEmpty property="searchKeyword">
+				<isEqual prepend="AND" property="searchCondition" compareValue="sj">
+					<![CDATA[
+						A.SJ LIKE '%' || #searchKeyword# || '%'
+					]]>
+				</isEqual>
+				<isEqual prepend="AND" property="searchCondition" compareValue="cn">
+					<![CDATA[
+						A.CN LIKE '%' || #searchKeyword# || '%'
+					]]>
+				</isEqual>
+				<isEqual prepend="AND" property="searchCondition" compareValue="nm">
+					<![CDATA[
+						X.USER_NM LIKE '%' || #searchKeyword# || '%'
+					]]>
+				</isEqual>
+				<isEqual prepend="AND" property="searchCondition" compareValue="all">
+					<![CDATA[
+						(A.SJ LIKE '%' || #searchKeyword# || '%' OR A.CN LIKE '%' || #searchKeyword# || '%')
+					]]>
+				</isEqual>
+			</isNotEmpty>
+		<![CDATA[
+			)
+		]]>		
+	</select>
+					
+</sqlMap>

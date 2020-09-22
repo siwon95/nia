@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+	version="2.0">
+
+	<description>>Common Util Custom Tag 모음</description>
+	<tlib-version>1.2</tlib-version>
+	<uri>http://cms.injeinc.co.kr/cmm</uri>
+	<short-name>cmm</short-name>
+	
+	<function>
+		<name>EncodeX64</name>
+		<function-class>egovframework.injeinc.common.util.XecureUtil</function-class>
+		<function-signature>java.lang.String EncodeX64(java.lang.String)</function-signature>
+		<example>${cmm:EncodeX64(password) }</example>
+	</function>
+	
+	<function>
+		<name>DecodeX64</name>
+		<function-class>egovframework.injeinc.common.util.XecureUtil</function-class>
+		<function-signature>java.lang.String DecodeX64(java.lang.String)</function-signature>
+		<example>${cmm:DecodeX64(encodedPassword) }</example>
+	</function>
+	
+	<function>
+		<name>split</name>
+		<function-class>egovframework.injeinc.common.util.EgovStringUtil</function-class>
+		<function-signature>java.lang.String[] split(java.lang.String, java.lang.String, int)</function-signature>
+		<example>${cmm:split(source, separator, arraylength) }</example>
+	</function>
+	
+	<function>
+		<name>changeNumberAlphabat</name>
+		<function-class>egovframework.injeinc.common.util.EgovStringUtil</function-class>
+		<function-signature>java.lang.String changeNumberAlphabat(int)</function-signature>
+		<example>${cmm:changeNumberAlphabat(1) }</example>
+	</function>
+	
+	<function>
+		<name>changeNumberAlphabat2</name>
+		<function-class>egovframework.injeinc.common.util.EgovStringUtil</function-class>
+		<function-signature>int changeNumberAlphabat2(java.lang.String)</function-signature>
+		<example>${cmm:changeNumberAlphabat2('a') }</example>
+	</function>
+	
+	<function>
+		<name>textAreaToHtml</name>
+		<function-class>egovframework.injeinc.common.util.EgovStringUtil</function-class>
+		<function-signature>String textAreaToHtml(java.lang.String)</function-signature>
+		<example>${cmm:textAreaToHtml('This is textarea.') }</example>
+	</function>
+	
+	<function>
+		<name>outClobCont</name>
+		<function-class>egovframework.injeinc.common.util.EgovStringUtil</function-class>
+		<function-signature>String outClobCont(java.lang.String)</function-signature>
+		<example>${cmm:outClobCont('This is html or textarea.') }</example>
+	</function>
+	
+	<function>
+		<name>outClobCont2</name>
+		<function-class>egovframework.injeinc.common.util.EgovStringUtil</function-class>
+		<function-signature>String outClobCont2(java.lang.String)</function-signature>
+		<example>${cmm:outClobCont2('This is html or textarea.') }</example>
+	</function>
+	
+	<function>
+		<name>fillZero</name>
+		<function-class>egovframework.injeinc.common.util.EgovStringUtil</function-class>
+		<function-signature>String fillZero(java.lang.String, int)</function-signature>
+		<example>${cmm:fillZero('1', 2) }</example>
+	</function>
+	
+	<function>
+		<name>getEgovFileInfo</name>
+		<function-class>egovframework.cmm.service.EgovFileMngUtil</function-class>
+		<function-signature>egovframework.cmm.service.FileVO getEgovFileInfo(java.lang.String)</function-signature>
+		<example>${cmm:getEgovFileInfo('FILE_000000000000001') }</example>
+	</function>
+	
+	<function>
+		<name>getEgovFileInfo2</name>
+		<function-class>egovframework.cmm.service.EgovFileMngUtil</function-class>
+		<function-signature>egovframework.cmm.service.FileVO getEgovFileInfo2(java.lang.String, java.lang.String)</function-signature>
+		<example>${cmm:getEgovFileInfo2('FILE_000000000000001', '0') }</example>
+	</function>
+	
+	<function>
+		<name>getCmmFiles</name>
+		<function-class>egovframework.injeinc.common.files.util.CmmFilesUtil</function-class>
+		<function-signature>egovframework.injeinc.common.files.vo.CmmFilesVo getCmmFiles(java.lang.String, java.lang.String)</function-signature>
+		<example>${cmm:getCmmFiles("PUBLIC", "PS00000001")}</example>
+	</function>
+	
+	<function>
+		<name>getCmmFilesList</name>
+		<function-class>egovframework.injeinc.common.files.util.CmmFilesUtil</function-class>
+		<function-signature>java.util.List getCmmFilesList(java.lang.String, java.lang.String)</function-signature>
+		<example>${cmm:getCmmFilesList("PUBLIC", "PS00000001")}</example>
+	</function>
+	
+	<function>
+		<name>getChiefName</name>
+		<function-class>egovframework.injeinc.boffice.ex.chiefHistory.util.ChiefHistoryUtil</function-class>
+		<function-signature>java.lang.String getChiefName(java.lang.String)</function-signature>
+		<example>${cmm:getChiefName("2015-09-22")}</example>
+	</function>
+	
+	<function>
+		<name>getCodeName</name>
+		<function-class>egovframework.injeinc.boffice.sy.code.util.CmmCodeUtil</function-class>
+		<function-signature>java.lang.String getCodeName(java.lang.String)</function-signature>
+		<example>${cmm:getCodeName('03010000')}</example>
+	</function>
+	
+	<function>
+		<name>getCodeList</name>
+		<function-class>egovframework.injeinc.boffice.sy.code.util.CmmCodeUtil</function-class>
+		<function-signature>java.util.List getCodeList(java.lang.String)</function-signature>
+		<example>${cmm:getCodeList('02000000')}</example>
+	</function>
+	
+	<function>
+		<name>getSiteList</name>
+		<function-class>egovframework.injeinc.boffice.sy.code.util.CmmCodeUtil</function-class>
+		<function-signature>java.util.List getSiteList()</function-signature>
+		<example>${cmm:getSiteList()}</example>
+	</function>
+	
+	<function>
+		<name>getAuthorlityCnt</name>
+		<function-class>egovframework.injeinc.boffice.sy.code.util.CmmCodeUtil</function-class>
+		<function-signature>java.lang.Integer getAuthorlityCnt(java.lang.String,java.lang.String,java.lang.String)</function-signature>
+		<example>${cmm:getAuthorlityCnt('RoleVo.rolIdx','menu','117')}</example>
+	</function>
+	
+	<function>
+		<name>getUserInfo</name>
+		<function-class>egovframework.injeinc.boffice.sy.code.util.CmmCodeUtil</function-class>
+		<function-signature>egovframework.injeinc.foffice.user.vo.UserFVo getUserInfo()</function-signature>
+		<example>${cmm:getUserInfo()}</example>
+	</function>
+	
+	<function>
+		<name>contains</name>
+		<function-class>egovframework.injeinc.common.util.EgovStringUtil</function-class>
+		<function-signature>boolean contains(java.util.List, java.lang.String)</function-signature>
+		<example>${cmm:contains(holidayList, '2014-11-08')}</example>
+	</function>
+
+	<function>
+		<name>isTodayBetween</name>
+		<function-class>egovframework.injeinc.common.util.DateUtil</function-class>
+		<function-signature>boolean isTodayBetween(java.lang.String, java.lang.String, java.lang.String)</function-signature>
+		<example>${cmm:isTodayBetween('yyyy-MM-dd/HHmm', 'yyyy-MM-dd/HHmm', 'yyyy-MM-dd/HHmm')}</example>
+	</function>
+	<function>
+		<name>getPopupList</name>
+		<function-class>egovframework.injeinc.boffice.sy.code.util.CmmCodeUtil</function-class>
+		<function-signature>java.util.List getPopupList(java.lang.String, java.lang.String)</function-signature>
+		<example>${cmm:getPopupList('yangcheon','35000100')}</example>
+	</function>
+	<function>
+		<name>getGlobalProperties</name>
+		<function-class>egovframework.injeinc.boffice.sy.code.util.CmmCodeUtil</function-class>
+		<function-signature>java.lang.String getGlobalProperties(java.lang.String)</function-signature>
+		<example>${cmm:getGlobalProperties('WasServer.ROOT_PATH')}</example>
+	</function>
+</taglib>

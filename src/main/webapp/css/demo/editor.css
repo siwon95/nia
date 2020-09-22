@@ -1,0 +1,16 @@
+@charset "utf-8";
+
+@import url('/css/demo/base.css');
+@import url('/css/demo/content.css');
+
+.cke_editable{padding:20px;}
+
+/******************************************************************************
+* 애니메이션이 존재하는 경우 에디터에 확인 할 수 있도록 별도의 처리과장이 필요함
+******************************************************************************/
+.cke_editable ul.projectList > li,
+.cke_editable ul.portfolioList > li,
+.cke_editable .greetings ul li,
+.cke_editable .history ul.tree > li em,
+.cke_editable .ourpartners > p,
+.cke_editable .ourpartners > ul > li{opacity:1 !important;}

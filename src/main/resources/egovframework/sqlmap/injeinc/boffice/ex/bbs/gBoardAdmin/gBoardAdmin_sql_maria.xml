@@ -1,0 +1,2081 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Fri Mar 13 09:12:37 KST 2020-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="GBoardAdminDao">
+	
+	<!-- 부서  selectbox resultMap -->
+	<resultMap id="cdSelectBox" type="egovframework.injeinc.boffice.ex.bbs.gBoardAdmin.vo.GBoardAdminVo">
+		<result property="cdIdx" column="CD_IDX"/>
+		<result property="cdSubject" column="CD_SUBJECT"/>
+		<result property="cdDepstep1" column="CD_DEPSTEP1"/>
+		<result property="cdDepstep2" column="CD_DEPSTEP2"/>
+		<result property="cdDepstep3" column="CD_DEPSTEP3"/>		
+	</resultMap>
+	
+	<!-- 인바라 List select resultMap -->
+	<resultMap id="gubaraSelectList" type="egovframework.injeinc.boffice.ex.bbs.gBoardAdmin.vo.GBoardAdminVo">
+		<result property="rn" column="rn"/>
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="subCont" column="SUB_CONT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="nameCont" column="NAME_CONT"/>
+		<result property="apprYn" column="APPR_YN"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="minwonDeptDt" column="MINWON_DEPT_DT"/>
+		<result property="countCont" column="COUNT_CONT"/>
+		<result property="mwStatusCont" column="MW_STATUS_CONT"/>
+		<result property="openYnCont" column="OPEN_YN_CONT"/>
+		<result property="mwNoReplyYn" column="MW_NO_REPLY_YN"/>
+		<result property="ansYnCont" column="ANS_YN_CONT"/>
+		<result property="cdSubject" column="CD_SUBJECT"/>
+	</resultMap>
+	
+	<!-- 인바라 Excel select resultMap -->
+	<resultMap id="gubaraSelectExcelList" type="egovframework.injeinc.boffice.ex.bbs.gBoardAdmin.vo.GBoardAdminVo">
+		<result property="rn" column="RN"/>
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="aRegDt" column="A_REG_DT"/>
+		<result property="nameCont" column="NAME_CONT"/>
+		<result property="telCont" column="TEL_CONT"/>
+		<result property="phoneCont" column="PHONE_CONT"/>
+		<result property="addrCont" column="ADDR_CONT"/>
+		<result property="subCont" column="SUB_CONT"/>
+		<result property="clobCont" column="CLOB_CONT"/>
+		<result property="mcDeptCd" column="MC_DEPT_CD"/>
+		<result property="mcAreaCd" column="MC_AREA_CD"/>
+		<result property="mcFiledCd" column="MC_FILED_CD"/>
+		<result property="mcKdCd" column="MC_KD_CD"/>
+		<result property="mcResult" column="MC_RESULT"/>
+		<result property="bRegDt" column="B_REG_DT"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="modDt2" column="MOD_DT2"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="mcReplyer" column="MC_REPLYER"/>
+		<result property="contentClob" column="CONTENT_CLOB"/>
+		<result property="mwStatusCont" column="MW_STATUS_CONT"/>
+		<result property="mcDelayDay" column="MC_DELAY_DAY"/>
+		<result property="mcDelayRsn" column="MC_DELAY_RSN"/>
+		<result property="openYnCont" column="OPEN_YN_CONT"/>
+		<result property="countCont" column="COUNT_CONT"/>
+		<result property="mcBSender" column="MC_B_SENDER"/>
+		<result property="mcBDay" column="MC_B_DAY"/>
+		<result property="mcBTxt" column="MC_B_TXT"/>
+		<result property="mcASender" column="MC_A_SENDER"/>
+		<result property="mcADay" column="MC_A_DAY"/>
+		<result property="mcATxt" column="MC_A_TXT"/>
+	</resultMap>
+	
+	
+	<!-- 인바라 List sub select resultMap -->
+	<resultMap id="gubaraSubSelectListMap" type="egovframework.injeinc.boffice.ex.bbs.gBoardAdmin.vo.GBoardAdminVo">
+		<result property="mcDeptCd" column="MC_DEPT_CD"/>
+		<result property="mcReplyer" column="MC_REPLYER"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="ymd2" column="YMD2"/>
+		<result property="tempYn" column="TEMP_YN"/>
+		<result property="mcDelayDay" column="MC_DELAY_DAY"/>
+		<result property="bcIdx" column="BC_IDX"/>
+	</resultMap>
+	
+	<!-- 인바라 기능속성설정 resultMap -->
+	<resultMap id="gubaraBoardConfigMap" type="java.util.HashMap">
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="bbsTempletGbn" column="BBS_TEMPLET_GBN"/>
+		<result property="bbsApprYn" column="BBS_APPR_YN"/>
+		<result property="categoryUseYn" column="CATEGORY_USE_YN"/>
+		<result property="bbsFileCnt" column="BBS_FILE_CNT"/>
+		<result property="mwRKd" column="MW_R_KD"/>
+		<result property="btIdx" column="BT_IDX"/>
+	</resultMap>
+	
+	<!-- 인바라 상세내용 조회 resultMap -->
+	<resultMap id="gubaraBoardDetailMap" type="java.util.HashMap">
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="parentSeq" column="PARENT_SEQ"/>
+		<result property="answerStep" column="ANSWER_STEP"/>
+		<result property="answerDepth" column="ANSWER_DEPTH"/>
+		<result property="cateCont" column="CATE_CONT"/>
+		<result property="subCont" column="SUB_CONT"/>
+		<result property="nameCont" column="NAME_CONT"/>
+		<result property="addrCont" column="ADDR_CONT"/>
+		<result property="addrCont1" column="ADDR_CONT1"/>
+		<result property="addrCont2" column="ADDR_CONT2"/>
+		<result property="addrCont3" column="ADDR_CONT3"/>
+		<result property="emailCont" column="EMAIL_CONT"/>
+		<result property="telCont" column="TEL_CONT"/>
+		<result property="telCont1" column="TEL_CONT1"/>
+		<result property="telCont2" column="TEL_CONT2"/>
+		<result property="telCont3" column="TEL_CONT3"/>
+		<result property="phoneCont" column="PHONE_CONT"/>
+		<result property="phoneCont1" column="PHONE_CONT1"/>
+		<result property="phoneCont2" column="PHONE_CONT2"/>
+		<result property="phoneCont3" column="PHONE_CONT3"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="countCont" column="COUNT_CONT"/>
+		<result property="clobCont" column="CLOB_CONT" javaType="java.lang.String" jdbcType="CLOB"/>
+		<result property="mLinkCont" column="M_LINK_CONT"/>
+		<result property="thumnailCont" column="THUMNAIL_CONT"/>
+		<result property="subLinkCont" column="SUB_LINK_CONT"/>
+		<result property="openYnCont" column="OPEN_YN_CONT"/>
+		<result property="ansYnCont" column="ANS_YN_CONT"/>
+		<result property="ansCompCont" column="ANS_COMP_CONT"/>
+		<result property="ext1" column="EXT1"/>
+		<result property="ext2" column="EXT2"/>
+		<result property="ext3" column="EXT3"/>
+		<result property="ext4" column="EXT4"/>
+		<result property="ext5" column="EXT5"/>
+		<result property="ext6" column="EXT6"/>
+		<result property="ext7" column="EXT7"/>
+		<result property="ext8" column="EXT8"/>
+		<result property="ext9" column="EXT9"/>
+		<result property="ext10" column="EXT10"/>
+		<result property="mwAdOpenYn" column="MW_AD_OPEN_YN"/>
+		<result property="ansRYn" column="ANS_R_YN"/>
+		<result property="mwNoReplyYn" column="MW_NO_REPLY_YN"/>
+		<result property="notiYn" column="NOTI_YN"/>
+		<result property="apprYn" column="APPR_YN"/>
+		<result property="replRegDt" column="REPL_REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+		<result property="bcDelYn" column="BC_DEL_YN"/>
+		<result property="mwStatusCont" column="MW_STATUS_CONT"/>
+		<result property="cdSubject" column="CD_SUBJECT"/>
+		<result property="ansDeadlineDt" column="ANS_DEADLINE_DT"/>
+	</resultMap>
+	
+	<!-- 인바라 상세파일내용 조회 resultMap -->
+	<resultMap id="gubaraBoardFileMap" type="egovframework.injeinc.boffice.ex.bbs.gBoardAdmin.vo.GBoardAdminVo">
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="fileNo" column="FILE_NO"/>
+		<result property="fileStreCours" column="FILE_STRE_COURS"/>
+		<result property="streFileNm" column="STRE_FILE_NM"/>
+		<result property="orignlFileNm" column="ORIGNL_FILE_NM"/>
+		<result property="fileExtsn" column="FILE_EXTSN"/>
+		<result property="fileCn" column="FILE_CN"/>
+		<result property="fileSize" column="FILE_SIZE"/>
+		<result property="mcIdx" column="MC_IDX"/>
+		<result property="regId" column="REG_ID"/>
+	</resultMap>
+	
+	<!-- 인바라 게시글 파일 삭제 대상 조회 -->
+	<resultMap id="gubaraBoardFilesMap" type="egovframework.injeinc.boffice.ex.bbs.gBoardAdmin.vo.GBoardAdminVo">
+		<result property="fileStreCours" column="FILE_STRE_COURS"/>
+		<result property="streFileNm" column="STRE_FILE_NM"/>
+	</resultMap>
+	
+	<resultMap id="copyBoardTgtGroupMap" type="egovframework.injeinc.boffice.ex.bbs.gBoardAdmin.vo.GBoardAdminVo">
+		<result property="cbCd" column="CB_CD"/>
+		<result property="cbName" column="CB_NAME"/>
+	</resultMap>
+	
+	<resultMap id="copyBoardTgtSecondMap" type="egovframework.injeinc.boffice.ex.bbs.gBoardAdmin.vo.GBoardAdminVo">
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="cbName" column="CB_NAME"/>
+	</resultMap>
+	
+	<resultMap id="selectDepListMap" type="egovframework.injeinc.boffice.ex.bbs.gBoardAdmin.vo.GBoardAdminVo">
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="mcIdx" column="MC_IDX"/>
+		<result property="mcTitle" column="MC_TITLE"/>
+		<result property="mcDeptCd" column="MC_DEPT_CD"/>
+		<result property="mcDeptName" column="MC_DEPT_NAME"/>
+		<result property="mcDeptNo1Cd" column="MC_DEPT_NO1_CD"/>
+		<result property="mcDeptHist" column="MC_DEPT_HIST"/>
+		<result property="mcReplyer" column="MC_REPLYER"/>
+		<result property="mcTel1" column="MC_TEL1"/>
+		<result property="mcTel2" column="MC_TEL2"/>
+		<result property="mcMsg" column="MC_MSG"/>
+		<result property="mcUnitCd" column="MC_UNIT_CD"/>
+		<result property="mcAreaCd" column="MC_AREA_CD"/>
+		<result property="mcFiledCd" column="MC_FILED_CD"/>
+		<result property="mcKdCd" column="MC_KD_CD"/>
+		<result property="mcResult" column="MC_RESULT"/>
+		<result property="mcPointTxt" column="MC_POINT_TXT"/>
+		<result property="mcDelayDay" column="MC_DELAY_DAY"/>
+		<result property="mcDelayRsn" column="MC_DELAY_RSN"/>
+		<result property="mcStatus" column="MC_STATUS"/>
+		<result property="tempYn" column="TEMP_YN"/>
+		<result property="auditYn" column="AUDIT_YN"/>
+		<result property="mcBSender" column="MC_B_SENDER"/>
+		<result property="mcBMth" column="MC_B_MTH"/>
+		<result property="mcBDay" column="MC_B_DAY"/>
+		<result property="mcBTxt" column="MC_B_TXT"/>
+		<result property="mcASender" column="MC_A_SENDER"/>
+		<result property="mcAMth" column="MC_A_MTH"/>
+		<result property="mcADay" column="MC_A_DAY"/>
+		<result property="mcATxt" column="MC_A_TXT"/>
+		<result property="contentClob" column="CONTENT_CLOB"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="replRegDt" column="REPL_REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+		<result property="modDt1" column="MOD_DT1"/>
+		<result property="modDt2" column="MOD_DT2"/>
+		<result property="modDt3" column="MOD_DT3"/>
+	</resultMap>
+	
+	<resultMap id="selectDepListMap2" type="java.util.HashMap">
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="mcIdx" column="MC_IDX"/>
+		<result property="mcTitle" column="MC_TITLE"/>
+		<result property="mcDeptCd" column="MC_DEPT_CD"/>
+		<result property="mcDeptName" column="MC_DEPT_NAME"/>
+		<result property="mcDeptNo1Cd" column="MC_DEPT_NO1_CD"/>
+		<result property="mcDeptHist" column="MC_DEPT_HIST"/>
+		<result property="mcReplyer" column="MC_REPLYER"/>
+		<result property="mcTel1" column="MC_TEL1"/>
+		<result property="mcTel2" column="MC_TEL2"/>
+		<result property="mcMsg" column="MC_MSG"/>
+		<result property="mcUnitCd" column="MC_UNIT_CD"/>
+		<result property="mcAreaCd" column="MC_AREA_CD"/>
+		<result property="mcFiledCd" column="MC_FILED_CD"/>
+		<result property="mcKdCd" column="MC_KD_CD"/>
+		<result property="mcResult" column="MC_RESULT"/>
+		<result property="mcPointTxt" column="MC_POINT_TXT"/>
+		<result property="mcDelayDay" column="MC_DELAY_DAY"/>
+		<result property="mcDelayRsn" column="MC_DELAY_RSN"/>
+		<result property="mcStatus" column="MC_STATUS"/>
+		<result property="tempYn" column="TEMP_YN"/>
+		<result property="auditYn" column="AUDIT_YN"/>
+		<result property="mcBSender" column="MC_B_SENDER"/>
+		<result property="mcBMth" column="MC_B_MTH"/>
+		<result property="mcBDay" column="MC_B_DAY"/>
+		<result property="mcBTxt" column="MC_B_TXT"/>
+		<result property="mcASender" column="MC_A_SENDER"/>
+		<result property="mcAMth" column="MC_A_MTH"/>
+		<result property="mcADay" column="MC_A_DAY"/>
+		<result property="mcATxt" column="MC_A_TXT"/>
+		<result property="contentClob" column="CONTENT_CLOB" javaType="java.lang.String" jdbcType="CLOB"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+		<result property="modDt1" column="MOD_DT1"/>
+		<result property="modDt2" column="MOD_DT2"/>
+		<result property="modDt3" column="MOD_DT3"/>
+		<result property="gubaraCategory" column="GUBARA_CATEGORY"/>
+	</resultMap>
+	
+	<!-- 공통코드 조회 -->
+	<resultMap id="codeMap" type="egovframework.injeinc.boffice.ex.bbs.gBoardAdmin.vo.GBoardAdminVo">
+		<result property="code" column="CODE"/>
+		<result property="codeName" column="CODE_NAME"/>
+		<result property="codeUpr" column="CODE_UPR"/>
+	</resultMap>
+	
+	<!-- 부서장 select -->
+	<resultMap id="selectReplDeptMap" type="egovframework.injeinc.boffice.ex.bbs.gBoardAdmin.vo.GBoardAdminVo">
+		<result property="ceDepstep4" column="CE_DEPSTEP4"/>
+		<result property="ceName" column="CE_NAME"/>
+		<result property="ceTel" column="CE_TEL"/>
+		<result property="ceDepstep3" column="CE_DEPSTEP3"/>
+	</resultMap>
+
+	<!-- 부서장 select -->
+	<resultMap id="selectDw1Map" type="egovframework.injeinc.boffice.ex.bbs.gBoardAdmin.vo.GBoardAdminVo">
+		<result property="cdIdx" column="CD_IDX"/>
+		<result property="cdSubject" column="CD_SUBJECT"/>
+	</resultMap>
+
+	<!-- 역대 인재 -->
+	<!-- <resultMap id="selectChiefHistoryMap" class="egovframework.injeinc.boffice.ex.bbs.gBoardAdmin.vo.GBoardAdminVo">
+		<result property="chIdx" column="CH_IDX" />
+		<result property="chName" column="CH_NAME" />
+		<result property="chStartDate" column="CH_START_DATE" />
+		<result property="chEndDate" column="CH_END_DATE" />
+	</resultMap> -->
+
+	<!-- 통합답변 select -->
+	<resultMap id="selectIntergRespMap" type="java.util.HashMap">
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="mcIdx" column="MC_IDX"/>
+		<result property="auditYn" column="AUDIT_YN"/>
+		<result property="auditName" column="AUDIT_NAME"/>
+		<result property="mcPointTxt" column="MC_POINT_TXT"/>
+		<result property="contentClob" column="CONTENT_CLOB" javaType="java.lang.String" jdbcType="CLOB"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="regDt" column="REG_DT"/>
+	</resultMap>
+	
+	<!-- 게시판 검색 시간 Map -->
+	<resultMap id="timeSelectBox" type="egovframework.injeinc.boffice.ex.bbs.gBoardAdmin.vo.GBoardAdminVo">
+		<result property="colValue" column="COL_VALUE"/>
+	</resultMap>
+	
+	<!-- <resultMap id="category" class="egovframework.injeinc.boffice.ex.bbs.gBoardAdmin.vo.GBoardAdminVo" >
+		<result property="category" column="CATEGORY" />
+	</resultMap> -->
+	
+	<!-- 부서  selectbox query -->
+	<select id="cdSelectBox" parameterType="GBoardAdminVo" resultMap="cdSelectBox">
+		SELECT	CD_IDX
+		        , CD_SUBJECT
+				, CD_DEPSTEP1
+		        , CD_DEPSTEP2
+		        , CD_DEPSTEP3
+		FROM	EZ_DEPARTMENT
+		WHERE	CD_DEPSTEP3 = '00'
+		AND		CD_USE = 'Y'
+		AND (CD_SUBJECT LIKE '%관' OR CD_SUBJECT LIKE '%과' OR  CD_SUBJECT LIKE '%동') 
+		ORDER BY CD_CODE ASC
+	</select>
+	
+	<!-- 게시판 검색 시간 -->
+	<select id="selectBoardSearchTime" parameterType="GBoardAdminVo" resultMap="timeSelectBox">
+		SELECT  
+			CASE ROWNUM WHEN 1 THEN COL01
+						WHEN 2 THEN COL02
+						WHEN 3 THEN COL03
+						WHEN 4 THEN COL03
+						WHEN 5 THEN COL05
+						WHEN 6 THEN COL06
+						WHEN 7 THEN COL07
+						WHEN 8 THEN COL08
+						WHEN 9 THEN COL09
+						WHEN 10 THEN COL10
+						WHEN 11 THEN COL11
+						WHEN 12 THEN COL12
+						WHEN 13 THEN COL13
+						WHEN 14 THEN COL14
+						WHEN 15 THEN COL15
+						WHEN 16 THEN COL16
+						WHEN 17 THEN COL17
+						WHEN 18 THEN COL18
+						WHEN 19 THEN COL19
+						WHEN 20 THEN COL20
+						WHEN 21 THEN COL21
+						WHEN 22 THEN COL22
+						WHEN 23 THEN COL23
+						WHEN 24 THEN COL24
+				END COL_VALUE
+		FROM    (
+		        SELECT  '00' AS COL01,'01' AS COL02,'02' AS COL03,'03' AS COL04
+		                ,'04' AS COL05,'05' AS COL06,'06' AS COL07,'07' AS COL08
+		                ,'08' AS COL09,'09' AS COL10,'10' AS COL11,'11' AS COL12
+		                ,'12' AS COL13,'13' AS COL14,'14' AS COL15,'15' AS COL16
+		                ,'16' AS COL17,'17' AS COL18,'18' AS COL19,'19' AS COL20
+		                ,'20' AS COL21,'21' AS COL22,'22' AS COL23,'23' AS COL24
+		        FROM    DUAL
+		        ),
+		        (
+		        	WITH RECURSIVE HOUR_TMP(ROWNUM)  AS (SELECT 1 UNION ALL SELECT ROWNUM+1 ROWNUM FROM HOUR_TMP WHERE ROWNUM <![CDATA[<]]> 24)
+					SELECT ROWNUM  FROM HOUR_TMP
+		        )
+	</select>
+	
+	<!-- 게시글 카운트 -->
+	<select id="gubaraSelectListCount" parameterType="GBoardAdminVo" resultType="int">
+		SELECT	COUNT(*)
+		FROM	(
+				SELECT  AA.CB_IDX
+				        ,AA.BC_IDX
+				        ,AA.SUB_CONT
+				        ,AA.REG_ID
+				        ,AA.APPR_YN
+				        ,AA.REG_DT
+				        ,AA.COUNT_CONT
+				        ,AA.MW_STATUS_CONT
+				        ,AA.OPEN_YN_CONT
+				        ,AA.MW_NO_REPLY_YN
+				FROM    (
+				        SELECT   A.CB_IDX
+				                ,A.BC_IDX
+				                ,A.SUB_CONT
+				                ,A.REG_ID
+				                ,A.APPR_YN
+								,DATE_FORMAT(A.REG_DT, '%Y-%m-%d') AS REG_DT 
+				                ,A.COUNT_CONT
+				        		,A.MW_STATUS_CONT
+				                ,A.OPEN_YN_CONT
+				                ,A.MW_NO_REPLY_YN
+				                ,(SELECT CD_SUBJECT FROM EZ_DEPARTMENT B WHERE B.CB_IDX = B.MC_DEPT_CD)
+				        FROM EZ_BBS_CONTENT A
+				        LEFT OUTER JOIN EZ_CONTENT_MINWON_RESULT B 
+				        ON  A.CB_IDX = B.CB_IDX
+				        AND A.BC_IDX = B.BC_IDX
+				        AND A.CB_IDX = '414'
+				        WHERE 1=1
+						<if test="bcDelYn != null and bcDelYn != ''">
+					AND		A.BC_DEL_YN = #{bcDelYn}
+					</if>
+					<if test="searchKeyWord != null and searchKeyWord != ''">
+						<if test="searchField == &quot;writer&quot;">					
+						AND		A.NAME_CONT LIKE CONCAT('%',#{searchKeyWord},'%')
+						</if>
+						<if test="searchField == &quot;title&quot;">
+						AND		A.SUB_CONT LIKE CONCAT('%',#{searchKeyWord},'%')
+						</if>
+						<if test="searchField == &quot;content&quot;">
+						AND		A.CLOB_CONT_SEARCH LIKE CONCAT('%',#{searchKeyWord},'%')
+						</if>
+						<if test="searchField == &quot;chargeName&quot;">
+						AND		B.MC_REPLYER LIKE CONCAT('%',#{searchKeyWord},'%')
+						</if>
+					</if>
+					<if test="mcDeptCd != null and mcDeptCd != ''">
+					AND     B.MC_DEPT_CD = #{mcDeptCd}
+					</if>
+					<if test="scRegDtSt != null and scRegDtSt != ''">
+						<if test="scRegDtEd != null and scRegDtEd != ''">
+						AND A.REG_DT BETWEEN DATE_FORMAT('2019-08-28','%Y%m%d') AND DATE_FORMAT('20190830','%Y%m%d')+1 
+						</if>
+					</if>
+			        <if test="schMbpERegDtSt != null and schMbpERegDtSt != ''">
+			       	 <if test="schMbpERegDtEd != null and schMbpERegDtEd != ''">
+			        	AND B.TEMP_YN = 'Y'
+			        	AND B.AUDIT_YN IS NULL
+			        	AND  CAST(DATE_FORMAT(B.MOD_DT,'%Y%m%d%h') AS CHAR)  BETWEEN #{schMbpERegDtSt} AND #{schMbpERegDtEd}
+			      	  </if>
+			        </if>
+			        <if test="mwStatusCont != null and mwStatusCont != ''">
+						AND  A.MW_STATUS_CONT = #{mwStatusCont}
+					</if>
+				        ) AA
+				        WHERE 1 = 1
+				        
+				GROUP BY AA.CB_IDX, AA.BC_IDX, AA.SUB_CONT, AA.REG_ID, AA.APPR_YN, AA.REG_DT, AA.COUNT_CONT, AA.MW_STATUS_CONT, AA.OPEN_YN_CONT, AA.MW_NO_REPLY_YN
+				) GUBARASELECTLISTCOUNT
+	</select>
+	
+	<!-- 인바라 List select query -->
+	<select id="gubaraSelectList" parameterType="GBoardAdminVo" resultMap="gubaraSelectList">
+	/*gubaraSelectList*/
+		SELECT * FROM (
+			SELECT @ROWNUM := @ROWNUM + 1 RN 
+			      , AA.CB_IDX
+			      ,AA.BC_IDX
+			      ,AA.SUB_CONT
+			      ,AA.NAME_CONT
+			      ,AA.REG_ID
+			      ,AA.APPR_YN
+			      ,AA.REG_DT
+			      ,AA.MINWON_DEPT_DT
+			      ,AA.COUNT_CONT
+			      ,AA.MW_STATUS_CONT
+			      ,AA.OPEN_YN_CONT
+			      ,AA.MW_NO_REPLY_YN
+			      ,AA.ANS_YN_CONT
+			      ,AA.CD_SUBJECT
+			      ,ANS_DEADLINE_DT
+			FROM ( SELECT  A.CB_IDX
+			              ,A.BC_IDX
+			              ,A.SUB_CONT
+			              ,A.NAME_CONT
+			              ,A.REG_ID
+			              ,A.APPR_YN
+			              ,DATE_FORMAT(A.REG_DT, 'YYYY-MM-DD') AS REG_DT
+			              ,MIN(B.REG_DT) AS MINWON_DEPT_DT
+			              ,A.COUNT_CONT
+			              ,A.MW_STATUS_CONT
+			  			  ,A.OPEN_YN_CONT
+			  			  ,A.MW_NO_REPLY_YN
+			  			  ,A.ANS_YN_CONT
+			  			  ,A.CD_SUBJECT
+			  			  ,ANS_DEADLINE_DT
+			        FROM   EZ_BBS_CONTENT A
+			        LEFT OUTER JOIN
+			               EZ_CONTENT_MINWON_RESULT B
+			        ON   A.CB_IDX = B.CB_IDX
+			        AND  A.BC_IDX = B.BC_IDX
+			        AND  A.CB_IDX = '414'
+		
+					<if test="bcDelYn != null and bcDelYn != ''">
+					AND		A.BC_DEL_YN = #{bcDelYn}
+					</if>
+					<if test="searchKeyWord != null and searchKeyWord != ''">
+						<if test="searchField == &quot;writer&quot;">
+						AND		A.NAME_CONT LIKE CONCAT('%', #searchKeyWord ,'%')
+						</if>
+						<if test="searchField == &quot;title&quot;">
+						AND		A.SUB_CONT LIKE CONCAT('%', #searchKeyWord ,'%')
+						</if>
+						<if test="searchField == &quot;content&quot;">
+						AND		A.CLOB_CONT_SEARCH LIKE CONCAT('%', #searchKeyWord ,'%')
+						</if>
+						<if test="searchField == &quot;chargeName&quot;">
+						AND		B.MC_REPLYER LIKE CONCAT('%', #searchKeyWord ,'%')
+						</if>
+					</if>
+					<if test="mcDeptCd != null and mcDeptCd != ''">
+					AND  INSTR(A.CD_SUBJECT,#{mcDeptCd}) <![CDATA[>]]> 0
+					</if>
+					<if test="scRegDtSt != null and scRegDtSt != ''">
+						<if test="scRegDtEd != null and scRegDtEd != ''">
+						AND A.REG_DT BETWEEN DATE_FORMAT(#{scRegDtSt}, '%Y%m%d') AND DATE_FORMAT(#{scRegDtEd},'%Y%m%d') + 1 
+						</if>
+					</if>
+			        <if test="schMbpERegDtSt != null and schMbpERegDtSt != ''">
+			       		 <if test="schMbpERegDtEd != null and schMbpERegDtEd != ''">
+			        	AND B.TEMP_YN = 'Y'
+			        	AND B.AUDIT_YN IS NULL
+			        	AND CAST(DATE_FORMAT(B.MOD_DT, '%Y%m%d%H%i%s') AS CHAR) BETWEEN #{schMbpERegDtSt} AND #{schMbpERegDtEd}
+			        	</if>
+			         </if>
+				    <if test="mwStatusCont != null and mwStatusCont != ''">
+						AND  A.MW_STATUS_CONT = #{mwStatusCont}
+					</if>
+			          WHERE	1 = 1
+			       GROUP BY   A.CB_IDX
+                            , A.BC_IDX
+                            , A.SUB_CONT
+                            , A.NAME_CONT
+                            , A.REG_ID
+                            , A.APPR_YN
+                            , A.REG_DT
+                            , A.COUNT_CONT
+                            , A.ANS_YN_CONT
+                            , A.OPEN_YN_CONT  
+                            , A.MW_NO_REPLY_YN  
+                            , A.ANS_YN_CONT 
+                            , A.MW_STATUS_CONT
+                            , A.CD_SUBJECT
+                            , ANS_DEADLINE_DT 
+			) AA
+			WHERE (@ROWNUM := 0)= 0
+		    AND 1 = 1
+		    ORDER BY BC_IDX DESC
+		) B WHERE RN BETWEEN #{firstIndex}  + 1 AND #{firstIndex}  + #{recordCountPerPage}
+	</select>
+	
+	<!-- 인바라 List sub select query -->
+	<select id="gubaraSubSelectList" parameterType="GBoardAdminVo" resultMap="gubaraSubSelectListMap">
+	
+		SELECT  AA.MC_DEPT_CD
+		        ,AA.BC_IDX
+		        ,AA.MC_REPLYER
+		        ,AA.REG_DT
+		        ,@ROWNUM:=@ROWNUM+1 ROWNUM
+		        , (SELECT 
+                    CAST(MAX(DATE_ADD(DATE_FORMAT(AA.REG_DT, '%Y-%m-%d'), INTERVAL RN DAY))AS CHAR)
+                FROM (
+                	WITH RECURSIVE RGEN(RN) AS (SELECT 1 UNION ALL SELECT RN+1 FROM RGEN WHERE RN <![CDATA[<=]]> 14) SELECT RN FROM RGEN
+                ) WHERE
+                	CAST(DAYOFWEEK(DATE_ADD(DATE_FORMAT(AA.REG_DT, '%Y-%m-%d'), INTERVAL RN DAY))AS CHAR) IN (2,3,4,5,6) 
+                    AND CAST(DATE_ADD(DATE_FORMAT(AA.REG_DT,'%Y-%m-%d'), INTERVAL RN DAY) AS CHAR) <![CDATA[<>]]> ALL (SELECT HOL_DATE FROM EZ_HOLIDAY WHERE 1 = 1)
+                    AND ROWNUM <![CDATA[<=]]> (CASE WHEN  AA.REG_HH <![CDATA[>=]]> '18' THEN 3 ELSE 2 END)
+                ) AS YMD2
+		        ,AA.TEMP_YN
+		        ,AA.MC_DELAY_DAY
+		FROM    (
+		        SELECT	(SELECT CD_SUBJECT FROM EZ_DEPARTMENT WHERE CD_IDX = MC_DEPT_CD) AS MC_DEPT_CD
+		                , MC_REPLYER
+                        , REG_DT
+                        , CAST(HOUR(REG_DT)AS CHAR) AS REG_HH
+		                , CAST(DATE_FORMAT(REG_DT,'%Y-%m-%d')AS CHAR) AS MC_DELAY_DAY
+		                , BC_IDX
+		                , CB_IDX
+		                , TEMP_YN
+		        FROM	CONTENT_MINWON_RESULT
+		        WHERE   CB_IDX = #{cbIdx}
+		        AND     BC_IDX = #{bcIdx}
+		        AND		MC_STATUS = 'Y'
+		        AND		MC_DEPT_CD IS NOT NULL
+		        ) AA
+		WHERE 1 = 1
+		GROUP BY AA.MC_DEPT_CD
+		        ,AA.BC_IDX
+		        ,AA.MC_REPLYER
+		        ,AA.REG_DT
+		        ,AA.TEMP_YN
+		        ,AA.MC_DELAY_DAY
+		        ,REG_HH
+	
+	</select>
+	
+	<!-- 인바라 EXCEL -->
+	<select id="gubaraSelectExcelList" parameterType="GBoardAdminVo" resultMap="gubaraSelectExcelList">
+		SELECT
+				  AB.BC_IDX ,
+				  AB.CB_IDX ,
+				  AB.A_REG_DT ,
+				  AB.NAME_CONT ,
+				  AB.TEL_CONT ,
+				  AB.PHONE_CONT ,
+				  AB.ADDR_CONT ,
+				  AB.SUB_CONT ,
+				  AB.CLOB_CONT ,
+				  AB.MC_DEPT_CD ,
+				  AB.MC_AREA_CD ,
+				  AB.MC_FILED_CD ,
+				  AB.MC_KD_CD ,
+				  AB.MC_RESULT ,
+				  AB.B_REG_DT ,
+				  DATE_FORMAT(AB.REG_DT, 'YYYYMMDD HH24MISS') AS REG_DT,
+				  AB.MOD_DT ,
+				  CASE WHEN DATE_FORMAT(AB.B_REG_DT,'YYYYMMDD HH24MISS') >= '18' THEN AB.AAA - 1 ELSE AB.AAA END AS MOD_DT2 ,
+				  AB.MC_REPLYER ,
+				  AB.CONTENT_CLOB ,
+				  AB.MW_STATUS_CONT ,
+				  AB.MC_DELAY_DAY ,
+				  AB.MC_DELAY_RSN ,
+				  CASE 
+				  		WHEN AB.OPEN_YN_CONT = '21000200' THEN '공개'
+				  		ELSE '비공개'
+				  END AS OPEN_YN_CONT,
+				  AB.COUNT_CONT ,
+				  AB.MC_B_SENDER ,
+				  DATE_FORMAT(AB.MC_B_DAY, '%Y-%m-%d') MC_B_DAY,
+				  AB.MC_B_TXT ,
+				  AB.MC_A_SENDER ,
+				  AB.MC_A_DAY ,
+				  AB.MC_A_TXT
+				FROM (
+				    SELECT A.BC_IDX ,
+				      A.CB_IDX ,
+				      DATE_FORMAT(A.REG_DT, '%Y%m%d %H%i%s') AS A_REG_DT ,
+				      A.REG_DT ,
+				      A.NAME_CONT ,
+				      A.TEL_CONT ,
+				      A.PHONE_CONT ,
+				      A.ADDR_CONT ,
+				      A.SUB_CONT ,
+				      A.CLOB_CONT ,
+				      B.MC_DEPT_CD ,
+				      B.MC_AREA_CD ,
+				      B.MC_FILED_CD ,
+				      B.MC_KD_CD ,
+				      B.MC_RESULT ,
+				      B.MOD_DT AS MOD_DT2 ,
+				      DATE_FORMAT(B.REG_DT, '%Y%m%d %H%i%s') AS B_REG_DT ,
+ 					  DATE_FORMAT(B.MOD_DT, '%Y%m%d %H%i%s') AS MOD_DT ,
+ 					  STR_TO_DATE(SUBSTR(B.MOD_DT, 1, 8), '%Y-%m-%d') - STR_TO_DATE(SUBSTR(B.MOD_DT, 1, 8), '%Y-%m-%d') AS AAA ,
+				      B.MC_REPLYER ,
+				      B.CONTENT_CLOB ,
+		          CASE
+		            WHEN ANS_YN_CONT = '22000200' THEN '22000200'
+		            WHEN 0 <![CDATA[<]]> (
+		        SELECT COUNT(MC_IDX)
+		        FROM EZ_CONTENT_MINWON_RESULT CMR
+		        WHERE CMR.CB_IDX = A.CB_IDX
+		          AND CMR.BC_IDX = A.BC_IDX
+		          AND CMR.AUDIT_YN IN ('27000100',
+		              '27000200',
+		              '27000300') ) THEN '20000500'
+		            WHEN 1 = (
+		        SELECT COUNT(MC_IDX)
+		        FROM EZ_CONTENT_MINWON_RESULT CMR
+		        WHERE CMR.CB_IDX = A.CB_IDX
+		          AND CMR.BC_IDX = A.BC_IDX )
+		        AND 1 = (
+		        SELECT COUNT(MC_IDX)
+		        FROM EZ_CONTENT_MINWON_RESULT CMR
+		        WHERE CMR.CB_IDX = A.CB_IDX
+		          AND CMR.BC_IDX = A.BC_IDX
+		          AND CMR.TEMP_YN = 'Y' ) THEN '20000500'
+		            WHEN 0 <![CDATA[<]]> (
+		        SELECT COUNT(MC_IDX)
+		        FROM EZ_CONTENT_MINWON_RESULT CMR
+		        WHERE CMR.CB_IDX = A.CB_IDX
+		          AND CMR.BC_IDX = A.BC_IDX )
+		        AND (
+		        SELECT COUNT(MC_IDX)
+		        FROM EZ_CONTENT_MINWON_RESULT CMR
+		        WHERE CMR.CB_IDX = A.CB_IDX
+		          AND CMR.BC_IDX = A.BC_IDX ) = (
+		        SELECT COUNT(MC_IDX)
+		        FROM EZ_CONTENT_MINWON_RESULT CMR
+		        WHERE CMR.CB_IDX = A.CB_IDX
+		          AND CMR.BC_IDX = A.BC_IDX
+		          AND (CMR.TEMP_YN = 'Y') ) THEN '20000600'
+		            WHEN 0 <![CDATA[<]]> (
+		        SELECT COUNT(MC_IDX)
+		        FROM EZ_CONTENT_MINWON_RESULT CMR
+		        WHERE CMR.CB_IDX = A.CB_IDX
+		          AND CMR.BC_IDX = A.BC_IDX
+		          AND CMR.TEMP_YN = 'N' ) THEN '20000700'
+		            WHEN 0 <![CDATA[<]]> (
+		        SELECT COUNT(MC_IDX)
+		        FROM EZ_CONTENT_MINWON_RESULT CMR
+		        WHERE CMR.CB_IDX = A.CB_IDX
+		          AND CMR.BC_IDX = A.BC_IDX ) THEN '20000800'
+		            WHEN 0 <![CDATA[>=]]> (
+		        SELECT COUNT(MC_IDX)
+		        FROM EZ_CONTENT_MINWON_RESULT CMR
+		        WHERE CMR.CB_IDX = A.CB_IDX
+		          AND CMR.BC_IDX = A.BC_IDX ) THEN '20000900'
+		          END AS MW_STATUS_CONT ,
+		      B.MC_DELAY_DAY ,
+		      B.MC_DELAY_RSN ,
+		      A.OPEN_YN_CONT ,
+		      A.COUNT_CONT ,
+		      B.MC_B_SENDER ,
+		      B.MC_B_DAY ,
+		      B.MC_B_TXT ,
+		      B.MC_A_SENDER ,
+		      B.MC_A_DAY ,
+		      B.MC_A_TXT
+		    FROM
+				EZ_BBS_CONTENT A
+			LEFT OUTER JOIN EZ_CONTENT_MINWON_RESULT B ON
+				A.CB_IDX = B.CB_IDX
+				AND A.BC_IDX = B.BC_IDX
+			WHERE A.CB_IDX = '948'
+			AND A.BC_DEL_YN = 'N'
+	         AND B.AUDIT_YN IS NULL
+		      
+		      <if test="searchKeyWord != null and searchKeyWord != ''">
+					<if test="searchField == &quot;writer&quot;">
+						AND A.NAME_CONT LIKE CONCAT('%', #searchKeyWord ,'%')
+					</if>
+					<if test="searchField == &quot;title&quot;">
+						AND A.SUB_CONT LIKE CONCAT('%', #searchKeyWord ,'%')
+					</if>
+					<if test="searchField == &quot;content&quot;">
+						AND A.CLOB_CONT_SEARCH LIKE CONCAT('%', #searchKeyWord ,'%')
+					</if>
+					<if test="searchField == &quot;chargeName&quot;">
+						AND B.MC_REPLYER LIKE CONCAT('%', #searchKeyWord ,'%')
+					</if>
+				</if>
+		      <if test="mcDeptName != null and mcDeptName != ''">
+		      	<if test="mcDeptName!=&quot;감사담당관&quot;">
+		      		<![CDATA[
+		      			AND B.MC_DEPT_CD = #{mcDeptName}
+		      		]]>
+		      	</if>
+		      </if>
+				<if test="scRegDtSt != null and scRegDtSt != ''">
+					<if test="scRegDtEd != null and scRegDtEd != ''">
+						AND A.REG_DT BETWEEN DATE_FORMAT(#{scRegDtSt}, '%Y%m%d') AND DATE_FORMAT(#{scRegDtEd}, '%Y%m%d') + 1
+					</if>
+				</if>
+		        <if test="schMbpERegDtSt != null and schMbpERegDtSt != ''">
+		       	 <if test="schMbpERegDtEd != null and schMbpERegDtEd != ''">
+			        	AND B.TEMP_YN = 'Y'
+		        		AND DATE_FORMAT(STR_TO_DATE(B.MOD_DT,'%Y%m%d%H%i%s'),'%Y%m%d%H') BETWEEN #{schMbpERegDtSt} AND #{schMbpERegDtEd}
+		      	  </if>
+		        </if>
+		      
+		    ORDER BY A.REG_DT DESC ) AB
+		    
+		    WHERE 1 = 1
+				        <if test="mwStatusCont != null and mwStatusCont != ''">
+				        	<if test="mwStatusCont == 20000500">
+	              				AND AB.MW_STATUS_CONT IN ('20000500','20000600')
+				        	</if>
+				        	<if test="mwStatusCont!=&quot;20000500&quot;">
+					        	AND AB.MW_STATUS_CONT = #{mwStatusCont}
+				        	</if>
+              			</if>
+	</select>
+	
+	
+	<!-- 인바라 상세조회 조회수 update -->
+	<update id="gubaraBoardCountUpdate" parameterType="GBoardAdminVo">
+		UPDATE	EZ_BBS_CONTENT
+		SET		COUNT_CONT = COUNT_CONT + 1
+		WHERE	CB_IDX = #{cbIdx}
+		AND		BC_IDX = #{bcIdx}
+	</update>
+	
+	<!-- 인바라 첨부파일 갯수 -->
+	<select id="gubaraBoardConfig" parameterType="GBoardAdminVo" resultMap="gubaraBoardConfigMap">
+		SELECT	CB_IDX
+		        ,BBS_TEMPLET_GBN
+		        ,BBS_APPR_YN
+		        ,CATEGORY_USE_YN
+				,CAST(BBS_FILE_CNT AS DECIMAL) AS BBS_FILE_CNT
+		        ,MW_R_KD
+		        ,BT_IDX
+		FROM	EZ_BBS_CONFIG
+		WHERE	1 = 1
+		AND		CB_IDX = #{cbIdx}
+	</select>
+
+	<!-- 인바라 상세내용 조회 -->
+	<select id="gubaraBoardDetail" parameterType="GBoardAdminVo" resultMap="gubaraBoardDetailMap">
+		/*gubaraBoardDetail*/
+		SELECT	BC_IDX
+				,CB_IDX
+				,PARENT_SEQ
+				,ANSWER_STEP
+				,ANSWER_DEPTH
+				,CATE_CONT
+				,SUB_CONT
+				,NAME_CONT
+				,ADDR_CONT
+				, SUBSTR(ADDR_CONT, 1, INSTR(ADDR_CONT, '_') - 1) ADDR_CONT1                                                            
+		        , SUBSTR(ADDR_CONT, INSTR(ADDR_CONT, '_') + 1, INSTR(SUBSTR(ADDR_CONT, INSTR(ADDR_CONT, '_')+1), '_')+INSTR(ADDR_CONT, '_') - INSTR(ADDR_CONT, '_') - 1) ADDR_CONT2
+		        , SUBSTR(ADDR_CONT, INSTR(SUBSTR(ADDR_CONT, INSTR(ADDR_CONT, '_')+1), '_')+INSTR(ADDR_CONT, '_') + 1) ADDR_CONT3
+				,EMAIL_CONT
+				,TEL_CONT
+				,PHONE_CONT
+				, SUBSTR(TEL_CONT, 1, INSTR(TEL_CONT, '-') - 1) TEL_CONT1                                                            
+		        , SUBSTR(TEL_CONT, INSTR(TEL_CONT, '-') + 1, INSTR(SUBSTRING(TEL_CONT, INSTR(TEL_CONT, '-')+1), '-')+INSTR(TEL_CONT, '-') - INSTR(TEL_CONT, '-') - 1) TEL_CONT2
+		        , SUBSTR(TEL_CONT, INSTR(SUBSTRING(TEL_CONT, INSTR(TEL_CONT, '-')+1), '-')+INSTR(TEL_CONT, '-') + 1)  TEL_CONT3
+		        , SUBSTR(PHONE_CONT, 1, INSTR(PHONE_CONT, '-') - 1) PHONE_CONT1                                                            
+		        , SUBSTR(PHONE_CONT, INSTR(PHONE_CONT, '-') + 1, INSTR(SUBSTRING(PHONE_CONT, INSTR(PHONE_CONT, '-')+1), '-')+INSTR(PHONE_CONT, '-') - INSTR(PHONE_CONT, '-') - 1) PHONE_CONT2
+		        , SUBSTR(PHONE_CONT, INSTR(SUBSTRING(PHONE_CONT, INSTR(PHONE_CONT, '-')+1), '-')+INSTR(PHONE_CONT, '-') + 1)  PHONE_CONT3
+				,COUNT_CONT
+				,CLOB_CONT
+				,M_LINK_CONT
+				,THUMNAIL_CONT
+				,SUB_LINK_CONT
+				,OPEN_YN_CONT
+				,ANS_YN_CONT
+				,ANS_COMP_CONT
+				, (SELECT CODE_NAME FROM EZ_CMM_CODE  WHERE CODE = EXT1 ) AS EXT1
+				,EXT2
+				,EXT3
+				,EXT4
+				,EXT5
+				,EXT6
+				,EXT7
+				,EXT8
+				,EXT9
+				,EXT10
+				,MW_AD_OPEN_YN
+				,ANS_R_YN
+				,MW_NO_REPLY_YN
+				,NOTI_YN
+				,APPR_YN
+				,DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT
+				,DATE_FORMAT(REG_DT + 2, '%Y-%m-%d') AS REPL_REG_DT
+		        ,REG_ID
+		        ,DATE_FORMAT(MOD_DT, '%Y-%m-%d %H:%i:%s') AS MOD_DT
+				,MOD_ID
+				,BC_DEL_YN
+				,MW_STATUS_CONT
+				,CD_SUBJECT
+				,ANS_DEADLINE_DT
+		FROM	EZ_BBS_CONTENT
+		WHERE	1 = 1
+		AND		CB_IDX = #{cbIdx}
+		AND		BC_IDX = #{bcIdx}
+	</select>
+	
+	<!-- 인바라 게시물 파일 조회 -->
+	<select id="gubaraBoardFile" parameterType="GBoardAdminVo" resultMap="gubaraBoardFileMap">
+		SELECT	A.BC_IDX
+				,A.CB_IDX
+				,A.FILE_NO
+				,A.FILE_STRE_COURS
+				,A.STRE_FILE_NM
+				,A.ORIGNL_FILE_NM
+				,A.FILE_EXTSN
+				,A.FILE_CN
+				,A.FILE_SIZE
+				,A.MC_IDX
+				,A.REG_ID
+		FROM	 EX_CONTENT_FILE A
+				,EZ_BBS_CONTENT B
+		WHERE	1 = 1
+		AND		A.CB_IDX = B.CB_IDX
+		AND		A.BC_IDX = B.BC_IDX
+		AND		A.CB_IDX = #{cbIdx}
+		AND		A.BC_IDX = #{bcIdx}
+		ORDER BY FILE_NO
+	</select>
+	
+	<!-- 게시판 첨부파일 저장 -->
+	<insert id="insertFile" parameterType="GBoardAdminVo">
+		INSERT INTO EZ_CONTENT_FILE(
+			BC_IDX
+			, CB_IDX
+			, FILE_NO
+			, FILE_STRE_COURS
+			, STRE_FILE_NM
+			, ORIGNL_FILE_NM
+			, FILE_EXTSN
+			, FILE_CN
+			, FILE_SIZE
+			<if test="mcIdx != null and mcIdx != ''">
+			, MC_IDX
+			</if>
+			, REG_ID
+		) VALUES (
+			  #{bcIdx}
+			, #{cbIdx}
+			,(SELECT NVL(MAX(FILE_NO), 0) + 1 FROM EZ_CONTENT_FILE ECF WHERE BC_IDX = #{bcIdx} AND CB_IDX = #{cbIdx})
+			, #{fileStreCours}
+			, #{streFileNm}
+			, #{orignlFileNm}
+			, #{fileExtsn}
+			, #{fileCn}
+			, #{fileSize}
+			<if test="mcIdx != null and mcIdx != ''">
+			, #{mcIdx}
+			</if>
+			, #{regId}
+		)
+	</insert>
+	
+	<!-- 파일 리스트 조회  -->
+	<select id="selectFileDown" parameterType="java.util.HashMap" resultType="hashMap">
+		 SELECT FILE_STRE_COURS
+		      , STRE_FILE_NM
+		      , ORIGNL_FILE_NM
+		      , FILE_EXTSN
+		      , FILE_CN
+		      , FILE_SIZE 
+		   FROM EZ_CONTENT_FILE
+      	  WHERE CB_IDX = #{cbIdx}
+         	AND BC_IDX = #{bcIdx}
+         	<if test="fileNo != null and fileNo != ''">
+         		AND FILE_NO = #{fileNo}
+       		</if>
+       		<if test="mcIdx != null and mcIdx != ''">
+         		AND MC_IDX = #{mcIdx}
+         	</if>
+         	<if test="mcIdx == null or mcIdx == ''">
+         		AND MC_IDX IS NULL
+         	</if>
+	</select>
+	
+	<!-- 파일 삭제 조회  -->
+	<delete id="deleteBoardFiles" parameterType="java.util.HashMap">
+		DELETE	EZ_CONTENT_FILE
+		WHERE	CB_IDX = #{cbIdx}
+       	AND		BC_IDX = #{bcIdx}
+       	<if test="fileNo != null and fileNo != ''">
+        AND 	FILE_NO = #{fileNo}
+        </if>
+        <if test="mcIdx != null and mcIdx != ''">
+        AND 	MC_IDX = #{mcIdx}
+        </if>
+        <if test="mcIdx == null or mcIdx == ''">
+        AND 	MC_IDX IS NULL
+        </if>
+	</delete>
+	
+	<!-- 인바라 게시글 상세 이전글/다음글 -->
+	<select id="gubaraBoardDetailPreNext" parameterType="GBoardAdminVo" resultType="hashMap">
+		SELECT	BC_IDX 
+				,CB_IDX
+				,PREV_IDX 
+				,PREV_SUB 
+				,PREV_REGDT 
+				,NEXT_IDX 
+				,NEXT_SUB 
+				,NEXT_REGDT 
+		FROM 
+				(SELECT	BC_IDX
+						,CB_IDX 
+						,LAG(BC_IDX, 1) OVER(ORDER BY BC_IDX) PREV_IDX 
+						,LAG(SUB_CONT, 1) OVER(ORDER BY BC_IDX) PREV_SUB 
+						,LAG(REG_DT, 1) OVER(ORDER BY BC_IDX) PREV_REGDT
+						,LEAD(BC_IDX, 1) OVER(ORDER BY BC_IDX) NEXT_IDX 
+						,LEAD(SUB_CONT, 1) OVER(ORDER BY BC_IDX) NEXT_SUB 
+						,LEAD(REG_DT, 1) OVER(ORDER BY BC_IDX) NEXT_REGDT 
+				 FROM 	(SELECT BC_IDX
+								,CB_IDX
+								,SUB_CONT
+								,CAST(DATE_FORMAT(REG_DT, '%Y-%m-%d')AS CHAR) AS REG_DT 
+						 FROM	EZ_BBS_CONTENT 
+						 WHERE 1 = 1 
+						 AND CB_IDX = #{cbIdx} 
+						) 
+				) 
+		WHERE	BC_IDX = #{bcIdx}
+	</select>
+	
+	<!-- 인바라 게시글 수정/삭제 -->
+	<update id="gubaraBoardUpdate" parameterType="GBoardAdminVo">
+		UPDATE	EZ_BBS_CONTENT
+		SET		 MOD_ID     = #{modId}
+				,MOD_DT     = NOW()
+				<if test="subCont != null and subCont != ''">
+				,SUB_CONT    = #{subCont}
+				</if>
+				<if test="nameCont != null and nameCont != ''">
+				,NAME_CONT  = #{nameCont}
+				</if>
+				<if test="addrCont != null and addrCont != ''">
+				,ADDR_CONT  = #{addrCont}
+				</if>
+				<if test="emailCont != null and emailCont != ''">
+				,EMAIL_CONT = #{emailCont}
+				</if>
+				<if test="telCont != null and telCont != ''">
+				,TEL_CONT   = #{telCont}
+				</if>
+				<if test="phoneCont != null and phoneCont != ''">
+				,PHONE_CONT = #{phoneCont}
+				</if>
+				<if test="clobCont != null and clobCont != ''">
+				,CLOB_CONT  = REPLACE(REPLACE(#{clobCont}, chr(13),chr(10),''), '', '')
+				</if>
+				<if test="bcDelYn != null and bcDelYn != ''">
+				,BC_DEL_YN  = #{bcDelYn}
+				</if>
+				<if test="openYnCont != null and openYnCont != ''">
+				,OPEN_YN_CONT  = #{openYnCont}
+				</if>
+				<if test="mwAdOpenYn != null and mwAdOpenYn != ''">
+				,MW_AD_OPEN_YN  = #{mwAdOpenYn}
+				</if>
+		WHERE	CB_IDX = #{cbIdx}
+		AND		BC_IDX = #{bcIdx}
+	</update>
+	
+	<update id="gubaraBoardUpdate2" parameterType="GBoardAdminVo">
+		
+			UPDATE EZ_BBS_CONTENT
+			SET
+				  SUB_CONT = #{subCont}
+				, ADDR_CONT = #{addrCont}
+				, EMAIL_CONT = #{emailCont}
+				, TEL_CONT = #{telCont}
+				, PHONE_CONT = #{phoneCont}
+				, CLOB_CONT= #{clobCont}
+				, OPEN_YN_CONT = #{openYnCont}
+				, ANS_YN_CONT = #{ansYnCont}
+				, ANS_COMP_CONT = #{ansCompCont}
+				, MW_AD_OPEN_YN  = #{mwAdOpenYn}
+				, MOD_DT = NOW()
+				, MOD_ID = #{modId}
+				, MOD_IP = #{modIp}
+			WHERE CB_IDX = #{cbIdx}
+			AND BC_IDX = #{bcIdx}
+		
+	</update>
+	
+	<!-- 인바라게시물 자유게시판으로 이관  -->
+    <update id="insertBoardTrans" parameterType="GBoardAdminVo">
+			INSERT INTO EZ_BBS_CONTENT (
+			  BC_IDX
+			, CB_IDX
+			, PARENT_SEQ
+			, ANSWER_STEP
+			, ANSWER_DEPTH
+			, NOTI_YN
+			, CATE_CONT
+			, SUB_CONT
+			, NAME_CONT
+			, ADDR_CONT
+			, EMAIL_CONT
+			, TEL_CONT
+			, PHONE_CONT
+			, CLOB_CONT
+			, EXT1
+			, EXT2
+			, EXT3
+			, EXT4
+			, EXT5
+			, EXT6
+			, EXT7
+			, EXT8
+			, EXT9
+			, EXT10
+			, SUB_LINK_CONT
+			, M_LINK_CONT
+			, THUMNAIL_CONT
+			, CAPTION_CONT
+			, COUNT_CONT
+			, CHARGE_NAME_CONT
+			, CHARGE_TEL_CONT
+			, OPEN_YN_CONT
+			, ANS_YN_CONT
+			, ANS_COMP_CONT
+			, ANS_WRITER
+			, ANS_R_YN
+			, ANS_DT
+			, MW_AD_OPEN_YN
+			, MW_NO_REPLY_YN
+			, MW_STATUS_CONT
+			, APPR_YN
+			, PLACE_TYPE
+			, DEL_RSN_CD
+			, BC_DEL_YN
+			, DUPCODE
+			, REG_DT
+			, REG_ID
+			, REG_IP
+			, MOD_DT
+			, MOD_ID
+			, MOD_IP
+			, DEPARTMENT
+			, CA_CDIDX
+			, CD_SUBJECT
+			, SUBJECT_CODE
+			, SHORT_CUT
+			, CLOB_CONT2
+			, MC_DEPT_CD
+			, CATEGORY
+			, GUB_PASSWORD
+			, CLOB_CONT_SEARCH
+			, PUSH_YN
+			, ANS_CONTENT 
+			)
+			SELECT #{transBcIdx} BC_IDX
+			, 278 CB_IDX
+			, PARENT_SEQ
+			, ANSWER_STEP
+			, ANSWER_DEPTH
+			, NOTI_YN
+			, CATE_CONT
+			, SUB_CONT
+			, NAME_CONT
+			, ADDR_CONT
+			, EMAIL_CONT
+			, TEL_CONT
+			, PHONE_CONT
+			, CLOB_CONT
+			, EXT1
+			, EXT2
+			, EXT3
+			, EXT4
+			, EXT5
+			, EXT6
+			, EXT7
+			, EXT8
+			, EXT9
+			, EXT10
+			, SUB_LINK_CONT
+			, M_LINK_CONT
+			, THUMNAIL_CONT
+			, CAPTION_CONT
+			, COUNT_CONT
+			, CHARGE_NAME_CONT
+			, CHARGE_TEL_CONT
+			, OPEN_YN_CONT
+			, ANS_YN_CONT
+			, ANS_COMP_CONT
+			, ANS_WRITER
+			, ANS_R_YN
+			, ANS_DT
+			, MW_AD_OPEN_YN
+			, MW_NO_REPLY_YN
+			, MW_STATUS_CONT
+			, 'Y' APPR_YN
+			, PLACE_TYPE
+			, DEL_RSN_CD
+			, BC_DEL_YN
+			, DUPCODE
+			, REG_DT
+			, REG_ID
+			, REG_IP
+			, NOW()
+			, #{modId} MOD_ID
+			, MOD_IP
+			, DEPARTMENT
+			, CA_CDIDX
+			, CD_SUBJECT
+			, SUBJECT_CODE
+			, SHORT_CUT
+			, CLOB_CONT2
+			, MC_DEPT_CD
+			, CATEGORY
+			, GUB_PASSWORD
+			, CLOB_CONT_SEARCH
+			, PUSH_YN
+			, ANS_CONTENT 
+			FROM EZ_BBS_CONTENT
+			WHERE CB_IDX = #{cbIdx}
+			AND BC_IDX = #{bcIdx}
+	</update>
+
+	<!-- 인바라게시물 자유게시판으로 이관  -->
+    <update id="updateBoardTrans" parameterType="GBoardAdminVo">
+			UPDATE EZ_BBS_CONTENT
+			   SET MW_STATUS_CONT = '20001300'
+			     , MOD_ID = #{modId}
+			     , MOD_DT = NOW()
+			 WHERE CB_IDX = #{cbIdx}
+			   AND BC_IDX = #{bcIdx}
+	</update>
+	
+	<!-- 인바라게시물 자유게시판으로 이관으로 인한 댓글 삭제  -->
+    <delete id="deleteBoardTrans" parameterType="GBoardAdminVo">
+			DELETE EZ_CONTENT_MINWON_RESULT
+			 WHERE CB_IDX = #{cbIdx}
+			   AND BC_IDX = #{bcIdx}
+	</delete>
+	
+	<!-- 인바라 게시글 파일 삭제 대상 조회 -->
+	<select id="selectGBoardFiles" parameterType="GBoardAdminVo" resultMap="gubaraBoardFilesMap">
+		SELECT FILE_STRE_COURS
+		     , STRE_FILE_NM
+		  FROM EZ_CONTENT_FILE
+		 WHERE CB_IDX = #{cbIdx}
+		   AND BC_IDX = #{bcIdx}
+	</select>
+	
+	<!-- 인바라게시물 자유게시판으로 이관으로 인한 댓글 삭제  -->
+    <delete id="deleteGBoardFiles" parameterType="GBoardAdminVo">
+			DELETE EZ_CONTENT_FILE
+			 WHERE CB_IDX = #{cbIdx}
+			   AND BC_IDX = #{bcIdx}
+	</delete>
+	
+	<!-- 인바라게시물 답변미대상민원 처리 -->
+	<update id="updateGBoardNoAnswer" parameterType="java.util.HashMap">
+		UPDATE EZ_BBS_CONTENT
+			   SET MW_NO_REPLY_YN = 'Y'
+			     , MOD_ID = #{modId}
+			     , MOD_DT = NOW() 
+			 WHERE CB_IDX = #{cbIdx}
+			   AND BC_IDX = #{bcIdx}
+	</update>
+	
+	<!-- 인바라 게시글 복사할 게시판 대분류 리스트  -->
+	<select id="selectCopyBoardTgtGroup" resultMap="copyBoardTgtGroupMap">
+		SELECT CB_CD
+			 , CB_NAME 
+		  FROM EZ_CMS_BBS
+		 WHERE CB_UPR_CD = '16000000'
+		   AND USE_YN = 'Y'
+	</select>
+	
+	<!-- 인바라 게시글 복사할 게시판 소분류 리스트  -->
+	<select id="selectCopyBoardTgtSecond" parameterType="String" resultMap="copyBoardTgtSecondMap">
+		SELECT CB_IDX
+			 , CB_NAME
+		  FROM EZ_CMS_BBS
+		 WHERE CB_UPR_CD = #{cbUprCd}
+		   AND USE_YN = 'Y' 
+	</select>
+	
+	<!-- 인바라 게시글 복사  -->
+	<insert id="insertCopyBoard" parameterType="GBoardAdminVo">
+		INSERT INTO EZ_BBS_CONTENT
+			 SELECT #{copyBcIdx}
+			 	  , #{copyCbIdx}
+			      , #{copyCbIdx}
+			      , ANSWER_STEP
+			      , ANSWER_DEPTH
+			      , NO_CONT
+			      , CATE_CONT
+			      , SUB_CONT
+			      , NAME_CONT
+			      , ADDR_CONT
+			      , EMAIL_CONT
+			      , TEL_CONT
+			      , PHONE_CONT
+			      , REG_DT
+			      , COUNT_CONT
+			      , CLOB_CONT
+			      , M_LINK_CONT
+			      , THUMNAIL_CONT
+			      , SUB_LINK_CONT
+			      , OPEN_YN_CONT
+			      , ANS_YN_CONT
+			      , ANS_COMP_CONT
+			      , EXT1
+			      , EXT2
+			      , EXT3
+			      , EXT4
+			      , EXT5
+			      , EXT6
+			      , EXT7
+			      , EXT8
+			      , EXT9
+			      , EXT10
+			      , ANS_R_YN
+			      , MW_AD_OPEN_YN
+			      , MW_NO_REPLY_YN
+			      <!-- , NOTI_YN -->
+			      , 'N'
+			      , 'Y'
+			      , NOW()
+			      , REG_ID
+			      , NOW()
+			      , #{modId}
+			      , BC_DEL_YN
+			      , MW_STATUS_CONT
+			      , CAPTION_CONT
+  				  ,	DUPCODE
+			 FROM EZ_BBS_CONTENT
+			WHERE CB_IDX = #{cbIdx}
+			  AND BC_IDX = #{bcIdx}
+	</insert>
+	
+	<!-- 인바라 게시글 파일 복사 -->
+	<insert id="insertCopyBoardFiles" parameterType="GBoardAdminVo">
+		INSERT INTO EZ_CONTENT_FILE(BC_IDX, CB_IDX, FILE_NO, FILE_STRE_COURS, STRE_FILE_NM, ORIGNL_FILE_NM, FILE_EXTSN, FILE_CN, FILE_SIZE, MC_IDX, REG_ID)
+	    SELECT #{copyBcIdx}
+	         , #{copyCbIdx}
+	         , FILE_NO
+	         , FILE_STRE_COURS
+	         , STRE_FILE_NM
+	         , ORIGNL_FILE_NM
+	         , FILE_EXTSN
+	         , FILE_CN
+	         , FILE_SIZE
+	         , MC_IDX
+	         , REG_ID 
+	     FROM EZ_CONTENT_FILE
+	    WHERE CB_IDX = #{cbIdx}
+	      AND BC_IDX = #{bcIdx}
+	      AND MC_IDX IS NULL
+    </insert>
+      
+    <!-- 인바라 답변 기한 연기  -->  
+    <update id="updateGBoardDelayDt" parameterType="GBoardAdminVo">
+    	UPDATE EZ_CONTENT_MINWON_RESULT
+    	   SET MC_DELAY_DAY = #{mcDelayDay}
+			 , MC_DELAY_RSN = #{mcDelayRsn}
+			 , MOD_ID = #{modId}
+			 , MOD_DT = CAST(DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')AS CHAR)
+		 WHERE CB_IDX = #{cbIdx}
+	       AND BC_IDX = #{bcIdx}
+	       AND MC_IDX = #{mcIdx}  
+    </update>  
+      
+     <!-- bcIdx 생성 -->
+	<select id="selectBcIdxNo" parameterType="String" resultType="String">
+		SELECT	NVL(MAX(BC_IDX), 0) + 1 AS BC_IDX 
+		FROM	EZ_BBS_CONTENT 
+		WHERE	1 = 1
+		AND		CB_IDX = #{cbIdx}
+	</select>
+	
+	<!-- 담당부서 지정(민원결과 table insert) -->
+    <insert id="insertContentMinwonResult" parameterType="GBoardAdminVo">
+    	INSERT INTO EZ_CONTENT_MINWON_RESULT
+		(
+			CB_IDX
+			,BC_IDX
+			,MC_IDX
+			,MC_TITLE
+			,MC_DEPT_CD
+			,MC_DEPT_NO1_CD
+			,MC_DEPT_HIST
+			,MC_REPLYER
+			,MC_TEL1
+			,MC_TEL2
+			,MC_MSG
+			,MC_UNIT_CD
+			,MC_AREA_CD
+			,MC_FILED_CD
+			,MC_KD_CD
+			,MC_RESULT
+			,MC_POINT_TXT
+			,MC_DELAY_DAY
+			,MC_DELAY_RSN
+			,MC_STATUS
+			,TEMP_YN
+			,AUDIT_YN
+			,MC_B_SENDER
+			,MC_B_MTH
+			,MC_B_DAY
+			,MC_B_TXT
+			,MC_A_SENDER
+			,MC_A_MTH
+			,MC_A_DAY
+			,MC_A_TXT
+			,CONTENT_CLOB
+			,REG_DT
+			,REG_ID
+			,GUBARA_CATEGORY
+		) VALUES (
+			#{cbIdx}
+			,#{bcIdx}
+			,(SELECT NVL(MAX(TO_NUMBER(MC_IDX)), 0) + 1 AS MC_IDX FROM EZ_CONTENT_MINWON_RESULT WHERE CB_IDX = #{cbIdx} AND BC_IDX = #{bcIdx})
+			,#{mcTitle}
+			,#{mcDeptCd}
+			,#{mcDeptNo1Cd}
+			,#{mcDeptHist}
+			,#{mcReplyer}
+			,#{mcTel1}
+			,#{mcTel2}
+			,#{mcMsg}
+			,#{mcUnitCd}
+			,#{mcAreaCd}
+			,#{mcFiledCd}
+			,#{mcKdCd}
+			,#{mcResult}
+			,#{mcPointTxt}
+			,#{mcDelayDay}
+			,#{mcDelayRsn}
+			,#{mcStatus}
+			,#{tempYn}
+			,#{auditYn}
+			,#{mcBSender}
+			,#{mcBMth}
+			,#{mcBDay}
+			,#{mcBTxt}
+			,#{mcASender}
+			,#{mcAMth}
+			,CAST(DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')AS CHAR)
+			,#{mcATxt}
+			,#{contentClob}
+			,CAST(DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')AS CHAR)
+			,#{regId}
+			,#{gubaraCategory}
+		)
+    </insert>
+    
+    <!-- 담당자 지정 -->
+    <update id="updateContentMinwonResult" parameterType="GBoardAdminVo">
+    	UPDATE	CONTENT_MINWON_RESULT
+    	SET MOD_DT 			= CAST(DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')AS CHAR)
+			,MOD_ID 		= #{modId}
+			,MC_REPLYER     = #{mcReplyer}  
+			WHERE	CB_IDX 	= #{cbIdx}
+			AND	BC_IDX 		= #{bcIdx}
+			AND	MC_IDX 		= #{mcIdx}
+    </update>
+    
+    <select id="selectDepList" parameterType="GBoardAdminVo" resultMap="selectDepListMap">
+    
+    	SELECT	CB_IDX
+				,BC_IDX
+				,MC_IDX
+				,MC_TITLE
+				,MC_DEPT_CD
+				,(SELECT CD_SUBJECT FROM EZ_DEPARTMENT A WHERE A.CD_IDX = MC_DEPT_CD) AS MC_DEPT_NAME
+				,MC_DEPT_NO1_CD
+				,MC_DEPT_HIST
+				,MC_REPLYER
+				,MC_TEL1
+				,MC_TEL2
+				,MC_MSG
+				,MC_UNIT_CD
+				,MC_AREA_CD
+				,(SELECT CODE_NAME FROM EZ_CMM_CODE  WHERE CODE = MC_FILED_CD ) AS MC_FILED_CD
+				,MC_KD_CD
+				,MC_RESULT
+				,MC_POINT_TXT
+				,CAST(DATE_FORMAT(MC_DELAY_DAY, '%Y-%m-%')AS CHAR) AS MC_DELAY_DAY
+				,MC_DELAY_RSN
+				,MC_STATUS
+				,TEMP_YN
+				,AUDIT_YN
+				,MC_B_SENDER
+				,MC_B_MTH
+				,CAST(DATE_FORMAT(MC_B_DAY, '%Y-%m-%')AS CHAR) AS MC_B_DAY
+				,MC_B_TXT
+				,MC_A_SENDER
+				,MC_A_MTH
+				,CAST(DATE_FORMAT(MC_B_DAY, '%Y-%m-%')AS CHAR) AS MC_A_DAY
+				,MC_A_TXT
+				,CONTENT_CLOB
+				,DATE_FORMAT(TO_DATE(REG_DT,'%Y%m%d%H%i%s'),'%Y-%m-%d %H:%i:%s') AS REG_DT
+				,(SELECT
+					CAST(MAX(DATE_ADD(DATE_FORMAT(AA.REG_DT, '%Y-%m-%d'), INTERVAL RN DAY))AS CHAR)
+					FROM (
+				   WITH RECURSIVE RGEN(RN) AS (SELECT 1 UNION ALL SELECT RN+1 FROM RGEN WHERE RN <![CDATA[<=]]> 14) SELECT RN FROM RGEN
+				) WHERE
+				   CAST(DAYOFWEEK(DATE_ADD(DATE_FORMAT(AA.REG_DT, '%Y-%m-%d'), INTERVAL RN DAY))AS CHAR) IN (2,3,4,5,6) 
+				   AND CAST(DATE_ADD(DATE_FORMAT(AA.REG_DT,'%Y-%m-%d'), INTERVAL RN DAY) AS CHAR) <![CDATA[<>]]> ALL (SELECT HOL_DATE FROM EZ_HOLIDAY WHERE 1 = 1)
+				   AND ROWNUM <![CDATA[<=]]> (CASE WHEN  AA.REG_HH <![CDATA[>=]]> '18' THEN 3 ELSE 2 END)
+				) AS REPL_REG_DT
+				,REG_ID
+				,CAST(DATE_FORMAT(MOD_DT,'%Y-%m-%d- %H:%i:%s')AS CHAR) AS MOD_DT
+				,MOD_ID
+		        ,CAST(DATE_FORMAT(MOD_DT,'%Y')AS CHAR) AS MOD_DT1
+		        ,CAST(DATE_FORMAT(MOD_DT,'%m')AS CHAR) AS MOD_DT2
+		        ,CAST(DATE_FORMAT(MOD_DT,'%d')AS CHAR) AS MOD_DT3
+		        ,GUBARA_CATEGORY
+		        ,@ROWNUM:=@ROWNUM+1 ROWNUM
+		FROM	EZ_CONTENT_MINWON_RESULT
+		WHERE	1 = 1
+		AND     (@ROWNUM:=0)=0
+		AND		CB_IDX = #{cbIdx}
+		AND		BC_IDX = #{bcIdx}
+		AND 	MC_DEPT_CD IS NOT NULL
+		ORDER BY MC_DEPT_CD ASC, MC_IDX ASC
+		
+    </select>
+    
+    <select id="selectDepMap" parameterType="GBoardAdminVo" resultMap="selectDepListMap2">
+    	/* selectDepMap */
+    	SELECT	CB_IDX
+				,BC_IDX
+				,MC_IDX
+				,MC_TITLE
+				,MC_DEPT_CD
+				,(SELECT CD_SUBJECT FROM EZ_DEPARTMENT A WHERE A.CD_IDX = MC_DEPT_CD) AS MC_DEPT_NAME
+				,MC_DEPT_NO1_CD
+				,MC_DEPT_HIST
+				,MC_REPLYER
+				,MC_TEL1
+				,MC_TEL2
+				,MC_MSG
+				,MC_UNIT_CD
+				,MC_AREA_CD
+				,MC_FILED_CD
+				,MC_KD_CD
+				,MC_RESULT
+				,MC_POINT_TXT
+				,CAST(DATE_FORMAT(MC_DELAY_DAY, '%Y-%m-%d')AS CHAR) AS MC_DELAY_DAY
+				,MC_DELAY_RSN
+				,MC_STATUS
+				,TEMP_YN
+				,AUDIT_YN
+				,MC_B_SENDER
+				,MC_B_MTH
+				,CAST(DATE_FORMAT(MC_B_DAY, '%Y-%m-%d')AS CHAR) AS MC_B_DAY
+				,MC_B_TXT
+				,MC_A_SENDER
+				,MC_A_MTH
+				,CAST(DATE_FORMAT(MC_B_DAY, '%Y-%m-%d')AS CHAR) AS MC_A_DAY
+				,MC_A_TXT
+				,CONTENT_CLOB
+				,CAST(DATE_FORMAT(REG_DT, '%Y-%m-%d')AS CHAR) AS REG_DT
+				,REG_ID
+				,CAST(DATE_FORMAT(MOD_DT, '%Y-%m-%d %H:%i:%s')AS CHAR) AS MOD_DT
+				,MOD_ID
+				,CAST(DATE_FORMAT(MOD_DT, '%Y')AS CHAR) AS MOD_DT1
+				,CAST(DATE_FORMAT(MOD_DT, '%m')AS CHAR) AS MOD_DT2
+				,CAST(DATE_FORMAT(MOD_DT, '%d')AS CHAR) AS MOD_DT3
+		        ,GUBARA_CATEGORY
+		FROM	CONTENT_MINWON_RESULT
+		WHERE	1 = 1
+		AND		CB_IDX = #{cbIdx}
+		AND		BC_IDX = #{bcIdx}
+		AND		MC_IDX = #{mcIdx}
+    </select>
+    
+    <select id="selectMwResultMap" parameterType="GBoardAdminVo" resultType="hashMap">
+    	SELECT	CB_IDX
+				,BC_IDX
+				,MC_IDX
+				,MC_TITLE
+				,MC_DEPT_CD
+				,(SELECT CD_SUBJECT FROM EZ_DEPARTMENT A WHERE A.CD_IDX = MC_DEPT_CD) AS MC_DEPT_NAME
+				,MC_DEPT_NO1_CD
+				,MC_DEPT_HIST
+				,MC_REPLYER
+				,MC_TEL1
+				,MC_TEL2
+				,MC_MSG
+				,MC_UNIT_CD
+				,MC_AREA_CD
+				,MC_FILED_CD
+				,MC_KD_CD
+				,MC_RESULT
+				,MC_POINT_TXT
+				,CAST(DATE_FORMAT(MC_DELAY_DAY, '%Y-%m-%d %H:%i:%s')AS CHAR) AS MC_DELAY_DAY
+				,MC_DELAY_RSN
+				,MC_STATUS
+				,TEMP_YN
+				,AUDIT_YN
+				,MC_B_SENDER
+				,MC_B_MTH
+				,CAST(DATE_FORMAT(MC_B_DAY, '%Y-%m-%d %H:%i:%s')AS CHAR) AS MC_B_DAY
+				,MC_B_TXT
+				,MC_A_SENDER
+				,MC_A_MTH
+				,MC_A_DAY
+				,MC_A_TXT
+				,CONTENT_CLOB
+				,REG_DT
+				,REG_ID
+				,CAST(DATE_FORMAT(MOD_DT, '%Y-%m-%d %H:%i:%s')AS CHAR) AS MOD_DT
+				,MOD_ID
+				,CAST(DATE_FORMAT(MOD_DT, '%Y%m%d%H%i%s')AS CHAR) AS MOD_DT1
+				,CAST(DATE_FORMAT(MOD_DT, '%Y%m%d%H%i%s')AS CHAR) AS MOD_DT2
+				,CAST(DATE_FORMAT(MOD_DT, '%Y%m%d%H%i%s')AS CHAR) AS MOD_DT3
+		        ,GUBARA_CATEGORY
+		FROM	CONTENT_MINWON_RESULT
+		WHERE	1 = 1
+		AND		CB_IDX = #{cbIdx}
+		AND		BC_IDX = #{bcIdx}
+		AND		MC_IDX = #{mcIdx}
+    </select>
+    
+    <!-- 담당부서 삭제 -->
+    <delete id="deleteDep" parameterType="GBoardAdminVo">
+    	DELETE	FROM	EZ_CONTENT_MINWON_RESULT
+    	WHERE	CB_IDX = #{cbIdx}
+		AND		BC_IDX = #{bcIdx}
+		AND		MC_IDX = #{mcIdx}
+    </delete>
+    
+    <!-- 담당부서변경 -->
+    <update id="updateDep" parameterType="GBoardAdminVo">
+    	UPDATE	EZ_CONTENT_MINWON_RESULT
+    	SET		MC_DEPT_CD = #{mcDeptCd}
+    			,MC_DEPT_HIST = #{mcDeptHist}
+    			,MC_REPLYER = ''
+    			,MOD_DT = CAST(DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')AS CHAR)
+    			,MOD_ID = #{modId}
+    	WHERE	CB_IDX = #{cbIdx}
+		AND		BC_IDX = #{bcIdx}
+		AND		MC_IDX = #{mcIdx}
+    </update>
+
+    <!-- 1, 2차 대화 저장 -->
+    <update id="updateMcContentReg" parameterType="GBoardAdminVo">
+    	UPDATE	EZ_CONTENT_MINWON_RESULT
+    	SET		MOD_ID = #{modId}
+    			<if test="mcBSender != null and mcBSender != ''">
+				,MC_B_SENDER = #{mcBSender}
+				,MC_B_DAY = CAST(DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')AS CHAR)
+				</if>
+				<if test="mcBMth != null and mcBMth != ''">
+				,MC_B_MTH = #{mcBMth}
+				</if>
+				<if test="mcBTxt != null and mcBTxt != ''">
+				,MC_B_TXT = #{mcBTxt}
+				</if>
+				<if test="mcASender != null and mcASender != ''">
+				,MC_A_SENDER = #{mcASender}
+				,MC_A_DAY = CAST(DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')AS CHAR)
+				</if>
+				<if test="mcAMth != null and mcAMth != ''">
+				,MC_A_MTH = #{mcAMth}
+				</if>
+				<if test="mcATxt != null and mcATxt != ''">
+				,MC_A_TXT = #{mcATxt}
+				</if>
+    	WHERE	CB_IDX = #{cbIdx}
+		AND		BC_IDX = #{bcIdx}
+		AND		MC_IDX = #{mcIdx}
+    </update>
+
+    <!-- 답변초기화 -->
+    <update id="updateReplDel" parameterType="GBoardAdminVo">
+    	UPDATE	EZ_CONTENT_MINWON_RESULT
+    	SET		MOD_DT = CAST(DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')AS CHAR)
+    			,MOD_ID = #{modId}
+    			,MC_DEPT_NO1_CD = ''
+    			,MC_TEL1 = ''
+    			,MC_TEL2 = ''
+    			,MC_UNIT_CD = ''
+    			,MC_AREA_CD = ''
+    			,MC_FILED_CD = ''
+    			,MC_KD_CD = ''
+    			,MC_RESULT = ''
+    			,MC_POINT_TXT = ''
+    			,TEMP_YN = ''
+    			,CONTENT_CLOB = ''
+    	WHERE	CB_IDX = #{cbIdx}
+		AND		BC_IDX = #{bcIdx}
+		AND		MC_IDX = #{mcIdx}
+    </update>
+    
+    <!-- 부서장 select -->
+    <select id="selectReplDept" parameterType="GBoardAdminVo" resultMap="selectReplDeptMap">
+    	SELECT	B.CE_DEPSTEP4
+    			, B.CE_NAME
+    			, B.CE_TEL
+    			, B.CE_DEPSTEP3
+    	FROM	EZ_DEPARTMENT A LEFT OUTER JOIN EZ_EMPLOYEE B ON SUBSTR(A.CD_IDX,0,10) = SUBSTR(B.CE_CDIDX,0,10)
+		WHERE	1 = 1
+		<!-- AND		A.CD_IDX = #{mcDeptCd} -->
+		AND		A.CD_SUBJECT = #{mcDeptCd}
+		AND		(B.CE_DEPSTEP4='과장' OR B.CE_DEPSTEP4='단장' OR B.CE_DEPSTEP4='동장' OR B.CE_DEPSTEP4='팀장')
+		ORDER BY B.CE_DEPSTEP4 ASC
+    </select>
+    
+    <!-- 일괄답변용 부서장 select -->
+    <select id="selectReplDept2" resultMap="selectReplDeptMap">
+    	SELECT	CE_DEPSTEP4
+    			, CE_NAME
+    			, CE_TEL
+    			, CE_DEPSTEP2 AS CE_DEPSTEP3
+    	FROM EZ_EMPLOYEE
+		WHERE (CE_DEPSTEP4='과장' OR CE_DEPSTEP4='단장' OR CE_DEPSTEP4='동장')
+		ORDER BY CE_CDIDX ASC
+    </select>
+    
+    <!-- 단위업무명1차 select -->
+    <select id="selectDw1" parameterType="GBoardAdminVo" resultMap="selectDw1Map">
+    	SELECT  CD_IDX
+		        ,CD_SUBJECT
+		FROM    EZ_DEPARTMENT
+		WHERE   1 = 1
+		AND     CD_DEPSTEP2 <![CDATA[<>]]> '00' AND CD_DEPSTEP3 = '00' AND CD_DEPSTEP1 <![CDATA[<>]]> '10'
+		ORDER BY CD_CODE ASC
+    </select>
+    
+    <select id="selectChiefHistory" parameterType="GBoardAdminVo" resultType="hashMap">
+    	SELECT  A.CH_IDX
+		        ,A.CH_NAME
+		        ,A.CH_START_DATE
+		        ,A.CH_END_DATE
+		FROM    (
+		        SELECT  CH_IDX
+		                ,CH_NAME
+		                ,TO_CHAR(TO_DATE(CH_START_DATE, 'YYYY-MM-DD'), 'YYYYMMDD') AS CH_START_DATE
+		                ,TO_CHAR(TO_DATE(CH_END_DATE, 'YYYY-MM-DD'), 'YYYYMMDD') AS CH_END_DATE
+		        FROM    CHIEF_HISTORY
+		        WHERE   USE_YN = 'Y'
+		        ) A
+		WHERE   1 = 1
+		AND     TO_CHAR(SYSDATE, 'YYYYMMDD') <![CDATA[>=]]> A.CH_START_DATE
+		AND     TO_CHAR(SYSDATE, 'YYYYMMDD') <![CDATA[<=]]> A.CH_END_DATE
+    </select>
+    
+    <!-- 답변 저장 -->
+    <update id="updateLastReplReg" parameterType="GBoardAdminVo">
+    	UPDATE	EZ_CONTENT_MINWON_RESULT
+    	SET		
+    			MOD_DT = CAST(DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')AS CHAR),
+    			MOD_ID = #{modId}
+    			<if test="mcReplyer != null and mcReplyer != ''">
+    			,MC_REPLYER = #{mcReplyer}
+    			</if>
+    			<if test="mcDeptCd != null and mcDeptCd != ''">
+    			,MC_DEPT_CD = #{mcDeptCd}
+    			</if>
+    			<if test="mcDeptNo1Cd != null and mcDeptNo1Cd != ''">
+    			,MC_DEPT_NO1_CD = #{mcDeptNo1Cd}
+    			</if>
+    			<if test="tempYn != null and tempYn != ''">
+    			,TEMP_YN = 'Y'
+    			</if>
+    			<if test="mcTel1 != null and mcTel1 != ''">
+    			,MC_TEL1        = #{mcTel1}
+    			</if>
+    			<if test="mcTel2 != null and mcTel2 != ''">
+    			,MC_TEL2        = #{mcTel2}
+    			</if>
+    			<if test="mcUnitCd != null and mcUnitCd != ''">
+    			,MC_UNIT_CD     = #{mcUnitCd}
+    			</if>
+    			<if test="mcAreaCd != null and mcAreaCd != ''">
+    			,MC_AREA_CD     = #{mcAreaCd}
+    			</if>
+    			<if test="mcFiledCd != null and mcFiledCd != ''">
+    			,MC_FILED_CD    = #{mcFiledCd}
+    			</if>
+    			<if test="mcKdCd != null and mcKdCd != ''">
+    			,MC_KD_CD       = #{mcKdCd}
+    			</if>
+    			<if test="mcResult != null and mcResult != ''">
+    			,MC_RESULT      = #{mcResult}
+    			</if>
+    			<if test="mcPointTxt != null and mcPointTxt != ''">
+    			,MC_POINT_TXT   = #{mcPointTxt}
+    			</if>
+    			<if test="contentClob != null and contentClob != ''">
+    			,CONTENT_CLOB   = #{contentClob}
+    			</if>
+    			<if test="gubaraCategory != null and gubaraCategory != ''">
+    			,GUBARA_CATEGORY   = #{gubaraCategory}
+    			</if>
+    	WHERE	CB_IDX = #{cbIdx}
+		AND		BC_IDX = #{bcIdx}
+		AND		MC_IDX = #{mcIdx}
+    </update>
+    
+    <!-- 일괄 답변 저장 -->
+    <update id="updateLastReplRegArr" parameterType="GBoardAdminVo">
+    	UPDATE	EZ_CONTENT_MINWON_RESULT
+    	SET		
+    			<if test="gbnVal!=&quot;U&quot;">
+    			MOD_DT = CAST(DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')AS CHAR),
+    			</if>
+    			MOD_ID = #{modId}
+    			<if test="mcDeptNo1Cd != null and mcDeptNo1Cd != ''">
+    			,MC_DEPT_NO1_CD = #{mcDeptNo1Cd}
+    			</if>
+    			<if test="tempYn != null and tempYn != ''">
+    			,TEMP_YN = 'Y'
+    			</if>
+    			<if test="mcTel1 != null and mcTel1 != ''">
+    			,MC_TEL1        = #{mcTel1}
+    			</if>
+    			<if test="mcTel2 != null and mcTel2 != ''">
+    			,MC_TEL2        = #{mcTel2}
+    			</if>
+    			<if test="mcUnitCd != null and mcUnitCd != ''">
+    			,MC_UNIT_CD     = #{mcUnitCd}
+    			</if>
+    			<if test="mcAreaCd != null and mcAreaCd != ''">
+    			,MC_AREA_CD     = #{mcAreaCd}
+    			</if>
+    			<if test="mcFiledCd != null and mcFiledCd != ''">
+    			,MC_FILED_CD    = #{mcFiledCd}
+    			</if>
+    			<if test="mcKdCd != null and mcKdCd != ''">
+    			,MC_KD_CD       = #{mcKdCd}
+    			</if>
+    			<if test="mcResult != null and mcResult != ''">
+    			,MC_RESULT      = #{mcResult}
+    			</if>
+    			<if test="mcPointTxt != null and mcPointTxt != ''">
+    			,MC_POINT_TXT   = #{mcPointTxt}
+    			</if>
+    			<if test="contentClob != null and contentClob != ''">
+    			,CONTENT_CLOB   = #{contentClob}
+    			</if>
+    	WHERE	CB_IDX = 414
+		AND		BC_IDX = #{bcIdx}
+		AND		MC_STATUS IS NOT NULL
+    </update>
+    
+	<!-- 공통코드 조회 -->
+    <select id="selectCode" parameterType="String" resultMap="codeMap">
+    	SELECT CODE
+			 , CODE_NAME
+		     , CODE_UPR 
+    	  FROM EZ_CMM_CODE
+		 WHERE CODE_UPR = #{codeUpr}
+		   AND USE_YN = 'Y'
+		 ORDER BY ORD_NO
+    </select>
+    
+    <!-- 통합답변 등록 -->
+    <insert id="insertIntergResp" parameterType="GBoardAdminVo">
+    	INSERT INTO EZ_CONTENT_MINWON_RESULT
+	    	 (
+	    	   CB_IDX
+	    	 , BC_IDX
+	    	 , MC_IDX
+	    	 , MC_DEPT_CD
+	    	 , AUDIT_YN
+	    	 , MC_POINT_TXT
+	    	 , CONTENT_CLOB
+	    	 , REG_ID
+	    	 , REG_DT
+	    	 , MOD_ID
+	    	 , MOD_DT
+	    	 )
+		VALUES
+			(
+			   #{cbIdx}
+	    	 , #{bcIdx}
+	    	 <!-- , #{mcIdx} -->
+	    	 , (SELECT NVL(MAX(TO_NUMBER(MC_IDX)), 0) + 1 FROM EZ_CONTENT_MINWON_RESULT WHERE CB_IDX = #{cbIdx} AND BC_IDX = #{bcIdx})
+	    	 , #{mcDeptCd}
+	    	 , #{auditYn}
+	    	 , #{mcPointTxt}
+	    	 , #{contentClob}
+	    	 , #{regId}
+	    	 , CAST(DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')AS CHAR)
+	    	 , #{regId}
+	    	 , CAST(DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')AS CHAR)
+			)
+    </insert>
+    
+    <!-- 통합답변 수정 -->
+    <update id="updateIntergResp" parameterType="GBoardAdminVo">
+    	UPDATE	EZ_CONTENT_MINWON_RESULT
+    	SET		MOD_ID		= #{modId}
+				, MOD_DT		= CAST(DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')AS CHAR)
+				<if test="auditYn != null and auditYn != ''">
+    			, AUDIT_YN		= #{auditYn}
+				</if>
+				<if test="mcPointTxt != null and mcPointTxt != ''">
+				, MC_POINT_TXT	= #{mcPointTxt}
+				</if>
+				<if test="contentClob != null and contentClob != ''">
+				, CONTENT_CLOB	= #{contentClob}
+				</if>
+		WHERE	CB_IDX = #{cbIdx}
+		AND		BC_IDX = #{bcIdx}
+		AND		MC_IDX = #{mcIdx}
+    </update>
+    
+     <!-- mcIdx 생성 -->
+	<select id="selectMcIdxNo" parameterType="GBoardAdminVo" resultType="String">
+		SELECT	NVL(MAX(TO_NUMBER(MC_IDX)), 0) + 1 AS MC_IDX 
+		FROM	EZ_CONTENT_MINWON_RESULT 
+		WHERE	1 = 1
+		AND		CB_IDX = #{cbIdx}
+		AND		BC_IDX = #{bcIdx}
+	</select>
+	
+	<!-- 인바라게시글 상태값 변경 -->
+	<update id="updateGBoardStatus" parameterType="GBoardAdminVo">
+		UPDATE EZ_BBS_CONTENT
+		   SET MOD_ID = #{modId}
+		     , MOD_DT = NOW()
+			 , MW_STATUS_CONT = #{mwStatusCont}
+		 WHERE CB_IDX = #{cbIdx}
+		   AND BC_IDX = #{bcIdx}
+	</update>
+	
+	<insert id="insertBoardReplReg" parameterType="GBoardAdminVo">
+		INSERT INTO EZ_CONTENT_MINWON_RESULT      
+			SELECT  (SELECT NVL(MAX(TO_NUMBER(MC_IDX)), 0) + 1 AS MC_IDX FROM EZ_CONTENT_MINWON_RESULT WHERE CB_IDX = #{cbIdx} AND BC_IDX = #{bcIdx}) MC_IDX
+					<!-- (MC_IDX + 1) AS MC_IDX -->
+					,BC_IDX
+					,'' AS MC_TITLE
+					,MC_DEPT_CD
+					,'' AS MC_DEPT_NO1_CD
+					,'' AS MC_DEPT_HIST
+					,'' AS MC_REPLYER
+					,'' AS MC_TEL1
+					,'' AS MC_TEL2
+					,'' AS MC_MSG
+					,'' AS MC_UNIT_CD
+					,'' AS MC_AREA_CD
+					,'' AS MC_FILED_CD
+					,'' AS MC_KD_CD
+					,'' AS MC_RESULT
+					,'' AS MC_POINT_TXT
+					,'' AS MC_DELAY_DAY
+					,'' AS MC_DELAY_RSN
+					,'Y' AS MC_STATUS
+					,'' AS TEMP_YN
+					,'' AS AUDIT_YN
+					,'' AS MC_B_SENDER
+					,'' AS MC_B_MTH
+					,'' AS MC_B_DAY
+					,'' AS MC_B_TXT
+					,'' AS MC_A_SENDER
+					,'' AS MC_A_MTH
+					,CAST(DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')AS CHAR) AS MC_A_DAY
+					,'' AS MC_A_TXT
+					,CAST(DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')AS CHAR) AS REG_DT
+					,#{regId} AS REG_ID
+					,'' AS MOD_DT
+					,'' AS MOD_ID
+					,CB_IDX
+					,'' AS CONTENT_CLOB
+					,'' AS MC_SURVEY
+			        ,'' AS MC_SURVEY_DESC
+			        ,'' AS MC_SURVEY_REG_DT  
+			        ,'' AS GUBARA_CATEGORY 
+			FROM    EZ_CONTENT_MINWON_RESULT
+			WHERE   CB_IDX = #{cbIdx}
+			AND     BC_IDX = #{bcIdx}
+			AND     MC_IDX = #{mcIdx}
+	</insert>
+	
+	<!-- 인바라 답변 체크 -->
+	<select id="selectContentClobChk" parameterType="GBoardAdminVo" resultType="int">
+		SELECT	COUNT(*)
+		FROM	EZ_CONTENT_MINWON_RESULT
+		WHERE	1 = 1
+		AND		CB_IDX = #{cbIdx}
+		AND		BC_IDX = #{bcIdx}
+		AND		AUDIT_YN IS NOT NULL
+		<!-- AND		TO_CHAR(CONTENT_CLOB) = '' -->
+	</select>
+	
+	<!-- 통합답변조회 -->
+	<select id="selectIntergResp" parameterType="GBoardAdminVo" resultMap="selectIntergRespMap">
+		SELECT    CB_IDX
+		        , BC_IDX
+		        , MC_IDX
+		        , AUDIT_YN
+		        , (SELECT A.CODE_NAME FROM EZ_CMM_CODE A WHERE A.CODE = AUDIT_YN AND CODE_UPR = '27000000' AND A.USE_YN = 'Y') AS AUDIT_NAME
+		        , MC_POINT_TXT
+		        , CONTENT_CLOB
+		        , REG_ID
+		        , REG_DT
+		FROM    EZ_CONTENT_MINWON_RESULT
+		WHERE   1 = 1
+		AND     CB_IDX = #{cbIdx}
+		AND     BC_IDX = #{bcIdx}
+		AND		AUDIT_YN IS NOT NULL
+		<!-- AND     AUDIT_YN IS NOT NULL -->
+	</select>
+	
+	<!-- 인바라 만족도 목록 -->
+	<select id="selectSurveyList" parameterType="GBoardAdminVo" resultType="egovMap">
+		<![CDATA[
+			SELECT A.* FROM(	
+			SELECT  @ROWNUM:=@ROWNUM+1 ROWNUM
+					,BC.SUB_CONT
+						     , BC.NAME_CONT
+						     , CAST(DATE_FORMAT(CMR.MC_SURVEY_REG_DT,'%Y-%m-%d')AS CHAR) AS MC_SURVEY_REG_DT
+						     , CMR.MC_DEPT_CD
+						     , CMR.MC_SURVEY
+						     , CMR.MC_SURVEY_DESC
+			FROM EZ_CONTENT_MINWON_RESULT CMR
+			, EZ_BBS_CONTENT BC
+			WHERE (@ROWNUM:=0)=0
+			AND 1 = 1
+			AND CMR.CB_IDX = BC.CB_IDX
+			AND CMR.BC_IDX = BC.BC_IDX
+			AND CMR.MC_SURVEY IS NOT NULL
+			AND BC.BC_DEL_YN = 'N'
+		]]>
+		<if test="scSDate != null and scSDate != ''">
+			<![CDATA[
+				AND CAST(DATE_FORMAT(CMR.MC_SURVEY_REG_DT,'%Y-%m-%d')AS CHAR) >= #{scSDate}
+			]]>
+		</if>
+		<if test="scEDate != null and scEDate != ''">
+			<![CDATA[
+				AND CAST(DATE_FORMAT(CMR.MC_SURVEY_REG_DT,'%Y-%m-%d')AS CHAR) <= #{scEDate}
+			]]>
+		</if>
+		<![CDATA[
+			ORDER BY CMR.MC_SURVEY_REG_DT DESC
+			) A WHERE ROWNUM BETWEEN #{firstIndex + 1 AND #{firstIndex + #{recordCountPerPage}
+		]]>
+	</select>	
+	
+	<!-- 인바라 만족도 목록 Excel-->
+	<select id="selectSurveyExcel" parameterType="GBoardAdminVo" resultType="egovMap">
+		<![CDATA[
+			SELECT BC.SUB_CONT
+			     , BC.NAME_CONT
+			     , CAST(DATE_FORMAT(CMR.MC_SURVEY_REG_DT,'%Y-%m-%d')AS CHAR) AS MC_SURVEY_REG_DT
+			     , CMR.MC_DEPT_CD
+			     , CMR.MC_SURVEY
+			     ,  CMR.MC_SURVEY_DESC
+			  FROM EZ_CONTENT_MINWON_RESULT CMR
+			     , EZ_BBS_CONTENT BC
+			 WHERE CMR.CB_IDX = BC.CB_IDX
+			   AND CMR.BC_IDX = BC.BC_IDX
+			   AND CMR.MC_SURVEY IS NOT NULL
+			   AND BC.BC_DEL_YN = 'N'
+		]]>
+		<if test="scSDate != null and scSDate != ''">
+			<![CDATA[
+				AND CAST(DATE_FORMAT(CMR.MC_SURVEY_REG_DT,'%Y-%m-%d')AS CHAR) >= #{scSDate}
+			]]>
+		</if>
+		<if test="scEDate != null and scEDate != ''">
+			<![CDATA[
+				AND CAST(DATE_FORMAT(CMR.MC_SURVEY_REG_DT,'%Y-%m-%d')AS CHAR) <= #{scEDate}
+			]]>
+		</if>
+		<![CDATA[
+		ORDER BY CMR.MC_SURVEY_REG_DT DESC
+		]]>
+	</select>	
+	
+	<!-- 인바라 만족도 목록 총갯수 -->
+	<select id="selectPagSurvey" parameterType="GBoardAdminVo" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*)
+			  FROM EZ_CONTENT_MINWON_RESULT CMR
+			     , EZ_BBS_CONTENT BC
+			 WHERE CMR.CB_IDX = BC.CB_IDX
+			   AND CMR.BC_IDX = BC.BC_IDX
+			   AND CMR.MC_SURVEY IS NOT NULL
+		]]>
+		<if test="scSDate != null and scSDate != ''">
+			<![CDATA[
+				AND CAST(DATE_FORMAT(CMR.MC_SURVEY_REG_DT,'%Y-%m-%d')AS CHAR) >= #{scSDate}
+			]]>
+		</if>
+		<if test="scEDate != null and scEDate != ''">
+			<![CDATA[
+				AND CAST(DATE_FORMAT(CMR.MC_SURVEY_REG_DT,'%Y-%m-%d')AS CHAR) <= #{scEDate}
+			]]>
+		</if>
+	</select>
+	
+		
+	<!-- 인바라게시글 부서 공통게시판에 update 변경(사용자 페이지 인바라 검색에 사용) -->
+	<update id="updateGBoardCdSubject" parameterType="GBoardAdminVo">
+		UPDATE EZ_BBS_CONTENT
+		   SET MOD_ID = #{modId}
+		     , MOD_DT = NOW()
+			 , CD_SUBJECT = #{mcDeptCd}
+		 WHERE CB_IDX = #{cbIdx}
+		   AND BC_IDX = #{bcIdx}
+	</update>
+	
+	
+	<!-- 인바라 상태처리 -->
+	<update id="updateBoardStatus" parameterType="GBoardAdminVo">
+		UPDATE EZ_BBS_CONTENT
+		   SET MOD_ID = #{modId}
+		     , MOD_DT = NOW()
+			 , MW_STATUS_CONT = #{mwStatusCont}
+		 WHERE CB_IDX = #{cbIdx}
+		   AND BC_IDX = #{bcIdx}
+	</update>
+
+	<update id="updateAnsDeadlineDt" parameterType="GBoardAdminVo">
+		UPDATE EZ_BBS_CONTENT
+		   SET MOD_ID = #{modId}
+		     , MOD_DT = NOW()
+			  , ANS_DEADLINE_DT = #{ansDeadlineDt}
+		 WHERE CB_IDX = #{cbIdx}
+		   AND BC_IDX = #{bcIdx}
+	</update>
+		
+</mapper>

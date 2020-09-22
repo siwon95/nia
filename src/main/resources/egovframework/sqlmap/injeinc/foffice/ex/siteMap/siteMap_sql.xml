@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SiteMapDao">
+	
+	<resultMap id="MenuListMap" type="egovframework.injeinc.foffice.ex.siteMap.vo.SiteMapVo">
+		<result property="menuNm" column="MENU_NM"/>		<!--메뉴 명-->
+		<result property="menuDepth" column="MENU_DEPTH"/>		<!--메뉴 깊이-->
+		<result property="sortOrder" column="SORT_ORDER"/>		<!--메뉴 코드-->
+		<result property="userMenuUrl" column="USER_MENU_URL"/>		<!--사용자 URL-->
+		<result property="parent" column="PARENT"/>		<!--부모 코드-->
+	</resultMap>
+	
+	<sql id="selectListUserTemp">
+		<![CDATA[
+			WITH TEMP AS (SELECT A.*
+        				FROM   (SELECT MENU_NM ,
+				                       MENU_DEPTH ,
+				                       SORT_ORDER ,
+				                       USER_MENU_URL,
+                                       CASE
+                                         WHEN MENU_DEPTH = 1 THEN RPAD(SUBSTR(SORT_ORDER, 1, 2), 13, '0')
+                                         WHEN MENU_DEPTH = 2 THEN RPAD(SUBSTR(SORT_ORDER, 1, 3), 13, '0')
+                                         WHEN MENU_DEPTH = 3 THEN RPAD(SUBSTR(SORT_ORDER, 1, 5), 13, '0')
+                                         WHEN MENU_DEPTH = 4 THEN RPAD(SUBSTR(SORT_ORDER, 1, 7), 13, '0')
+                                         WHEN MENU_DEPTH = 5 THEN RPAD(SUBSTR(SORT_ORDER, 1, 9), 13, '0')
+                                         WHEN MENU_DEPTH = 6 THEN RPAD(SUBSTR(SORT_ORDER, 1, 11), 13, '0')
+                                         WHEN MENU_DEPTH = 7 THEN RPAD(SUBSTR(SORT_ORDER, 1, 13), 13, '0')
+                                         ELSE '0'
+                                       END PARENT
+                				FROM   EZ_USER_MENU
+                				WHERE  SITE_CD =#{siteGb} ) A START WITH A.PARENT = '0' CONNECT BY NOCYCLE PRIOR A.SORT_ORDER = A.PARENT)
+		]]>
+	</sql>
+	
+	<select id="selectListUserMenu" parameterType="SiteMapVo" resultMap="MenuListMap">
+		
+			<include refid="selectListUserTemp"/>
+			<![CDATA[ SELECT T.* FROM TEMP T WHERE T.PARENT = #{parent}]]>
+		
+	</select>
+	
+</mapper>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SnsLogDao">
+	
+	<resultMap id="SnsLogMap" type="egovframework.injeinc.boffice.ex.snsLog.vo.SnsLogVo">
+		<result property="slSortOrder" column="SL_SORT_ORDER"/>
+		<result property="slMenuNm" column="SL_MENU_NM"/>
+		<result property="slMenuPath" column="SL_MENU_PATH"/>
+		<result property="slBcidx" column="SL_BCIDX"/>
+		<result property="subCont" column="SUB_CONT"/>
+		<result property="slKakaotalk" column="SL_KAKAOTALK"/>
+		<result property="slKakaostory" column="SL_KAKAOSTORY"/>
+		<result property="slBand" column="SL_BAND"/>
+		<result property="slFacebook" column="SL_FACEBOOK"/>
+		<result property="slTwitter" column="SL_TWITTER"/>
+	</resultMap>
+
+	<insert id="insertSnsLog" parameterType="SnsLogVo">
+		<![CDATA[
+			INSERT INTO SNS_LOG
+			(
+				SL_SITE_CD
+				, SL_SORT_ORDER
+		]]>
+		<if test="slBcidx != null and slBcidx != ''">
+			<![CDATA[
+				SL_BCIDX
+			]]>
+		</if>
+		<![CDATA[
+				, SL_TYPE
+		
+			)
+			VALUES
+			(
+				#{slSiteCd}
+				, #{slSortOrder}
+		]]>
+		<if test="slBcidx != null and slBcidx != ''">
+			<![CDATA[
+				, #{slBcidx}
+			]]>
+		</if>
+		<![CDATA[
+				, #{slType}
+			)
+		]]>
+	</insert>
+	
+	<sql id="searchSnsLog">
+		<if test="searchStartDt != null and searchStartDt != ''">
+			<![CDATA[
+				AND TO_DATE(#{searchStartDt}, 'YYYY-MM-DD') <= REG_DT
+			]]>
+		</if>
+		<if test="searchEndDt != null and searchEndDt != ''">
+			<![CDATA[
+				AND REG_DT < TO_DATE(#{searchEndDt}, 'YYYY-MM-DD')+1
+			]]>
+		</if>
+	</sql>
+	
+	<select id="selectListSnsLog" parameterType="SnsLogVo" resultMap="SnsLogMap">
+		<![CDATA[
+			SELECT
+				SL_SORT_ORDER
+				, (SELECT MENU_NM FROM EZ_USER_MENU WHERE SITE_CD = B.SL_SITE_CD AND SORT_ORDER = B.SL_SORT_ORDER AND USE_YN = 'Y') AS SL_MENU_NM
+				, (SELECT MENU_PATH FROM EZ_USER_MENU WHERE SITE_CD = B.SL_SITE_CD AND SORT_ORDER = B.SL_SORT_ORDER AND USE_YN = 'Y') AS SL_MENU_PATH
+				, SL_BCIDX
+				, CASE WHEN SL_BCIDX > 0 THEN (SELECT SUB_CONT FROM EZ_BBS_CONTENT WHERE BC_IDX = B.SL_BCIDX)
+				  ELSE '' END AS SUB_CONT
+				, SL_KAKAOTALK
+				, SL_KAKAOSTORY
+				, SL_BAND
+				, SL_FACEBOOK
+				, SL_TWITTER
+			FROM (
+				SELECT 
+					SL_SITE_CD
+					, SL_SORT_ORDER
+					, SL_BCIDX
+					, NVL(SUM(CASE WHEN SL_TYPE='K' THEN RESULT_CNT END), 0) AS SL_KAKAOTALK
+					, NVL(SUM(CASE WHEN SL_TYPE='S' THEN RESULT_CNT END), 0) AS SL_KAKAOSTORY
+					, NVL(SUM(CASE WHEN SL_TYPE='B' THEN RESULT_CNT END), 0) AS SL_BAND
+					, NVL(SUM(CASE WHEN SL_TYPE='F' THEN RESULT_CNT END), 0) AS SL_FACEBOOK
+					, NVL(SUM(CASE WHEN SL_TYPE='T' THEN RESULT_CNT END), 0) AS SL_TWITTER
+				FROM (
+					SELECT 
+						SL_SITE_CD
+						, SL_SORT_ORDER
+						, SL_BCIDX
+						, SL_TYPE
+						, COUNT(*) AS RESULT_CNT
+					FROM SNS_LOG
+					WHERE SL_SITE_CD = #{searchSiteCd}
+		]]>
+		<include refid="searchSnsLog"/>
+		<![CDATA[
+					GROUP BY SL_SITE_CD, SL_SORT_ORDER, SL_TYPE, SL_BCIDX
+				) A GROUP BY SL_SITE_CD, SL_SORT_ORDER, SL_BCIDX
+			) B
+			ORDER BY SL_SORT_ORDER ASC, SL_BCIDX DESC
+		]]>
+	</select>
+	
+</mapper>

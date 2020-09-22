@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BoardDao">
+	<resultMap id="BoardViewMap" type="egovframework.injeinc.boffice.sy.board.vo.BoardVo">
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="cbName" column="CB_NAME"/>
+		<result property="cbPath" column="CB_PATH"/>
+		<result property="bbsTempletGbn" column="BBS_TEMPLET_GBN"/>
+		<result property="bbsApprYn" column="BBS_APPR_YN"/>
+		<result property="categoryUseYn" column="CATEGORY_USE_YN"/>
+		<result property="bbsFileCnt" column="BBS_FILE_CNT"/>
+		<result property="listGbn" column="LIST_GBN"/>
+		<result property="mListYn" column="M_LIST_YN"/>
+		<result property="editorYn" column="EDITOR_YN"/>
+		<result property="anonymityYn" column="ANONYMITY_YN"/>
+		<result property="replyYn" column="REPLY_YN"/>
+		<result property="fileMaxSize" column="FILE_MAXSIZE"/>
+		<result property="readGbn" column="READ_GBN"/>
+		<result property="writeGbn" column="WRITE_GBN"/>
+		<result property="modGbn" column="MOD_GBN"/>
+		<result property="delGbn" column="DEL_GBN"/>
+		<result property="answerGbn" column="ANSWER_GBN"/>
+		<result property="mwRKd" column="MW_R_KD"/>
+		<result property="rssUseYn" column="RSS_USE_YN"/>
+		<result property="rssUrl" column="RSS_URL"/>
+		<result property="thumbnailWidth" column="THUMBNAIL_WIDTH"/>
+		<result property="thumbnailHeight" column="THUMBNAIL_HEIGHT"/>
+		<result property="pageCount" column="PAGE_COUNT"/>
+		<result property="commentYn" column="COMMENT_YN"/>
+		<result property="socialYn" column="SOCIAL_YN"/>
+	</resultMap>
+	
+	<resultMap id="ConfigPropertyMap" type="egovframework.injeinc.boffice.sy.board.vo.ConfigPropertyVo">
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="labelOrdNo" column="LABEL_ORD_NO"/>
+		<result property="contentMapping" column="CONTENT_MAPPING"/>
+		<result property="labelName" column="LABEL_NAME"/>
+		<result property="labelPropGbn" column="LABEL_PROP_GBN"/>
+		<result property="labelCompYn" column="LABEL_COMP_YN"/>
+		<result property="labelProvSize" column="LABEL_PROV_SIZE"/>
+		<result property="searchLabelUseYn" column="SEARCH_LABEL_USE_YN"/>
+		<result property="searchClobYn" column="SEARCH_CLOB_YN"/>
+		<result property="webUseYn" column="WEB_USE_YN"/>
+		<result property="mobileUseYn" column="MOBILE_USE_YN"/>
+		<result property="viewUseYn" column="VIEW_USE_YN"/>
+		<result property="contentMappingL" column="CONTENT_MAPPING_L"/>
+		<result property="itemCode" column="ITEM_CODE"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="regUseYn" column="REG_USE_YN"/>
+	</resultMap>
+	
+	<resultMap id="ConfigPropertyTemplateMap" type="egovframework.injeinc.boffice.sy.board.vo.ConfigPropertyVo">
+		<result property="bbsTempletGbn" column="BBS_TEMPLET_GBN"/>
+		<result property="labelOrdNo" column="LABEL_ORD_NO"/>
+		<result property="contentMapping" column="CONTENT_MAPPING"/>
+		<result property="labelName" column="LABEL_NAME"/>
+		<result property="labelPropGbn" column="LABEL_PROP_GBN"/>
+		<result property="labelCompYn" column="LABEL_COMP_YN"/>
+		<result property="labelProvSize" column="LABEL_PROV_SIZE"/>
+		<result property="searchLabelUseYn" column="SEARCH_LABEL_USE_YN"/>
+		<result property="searchClobYn" column="SEARCH_CLOB_YN"/>
+		<result property="webUseYn" column="WEB_USE_YN"/>
+		<result property="mobileUseYn" column="MOBILE_USE_YN"/>
+		<result property="viewUseYn" column="VIEW_USE_YN"/>
+		<result property="contentMappingL" column="CONTENT_MAPPING_L"/>
+		<result property="itemCode" column="ITEM_CODE"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="regUseYn" column="REG_USE_YN"/>
+	</resultMap>
+	
+	<resultMap id="BbsCategoryMap" type="egovframework.injeinc.boffice.sy.code.vo.CmmCodeVo">
+		<result property="code" column="CODE"/>
+		<result property="codeName" column="CODE_NAME"/>
+		<result property="codeUpr" column="CODE_UPR"/>
+		<result property="codeValue" column="CODE_VALUE"/>
+		<result property="ordNo" column="ORD_NO"/>
+	</resultMap>
+	
+	<resultMap id="Board" type="egovframework.injeinc.boffice.sy.board.vo.BoardVo">
+		<result property="cbIdx" column="CB_IDX"/>	
+		<result property="mListYn" column="M_LIST_YN"/>	
+		<result property="editorYn" column="EDITOR_YN"/>	
+		<result property="anonymityYn" column="ANONYMITY_YN"/>	
+		<result property="replyYn" column="REPLY_YN"/>	
+		<result property="fileMaxSize" column="FILE_MAXSIZE"/>	
+		<result property="rssUseYn" column="RSS_USE_YN"/>			
+	</resultMap>
+	
+	<!-- RSS 사용자 페이지 -->
+	<resultMap id="RssUrlCheck" type="egovframework.injeinc.boffice.sy.board.vo.BoardVo">
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="cbName" column="CB_NAME"/>		
+		<result property="rssUseYn" column="RSS_USE_YN"/>
+		<result property="rssUrl" column="RSS_URL"/>
+	</resultMap>
+	
+	<insert id="insertBbsConfig" parameterType="BoardVo">
+		<![CDATA[
+			INSERT INTO EZ_BBS_CONFIG
+			(
+				CB_IDX
+				, BBS_TEMPLET_GBN
+				, BBS_APPR_YN
+				, CATEGORY_USE_YN
+				, BBS_FILE_CNT
+		]]>
+		<if test="mwRKd != null and mwRKd != ''">
+			<![CDATA[	, MW_R_KD ]]>
+		</if>
+		<![CDATA[
+				, M_LIST_YN
+				, EDITOR_YN
+				, ANONYMITY_YN
+				, REPLY_YN
+				, REG_ID
+				, FILE_MAXSIZE
+				, RSS_USE_YN
+				, RSS_URL
+				, THUMBNAIL_WIDTH
+				, THUMBNAIL_HEIGHT
+				, PAGE_COUNT
+				, COMMENT_YN
+				, SOCIAL_YN
+			)
+			VALUES
+			(
+				#{cbIdx}
+				, #{bbsTempletGbn}
+				, #{bbsApprYn}
+				, #{categoryUseYn}
+				, #{bbsFileCnt}
+		]]>
+		<if test="mwRKd != null and mwRKd != ''">
+			<![CDATA[	, #{mwRKd} ]]>
+		</if>
+		<![CDATA[
+				, #{mListYn}
+				, #{editorYn}
+				, #{anonymityYn}
+				, #{replyYn}
+				, #{regId}
+				, #{fileMaxSize}
+				, #{rssUseYn}
+				, #{rssUrl}
+				, #{thumbnailWidth}
+				, #{thumbnailHeight}
+				, #{pageCount}	
+				, #{commentYn}	
+				, #{socialYn}	
+			)
+		]]>
+	</insert>
+	
+	<update id="updateBbsConfig" parameterType="BoardVo">
+		<![CDATA[
+			UPDATE EZ_BBS_CONFIG
+			SET BBS_TEMPLET_GBN = #{bbsTempletGbn}
+				, BBS_APPR_YN = #{bbsApprYn}
+				, CATEGORY_USE_YN = #{categoryUseYn}
+				, BBS_FILE_CNT = #{bbsFileCnt}
+		]]>
+		<if test="mwRKd != null and mwRKd != ''">
+		     <![CDATA[	, MW_R_KD = #{mwRKd} ]]>
+		</if>
+		<![CDATA[
+				, M_LIST_YN = #{mListYn}
+				, EDITOR_YN = #{editorYn}
+				, ANONYMITY_YN = #{anonymityYn}
+				, REPLY_YN = #{replyYn}
+				, MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+				, FILE_MAXSIZE = #{fileMaxSize}
+				, RSS_USE_YN	  = #{rssUseYn}
+				, RSS_URL	  = #{rssUrl}
+				, THUMBNAIL_WIDTH = #{thumbnailWidth}
+				, THUMBNAIL_HEIGHT = #{thumbnailHeight}
+				, PAGE_COUNT = #{pageCount}
+				, COMMENT_YN = #{commentYn}
+				, SOCIAL_YN = #{socialYn}
+			WHERE CB_IDX = #{cbIdx}
+		]]>
+	</update>
+	
+	<insert id="insertBbsUsrConfig" parameterType="BoardVo">
+		<![CDATA[
+			INSERT INTO EZ_BBS_USR_CONFIG
+			(
+				CB_IDX
+				, LIST_GBN
+				, READ_GBN
+				, WRITE_GBN
+				, MOD_GBN
+				, DEL_GBN
+				, ANSWER_GBN
+				, REG_ID
+			)
+			VALUES
+			(
+				#{cbIdx}
+				, #{listGbn}
+				, #{readGbn}
+				, #{writeGbn}
+				, #{modGbn}
+				, #{delGbn}
+				, #{answerGbn}
+				, #{regId}
+			)
+		]]>
+	</insert>
+	
+	<update id="updateBbsUsrConfig" parameterType="BoardVo">
+		<![CDATA[
+			UPDATE 
+				EZ_BBS_USR_CONFIG
+			SET 
+				LIST_GBN = #{listGbn}
+				, READ_GBN = #{readGbn}
+				, WRITE_GBN = #{writeGbn}
+				, MOD_GBN = #{modGbn}
+				, DEL_GBN = #{delGbn}
+				, ANSWER_GBN = #{answerGbn}
+				, MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+			WHERE 
+				CB_IDX = #{cbIdx}
+		]]>
+	</update>
+	
+	<insert id="insertConfigProperty" parameterType="ConfigPropertyVo">
+		<![CDATA[
+			INSERT INTO EZ_BBS_CONFIG_PROPERTY
+			(
+				CB_IDX
+				, LABEL_ORD_NO
+				, CONTENT_MAPPING
+				, CONTENT_MAPPING_L
+				, LABEL_NAME
+				, LABEL_PROP_GBN
+				, LABEL_COMP_YN
+				, LABEL_PROV_SIZE
+				, SEARCH_LABEL_USE_YN
+				, SEARCH_CLOB_YN
+				, WEB_USE_YN
+				, MOBILE_USE_YN
+				, VIEW_USE_YN
+				, ITEM_CODE
+				, REG_ID
+				, REG_USE_YN
+			)
+			VALUES
+			(
+				#{cbIdx}
+				, #{labelOrdNo}
+				, #{contentMapping}
+				, #{contentMappingL}
+				, #{labelName}
+				, #{labelPropGbn}
+				, #{labelCompYn}
+				, #{labelProvSize}
+				, #{searchLabelUseYn}
+				, #{searchClobYn}
+				, #{webUseYn}
+				, #{mobileUseYn}
+				, #{viewUseYn}
+				, #{itemCode}
+				, #{regId}
+				, #{regUseYn}
+			)
+		]]>
+	</insert>
+	
+	<insert id="insertConfigPropertyTemplet" parameterType="ConfigPropertyVo">
+		<![CDATA[
+			INSERT INTO EZ_BBS_CONFIG_PROPERTY_TEMPLET
+			(
+				BBS_TEMPLET_GBN
+				, LABEL_ORD_NO
+				, CONTENT_MAPPING
+				, CONTENT_MAPPING_L
+				, LABEL_NAME
+				, LABEL_PROP_GBN
+				, LABEL_COMP_YN
+				, LABEL_PROV_SIZE
+				, SEARCH_LABEL_USE_YN
+				, SEARCH_CLOB_YN
+				, WEB_USE_YN
+				, MOBILE_USE_YN
+				, VIEW_USE_YN
+				, ITEM_CODE
+				, REG_ID
+				, REG_USE_YN
+			)
+			VALUES
+			(
+				#{bbsTempletGbn}
+				, #{labelOrdNo}
+				, #{contentMapping}
+				, #{contentMappingL}
+				, #{labelName}
+				, #{labelPropGbn}
+				, #{labelCompYn}
+				, #{labelProvSize}
+				, #{searchLabelUseYn}
+				, #{searchClobYn}
+				, #{webUseYn}
+				, #{mobileUseYn}
+				, #{viewUseYn}
+				, #{itemCode}
+				, #{regId}
+				, #{regUseYn}
+			)
+		]]>	
+	</insert>
+	
+	<delete id="deleteConfigProperty" parameterType="ConfigPropertyVo">
+		<![CDATA[
+			DELETE 
+			 FROM 
+				EZ_BBS_CONFIG_PROPERTY
+			WHERE 
+				CB_IDX = #{cbIdx}
+		]]>
+	</delete>
+	
+	<delete id="deleteConfigPropertyTemplet" parameterType="ConfigPropertyVo">
+		<![CDATA[
+			DELETE 
+			 FROM 
+			 	EZ_BBS_CONFIG_PROPERTY_TEMPLET
+			WHERE 
+				BBS_TEMPLET_GBN = #{bbsTempletGbn}
+		]]>
+	</delete>
+	
+	<select id="selectListConfigProperty" parameterType="ConfigPropertyVo" resultMap="ConfigPropertyMap">
+		<![CDATA[
+			SELECT
+				CB_IDX
+				, LABEL_ORD_NO
+				, CONTENT_MAPPING
+				, LABEL_NAME
+				, LABEL_PROP_GBN
+				, LABEL_COMP_YN
+				, LABEL_PROV_SIZE
+				, SEARCH_LABEL_USE_YN
+				, SEARCH_CLOB_YN
+				, WEB_USE_YN
+				, MOBILE_USE_YN
+				, VIEW_USE_YN
+				, CONTENT_MAPPING_L
+				, ITEM_CODE
+				, REG_DT
+				, REG_ID
+				, REG_USE_YN
+			FROM 
+				EZ_BBS_CONFIG_PROPERTY
+			WHERE 
+				CB_IDX = #{cbIdx}
+		]]>
+		<if test="searchListType != null and searchListType != ''">
+			<if test="searchListType == &quot;web&quot;">
+			<![CDATA[	AND WEB_USE_YN = 'Y' ]]>
+			</if>
+			<if test="searchListType == &quot;mobile&quot;">
+			<![CDATA[	AND MOBILE_USE_YN = 'Y' ]]>
+			</if>
+			<if test="searchListType == &quot;search&quot;">
+			<![CDATA[	AND SEARCH_LABEL_USE_YN = 'Y' ]]>
+			</if>
+		</if>
+		<![CDATA[
+			ORDER BY TO_NUMBER(LABEL_ORD_NO) ASC
+		]]>
+	</select>
+	
+	<select id="selectListConfigPropertyTemplet" parameterType="ConfigPropertyVo" resultMap="ConfigPropertyMap">
+		<![CDATA[
+			SELECT
+				#{cbIdx} as CB_IDX
+				, LABEL_ORD_NO
+				, CONTENT_MAPPING
+				, LABEL_NAME
+				, LABEL_PROP_GBN
+				, LABEL_COMP_YN
+				, LABEL_PROV_SIZE
+				, SEARCH_LABEL_USE_YN
+				, SEARCH_CLOB_YN
+				, WEB_USE_YN
+				, MOBILE_USE_YN
+				, VIEW_USE_YN
+				, CONTENT_MAPPING_L
+				, ITEM_CODE
+				, REG_DT
+				, REG_ID
+				, REG_USE_YN
+			 FROM 
+				EZ_BBS_CONFIG_PROPERTY_TEMPLET
+			WHERE 
+				BBS_TEMPLET_GBN = #{bbsTempletGbn}
+		]]>
+		<if test="searchListType != null and searchListType != ''">
+			<if test="searchListType == &quot;web&quot;">
+			<![CDATA[	AND WEB_USE_YN = 'Y' ]]>
+			</if>
+			<if test="searchListType == &quot;mobile&quot;">
+			<![CDATA[	AND MOBILE_USE_YN = 'Y' ]]>
+			</if>
+			<if test="searchListType == &quot;search&quot;">
+			<![CDATA[	AND SEARCH_LABEL_USE_YN = 'Y' ]]>
+			</if>
+		</if>
+		<![CDATA[
+			ORDER BY TO_NUMBER(LABEL_ORD_NO) ASC
+		]]>
+	</select>
+	
+	<select id="selectListBbsCategory" parameterType="BoardVo" resultMap="BbsCategoryMap">
+		<![CDATA[
+			SELECT 
+				CODE
+				, CODE_NAME
+				, CODE_UPR
+				, CODE_VALUE
+				, ORD_NO
+			 FROM 
+				EZ_CMM_CODE
+			WHERE 
+				CODE_UPR = (SELECT ITEM_CODE FROM EZ_BBS_CONFIG_PROPERTY WHERE CB_IDX = #{cbIdx} AND CONTENT_MAPPING = 'CATE_CONT')
+			ORDER BY ORD_NO ASC
+		]]>
+	</select>
+	
+	<select id="selectBoard" parameterType="BoardVo" resultMap="BoardViewMap">
+		<![CDATA[
+			SELECT
+				A.CB_IDX
+				, A.CB_NAME
+				, SYS_CONNECT_BY_PATH (A.CB_NAME, '>')           AS CB_PATH
+				, B.BBS_TEMPLET_GBN
+				, B.BBS_APPR_YN
+				, B.CATEGORY_USE_YN
+				, NVL(B.BBS_FILE_CNT, 0)           AS BBS_FILE_CNT
+				, B.MW_R_KD
+				, B.M_LIST_YN
+				, B.EDITOR_YN
+				, B.ANONYMITY_YN
+				, B.REPLY_YN			
+				, B.FILE_MAXSIZE
+				, B.RSS_USE_YN
+				, B.RSS_URL
+				, B.THUMBNAIL_WIDTH
+				, B.THUMBNAIL_HEIGHT
+				, B.COMMENT_YN
+				, B.SOCIAL_YN
+				, NVL(B.PAGE_COUNT,10)           AS PAGE_COUNT
+				, C.LIST_GBN
+				, C.READ_GBN
+				, C.WRITE_GBN
+				, C.MOD_GBN
+				, C.DEL_GBN
+				, C.ANSWER_GBN
+			 FROM
+				EZ_CMS_BBS A
+			 	LEFT JOIN 
+			 		EZ_BBS_CONFIG B ON A.CB_IDX = B.CB_IDX
+			 	LEFT JOIN 
+			 		EZ_BBS_USR_CONFIG C ON A.CB_IDX = C.CB_IDX
+			WHERE 
+				A.CB_IDX = #{cbIdx}
+			  AND 
+			 	A.USE_YN = 'Y'
+			START WITH CB_UPR_CD = '#'
+			CONNECT BY NOCYCLE PRIOR CB_CD = CB_UPR_CD
+			ORDER SIBLINGS BY ORD_NO
+		]]>
+	</select>
+	
+	
+	<!-- RSS 사용자 페이지 -->
+		<select id="selectRssUrlCheck" parameterType="BoardVo" resultMap="RssUrlCheck">
+		<![CDATA[
+			SELECT
+				A.CB_IDX
+				, B.CB_NAME				
+				, A.RSS_USE_YN
+				, A.RSS_URL
+			FROM
+				EZ_BBS_CONFIG A
+				LEFT JOIN 
+					EZ_CMS_BBS B ON A.CB_IDX = B.CB_IDX
+			WHERE
+				 A.RSS_USE_YN = 'Y' 
+			  AND
+			  	 B.USE_YN ='Y'
+			  AND 
+				RSS_URL IS NOT NULL 
+			ORDER BY CB_IDX ASC			
+		]]>
+	</select>	
+	
+</mapper>

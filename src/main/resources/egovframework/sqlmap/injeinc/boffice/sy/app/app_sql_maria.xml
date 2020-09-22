@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="App">
+    
+    <typeAlias  alias="hashMap" type="java.util.HashMap"/>
+	<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap" />
+	<typeAlias alias="AppVo" type="egovframework.injeinc.boffice.sy.app.vo.AppVo" />
+	
+	<resultMap id="AppMap" class="egovframework.injeinc.boffice.sy.app.vo.AppVo" >
+		<result property="id" 			column="ID"     		/>
+		<result property="parent" 		column="PARENT"     		/>
+		<result property="text" 		column="TEXT"     		/>
+		<result property="position" 	column="POSITION"     		/>
+		<result property="mgrUrl" 		column="MGR_URL"     		/>
+		<result property="adminUrl" 	column="USR_URL"     		/>
+		<result property="useYn" 		column="USE_YN"     		/>
+		<result property="useCnt" 		column="USECNT"     		/>
+	</resultMap>
+	
+	
+	<select id="AppDao.selectTreeApp" parameterClass="HashMap" resultMap="AppMap">
+		<![CDATA[
+			SELECT 
+			  CA.CA_CD AS ID
+			, DECODE(CA.CA_UPR_CD,'0','##',CA.CA_UPR_CD) AS PARENT
+			, CA.CA_NAME AS TEXT
+			, CA.ORD_NO AS POSITION
+			, CA.MGR_URL
+			, CA.USR_URL
+			, CA.USE_YN
+			, (SELECT COUNT(CP_CD) FROM CMS_PERMISSION WHERE USE_YN = 'Y' AND CP_CD = CA.CA_CD) AS USECNT 
+			FROM CMS_APPLICATION CA
+			ORDER BY CA.ORD_NO
+	  ]]>
+    </select>
+	<update id="AppDao.insertApp" parameterClass="java.util.HashMap">
+		<![CDATA[
+		INSERT INTO CMS_APPLICATION(
+				  CA_CD
+				, CA_UPR_CD
+				, ORD_NO
+				, CA_NAME
+				, REG_DT
+				, REG_ID
+				, MGR_URL
+				, USR_URL
+				, USE_YN
+				)VALUES(
+				  #sid#
+				, #sparent#
+				, TO_NUMBER(#sposition#)
+				, #caname#
+				, to_char(sysdate,'yyyymmddhh24miss')
+				, #regid#
+				, #mgrurl#
+				, #userurl#
+				, #useryn#
+				)
+		 
+			     ]]> 
+	</update>
+	
+	<delete id="AppDao.deleteApp" parameterClass="java.util.HashMap">
+		<![CDATA[
+			DELETE FROM CMS_APPLICATION 
+			]]>
+	</delete>	
+</sqlMap>

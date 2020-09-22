@@ -1,0 +1,1778 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BoardAdminDao">
+	
+	<resultMap id="firstSelectBox" type="egovframework.injeinc.boffice.ex.bbs.boardAdmin.vo.BoardAdminVo">
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="cbCd" column="CB_CD"/>
+		<result property="cbUprCd" column="CB_UPR_CD"/>
+		<result property="cbName" column="CB_NAME"/>
+		<result property="bbsTempletGbn" column="BBS_TEMPLET_GBN"/>
+	</resultMap>
+	
+	<resultMap id="timeSelectBox" type="egovframework.injeinc.boffice.ex.bbs.boardAdmin.vo.BoardAdminVo">
+		<result property="colValue" column="COL_VALUE"/>
+	</resultMap>
+	
+	<resultMap id="bbsLabelMap" type="egovframework.injeinc.boffice.ex.bbs.boardAdmin.vo.BoardAdminVo">
+		<result property="labelName" column="LABEL_NAME"/>
+		<result property="labelProvSize" column="LABEL_PROV_SIZE"/>
+	</resultMap>
+	
+	<resultMap id="bbsFInfoMap" type="egovframework.injeinc.boffice.ex.bbs.boardAdmin.vo.BoardAdminVo">
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="cbName" column="CB_NAME"/>
+		<result property="bbsTempletGbn" column="BBS_TEMPLET_GBN"/>
+		<result property="bbsApprYn" column="BBS_APPR_YN"/>
+		<result property="categoryUseYn" column="CATEGORY_USE_YN"/>
+		<result property="bbsFileCnt" column="BBS_FILE_CNT"/>
+		<result property="listGbn" column="LIST_GBN"/>
+		<result property="readGbn" column="READ_GBN"/>
+		<result property="writeGbn" column="WRITE_GBN"/>
+		<result property="modGbn" column="MOD_GBN"/>
+		<result property="delGbn" column="DEL_GBN"/>
+		<result property="answerGbn" column="ANSWER_GBN"/>
+	</resultMap>
+	
+	<resultMap id="boardAdminViewMap" type="java.util.HashMap">
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="parentSeq" column="PARENT_SEQ"/>
+		<result property="answerStep" column="ANSWER_STEP"/>
+		<result property="answerDepth" column="ANSWER_DEPTH"/>
+		<result property="cateCont" column="CATE_CONT"/>
+		<result property="subCont" column="SUB_CONT"/>
+		<result property="nameCont" column="NAME_CONT"/>
+		<result property="addrCont" column="ADDR_CONT"/>
+		<result property="addrCont1" column="ADDR_CONT1"/>
+		<result property="addrCont2" column="ADDR_CONT2"/>
+		<result property="addrCont3" column="ADDR_CONT3"/>
+		<result property="emailCont" column="EMAIL_CONT"/>
+		<result property="telCont1" column="TEL_CONT1"/>
+		<result property="telCont2" column="TEL_CONT2"/>
+		<result property="telCont3" column="TEL_CONT3"/>
+		<result property="phoneCont1" column="PHONE_CONT1"/>
+		<result property="phoneCont2" column="PHONE_CONT2"/>
+		<result property="phoneCont3" column="PHONE_CONT3"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="countCont" column="COUNT_CONT"/>
+		<result property="clobCont" column="CLOB_CONT" javaType="java.lang.String" jdbcType="CLOB"/>
+		<result property="captionCont" column="CAPTION_CONT" javaType="java.lang.String" jdbcType="CLOB"/>
+		<result property="mLinkCont" column="M_LINK_CONT"/>
+		<result property="thumnailCont" column="THUMNAIL_CONT"/>
+		<result property="subLinkCont" column="SUB_LINK_CONT"/>
+		<result property="openYnCont" column="OPEN_YN_CONT"/>
+		<result property="ansYnCont" column="ANS_YN_CONT"/>
+		<result property="ansCompCont" column="ANS_COMP_CONT"/>
+		<result property="ext1" column="EXT1"/>
+		<result property="ext2" column="EXT2"/>
+		<result property="ext3" column="EXT3"/>
+		<result property="ext4" column="EXT4"/>
+		<result property="ext5" column="EXT5"/>
+		<result property="ext6" column="EXT6"/>
+		<result property="ext7" column="EXT7"/>
+		<result property="ext8" column="EXT8"/>
+		<result property="ext9" column="EXT9"/>
+		<result property="ext10" column="EXT10"/>
+		<result property="mwAdOpenYn" column="MW_AD_OPEN_YN"/>
+		<result property="ansRYn" column="ANS_R_YN"/>
+		<result property="mwNoReplyYn" column="MW_NO_REPLY_YN"/>
+		<result property="apprYn" column="APPR_YN"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+		<result property="bcDelYn" column="BC_DEL_YN"/>
+		<result property="mcReplyer" column="MC_REPLYER"/>
+		<result property="mcTel1" column="MC_TEL1"/>
+		<result property="mcTel1_1" column="MC_TEL1_1"/>
+		<result property="mcTel1_2" column="MC_TEL1_2"/>
+		<result property="mcTel1_3" column="MC_TEL1_3"/>
+		<result property="streFileNm" column="STRE_FILE_NM"/>
+     	<result property="fileSize" column="FILE_SIZE"/>
+	</resultMap>
+	
+	<resultMap id="boardAdminViewMap2" type="java.util.HashMap">
+		<result property="bbsTempletGbn" column="BBS_TEMPLET_GBN"/>
+		<result property="contentMapping" column="CONTENT_MAPPING"/>
+		<result property="labelName" column="LABEL_NAME"/>
+		<result property="labelPropGbn" column="LABEL_PROP_GBN"/>
+		<result property="itemCode" column="ITEM_CODE"/>
+		<result property="parentSeq" column="PARENT_SEQ"/>
+		<result property="answerDepth" column="ANSWER_DEPTH"/>
+		<result property="content" column="CONTENT"/>
+		<result property="clobCont" column="CLOB_CONT" javaType="java.lang.String" jdbcType="CLOB"/>
+		<result property="captionCont" column="CAPTION_CONT" javaType="java.lang.String" jdbcType="CLOB"/>
+		<result property="mwStatusCont" column="MW_STATUS_CONT"/>
+		<result property="regId" column="REG_ID"/>
+	</resultMap>
+	
+	<resultMap id="boardViewMap" type="java.util.HashMap">
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="parentSeq" column="PARENT_SEQ"/>
+		<result property="answerStep" column="ANSWER_STEP"/>
+		<result property="answerDepth" column="ANSWER_DEPTH"/>
+		<result property="cateCont" column="CATE_CONT"/>
+		<result property="subCont" column="SUB_CONT"/>
+		<result property="nameCont" column="NAME_CONT"/>
+		<result property="addrCont" column="ADDR_CONT"/>
+		<result property="emailCont" column="EMAIL_CONT"/>
+		<result property="telCont" column="TEL_CONT"/>
+		<result property="phoneCont" column="PHONE_CONT"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="countCont" column="COUNT_CONT"/>
+		<result property="clobCont" column="CLOB_CONT" javaType="java.lang.String" jdbcType="CLOB"/>
+		<result property="captionCont" column="CAPTION_CONT" javaType="java.lang.String" jdbcType="CLOB"/>
+		<result property="mLinkCont" column="M_LINK_CONT"/>
+		<result property="thumnailCont" column="THUMNAIL_CONT"/>
+		<result property="subLinkCont" column="SUB_LINK_CONT"/>
+		<result property="openYnCont" column="OPEN_YN_CONT"/>
+		<result property="ansYnCont" column="ANS_YN_CONT"/>
+		<result property="ansCompCont" column="ANS_COMP_CONT"/>
+		<result property="ext1" column="EXT1"/>
+		<result property="ext2" column="EXT2"/>
+		<result property="ext3" column="EXT3"/>
+		<result property="ext4" column="EXT4"/>
+		<result property="ext5" column="EXT5"/>
+		<result property="ext6" column="EXT6"/>
+		<result property="ext7" column="EXT7"/>
+		<result property="ext8" column="EXT8"/>
+		<result property="ext9" column="EXT9"/>
+		<result property="ext10" column="EXT10"/>
+		<result property="mwAdOpenYn" column="MW_AD_OPEN_YN"/>
+		<result property="ansRYn" column="ANS_R_YN"/>
+		<result property="mwNoReplyYn" column="MW_NO_REPLY_YN"/>
+		<result property="notiYn" column="NOTI_YN"/>
+		<result property="apprYn" column="APPR_YN"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+		<result property="bcDelYn" column="BC_DEL_YN"/>
+		<result property="mwStatusCont" column="MW_STATUS_CONT"/>
+	</resultMap>
+
+	<resultMap id="boardAdminFileViewMap" type="egovframework.injeinc.boffice.ex.bbs.boardAdmin.vo.BoardAdminVo">
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="fileNo" column="FILE_NO"/>
+		<result property="fileStreCours" column="FILE_STRE_COURS"/>
+		<result property="streFileNm" column="STRE_FILE_NM"/>
+		<result property="orignlFileNm" column="ORIGNL_FILE_NM"/>
+		<result property="fileExtsn" column="FILE_EXTSN"/>
+		<result property="fileCn" column="FILE_CN"/>
+		<result property="fileSize" column="FILE_SIZE"/>
+		<result property="mcIdx" column="MC_IDX"/>
+	</resultMap>
+	
+	<resultMap id="bbsFMinwonReMap" type="egovframework.injeinc.boffice.ex.bbs.boardAdmin.vo.BoardAdminVo">
+		<result property="mcIdx" column="MC_IDX"/>
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="mcTitle" column="MC_TITLE"/>
+		<result property="mcDeptCd" column="MC_DEPT_CD"/>
+		<result property="mcDeptNo1Cd" column="MC_DEPT_NO1_CD"/>
+		<result property="mcDeptHist" column="MC_DEPT_HIST"/>
+		<result property="mcReplyer" column="MC_REPLYER"/>
+		<result property="mcTel1" column="MC_TEL1"/>
+		<result property="mcTel2" column="MC_TEL2"/>
+		<result property="mcMsg" column="MC_MSG"/>
+		<result property="mcUnitCd" column="MC_UNIT_CD"/>
+		<result property="mcAreaCd" column="MC_AREA_CD"/>
+		<result property="mcFiledCd" column="MC_FILED_CD"/>
+		<result property="mcKdCd" column="MC_KD_CD"/>
+		<result property="mcResult" column="MC_RESULT"/>
+		<result property="mcPointTxt" column="MC_POINT_TXT"/>
+		<result property="mcDelayDay" column="MC_DELAY_DAY"/>
+		<result property="mcDelayRsn" column="MC_DELAY_RSN"/>
+		<result property="mcStatus" column="MC_STATUS"/>
+		<result property="auditYn" column="AUDIT_YN"/>
+		<result property="mcBSender" column="MC_B_SENDER"/>
+		<result property="mcBMth" column="MC_B_MTH"/>
+		<result property="mcBDay" column="MC_B_DAY"/>
+		<result property="mcBTxt" column="MC_B_TXT"/>
+		<result property="mcASender" column="MC_A_SENDER"/>
+		<result property="mcAMth" column="MC_A_MTH"/>
+		<result property="mcADay" column="MC_A_DAY"/>
+		<result property="mcATxt" column="MC_A_TXT"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="contentClob" column="CONTENT_CLOB" javaType="java.lang.String" jdbcType="CLOB"/>
+	</resultMap>
+	
+	<resultMap id="bbsFFileMap" type="egovframework.injeinc.boffice.ex.bbs.boardAdmin.vo.BoardAdminVo">
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="fileNo" column="FILE_NO"/>
+		<result property="fileStreCours" column="FILE_STRE_COURS"/>
+		<result property="streFileNm" column="STRE_FILE_NM"/>
+		<result property="orignlFileNm" column="ORIGNL_FILE_NM"/>
+		<result property="fileExtsn" column="FILE_EXTSN"/>
+		<result property="fileCn" column="FILE_CN"/>
+		<result property="fileSize" column="FILE_SIZE"/>
+		<result property="mcIdx" column="MC_IDX"/>
+	</resultMap>
+	
+	<resultMap id="bbsFMwDelRsn" type="egovframework.injeinc.boffice.ex.bbs.boardAdmin.vo.BoardAdminVo">
+		<result property="delRsnCd" column="DEL_RSN_CD"/>
+		<result property="delRsnTxt" column="DEL_RSN_TXT"/>
+	</resultMap>
+	
+	<sql id="selectAdminBoardList">
+	    	SELECT *
+          FROM 
+             (
+              SELECT CASE WHEN A.MW_STATUS_CONT = '20000800'
+                           AND 
+                               0 <![CDATA[<]]> (
+                                   SELECT COUNT(MC_IDX) 
+                                     FROM EZ_CONTENT_MINWON_RESULT CMR
+                                    WHERE CMR.CB_IDX = A.CB_IDX
+                                      AND CMR.BC_IDX = A.BC_IDX
+                                  ) 
+                          THEN 
+                              (
+                              SELECT DATE_FORMAT(MAX(STR_TO_DATE(A.REG_DT,'%Y%m%d%H%i%s')+RN),'%Y-%m-%d') DDATE 
+                                FROM 
+                                     (
+	                                     WITH RECURSIVE RGEN(RN)  AS (SELECT 1 UNION ALL SELECT RN+1 FROM RGEN WHERE RN <![CDATA[<]]> 30)
+										 SELECT RN  FROM RGEN
+                                     ) T
+                               WHERE DATE_FORMAT(DATE_ADD(STR_TO_DATE(A.REG_DT,'%Y%m%d%H%i%s'),INTERVAL RN DAY),'%W') IN (1,2,3,4,5) 
+                                     AND DATE_FORMAT(DATE_ADD(STR_TO_DATE(A.REG_DT,'%Y%m%d%H%i%s'),INTERVAL RN DAY),'%Y%m%d') <![CDATA[<>]]> ANY 
+                                     (SELECT DATE_FORMAT(STR_TO_DATE(HOL_DATE, '%Y-%m-%d'), '%Y%m%d') AS SDATE 
+                                       FROM EZ_HOLIDAY
+                                      WHERE STR_TO_DATE(HOL_DATE, '%Y-%m-%d') <![CDATA[>]]> NOW() 
+                                     )
+                                     LIMIT 0,2 
+                              ) ELSE NULL END AS MC_END_DAY
+                     , CASE WHEN A.MW_STATUS_CONT = '20000800'
+                            THEN 
+                                (
+                                SELECT MAX(DATE_FORMAT(STR_TO_DATE(MC_DELAY_DAY,'%Y%m%d%H%i%s'),'%Y.%m.%d'))
+                                  FROM EZ_CONTENT_MINWON_RESULT CMR
+                                 WHERE CMR.CB_IDX = A.CB_IDX
+                                   AND CMR.BC_IDX = A.BC_IDX
+                                ) ELSE NULL END AS MC_DELAY_DAY
+                   , A.*
+                FROM
+                	(
+	                  SELECT @rownum := @rownum + 1 as NO_CONT
+	                       , BC_IDX
+	                       , CB_IDX
+	                       , PARENT_SEQ
+	                       , ANSWER_STEP
+	                       , ANSWER_DEPTH
+	                       , CATE_CONT
+	                       , CONCAT(TRIM(LPAD(' ',ANSWER_DEPTH+1,'|')), SUB_CONT) AS SUB_CONT
+	                       , NAME_CONT
+	                       , ADDR_CONT
+	                       , EMAIL_CONT
+	                       , TEL_CONT
+	                       , PHONE_CONT
+	                       , COUNT_CONT
+	                       , CLOB_CONT
+	                       , CAPTION_CONT
+	                       , M_LINK_CONT
+	                       , THUMNAIL_CONT
+	                       , SUB_LINK_CONT
+	                       , CASE WHEN MW_AD_OPEN_YN = 'Y' THEN 'AD_Y' ELSE  OPEN_YN_CONT END OPEN_YN_CONT
+	                       , ANS_YN_CONT
+	                       , ANS_COMP_CONT
+	                       , EXT1
+	                       , EXT2
+	                       , EXT3
+	                       , EXT4
+	                       , EXT5
+	                       , EXT6
+	                       , EXT7
+	                       , EXT8
+	                       , EXT9
+	                       , EXT10
+	                       , MW_AD_OPEN_YN
+	                       , ANS_R_YN
+	                       , MW_NO_REPLY_YN
+	                       , CASE WHEN ANS_YN_CONT = '22000200' THEN '22000200' <!-- 답변없음 -->
+	                              WHEN 0 <![CDATA[<]]> (
+	                                          SELECT COUNT(MC_IDX) 
+	                                            FROM EZ_CONTENT_MINWON_RESULT CMR
+	                                           WHERE CMR.CB_IDX = T.CB_IDX
+	                                             AND CMR.BC_IDX = T.BC_IDX
+	                                             AND CMR.AUDIT_YN IN ('27000100','27000200','27000300')
+	                                        ) THEN '20000500'					<!-- 답변완료 -->
+	                              WHEN 1 = (
+	                                          SELECT COUNT(MC_IDX) 
+	                                            FROM EZ_CONTENT_MINWON_RESULT CMR
+	                                           WHERE CMR.CB_IDX = T.CB_IDX
+	                                             AND CMR.BC_IDX = T.BC_IDX
+	                                        )
+	                               AND 
+	                               		1 = (
+	                                          SELECT COUNT(MC_IDX) 
+	                                            FROM EZ_CONTENT_MINWON_RESULT CMR
+	                                           WHERE CMR.CB_IDX = T.CB_IDX
+	                                             AND CMR.BC_IDX = T.BC_IDX
+	                                             AND CMR.TEMP_YN = 'Y'
+	                                        ) THEN '20000500'					<!-- 답변완료 -->
+	                               ELSE '20000800'					<!-- 처리중 -->            
+	                          END AS MW_STATUS_CONT
+	                       , NOTI_YN
+	                       , APPR_YN
+	                       , DATE_FORMAT(STR_TO_DATE(REG_DT,'%Y%m%d%H%i%s'),'%Y.%m.%d') AS REG_DT
+	                       , REG_ID
+	                       , CASE WHEN (SELECT FILE_NO FROM EZ_CONTENT_FILE WHERE CB_IDX = T.CB_IDX AND BC_IDX = T.BC_IDX LIMIT 0,1 ) IS NOT NULL THEN 'Y' ELSE 'N' END AS FILE_YN
+	             		   , CASE WHEN #{bbsTempletGbn} IN ('16050200','16050300') THEN (SELECT CONCAT(FILE_STRE_COURS,STRE_FILE_NM) FROM EZ_CONTENT_FILE WHERE CB_IDX = T.CB_IDX AND BC_IDX = T.BC_IDX AND FILE_EXTSN IN('png','bmp','jpg','jpeg') LIMIT 0,1 ) END LIST_IMG
+	             	FROM
+	             		(
+							SELECT *
+		                      FROM EZ_BBS_CONTENT
+			                 WHERE CB_IDX = #{cbIdx}
+			                 AND (@rownum:=0)=0
+			                  <if test="bcDelYn != null and bcDelYn != ''">
+			                  AND BC_DEL_YN = #{bcDelYn} 
+			                  </if>
+			                  <if test="bbsApprYn == 2">
+			                  AND APPR_YN = 'Y'
+			                  </if>
+			                  ORDER BY NOTI_YN DESC 
+			                         , PARENT_SEQ DESC
+			                         , ANSWER_STEP ASC
+			                         , ANSWER_DEPTH ASC
+			              )T
+                   )A
+            ) A
+    </sql>
+	
+	<!-- 검색 first selectBox 조회 -->
+	<select id="firstSelectBoardAdmin" parameterType="BoardAdminVo" resultMap="firstSelectBox">
+			SELECT A.CB_IDX
+			     , A.CB_CD
+			     , A.CB_UPR_CD
+			     , A.CB_NAME
+			     , B.BBS_TEMPLET_GBN
+			 FROM EZ_CMS_BBS A
+			     , EZ_BBS_CONFIG B
+			WHERE 1 = 1
+			AND A.CB_IDX = B.CB_IDX
+			AND A.CB_UPR_CD = 'CB000000'
+			AND A.USE_YN = 'Y'
+			ORDER BY CB_IDX
+	</select>
+	
+	<!-- 검색 second selectBox 조회 -->
+	<select id="secondSelectBoardAdmin" parameterType="HashMap" resultMap="firstSelectBox">
+			SELECT A.CB_IDX
+			     , A.CB_CD
+			     , A.CB_UPR_CD
+			     , A.CB_NAME
+			     , B.BBS_TEMPLET_GBN
+			  FROM EZ_CMS_BBS A
+			     , EZ_BBS_CONFIG B
+			 WHERE 1 = 1
+			   AND A.CB_IDX = B.CB_IDX
+			   AND A.USE_YN = 'Y'
+			<if test="cbUprCd != null and cbUprCd != ''">AND			
+				A.CB_UPR_CD = #{cbUprCd}
+			</if>
+		ORDER BY A.ORD_NO
+	</select>
+	
+	<!-- 게시판 검색 시간 -->
+	<select id="selectBoardSearchTime" parameterType="BoardAdminVo" resultMap="timeSelectBox">
+		SELECT  
+			CASE ROWNUM WHEN 1 THEN COL01
+						WHEN 2 THEN COL02
+						WHEN 3 THEN COL03
+						WHEN 4 THEN COL03
+						WHEN 5 THEN COL05
+						WHEN 6 THEN COL06
+						WHEN 7 THEN COL07
+						WHEN 8 THEN COL08
+						WHEN 9 THEN COL09
+						WHEN 10 THEN COL10
+						WHEN 11 THEN COL11
+						WHEN 12 THEN COL12
+						WHEN 13 THEN COL13
+						WHEN 14 THEN COL14
+						WHEN 15 THEN COL15
+						WHEN 16 THEN COL16
+						WHEN 17 THEN COL17
+						WHEN 18 THEN COL18
+						WHEN 19 THEN COL19
+						WHEN 20 THEN COL20
+						WHEN 21 THEN COL21
+						WHEN 22 THEN COL22
+						WHEN 23 THEN COL23
+						WHEN 24 THEN COL24
+				END COL_VALUE
+		FROM    (
+		        SELECT  '00' AS COL01,'01' AS COL02,'02' AS COL03,'03' AS COL04
+		                ,'04' AS COL05,'05' AS COL06,'06' AS COL07,'07' AS COL08
+		                ,'08' AS COL09,'09' AS COL10,'10' AS COL11,'11' AS COL12
+		                ,'12' AS COL13,'13' AS COL14,'14' AS COL15,'15' AS COL16
+		                ,'16' AS COL17,'17' AS COL18,'18' AS COL19,'19' AS COL20
+		                ,'20' AS COL21,'21' AS COL22,'22' AS COL23,'23' AS COL24
+		        FROM    DUAL
+		        ) T,
+		        (
+			        WITH RECURSIVE HOUR_TMP(ROWNUM)  AS (SELECT 1 UNION ALL SELECT ROWNUM+1 ROWNUM FROM HOUR_TMP WHERE ROWNUM <![CDATA[<]]> 24)
+					SELECT ROWNUM  FROM HOUR_TMP
+		        ) T2
+	</select>
+	
+	<!-- 게시판 라벨 리스트 조회 -->
+	<select id="selectBoardLabelList" parameterType="BoardAdminVo" resultMap="bbsLabelMap">
+		SELECT LABEL_NAME
+		     , LABEL_PROV_SIZE
+		  FROM EZ_BBS_CONFIG_PROPERTY
+		 WHERE CB_IDX = #{cbIdx}
+		   AND WEB_USE_YN = #{webUseYn}
+		 ORDER BY CAST(LABEL_ORD_NO AS UNSIGNED)
+    </select>
+	
+	<!-- 게시판 컨텐츠  조회할 목록 조회 -->
+	<select id="selectBoardContMappList" parameterType="BoardAdminVo" resultType="hashMap">
+		SELECT CONTENT_MAPPING
+		  FROM EZ_BBS_CONFIG_PROPERTY
+		 WHERE CB_IDX = #{cbIdx}
+		   AND WEB_USE_YN = #{webUseYn}
+		 ORDER BY CAST(LABEL_ORD_NO AS UNSIGNED)
+    </select>
+    
+    <!-- 게시판 컨텐츠  조회 -->
+	<select id="selectBoardContentList" parameterType="BoardAdminVo" resultType="hashMap">
+	
+		SELECT *
+		  FROM
+		      (
+              		<include refid="selectAdminBoardList"/>
+				
+				) A
+			WHERE 1=1
+			AND REG_DT BETWEEN CONCAT(#{scRegDtSt},'000000') AND CONCAT(#{scRegDtEd},'000000')
+			<if test="writeGbn == 16010400">
+			AND REG_ID = #{regId}
+			</if>
+			<if test="searchKey != null and searchKey != ''">
+				<if test="tgtTypeCd != null and tgtTypeCd != ''">
+					<if test="tgtTypeCd == &quot;NO_CONT&quot;">
+						AND NO_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;CATE_CONT&quot;">
+						AND CATE_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;SUB_CONT&quot;">
+						AND SUB_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;NAME_CONT&quot;">
+						AND NAME_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;ADDR_CONT&quot;">
+						AND ADDR_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;EMAIL_CONT&quot;">
+						AND EMAIL_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;TEL_CONT&quot;">
+						AND TEL_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;PHONE_CONT&quot;">
+						AND PHONE_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;REG_DT&quot;">
+						AND REG_DT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;COUNT_CONT&quot;">
+						AND COUNT_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;CLOB_CONT&quot;">
+						AND CLOB_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;M_LINK_CONT&quot;">
+						AND M_LINK_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;THUMNAIL_CONT&quot;">
+						AND THUMNAIL_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;CAPTION_CONT&quot;">
+						AND CAPTION_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;SUB_LINK_CONT&quot;">
+						AND SUB_LINK_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;OPEN_YN_CONT&quot;">
+						AND OPEN_YN_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;ANS_YN_CONT&quot;">
+						AND ANS_YN_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;ANS_COMP_CONT&quot;">
+						AND ANS_COMP_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;MW_STATUS_CONT&quot;">
+						AND MW_STATUS_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;EXT1&quot;">
+						AND EXT1 LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;EXT2&quot;">
+						AND EXT2 LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;EXT3&quot;">
+						AND EXT3 LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;EXT4&quot;">
+						AND EXT4 LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;EXT5&quot;">
+						AND EXT5 LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;EXT6&quot;">
+						AND EXT6 LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;EXT7&quot;">
+						AND EXT7 LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;EXT8&quot;">
+						AND EXT8 LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;EXT9&quot;">
+						AND EXT9 LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;EXT10&quot;">
+						AND EXT10 LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;FILE_CONT&quot;">
+						AND FILE_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;CHARGE_NAME_CONT&quot;">
+						AND CHARGE_NAME_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;CHARGE_TEL_CONT&quot;">
+						AND CHARGE_TEL_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+				</if>
+			</if>
+			AND NO_CONT BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+    </select>
+    
+    <!-- 게시판 컨텐츠  갯수 -->
+	<select id="selectBoardContentCnt" parameterType="BoardAdminVo" resultType="int">
+		  /*selectBoardContentCnt*/
+		  SELECT COUNT(*)
+		    FROM (
+              		<include refid="selectAdminBoardList"/>
+			  ) A
+			WHERE 1 = 1
+			AND REG_DT BETWEEN CONCAT(#{scRegDtSt},'000000') AND CONCAT(#{scRegDtEd},'000000')
+			<if test="writeGbn == 16010400">
+			AND REG_ID = #{regId}
+			</if>
+			<if test="searchKey != null and searchKey != ''">
+				<if test="tgtTypeCd != null and tgtTypeCd != ''">
+					<if test="tgtTypeCd == &quot;NO_CONT&quot;">
+						AND NO_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;CATE_CONT&quot;">
+						AND CATE_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;SUB_CONT&quot;">
+						AND SUB_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;NAME_CONT&quot;">
+						AND NAME_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;ADDR_CONT&quot;">
+						AND ADDR_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;EMAIL_CONT&quot;">
+						AND EMAIL_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;TEL_CONT&quot;">
+						AND TEL_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;PHONE_CONT&quot;">
+						AND PHONE_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;REG_DT&quot;">
+						AND REG_DT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;COUNT_CONT&quot;">
+						AND COUNT_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;CLOB_CONT&quot;">
+						AND CLOB_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;M_LINK_CONT&quot;">
+						AND M_LINK_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;THUMNAIL_CONT&quot;">
+						AND THUMNAIL_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;CAPTION_CONT&quot;">
+						AND CAPTION_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;SUB_LINK_CONT&quot;">
+						AND SUB_LINK_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;OPEN_YN_CONT&quot;">
+						AND OPEN_YN_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;ANS_YN_CONT&quot;">
+						AND ANS_YN_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;ANS_COMP_CONT&quot;">
+						AND ANS_COMP_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;MW_STATUS_CONT&quot;">
+						AND MW_STATUS_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;EXT1&quot;">
+						AND EXT1 LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;EXT2&quot;">
+						AND EXT2 LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;EXT3&quot;">
+						AND EXT3 LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;EXT4&quot;">
+						AND EXT4 LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;EXT5&quot;">
+						AND EXT5 LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;EXT6&quot;">
+						AND EXT6 LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;EXT7&quot;">
+						AND EXT7 LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;EXT8&quot;">
+						AND EXT8 LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;EXT9&quot;">
+						AND EXT9 LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;EXT10&quot;">
+						AND EXT10 LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;FILE_CONT&quot;">
+						AND FILE_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;CHARGE_NAME_CONT&quot;">
+						AND CHARGE_NAME_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+					<if test="tgtTypeCd == &quot;CHARGE_TEL_CONT&quot;">
+						AND CHARGE_TEL_CONT LIKE CONCAT('%',#{searchKey},'%')
+					</if>
+				</if>
+			</if>
+    </select>
+    
+    <select id="selectboardSearchList" parameterType="BoardAdminVo" resultType="hashMap">
+		SELECT CONTENT_MAPPING
+		     , LABEL_NAME
+		  FROM EZ_BBS_CONFIG_PROPERTY
+		 WHERE CB_IDX = #{cbIdx}
+		   AND SEARCH_LABEL_USE_YN = 'Y'
+	</select>
+    
+    <!-- 게시판 글 삭제 -->
+    <update id="deleteBoard" parameterType="BoardAdminVo">
+		
+			UPDATE	EZ_BBS_CONTENT
+			SET		BC_DEL_YN = 'Y'
+			WHERE	CB_IDX = #{cbIdx}
+			AND		BC_IDX = #{bcIdx}
+		
+	</update>
+	
+	<!-- 게시판 글 승인 -->
+    <update id="updateBoard" parameterType="BoardAdminVo">
+		
+			UPDATE	EZ_BBS_CONTENT
+			SET		APPR_YN = 'Y'
+			WHERE	CB_IDX = #{cbIdx}
+			AND		BC_IDX = #{bcIdx}
+		
+	</update>
+	
+	<!-- bcIdx 생성 -->
+	<select id="selectBcIdxNo" parameterType="BoardAdminVo" resultType="Integer">
+		SELECT	NVL(MAX(BC_IDX), 0) + 1 AS BC_IDX 
+		FROM	EZ_BBS_CONTENT 
+		WHERE	1 = 1
+		<!-- AND		CB_IDX = #{cbIdx} -->
+	</select>
+
+	<!-- cbIdx select -->
+	<select id="boardCbIdxSelect" parameterType="String" resultType="String">
+		SELECT	CB_IDX
+		FROM	EZ_BBS_CONTENT
+		WHERE	1 = 1
+		AND		NAME_CONT LIKE CONCAT('%',#{ssName},'%')
+	</select>
+	
+	<!-- 게시글 저장 -->
+	<insert id="insertBoardContent" parameterType="BoardAdminVo">
+		INSERT INTO EZ_BBS_CONTENT
+					(
+					  BC_IDX
+					, CB_IDX
+					<if test="mode == &quot;C&quot;">
+						, PARENT_SEQ
+						, ANSWER_STEP
+						, ANSWER_DEPTH
+					</if>
+					<if test="mode == &quot;R&quot;">
+						, PARENT_SEQ
+						, ANSWER_STEP
+						, ANSWER_DEPTH
+					</if>
+					<if test="cateCont != null and cateCont != ''">
+					, CATE_CONT
+					</if>
+					<if test="subCont != null and subCont != ''">
+					, SUB_CONT
+					</if>
+					<if test="nameCont != null and nameCont != ''">
+					, NAME_CONT
+					</if>
+					<if test="addrCont != null and addrCont != ''">
+					, ADDR_CONT
+					</if>
+					<if test="emailCont != null and emailCont != ''">
+					, EMAIL_CONT
+					</if>
+					<if test="telCont != null and telCont != ''">
+					, TEL_CONT
+					</if>
+					<if test="phoneCont != null and phoneCont != ''">
+					, PHONE_CONT
+					</if>
+					<if test="clobCont != null and clobCont != ''">
+					, CLOB_CONT
+					, CLOB_CONT_SEARCH
+					</if>
+					<if test="captionCont != null and captionCont != ''">
+					, CAPTION_CONT
+					</if>
+					<if test="mLinkCont != null and mLinkCont != ''">
+					, M_LINK_CONT
+					</if>
+					<if test="thumnailCont != null and thumnailCont != ''">
+					, THUMNAIL_CONT
+					</if>
+					<if test="subLinkCont != null and subLinkCont != ''">
+					, SUB_LINK_CONT
+					</if>
+					<if test="openYnCont != null and openYnCont != ''">
+					, MWOPEN_YN_CONT					</if>
+					<if test="ansYnCont != null and ansYnCont != ''">
+					, ANS_YN_CONT
+					</if>
+					<if test="ansCompCont != null and ansCompCont != ''">
+					, ANS_COMP_CONT
+					</if>
+					<if test="ext1 != null and ext1 != ''">
+					, EXT1
+					</if>
+					<if test="ext2 != null and ext2 != ''">
+					, EXT2
+					</if>
+					<if test="ext3 != null and ext3 != ''">
+					, EXT3
+					</if>
+					<if test="ext4 != null and ext4 != ''">
+					, EXT4
+					</if>
+					<if test="ext5 != null and ext5 != ''">
+					, EXT5
+					</if>
+					<if test="ext6 != null and ext6 != ''">
+					, EXT6
+					</if>
+					<if test="ext7 != null and ext7 != ''">
+					, EXT7
+					</if>
+					<if test="ext8 != null and ext8 != ''">
+					, EXT8
+					</if>
+					<if test="ext9 != null and ext9 != ''">
+					, EXT9
+					</if>
+					<if test="ext10 != null and ext10 != ''">
+					, EXT10
+					</if>
+					<if test="mwAdOpenYn != null and mwAdOpenYn != ''">
+					, MW_AD_OPEN_YN
+					</if>
+					<if test="ansRYn != null and ansRYn != ''">
+					, ANS_R_YN
+					</if>
+					<if test="mwNoReplyYn != null and mwNoReplyYn != ''">
+					, MW_NO_REPLY_YN
+					</if>
+					<!-- 2020.08.04 공통코드 추가 ajhwan -->
+					<if test="shortCut != null and shortCut != ''">
+					, SHORT_CUT
+					</if>
+					<if test="type != null and type != ''">
+					, TYPE
+					</if>
+					<if test="target != null and target != ''">
+					, TARGET
+					</if>
+					<if test="area != null and area != ''">
+					, AREA
+					</if>
+					<if test="depth1 != null and depth1 != ''">
+					, DEPTH_1
+					</if>
+					<!-- 2020.08.05 이솔이 공통코드 추가 -->
+					<if test="toDate != null and toDate != ''">
+					, TO_DATE
+					</if>
+					<if test="formDate != null and formDate != ''">
+					, FORM_DATE
+					</if>
+					<if test="center != null and center != ''">
+					, CENTER
+					</if>
+					<if test="contents != null and contents != ''">
+					, CONTENTS
+					</if>
+					, NOTI_YN
+					, APPR_YN
+					, REG_DT
+					, REG_ID
+					, BC_DEL_YN
+					)
+					VALUES
+					(
+					#{bcIdx}
+					, #{cbIdx}
+					<if test="mode == &quot;C&quot;">
+						, #{bcIdx}
+						, 0
+						, 0
+					</if>
+					<if test="mode == &quot;R&quot;">
+						, #{parentSeq}
+						, CASE WHEN #{answerDepth}<![CDATA[>]]> 0 THEN (SELECT MAX(ANSWER_DEPTH)+1 FROM EZ_BBS_CONTENT WHERE PARENT_SEQ = #{parentSeq}) ELSE #{answerOrdNo} END
+						, #{answerDepth}+1
+					</if>
+					
+					<if test="cateCont != null and cateCont != ''">
+					, #{cateCont}
+					</if>
+					<if test="subCont != null and subCont != ''">
+					, #{subCont}
+					</if>
+					<if test="nameCont != null and nameCont != ''">
+					, #{nameCont}
+					</if>
+					<if test="juminCont != null and juminCont != ''">
+					, #{juminCont}
+					</if>
+					<if test="addrCont != null and addrCont != ''">
+					, #{addrCont}
+					</if>
+					<if test="emailCont != null and emailCont != ''">
+					, #{emailCont}
+					</if>
+					<if test="telCont != null and telCont != ''">
+					, #{telCont}
+					</if>
+					<if test="phoneCont != null and phoneCont != ''">
+					, #{phoneCont}
+					</if>
+					<if test="clobCont != null and clobCont != ''">
+					<!-- , REPLACE(REPLACE(#{clobCont}, chr(13)||chr(10),<![CDATA['<br/>']]>), <![CDATA['&nbsp;']]>, '') -->
+					<!-- , REPLACE(REPLACE(#clobCont:CLOB#, chr(13)||chr(10),''), '', '') -->
+					, #{clobCont}
+					, #{clobContSearch}
+					</if>
+					<if test="captionCont != null and captionCont != ''">
+					, #{captionCont}
+					<!-- , REPLACE(REPLACE(#{captionCont}, chr(13)||chr(10),<![CDATA['<br/>']]>), <![CDATA['&nbsp;']]>, '') -->
+					<!-- , REPLACE(REPLACE(#{captionCont}, chr(13)||chr(10),''), '', '') -->
+					</if>
+					<if test="mLinkCont != null and mLinkCont != ''">
+					, #{mLinkCont}
+					</if>
+					<if test="thumnailCont != null and thumnailCont != ''">
+					, #{thumnailCont}
+					</if>
+					<if test="subLinkCont != null and subLinkCont != ''">
+					, #{subLinkCont}
+					</if>
+					<if test="openYnCont != null and openYnCont != ''">
+					, #{openYnCont}
+					</if>
+					<if test="ansYnCont != null and ansYnCont != ''">
+					, #{ansYnCont}
+					</if>
+					<if test="ansCompCont != null and ansCompCont != ''">
+					, #{ansCompCont}
+					</if>
+					<if test="ext1 != null and ext1 != ''">
+					, #{ext1}
+					</if>
+					<if test="ext2 != null and ext2 != ''">
+					, #{ext2}
+					</if>
+					<if test="ext3 != null and ext3 != ''">
+					, #{ext3}
+					</if>
+					<if test="ext4 != null and ext4 != ''">
+					, #{ext4}
+					</if>
+					<if test="ext5 != null and ext5 != ''">
+					, #{ext5}
+					</if>
+					<if test="ext6 != null and ext6 != ''">
+					, #{ext6}
+					</if>
+					<if test="ext7 != null and ext7 != ''">
+					, #{ext7}
+					</if>
+					<if test="ext8 != null and ext8 != ''">
+					, #{ext8}
+					</if>
+					<if test="ext9 != null and ext9 != ''">
+					, #{ext9}
+					</if>
+					<if test="ext10 != null and ext10 != ''">
+					, #{ext10}
+					</if>
+					<if test="mwAdOpenYn != null and mwAdOpenYn != ''">
+					, #{mwAdOpenYn}
+					</if>
+					<if test="ansRYn != null and ansRYn != ''">
+					, #{ansRYn}
+					</if>
+					<if test="mwNoReplyYn != null and mwNoReplyYn != ''">
+					, #{mwNoReplyYn}
+					</if>
+					<if test="shortCut != null and shortCut != ''">
+					, #{shortCut}
+					</if>
+					<!-- 2020.08.04  공통코드추가 ajhwan -->
+					<if test="type != null and type != ''">
+					, #{type}
+					</if>
+					<if test="target != null and target != ''">
+					, #{target}
+					</if>
+					<if test="area != null and area != ''">
+					, #{area}
+					</if>
+					<if test="depth1 != null and depth1 != ''">
+					, #{depth1}
+					</if>
+					<if test="center != null and center != ''">
+					, #{center}
+					</if>
+					<!-- 2020.08.05 공통고드 추가 이솔이 -->
+					<if test="toDate != null and toDate != ''">
+					, #{toDate}
+					</if>
+					<if test="formDate != null and formDate != ''">
+					, #{formDate}
+					</if>
+					<if test="contents != null and contents != ''">
+					, #{contents}
+					</if>
+					, #{notiYn}
+					, #{apprYn}
+					, NOW()
+					, #{regId}
+					, 'N'
+					)
+	</insert>
+	
+	<!-- 게시글 수정 -->
+	<update id="boardContentUpdate" parameterType="BoardAdminVo">
+		UPDATE EZ_BBS_CONTENT
+		   SET MOD_DT = NOW()
+		     , MOD_ID = #{regId}
+		     <if test="cateCont != null and cateCont != ''">
+			, CATE_CONT = #{cateCont}
+			</if>
+		    <if test="subCont != null and subCont != ''">
+			, SUB_CONT = #{subCont}
+			</if>
+			<if test="nameCont != null and nameCont != ''">
+			, NAME_CONT = #{nameCont}
+			</if>
+			<if test="addrCont != null and addrCont != ''">
+			, ADDR_CONT = #{addrCont}
+			</if>
+			<if test="emailCont != null and emailCont != ''">
+			, EMAIL_CONT = #{emailCont}
+			</if>
+			<if test="telCont != null and telCont != ''">
+			, TEL_CONT = #{telCont}
+			</if>
+			<if test="phoneCont != null and phoneCont != ''">
+			, PHONE_CONT = #{phoneCont}
+			</if>
+			<if test="clobCont != null and clobCont != ''">
+			<!-- , CLOB_CONT = #{clobCont} -->
+			<!-- , CLOB_CONT = REPLACE(REPLACE(#{clobCont}, chr(13)||chr(10),<![CDATA['<br/>']]>), <![CDATA['&nbsp;']]>, '') -->
+			, CLOB_CONT = #{clobCont}
+			, CLOB_CONT_SEARCH = #{clobContSearch}
+			</if>
+			<if test="captionCont != null and captionCont != ''">
+			, CAPTION_CONT = #{captionCont}
+			<!-- , CAPTION_CONT = REPLACE(REPLACE(#{captionCont}, chr(13)||chr(10),<![CDATA['<br/>']]>), <![CDATA['&nbsp;']]>, '') -->
+			<!-- , CAPTION_CONT = REPLACE(REPLACE(#{captionCont}, chr(13)||chr(10),''), '', '') -->
+			</if>
+			<if test="mLinkCont != null and mLinkCont != ''">
+			, M_LINK_CONT = #{mLinkCont}
+			</if>
+			<if test="thumnailCont != null and thumnailCont != ''">
+			, THUMNAIL_CONT = #{thumnailCont}
+			</if>
+			<if test="subLinkCont != null and subLinkCont != ''">
+			, SUB_LINK_CONT = #{subLinkCont}
+			</if>
+			<if test="openYnCont != null and openYnCont != ''">
+			, OPEN_YN_CONT = #{openYnCont}
+			</if>
+			<if test="ansYnCont != null and ansYnCont != ''">
+			, ANS_YN_CONT = #{ansYnCont}
+			</if>
+			<if test="ansCompCont != null and ansCompCont != ''">
+			, ANS_COMP_CONT = #{ansCompCont}
+			</if>
+			<if test="ext1 != null and ext1 != ''">
+			, EXT1 = #{ext1}
+			</if>
+			<if test="ext2 != null and ext2 != ''">
+			, EXT2 = #{ext2}
+			</if>
+			<if test="ext3 != null and ext3 != ''">
+			, EXT3 = #{ext3}
+			</if>
+			<if test="ext4 != null and ext4 != ''">
+			, EXT4 = #{ext4}
+			</if>
+			<if test="ext5 != null and ext5 != ''">
+			, EXT5 = #{ext5}
+			</if>
+			<if test="ext6 != null and ext6 != ''">
+			, EXT6 = #{ext6}
+			</if>
+			<if test="ext7 != null and ext7 != ''">
+			, EXT7 = #{ext7}
+			</if>
+			<if test="ext8 != null and ext8 != ''">
+			, EXT8 = #{ext8}
+			</if>
+			<if test="ext9 != null and ext9 != ''">
+			, EXT9 = #{ext9}
+			</if>
+			<if test="ext10 != null and ext10 != ''">
+			, EXT10 = #{ext10}
+			</if>
+			<if test="notiYn != null and notiYn != ''">
+			, NOTI_YN = #{notiYn}
+			</if>
+			<if test="shortCut != null and shortCut != ''">
+			, SHORT_CUT = #{shortCut}
+			</if>
+			<!-- 2020.08.04 공통코드 추가 ajhwan-->
+			<if test="type != null and type != ''">
+			, TYPE = #{type}
+			</if>
+			<if test="target != null and target != ''">
+			, TARGET = #{target}
+			</if>
+			<if test="area != null and area != ''">
+			, AREA = #{area}
+			</if>
+			<if test="depth1 != null and depth1 != ''">
+			, DEPTH_1 = #{depth1}
+			</if>
+			<if test="center != null and center != ''">
+			, CENTER = #{center}
+			</if>
+			<!-- 2020.08.05 공통코드 추가 이솔이 -->
+			<if test="toDate != null and toDate != ''">
+			, TO_DATE = #{toDate}
+			</if>
+			<if test="formDate != null and formDate != ''">
+			, FORM_DATE = #{formDate}
+			</if>
+			<if test="contents != null and contents != ''">
+			, CONTENTS = #{contents}
+			</if>
+		 WHERE CB_IDX = #{cbIdx}
+		   AND BC_IDX = #{bcIdx}  
+		   <!-- AND REG_ID = #{regId} -->
+	</update>
+	
+	<!-- 게시판 글 저장(민원결과 Table) -->
+	<insert id="boardContentMinwonResultInsert" parameterType="BoardAdminVo">
+		<![CDATA[
+		INSERT INTO EZ_CONTENT_MINWON_RESULT
+		(
+			MC_IDX
+			,BC_IDX
+			,MC_TITLE
+			,MC_DEPT_CD
+			,MC_DEPT_NO1_CD
+			,MC_DEPT_HIST
+			,MC_REPLYER
+			,MC_TEL1
+			,MC_TEL2
+			,MC_MSG
+			,MC_UNIT_CD
+			,MC_AREA_CD
+			,MC_FILED_CD
+			,MC_KD_CD
+			,MC_RESULT
+			,MC_POINT_TXT
+			,CONTENT_CLOB
+			,MC_DELAY_DAY
+			,MC_DELAY_RSN
+			,MC_STATUS
+			,TEMP_YN
+			,AUDIT_YN
+			,MC_B_SENDER
+			,MC_B_MTH
+			,MC_B_DAY
+			,MC_B_TXT
+			,MC_A_SENDER
+			,MC_A_MTH
+			,MC_A_DAY
+			,MC_A_TXT
+			,REG_DT
+			,REG_ID
+		) VALUES (
+			 (SELECT COALESCE(MAX(CAST(MC_IDX AS UNSIGNED)),0)+1 FROM EZ_CONTENT_MINWON_RESULT EZCMR WHERE BC_IDX = #{bcIdx})
+			,#{bcIdx}
+			,#{mcTitle}
+			,#{mcDeptCd}
+			,#{mcDeptNo1Cd}
+			,#{mcDeptHist}
+			,#{mcReplyer}
+			,#{mcTel1}
+			,#{mcTel2}
+			,#{mcMsg}
+			,#{mcUnitCd}
+			,#{mcAreaCd}
+			,#{mcFiledCd}
+			,#{mcKdCd}
+			,#{mcResult}
+			,#{mcPointTxt}
+			,#{contentClob}
+			,#{mcDelayDay}
+			,#{mcDelayRsn}
+			,#{mcStatus}
+			,#{tempYn}
+			,#{auditYn}
+			,#{mcBSender}
+			,#{mcBMth}
+			,#{mcBDay}
+			,#{mcBTxt}
+			,#{mcASender}
+			,#{mcAMth}
+			,#{mcADay}
+			,#{mcATxt}
+			,DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')
+			,#{regId}
+		)
+		]]>
+	</insert>
+	
+	<!-- 게시판 첨부파일 저장 -->
+	<insert id="insertFile" parameterType="BoardAdminVo">
+			INSERT INTO EZ_CONTENT_FILE
+			  (
+				BC_IDX
+			  , CB_IDX
+			  , FILE_NO
+			  , FILE_STRE_COURS
+			  , STRE_FILE_NM
+			  , ORIGNL_FILE_NM
+			  , FILE_EXTSN
+			  , FILE_CN
+			  , FILE_SIZE
+			  <if test="mcIdx != null and mcIdx != ''">
+			  , MC_IDX
+			  </if>
+			  , REG_ID
+			  )
+			  VALUES
+			  (
+			    #{bcIdx}
+			  , #{cbIdx}
+			  , (SELECT COALESCE(MAX(FILE_NO), 0) + 1 FROM EZ_CONTENT_FILE ECF WHERE BC_IDX = #{bcIdx} AND CB_IDX = #{cbIdx})
+			  , #{fileStreCours}
+			  , #{streFileNm}
+			  , #{orignlFileNm}
+			  , #{fileExtsn}
+			  , #{fileCn}
+			  , #{fileSize}
+			  <if test="mcIdx != null and mcIdx != ''">
+			  , #{mcIdx}
+			  </if>
+			  , #{regId}
+			  )
+	</insert>
+		
+	<!-- 게시판 상세조회 -->
+	<select id="selectBoardView" parameterType="BoardAdminVo" resultMap="boardAdminViewMap2">
+		SELECT BBS_TEMPLET_GBN
+			, CONTENT_MAPPING
+		    , LABEL_NAME
+		    , LABEL_PROP_GBN
+		    , ITEM_CODE
+		    , PARENT_SEQ
+		    , ANSWER_DEPTH
+		    , CASE WHEN ITEM_CODE IS NOT NULL AND CONTENT_MAPPING NOT IN('OPEN_YN_CONT','ANS_YN_CONT','ANS_COMP_CONT','MW_STATUS_CONT') 
+		           THEN (SELECT CODE_NAME FROM EZ_CMM_CODE WHERE CODE = CONTENT)
+		     	   ELSE CONTENT END AS CONTENT
+		    , CLOB_CONT
+		    , CAPTION_CONT
+		    , MW_STATUS_CONT
+		    , REG_ID
+		    , APPR_YN
+		    , NOTI_YN
+		 FROM 
+		 (
+		   SELECT (SELECT BBS_TEMPLET_GBN FROM EZ_BBS_CONFIG WHERE CB_IDX = #{cbIdx}) AS BBS_TEMPLET_GBN
+		   		, AA.CONTENT_MAPPING
+		        , AA.LABEL_NAME
+				, AA.LABEL_PROP_GBN
+				, AA.ITEM_CODE
+				, PARENT_SEQ
+				, ANSWER_DEPTH
+				, CASE CONTENT_MAPPING WHEN 'BC_IDX'		   THEN CAST(BC_IDX AS CHAR)		      
+		                           WHEN 'CB_IDX'           THEN CAST(CB_IDX AS CHAR)	               
+		                           WHEN 'PARENT_SEQ'       THEN CAST(PARENT_SEQ AS CHAR)	            
+		                           WHEN 'ANSWER_STEP'    THEN CAST(ANSWER_STEP AS CHAR)	        
+		                           WHEN 'ANSWER_DEPTH'     THEN CAST(ANSWER_DEPTH  AS CHAR)	      
+		                           WHEN 'NO_CONT'          THEN CAST(NO_CONT AS CHAR)	           
+		                           WHEN 'CATE_CONT'        THEN CATE_CONT             
+		                           WHEN 'SUB_CONT'         THEN SUB_CONT
+		                           WHEN 'NAME_CONT'        THEN NAME_CONT             
+		                           WHEN 'ADDR_CONT'        THEN ADDR_CONT             
+		                           WHEN 'EMAIL_CONT'       THEN EMAIL_CONT            
+		                           WHEN 'TEL_CONT'         THEN TEL_CONT              
+		                           WHEN 'PHONE_CONT'       THEN PHONE_CONT            
+		                           WHEN 'REG_DT'       THEN REG_DT            
+		                           WHEN 'COUNT_CONT'       THEN CAST(COUNT_CONT AS CHAR)	           
+		                           WHEN 'CLOB_CONT'        THEN 'CLOB_CONT'             
+		                           WHEN 'CAPTION_CONT'     THEN 'CAPTION_CONT'             
+		                           WHEN 'M_LINK_CONT'      THEN M_LINK_CONT           
+		                           WHEN 'THUMNAIL_CONT'    THEN THUMNAIL_CONT         
+		                           WHEN 'SUB_LINK_CONT'    THEN SUB_LINK_CONT         
+		                           WHEN 'ANS_YN_CONT'      THEN ANS_YN_CONT           
+		                           WHEN 'OPEN_YN_CONT'   THEN OPEN_YN_CONT        
+		                           WHEN 'ANS_COMP_CONT'    THEN ANS_COMP_CONT
+		                           WHEN 'EXT1'             THEN EXT1                  
+		                           WHEN 'EXT2'             THEN EXT2                  
+		                           WHEN 'EXT3'             THEN EXT3                  
+		                           WHEN 'EXT4'             THEN EXT4                  
+		                           WHEN 'EXT5'             THEN EXT5                  
+		                           WHEN 'EXT6'             THEN EXT6                  
+		                           WHEN 'EXT7'             THEN EXT7                  
+		                           WHEN 'EXT8'             THEN EXT8                  
+		                           WHEN 'EXT9'             THEN EXT9                  
+		                           WHEN 'EXT10'            THEN EXT10                 
+		                           WHEN 'MW_AD_OPEN_YN'    THEN MW_AD_OPEN_YN         
+		                           WHEN 'ANS_R_YN'          THEN ANS_R_YN               
+		                           WHEN 'MW_NO_REPLY_YN'   THEN MW_NO_REPLY_YN
+		                           WHEN 'MW_STATUS_CONT'   THEN CASE WHEN MW_STATUS_CONT LIKE '200001%' OR MW_STATUS_CONT LIKE '200003%' THEN
+						       			(SELECT CODE_UPR
+						                  FROM EZ_CMM_CODE
+						                 WHERE CODE = MW_STATUS_CONT
+						                ) 
+					                ELSE MW_STATUS_CONT END
+		                           WHEN 'NOTI_YN'          THEN NOTI_YN               
+		                           WHEN 'APPR_YN'          THEN APPR_YN               
+		                           WHEN 'REG_ID'           THEN REG_ID                             
+				END AS CONTENT
+				, CASE WHEN MW_STATUS_CONT LIKE '200001%' OR MW_STATUS_CONT LIKE '200003%' THEN
+		       			(SELECT CODE_UPR
+		                  FROM EZ_CMM_CODE
+		                 WHERE CODE = MW_STATUS_CONT
+		                ) 
+	                ELSE MW_STATUS_CONT END MW_STATUS_CONT
+				, CLOB_CONT
+				, CAPTION_CONT
+				, REG_ID
+				, APPR_YN
+				, NOTI_YN
+			FROM (     
+			SELECT * 
+			         FROM 
+			              (
+			              	<include refid="selectAdminBoardList"/>
+			              ) T
+			              WHERE BC_IDX = #{bcIdx}
+			     ORDER BY NO_CONT DESC   
+			 ) X
+			 , (
+				SELECT CONTENT_MAPPING
+				     , LABEL_NAME
+				     , LABEL_PROP_GBN
+				     , ITEM_CODE
+				  FROM EZ_BBS_CONFIG_PROPERTY
+				 WHERE CB_IDX = #{cbIdx}
+				 ORDER BY CAST(LABEL_ORD_NO AS UNSIGNED)
+			   ) AA 
+		) T
+	</select>
+	
+	<select id="selectboardDetail" parameterType="BoardAdminVo" resultMap="boardViewMap">
+	   SELECT BC_IDX
+	        , CB_IDX
+	        , PARENT_SEQ 
+	        , ANSWER_STEP 
+	        , ANSWER_DEPTH 
+	        , CATE_CONT 
+	        , SUB_CONT 
+	        , NAME_CONT 
+	        , ADDR_CONT
+	        , EMAIL_CONT
+	        , TEL_CONT
+	        , PHONE_CONT 
+	        , COUNT_CONT 
+	        , CLOB_CONT
+	        , CAPTION_CONT
+	        <!-- , CAPTION_CONT -->
+	        , M_LINK_CONT 
+	        , THUMNAIL_CONT 
+	        , SUB_LINK_CONT 
+	        , OPEN_YN_CONT 
+	        , ANS_YN_CONT
+	        , ANS_COMP_CONT 
+	        , EXT1
+	        , EXT2 
+	        , EXT3 
+	        , EXT4 
+	        , EXT5 
+	        , EXT6 
+	        , EXT7 
+	        , EXT8 
+	        , EXT9 
+	        , EXT10 
+	        , MW_AD_OPEN_YN 
+	        , ANS_R_YN
+	        , MW_NO_REPLY_YN 
+	        , NOTI_YN
+	        , APPR_YN 
+	        , DATE_FORMAT(REG_DT, '%Y.%m.%d') AS REG_DT 
+	        , REG_ID 
+	        , MOD_DT 
+	        , MOD_ID 
+	        , BC_DEL_YN
+	        , CASE WHEN MW_STATUS_CONT LIKE '200001%' OR MW_STATUS_CONT LIKE '200003%' THEN
+	       			(SELECT CODE_UPR
+	                  FROM EZ_CMM_CODE
+	                 WHERE CODE = MW_STATUS_CONT
+	                )
+              ELSE MW_STATUS_CONT END MW_STATUS_CONT
+		FROM EZ_BBS_CONTENT
+		WHERE CB_IDX = #{cbIdx}
+		 AND BC_IDX = #{bcIdx}
+	</select>
+	
+	<!-- 파일 리스트 조회  -->
+	<select id="selectFileList" parameterType="BoardAdminVo" resultMap="bbsFFileMap">
+		 SELECT BC_IDX
+		 	  , CB_IDX
+		 	  , FILE_NO
+		 	  , FILE_STRE_COURS
+		      , STRE_FILE_NM
+		      , ORIGNL_FILE_NM
+		      , FILE_EXTSN
+		      , FILE_CN
+		      , FILE_SIZE
+		      , MC_IDX
+		   FROM EZ_CONTENT_FILE
+      	  WHERE CB_IDX = #{cbIdx}
+         	AND BC_IDX = #{bcIdx}
+         	<if test="mcIdx != null and mcIdx != ''">
+         		AND MC_IDX IN(#{mcIdx})
+         	</if>
+         	<if test="mcIdx == null or mcIdx == ''">
+         		AND MC_IDX IS NULL
+         	</if>
+	</select>
+	
+	<!-- 게시판 상세조회 -->
+	<select id="selectBoardFileView" parameterType="HashMap" resultMap="boardAdminFileViewMap">
+		SELECT BC_IDX
+		 	  , CB_IDX
+		 	  , FILE_NO
+		 	  , FILE_STRE_COURS
+		      , STRE_FILE_NM
+		      , ORIGNL_FILE_NM
+		      , FILE_EXTSN
+		      , FILE_CN
+		      , FILE_SIZE
+		      , MC_IDX
+		   FROM EZ_CONTENT_FILE
+      	  WHERE CB_IDX = #{cbIdx}
+         	AND BC_IDX = #{bcIdx}
+         	<if test="mcIdx != null and mcIdx != ''">
+         		AND MC_IDX IN(#{mcIdx})
+         	</if>
+         	<if test="mcIdx == null or mcIdx == ''">
+         		AND MC_IDX IS NULL
+         	</if>
+	</select>
+	
+	<!-- 상세조회 조회수 update -->
+	<update id="updateboardCount" parameterType="BoardAdminVo">
+		UPDATE	EZ_BBS_CONTENT
+		SET		COUNT_CONT = COUNT_CONT+1
+		WHERE	CB_IDX = #{cbIdx}
+		AND		BC_IDX = #{bcIdx}  
+		  
+	</update>
+	
+	<!-- 게시판 등록,수정 컨텐츠 구분 코드 조회 -->
+	<select id="selectboardlabelPropGbnList" parameterType="BoardAdminVo" resultType="hashMap">
+		 SELECT LABEL_NAME
+   			  , LABEL_PROP_GBN
+   			  , CONTENT_MAPPING_L
+   			  , LABEL_COMP_YN
+   			  , ITEM_CODE
+			FROM EZ_BBS_CONFIG_PROPERTY
+			WHERE CB_IDX = #{cbIdx}
+			AND CONTENT_MAPPING NOT IN('COUNT_CONT','REG_DT','NO_CONT','MW_STATUS_CONT')
+			ORDER BY CAST(LABEL_ORD_NO AS UNSIGNED )
+    </select>
+    
+   	<!-- 게시판 글쓰기 카테고리 조회 -->
+	<select id="selectBoardCategoryList" parameterType="BoardAdminVo" resultType="hashMap">
+		   SELECT CB_IDX
+		        , CATEGORY_CODE
+		        , CATEGORY_NAME
+		     FROM BBS_CATEGORY
+		    WHERE CB_IDX = #{cbIdx}
+    </select>
+    
+    <!-- 게시판 정보 조회 -->
+    <select id="selectBoardInfo" parameterType="BoardAdminVo" resultMap="bbsFInfoMap">
+		SELECT A.CB_IDX
+			 , A.CB_NAME
+			 , B.BBS_TEMPLET_GBN
+		     , B.BBS_APPR_YN
+		     , B.CATEGORY_USE_YN
+		     , B.BBS_FILE_CNT
+		     , C.LIST_GBN
+		     , C.READ_GBN
+		     , C.WRITE_GBN
+		     , C.MOD_GBN
+		     , C.DEL_GBN
+		     , C.ANSWER_GBN
+		  FROM EZ_CMS_BBS A
+		     , EZ_BBS_CONFIG B
+		     , EZ_BBS_USR_CONFIG C
+		 WHERE A.CB_IDX = B.CB_IDX
+		   AND A.CB_IDX = C.CB_IDX
+		   AND A.CB_IDX = #{cbIdx}
+		   AND A.USE_YN = 'Y'
+	</select>
+	
+	<!-- 게시판 정보 조회 -->
+    <select id="selectContentDetail" parameterType="BoardAdminVo" resultMap="boardAdminViewMap">
+	   SELECT A.BC_IDX
+		        , A.CB_IDX
+		        , A.PARENT_SEQ 
+		        , A.ANSWER_STEP 
+		        , A.ANSWER_DEPTH 
+		        , A.NO_CONT
+		        , A.CATE_CONT 
+		        , A.SUB_CONT 
+		        , A.NAME_CONT 
+		        , A.ADDR_CONT
+		        , SUBSTR(A.ADDR_CONT, 1, INSTR(A.ADDR_CONT, '_') - 1) ADDR_CONT1                                                            
+		        , SUBSTR(A.ADDR_CONT, INSTR(A.ADDR_CONT, '_') + 1, INSTR(SUBSTRING(A.ADDR_CONT, INSTR(A.ADDR_CONT, '_')+1), '_')+INSTR(A.ADDR_CONT, '_') - INSTR(A.ADDR_CONT, '_') - 1) ADDR_CONT2
+		        , SUBSTR(A.ADDR_CONT, INSTR(SUBSTRING(A.ADDR_CONT, INSTR(A.ADDR_CONT, '_')+1), '_')+INSTR(A.ADDR_CONT, '_') + 1) ADDR_CONT3
+		        , A.EMAIL_CONT 
+		        , SUBSTR(A.TEL_CONT, 1, INSTR(A.TEL_CONT, '-') - 1) TEL_CONT1                                                            
+		        , SUBSTR(A.TEL_CONT, INSTR(A.TEL_CONT, '-') + 1, INSTR(SUBSTRING(A.TEL_CONT, INSTR(A.TEL_CONT, '-')+1), '-')+INSTR(A.TEL_CONT, '-') - INSTR(A.TEL_CONT, '-') - 1) TEL_CONT2
+		        , SUBSTR(A.TEL_CONT, INSTR(SUBSTRING(A.TEL_CONT, INSTR(A.TEL_CONT, '-')+1), '-')+INSTR(A.TEL_CONT, '-') + 1)  TEL_CONT3
+		        , SUBSTR(A.PHONE_CONT, 1, INSTR(A.PHONE_CONT, '-') - 1) PHONE_CONT1                                                            
+		        , SUBSTR(A.PHONE_CONT, INSTR(A.PHONE_CONT, '-') + 1, INSTR(SUBSTRING(A.PHONE_CONT, INSTR(A.PHONE_CONT, '-')+1), '-')+INSTR(A.PHONE_CONT, '-') - INSTR(A.PHONE_CONT, '-') - 1) PHONE_CONT2
+		        , SUBSTR(A.PHONE_CONT, INSTR(SUBSTRING(A.PHONE_CONT, INSTR(A.PHONE_CONT, '-')+1), '-')+INSTR(A.PHONE_CONT, '-') + 1)  PHONE_CONT3
+		        , A.REG_DT 
+		        , A.COUNT_CONT 
+		        , A.CLOB_CONT
+		        , A.CAPTION_CONT 
+		        , A.M_LINK_CONT 
+		        , A.THUMNAIL_CONT 
+		        , A.SUB_LINK_CONT 
+		        , A.OPEN_YN_CONT 
+		        , A.ANS_YN_CONT
+		        , A.ANS_COMP_CONT 
+		        , A.EXT1
+		        , A.EXT2 
+		        , A.EXT3 
+		        , A.EXT4 
+		        , A.EXT5 
+		        , A.EXT6 
+		        , A.EXT7 
+		        , A.EXT8 
+		        , A.EXT9 
+		        , A.EXT10 
+		        , A.MW_AD_OPEN_YN 
+		        , A.ANS_R_YN
+		        , A.MW_NO_REPLY_YN 
+		        , A.NOTI_YN
+		        , A.APPR_YN 
+		        , DATE_FORMAT(A.REG_DT, '%Y.%m.%d') AS REG_DT 
+		        , A.REG_ID 
+		        , A.MOD_DT 
+		        , A.MOD_ID 
+		        , A.BC_DEL_YN
+		        , B.MC_REPLYER
+		        , B.MC_TEL1
+		        , SUBSTR(B.MC_TEL1, 1, INSTR(B.MC_TEL1, '-') - 1) MC_TEL1_1                                                            
+		        , SUBSTR(B.MC_TEL1, INSTR(B.MC_TEL1, '-') + 1, INSTR(SUBSTRING(B.MC_TEL1, INSTR(B.MC_TEL1, '-')+1), '-')+INSTR(B.MC_TEL1, '-') - INSTR(B.MC_TEL1, '-') - 1) MC_TEL1_2
+		        , SUBSTR(B.MC_TEL1, INSTR(B.MC_TEL1, '-') + 1)  MC_TEL1_3
+		FROM 	EZ_BBS_CONTENT A
+			     ,EZ_CONTENT_MINWON_RESULT B
+		WHERE 1 = 1
+		AND A.BC_IDX = B.BC_IDX
+		AND A.CB_IDX = #{cbIdx}
+		AND A.BC_IDX = #{bcIdx}
+		AND A.APPR_YN = 'Y'
+		AND A.BC_DEL_YN <![CDATA[<>]]>  'Y'
+	</select>
+	
+	<!-- 게시글 공지 설정 및 해제 -->
+	<update id="updateBoardNoti" parameterType="BoardAdminVo">
+	<![CDATA[	
+		UPDATE	EZ_BBS_CONTENT
+		SET		NOTI_YN = #{notiYn}
+		WHERE	CB_IDX = #{cbIdx}
+		AND		BC_IDX = #{bcIdx}
+	]]>
+	</update>
+
+	<!-- 게시글 승인 -->
+	<update id="updateBoardApprYn" parameterType="BoardAdminVo">
+	<![CDATA[	
+		UPDATE	EZ_BBS_CONTENT
+		SET		APPR_YN = #{apprYn}
+		WHERE	CB_IDX = #{cbIdx}
+		AND		BC_IDX = #{bcIdx}
+	]]>	
+	</update>
+	
+	<!-- 민원글 삭제/복구 -->
+	<update id="modifyBoardmwDelYn" parameterType="BoardAdminVo">
+	<![CDATA[	
+		UPDATE	EZ_BBS_CONTENT
+		SET		BC_DEL_YN = #{bcDelYn}
+		WHERE	CB_IDX = #{cbIdx}
+		AND		BC_IDX = #{bcIdx}
+	]]>	
+	</update>
+	
+	<!-- 파일 리스트 조회  -->
+	<select id="selectMinwonReList" parameterType="BoardAdminVo" resultMap="bbsFMinwonReMap">
+		  SELECT MC_IDX
+               , BC_IDX
+               , MC_TITLE
+               , MC_DEPT_CD
+               , MC_DEPT_NO1_CD
+               , MC_DEPT_HIST
+               , MC_REPLYER
+               , MC_TEL1
+               , MC_TEL2
+               , MC_MSG
+               , MC_UNIT_CD
+               , MC_AREA_CD
+               , MC_FILED_CD
+               , MC_KD_CD
+               , MC_RESULT
+               , MC_POINT_TXT
+               , MC_DELAY_DAY
+               , MC_DELAY_RSN
+               , MC_STATUS
+               , AUDIT_YN
+               , MC_B_SENDER
+               , MC_B_MTH
+               , MC_B_DAY
+               , MC_B_TXT
+               , MC_A_SENDER
+               , MC_A_MTH
+               , MC_A_DAY
+               , MC_A_TXT
+               , DATE_FORMAT(REG_DT,'%Y.%m.%d') AS REG_DT
+               , REG_ID
+               , MOD_DT
+               , MOD_ID
+               , CB_IDX
+               , CONTENT_CLOB
+            FROM EZ_CONTENT_MINWON_RESULT
+          WHERE CB_IDX = #{cbIdx}
+          AND BC_IDX = #{bcIdx}
+	</select>
+	
+	<!-- 게시판 항목 리스트 조회 -->
+	<select id="selectItemList" parameterType="BoardAdminVo" resultType="hashMap">
+		SELECT CODE
+			 , CODE_NAME
+		     , CODE_UPR
+		FROM EZ_CMM_CODE
+		WHERE CODE_UPR = #{itemCode}
+		  AND USE_YN = 'Y'
+		 ORDER BY ORD_NO
+    </select>
+    
+    <!-- 이미지 파일 리스트 조회  -->
+	<select id="selectImgFileList" parameterType="BoardAdminVo" resultMap="bbsFFileMap">
+		 SELECT BC_IDX
+		 	  , CB_IDX
+		 	  , FILE_NO
+		 	  , FILE_STRE_COURS
+		      , STRE_FILE_NM
+		      , ORIGNL_FILE_NM
+		      , FILE_EXTSN
+		      , FILE_CN
+		      , FILE_SIZE
+		      , MC_IDX
+		   FROM EZ_CONTENT_FILE
+      	  WHERE CB_IDX = #{cbIdx}
+         	AND BC_IDX = #{bcIdx}
+         	<if test="mcIdx != null and mcIdx != ''">
+         		AND MC_IDX IN(#{mcIdx})
+         	</if>
+         	<if test="mcIdx == null or mcIdx == ''">
+         		AND MC_IDX IS NULL
+         	</if>
+         	AND FILE_EXTSN IN('png','bmp','jpg','jpeg')
+	</select>
+    
+	<!-- 게시글 민원 삭제 사유리스트  -->
+	<select id="selectContentDelRsn" resultMap="bbsFMwDelRsn">
+		SELECT DEL_RSN_CD
+		     , DEL_RSN_TXT
+		 FROM CONTENT_DEL_RSN
+		ORDER BY DEL_RSN_CD
+    </select>
+    
+    <!-- 게시글 민원 삭제  -->
+    <update id="updateMwDel" parameterType="java.util.HashMap">
+		<![CDATA[
+			UPDATE EZ_BBS_CONTENT
+			   SET MW_STATUS_CONT = #{delRsnCd}
+			     , MOD_ID = #{adminId}
+			     , MOD_DT = NOW()
+			 WHERE CB_IDX = #{cbIdx}
+			   AND BC_IDX = #{bcIdx}
+		]]>
+	</update>
+	
+    <!-- 게시글 민원 복구  -->
+    <update id="updateMwRecovery" parameterType="java.util.HashMap">
+		<![CDATA[
+			UPDATE EZ_BBS_CONTENT
+			   SET MW_STATUS_CONT = ''
+			     , MOD_ID = #{adminId}
+			     , MOD_DT = NOW()
+			 WHERE CB_IDX = #{cbIdx}
+			   AND BC_IDX = #{bcIdx}
+		]]>
+	</update>
+	
+	 <!-- 게시글 이관 상태변경  -->
+    <update id="updateTrans" parameterType="java.util.HashMap">
+		<![CDATA[
+			UPDATE EZ_BBS_CONTENT
+			   SET MW_STATUS_CONT = '20000302'
+			     , MOD_ID = #{adminId}
+			     , MOD_DT = NOW()
+			 WHERE CB_IDX = #{cbIdx}
+			   AND BC_IDX = #{bcIdx}
+		]]>
+	</update>
+	
+	<!-- 게시글 이관글 등록  -->
+	<insert id="insertTrans" parameterType="java.util.HashMap">
+		INSERT INTO EZ_BBS_CONTENT
+		SELECT #{transBcIdx}
+			 , #{transCbIdx}
+			 , PARENT_SEQ
+			 , ANSWER_STEP
+			 , ANSWER_DEPTH
+			 , NO_CONT
+			 , CATE_CONT
+			 , SUB_CONT
+			 , NAME_CONT
+			 , ADDR_CONT
+			 , EMAIL_CONT
+			 , TEL_CONT
+			 , PHONE_CONT
+			 , REG_DT
+			 , COUNT_CONT
+			 , CLOB_CONT
+			 , M_LINK_CONT
+			 , THUMNAIL_CONT
+			 , SUB_LINK_CONT
+			 , OPEN_YN_CONT
+			 , ANS_YN_CONT
+			 , ANS_COMP_CONT
+			 , EXT1
+			 , EXT2
+			 , EXT3
+			 , EXT4
+			 , EXT5
+			 , EXT6
+			 , EXT7
+			 , EXT8
+			 , EXT9
+			 , EXT10
+			 , MW_AD_OPEN_YN
+			 , ANS_R_YN
+			 , MW_NO_REPLY_YN
+			 , NOTI_YN
+			 , APPR_YN
+			 , NOW()
+			 , REG_ID
+			 , NOW()
+			 , #{adminId}
+			 , BC_DEL_YN
+			 , '20000900'
+			 , '20000900'
+		  FROM EZ_BBS_CONTENT
+		 WHERE CB_IDX = #{cbIdx}
+		   AND BC_IDX = #{bcIdx}
+	</insert>
+	
+	<!-- 게시글 이관글 파일 등록  -->
+	<insert id="insertFileTrans" parameterType="java.util.HashMap">
+		INSERT INTO EZ_CONTENT_FILE
+		SELECT #{transBcIdx}
+			 , #{transCbIdx}
+			 , FILE_NO
+			 , FILE_STRE_COURS
+			 , STRE_FILE_NM
+			 , ORIGNL_FILE_NM
+			 , FILE_EXTSN
+			 , FILE_CN
+			 , FILE_SIZE
+			 , MC_IDX
+			 , DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')
+		  FROM EZ_CONTENT_FILE
+		 WHERE CB_IDX = #{cbIdx}
+		   AND BC_IDX = #{bcIdx}
+		   AND MC_IDX IS NULL
+	</insert>
+	
+</mapper>

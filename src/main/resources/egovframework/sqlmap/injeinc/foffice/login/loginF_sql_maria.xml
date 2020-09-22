@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LoginFDao">
+	
+	<resultMap id="LoginFMap" type="egovframework.injeinc.foffice.login.vo.LoginFVo">
+		<result property="cuIdx" column="CU_IDX"/>
+		<result property="cuId" column="CU_ID"/>
+	    <result property="cuPwd" column="CU_PWD"/>
+	    <result property="email" column="EMAIL"/>
+	    <result property="zip" column="ZIP"/>
+	    <result property="addr1" column="ADDR1"/>
+	    <result property="addr2" column="ADDR2"/>
+	    <result property="telNum" column="TEL_NUM"/>
+	    <result property="hpNum" column="HP_NUM"/>
+	    <result property="cuName" column="CU_NAME"/>
+	    <result property="lastLogDt" column="LAST_LOG_DT"/>
+	    <result property="ip" column="IP"/>
+	    <result property="emailRcvChk" column="EMAIL_RCV_CHK"/>
+	    <result property="youngAgreeName" column="YOUNG_AGREE_NAME"/>
+	    <result property="piAgreeDt" column="PI_AGREE_DT"/>
+	    <result property="piAgreeYn" column="PI_AGREE_YN"/>
+	    <result property="smsRcvYn" column="SMS_RCV_YN"/>
+	    <result property="regDt" column="REG_DT"/>
+	    <result property="regId" column="REG_ID"/>
+	    <result property="modDt" column="MOD_DT"/>
+	    <result property="modId" column="MOD_ID"/>
+	    <result property="ownAuth" column="OWN_AUTH"/>
+	    <result property="pwdChgDt" column="PWD_CHG_DT"/>
+	    <result property="birth" column="BIRTHDATE"/>
+	    <result property="coNum" column="CO_NUM"/>
+	    <result property="sex" column="SEX"/>
+	    <result property="slibno" column="SLIBNO"/>
+	    <result property="teamName" column="TEAM_NAME"/>
+	    <result property="numGubun" column="NUM_GUBUN"/>
+	</resultMap>
+	
+	<resultMap id="LoginFDiMap" type="egovframework.injeinc.foffice.login.vo.LoginFVo">
+		<result property="email" column="EMAIL"/>
+	    <result property="zip" column="ZIP"/>
+	    <result property="addr1" column="ADDR1"/>
+	    <result property="addr2" column="ADDR2"/>
+	    <result property="telNum" column="TEL_NUM"/>
+	    <result property="hpNum" column="HP_NUM"/>
+	    <result property="cuName" column="CU_NAME"/>
+	</resultMap>
+	
+	<resultMap id="LoginGroupMap" type="egovframework.injeinc.foffice.user.vo.UserFVo">
+		<result property="cuIdx" column="CU_IDX"/>
+	    <result property="gcIdx" column="GC_IDX"/>
+	    <result property="regDt" column="REG_DT"/>
+	    <result property="regId" column="REG_ID"/>
+	    <result property="modDt" column="MOD_DT"/>
+	    <result property="modId" column="MOD_ID"/>
+	    <result property="ugIdx" column="UG_IDX"/>
+	    <result property="useYn" column="USE_YN"/>
+	    <result property="gcName" column="GC_NAME"/>
+	    <result property="gcDesc" column="GC_DESC"/>
+	</resultMap>                                                       
+	
+	<!-- 로그인 -->
+	<select id="selectLogin" parameterType="hashMap" resultMap="LoginFMap">
+		<![CDATA[
+			SELECT 
+				CU_IDX
+				,CU_ID
+				,CU_PWD
+				,EMAIL
+				,ZIP
+				,ADDR1
+				,ADDR2
+				,TEL_NUM
+				,HP_NUM
+				,CU_NAME
+				,LAST_LOG_DT
+				,IP
+				,EMAIL_RCV_CHK
+				,YOUNG_AGREE_NAME
+				,PI_AGREE_DT
+				,PI_AGREE_YN
+				,SMS_RCV_YN
+				,REG_DT
+				,REG_ID
+				,MOD_DT
+				,MOD_ID
+				,OWN_AUTH
+				,PWD_CHG_DT
+				,BIRTHDATE
+				,CO_NUM
+				,SEX
+				,SLIBNO
+				,NUM_GUBUN
+		    FROM EZ_CMS_USER
+            WHERE CU_ID = #{cuId}
+            AND CU_PWD = #{cuPwd}
+	  ]]>
+	</select>
+	
+	<!-- 로그인 로그 등록  -->
+	<insert id="insertUserLog" parameterType="hashMap">
+		<![CDATA[
+			INSERT INTO
+			EZ_USER_LOG(
+			CU_ID
+			,UL_IDX
+			,IP
+			,REG_DT
+			,LOG_KD_CD
+			,LOGIN_SUC_YN
+			)VALUES(
+			#{cuId}
+			,(SELECT IFNULL(MAX(UL_IDX),0)+1 FROM EZ_USER_LOG AS A)
+			,#{ip}
+			,DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')
+			,#{logKdCd}
+			,#{loginSucYn}
+			)
+		]]>
+	</insert>
+	
+	<!-- di 조회후 정보가져오기 -->
+	<select id="selectLoginListAx" parameterType="hashMap" resultMap="LoginFDiMap">
+		<![CDATA[
+			SELECT 
+				 EMAIL
+				,ZIP
+				,ADDR1
+				,ADDR2
+				,TEL_NUM
+				,HP_NUM
+				,CU_NAME
+			FROM EZ_CMS_USER
+            WHERE CU_NAME = #{userName}
+            AND OWN_AUTH = #{userDi}
+	  ]]>
+	</select>
+	
+	
+	<select id="selectLoginDiList" parameterType="hashMap" resultType="egovMap">
+		<![CDATA[
+			SELECT 
+				 CU_ID,
+				 CU_NAME,
+				 P_HOMEPAGE				 
+			FROM EZ_CMS_USER
+            WHERE CU_NAME = #{cuName}
+            AND OWN_AUTH = #{ownAuth}
+	  ]]>
+	</select>
+	
+	<!-- 비밀번호 5회 오류자 30분 이상 로그인불가 확인 -->
+	<select id="selectLoginFfalseCnt" parameterType="hashMap" resultType="int">
+		<![CDATA[
+			SELECT COUNT(CU_ID)
+			FROM EZ_USER_LOG
+			WHERE CU_ID = #{cuId}
+			AND LOG_KD_CD = 'F'
+			AND IP = #{ip}
+			AND REG_DT > DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 30 MINUTE),'%Y%m%d%H%i%s')
+		]]>
+	</select>
+	
+	<!-- 로그인 실패 횟수 -->
+	<select id="selectLoginFSucYnCnt" parameterType="hashMap" resultType="int">
+		<![CDATA[
+			SELECT COUNT(A.CU_ID)
+			FROM (SELECT * 
+						FROM EZ_USER_LOG 
+						WHERE REG_DT > IFNULL((SELECT MAX(REG_DT) 
+														FROM EZ_USER_LOG 
+														WHERE LOGIN_SUC_YN = 'Y' 
+														AND CU_ID = #{cuId}),0)) A
+			WHERE A.CU_ID = #{cuId}
+			AND A.LOGIN_SUC_YN = 'N'
+			AND A.IP = #{ip}
+			AND A.REG_DT > DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 30 MINUTE),'%Y%m%d%H%i%s')
+		]]>
+	</select>
+	
+	<!-- 해당 로그인 그룹 -->
+	<select id="selectLoginGroup" parameterType="String" resultMap="LoginGroupMap">
+		<![CDATA[
+			SELECT A.CU_IDX
+					,A.GC_IDX
+					,A.REG_DT
+					,A.REG_ID
+					,A.MOD_DT
+					,A.MOD_ID
+					,A.UG_IDX
+					,A.USE_YN
+					,B.GC_NAME
+					,B.GC_DESC
+			FROM EZ_USER_GROUP A, EZ_GROUP_CONFIG B
+			WHERE A.GC_IDX = B.GC_IDX
+			AND CU_IDX = #{cuIdx}
+			AND A.USE_YN = 'Y'
+		]]>
+	</select>
+	
+	<!-- 마지막 로그인 시간 update  -->
+	<update id="updateUserLog" parameterType="String">
+		<![CDATA[
+			UPDATE EZ_CMS_USER
+			SET LAST_LOG_DT = DATE_FORMAT(now(),'%Y%m%d%H%i%s')
+			WHERE CU_IDX = #{cuIdx}
+		]]>
+	</update>
+	
+	<!-- 탈퇴회원 여부조회 -->
+	<select id="selectLoginFOutUserCnt" parameterType="hashMap" resultType="int">
+		<![CDATA[
+			SELECT COUNT(CU_ID)
+			FROM EZ_USER_DROP
+			WHERE CU_ID = #{cuId}
+		]]>
+	</select>
+	
+	<!-- 오늘 포인트 획득 여부조회 -->
+	<select id="selectTodayPointCnt" parameterType="String" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) 
+			FROM SCHOME.USEPOINT 
+			WHERE ID = #{cuId} 
+			AND TITLE = '로그인' 
+			AND DATE_FORMAT(INSDAT, '%Y%m%d') = DATE_FORMAT(now(), '%Y%m%d')
+		]]>
+	</select>
+	
+</mapper>

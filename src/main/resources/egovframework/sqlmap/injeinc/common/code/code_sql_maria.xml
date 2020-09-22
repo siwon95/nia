@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Mon Mar 09 09:56:23 KST 2020-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="code">
+
+	<resultMap id="codeVo" type="egovframework.injeinc.common.code.vo.CodeVo">
+<!-- 		<result property="startPage" column="START_PAGE_NO"/> -->
+<!-- 		<result property="endPage" column="END_PAGE_NO"/> -->
+<!-- 		<result property="totCnt" column="TOT_CNT"/> -->
+<!-- 		<result property="rnum" column="RNUM"/> -->
+		
+<!-- 		<result property="idx" column="IDX"/> -->
+<!-- 		<result property="codeGroup" column="CODE_GROUP"/> -->
+		<result property="code" column="CODE"/>
+		<result property="codeName" column="CODE_NAME"/>
+	</resultMap>
+	
+	<!-- 조회(다건) -->
+	
+	<select id="selectDeptCodeAll" parameterType="HashMap" resultType="egovMap">
+	<![CDATA[
+			SELECT A.CD_IDX AS CODE
+			, A.CD_SUBJECT AS CODE_NAME
+			, A.CD_DEPSTEP1
+			, A.CD_DEPSTEP2
+			, A.CD_DEPSTEP3
+			FROM EZ_DEPARTMENT A 
+			ORDER BY A.CD_DEPSTEP1, A.CD_DEPSTEP2, A.CD_DEPSTEP3
+	]]>
+	</select>
+	
+	<select id="selectCodeAll" parameterType="HashMap" resultType="egovMap">
+		 <if test="codeAxuse == &quot;AD000000&quot;">
+			<![CDATA[
+			SELECT 
+			MM_CD AS CODE
+			, MM_NAME AS CODE_NAME
+			FROM EZ_MGR_MENU
+			WHERE MM_UPR_CD = #{codeAxuse}
+				 AND MM_CD NOT IN('DDDDDDDD')
+				 ORDER BY ORD_NO ASC
+			]]>
+			
+		</if>
+		<if test="codeAxuse == &quot;04010000&quot;">
+			<![CDATA[
+			SELECT 
+				  CB_CD AS CODE
+				, CB_NAME AS CODE_NAME
+				FROM EZ_CMS_BBS
+			WHERE USE_YN = 'Y'
+			  AND  CB_UPR_CD like CONCAT('%',#{codeAxuse},'%')
+			]]>
+		</if>
+	
+	</select>
+	
+	<select id="selectCommonCode" parameterType="HashMap" resultType="egovMap">
+		<![CDATA[
+			SELECT
+				CODE 
+				, CODE_NAME
+			FROM EZ_CMM_CODE
+			WHERE USE_YN = 'Y'  
+		]]>
+		<if test="codeAxuse != null and codeAxuse != ''">
+			<![CDATA[
+			AND			
+				CODE_UPR = #{codeAxuse}
+			]]>
+			
+		</if>
+	</select>
+	
+	<select id="selectPgCodeAll" parameterType="HashMap" resultType="egovMap">
+		  <![CDATA[
+			SELECT 
+			MM_CD AS CODE
+			, MM_NAME AS CODE_NAME
+			FROM EZ_MGR_MENU
+		]]>
+	</select>
+	    
+	<select id="selectCodeByCodeGroup" parameterType="hashMap" resultMap="codeVo">
+	<![CDATA[
+		SELECT CODE,
+		  CODE_NAME
+		FROM EZ_CMM_CODE
+		WHERE USE_YN ='Y'
+		AND CODE_ALS = 'STATUS_CD' 
+	]]>
+	</select>
+
+
+	
+</mapper>

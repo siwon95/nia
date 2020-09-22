@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<decorators defaultdir="/layout">
+
+	<!--     사용자 메인 -->
+	<decorator name="mnt_main" page="cms/main.jsp">
+		<pattern>/mgr/*</pattern>
+		<pattern>/ex/*</pattern>
+		<pattern>/dept/*</pattern>
+		<pattern>/boffice/*</pattern>
+		<pattern>/file/*</pattern>
+		<pattern>/board/*</pattern>
+	</decorator>
+	
+	<excludes>
+		<pattern>/boffice/login/Login.do</pattern>
+		<pattern>/boffice/sy/group/UserGroupAddList.do</pattern>
+		<pattern>/boffice/ex/lecture/LectureUserSearch_List.do</pattern>
+		<pattern>/boffice/ex/management/Ta_Item_Pop_CalCulAtor.do</pattern>
+		<pattern>/boffice/ex/management/Ta_Item_Pop_CanCel.do</pattern>
+		<pattern>/boffice/ex/management/Ta_Item_Pop_CanCel_Check.do</pattern>
+		<pattern>/boffice/ex/management/Hs_Item_Pop_CalCulAtor.do</pattern>
+		<pattern>/boffice/ex/management/Hs_Item_Pop_CanCel.do</pattern>
+		<pattern>/boffice/ex/management/Hs_Item_Pop_CanCel_Check.do</pattern>
+		<pattern>/boffice/common/pg/Pg_Process_PayRes.do</pattern>
+		<pattern>/boffice/ex/popup/*</pattern>
+		<pattern>/boffice/*Excel.do</pattern>
+		<pattern>/boffice/*Hwp.do</pattern>
+		<pattern>/boffice/*Pop.do*</pattern>
+		<pattern>/boffice/*Print.do</pattern>
+		<pattern>/site/*Pop.do*</pattern>
+		<pattern>/site/*Print.do*</pattern>
+		<pattern>/site/ex/bbs/IdeaBoardReg.do</pattern>
+		<pattern>/share/*</pattern>
+		<!-- <pattern>/site/DRP0000/login/*</pattern> -->
+	</excludes>
+
+<!--	<excludes> -->
+<!-- 		<pattern>/boffice/sy/mgr/mgr_authority.jsp</pattern> -->
+<!-- 	</excludes> -->
+
+	<!-- 사용자메뉴 데코레이터  -->
+    <decorator name="web_decorator" page="decorator.jsp">
+    	<pattern>/site/*</pattern>
+    	<pattern>/yangcheon/*</pattern>		
+    </decorator>
+</decorators>

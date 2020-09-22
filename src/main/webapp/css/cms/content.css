@@ -1,0 +1,54 @@
+@charset "utf-8";
+
+/* Login */
+.loginWrap{position:absolute;top:200px;left:50%;margin-left:-200px;width:400px;padding:50px;text-align:center;background:#fff;border-radius:10px;box-shadow:0 5px 10px rgba(0,0,0,0.2);box-sizing:border-box;}
+.loginWrap h1{font-size:2.5em;font-weight:bold;color:#777;letter-spacing:-1px;}
+.loginWrap h1 b{color:#387ec6;}
+.loginWrap span{font-size:0.9em;color:#aaa;}
+.loginWrap form{display:block;padding:20px 0;}
+.loginWrap form input[type='text'],
+.loginWrap form input[type='password']{margin-bottom:10px;width:100%;height:40px;padding:0 20px;color:#222;border:1px #ccc solid;border-radius:5px;box-sizing:border-box;}
+.loginWrap form input[type='submit']{width:100%;height:45px;font-size:1.05em;font-weight:bold;color:#fff;text-align:center;background:#387ec6;border:1px #387ec6 solid;border-radius:5px;}
+.loginWrap form input::placeholder{color:#ccc;}
+
+/* List */
+.thumbImg{display:block;position:relative;text-align:center;background:#eaeaea /*url(/images/cms/noimage.png) center center*/;border:1px #ddd solid;vertical-align:middle;}
+.thumbImg img{max-width:100%;max-height:100%;vertical-align:middle;}
+.thumbImg.add{text-indent:-9999em;background:#fff url(/images/cms/noimage_add.png) center center;}
+.thumbList{display:block;}
+.thumbList > li{position:relative;display:block;float:left;margin:0 20px 20px 0;width:200px;}
+.thumbList > li .thumbImg{margin-bottom:10px;width:200px;height:150px;line-height:150px;}
+.thumbList > li .thumbImg + *{margin-top:15px;}
+.thumbList > li .desc{height:60px;text-align:center;}
+.thumbList > li .subject{display:block;margin-bottom:5px;font-size:14px;font-weight:bold;text-align:center;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
+.thumbList > li .btnArea{margin-top:10px;}
+.thumbList > li .btnArea img{height:13px;}
+table.list td .thumbImg{width:100%;height:50px;line-height:50px;background-size:auto 200px;}
+
+.layoutTypeList{display:block;}
+.layoutTypeList:after{display:block;content:'';clear:both;}
+.layoutTypeList li{display:block;float:left;margin-right:10px;width:120px;text-align:center;}
+.layoutTypeList li .thumbImg{display:block;margin:0 auto;width:100px;height:100px;text-indent:-9999px;background-image:url(/images/cms/img_templateType.png);background-repeat:no-repeat;background-size:auto 100%;}
+.layoutTypeList li .thumbImg.type1{background-position: 0 0;}
+.layoutTypeList li .thumbImg.type2{background-position:-100px 0;}
+.layoutTypeList li .thumbImg.type3{background-position:-200px 0;}
+ 
+.thumbList.template > li{margin:0 20px 30px 0;width:160px;}
+.thumbList.template > li .thumbImg{width:160px;height:120px;line-height:120px;}
+.thumbList.template > li .thumbImg.add{background:#fff url(/images/cms/noimage_add.png) center center;background-size:200px auto;}
+.thumbList.template > li .desc.add{font-size:11px;text-indent:0;text-align:left;line-height:160%;}
+
+.editorBox{position:relative;overflow:hidden;}
+.editorBox .editorTemplate{position:absolute;top:0;bottom:0;right:-122px;width:120px;background:rgba(255,255,255,0.8);border:1px #ccc solid;box-sizing:border-box;z-index:1;box-shadow:0 -2px 4px rgba(0,0,0,0.1);transition-duration:0.3s;}
+.editorBox .editorTemplate:after{display:block;content:'템플릿 >';position:absolute;top:50%;right:80px;margin-top:-15px;width:60px;height:30px;line-height:30px;text-align:right;opacity:0;transition-duration:0.3s;}
+.editorBox .editorTemplate:hover:after{right:135px;opacity:1;}
+.editorBox .editorTemplate .btn_templateToggle{display:block;position:absolute;top:50%;right:120px;margin-top:-25px;width:9px;height:50px;text-indent:-9999em;background:#9c9c9c url(/images/cms/btn_asideToggle.png) no-repeat center center;z-index:10;}
+.editorBox .editorTemplate.active{right:0;}
+.editorBox .editorTemplate.active:hover:after{display:none;}
+.editorBox .editorTemplate > ul{display:block;position:absolute;top:0;left:0;bottom:0;right:0;overflow-y:auto;}
+.editorBox .editorTemplate > ul > li{display:block;margin:10px auto;width:90px;}
+.editorBox .editorTemplate > ul > li > a{display:block;}
+.editorBox .editorTemplate > ul > li > a > img{width:90px;height:90px;border:1px solid #aaa;}
+
+#modal_contentForm.modalWrap{margin-left:-550px;width:1100px;}
+

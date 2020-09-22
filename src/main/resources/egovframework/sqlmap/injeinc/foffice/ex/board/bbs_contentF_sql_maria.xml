@@ -1,0 +1,763 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Fri Mar 13 16:53:17 KST 2020-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BbsContentFDao">
+	<resultMap id="BbsContentFPagMap" type="java.util.HashMap">
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="parentSeq" column="PARENT_SEQ"/>
+		<result property="answerStep" column="ANSWER_STEP"/>
+		<result property="answerDepth" column="ANSWER_DEPTH"/>
+		<result property="notiYn" column="NOTI_YN"/>
+		<result property="cateCont" column="CATE_CONT"/>
+		<result property="subCont" column="SUB_CONT"/>
+		<result property="nameCont" column="NAME_CONT"/>
+		<result property="addrCont" column="ADDR_CONT"/>
+		<result property="emailCont" column="EMAIL_CONT"/>
+		<result property="telCont" column="TEL_CONT"/>
+		<result property="phoneCont" column="PHONE_CONT"/>
+		<result property="clobContSearch" column="CLOB_CONT_SEARCH"/>
+		<result property="ext1" column="EXT1"/>
+		<result property="ext2" column="EXT2"/>
+		<result property="ext3" column="EXT3"/>
+		<result property="ext4" column="EXT4"/>
+		<result property="ext5" column="EXT5"/>
+		<result property="ext6" column="EXT6"/>
+		<result property="ext7" column="EXT7"/>
+		<result property="ext8" column="EXT8"/>
+		<result property="ext9" column="EXT9"/>
+		<result property="ext10" column="EXT10"/>
+		<result property="subLinkCont" column="SUB_LINK_CONT"/>
+		<result property="mLinkCont" column="M_LINK_CONT"/>
+		<result property="thumnailCont" column="THUMNAIL_CONT"/>
+		<result property="countCont" column="COUNT_CONT"/>
+		<result property="chargeNameCont" column="CHARGE_NAME_CONT"/>
+		<result property="chargeTelCont" column="CHARGE_TEL_CONT"/>
+		<result property="openYnCont" column="OPEN_YN_CONT"/>
+		<result property="ansYnCont" column="ANS_YN_CONT"/>
+		<result property="ansWriter" column="ANS_WRITER"/>
+		<result property="ansRYn" column="ANS_R_YN"/>
+		<result property="ansDt" column="ANS_DT"/>
+		<result property="mwAdOpenYn" column="MW_AD_OPEN_YN"/>
+		<result property="mwNoReplyYn" column="MW_NO_REPLY_YN"/>
+		<result property="delRsnCd" column="DEL_RSN_CD"/>
+		<result property="dupcode" column="DUPCODE"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="fileCnt" column="FILE_CNT"/>
+	</resultMap>
+	
+	<resultMap id="BbsContentFViewMap" type="java.util.HashMap">
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="parentSeq" column="PARENT_SEQ"/>
+		<result property="answerStep" column="ANSWER_STEP"/>
+		<result property="answerDepth" column="ANSWER_DEPTH"/>
+		<result property="notiYn" column="NOTI_YN"/>
+		<result property="cateCont" column="CATE_CONT"/>
+		<result property="subCont" column="SUB_CONT"/>
+		<result property="nameCont" column="NAME_CONT"/>
+		<result property="addrCont" column="ADDR_CONT"/>
+		<result property="emailCont" column="EMAIL_CONT"/>
+		<result property="telCont" column="TEL_CONT"/>
+		<result property="phoneCont" column="PHONE_CONT"/>
+		<result property="clobCont" column="CLOB_CONT" javaType="java.lang.String" jdbcType="CLOB"/>
+		<result property="clobContSearch" column="CLOB_CONT_SEARCH"/>
+		<result property="ext1" column="EXT1"/>
+		<result property="ext2" column="EXT2"/>
+		<result property="ext3" column="EXT3"/>
+		<result property="ext4" column="EXT4"/>
+		<result property="ext5" column="EXT5"/>
+		<result property="ext6" column="EXT6"/>
+		<result property="ext7" column="EXT7"/>
+		<result property="ext8" column="EXT8"/>
+		<result property="ext9" column="EXT9"/>
+		<result property="ext10" column="EXT10"/>
+		<result property="subLinkCont" column="SUB_LINK_CONT"/>
+		<result property="mLinkCont" column="M_LINK_CONT"/>
+		<result property="thumnailCont" column="THUMNAIL_CONT"/>
+		<result property="captionCont" column="CAPTION_CONT" javaType="java.lang.String" jdbcType="CLOB"/>
+		<result property="countCont" column="COUNT_CONT"/>
+		<result property="chargeNameCont" column="CHARGE_NAME_CONT"/>
+		<result property="chargeTelCont" column="CHARGE_TEL_CONT"/>
+		<result property="openYnCont" column="OPEN_YN_CONT"/>
+		<result property="ansYnCont" column="ANS_YN_CONT"/>
+		<result property="ansCompCont" column="ANS_COMP_CONT"/>
+		<result property="ansWriter" column="ANS_WRITER"/>
+		<result property="ansContent" column="ANS_CONTENT"/>
+		<result property="ansRYn" column="ANS_R_YN"/>
+		<result property="ansDt" column="ANS_DT"/>
+		<result property="mwAdOpenYn" column="MW_AD_OPEN_YN"/>
+		<result property="mwNoReplyYn" column="MW_NO_REPLY_YN"/>
+		<result property="mwStatusCont" column="MW_STATUS_CONT"/>
+		<result property="apprYn" column="APPR_YN"/>
+		<result property="placeType" column="PLACE_TYPE"/>
+		<result property="delRsnCd" column="DEL_RSN_CD"/>
+		<result property="bcDelYn" column="BC_DEL_YN"/>
+		<result property="dupcode" column="DUPCODE"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="regIp" column="REG_IP"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+		<result property="modIp" column="MOD_IP"/>
+	</resultMap>
+	
+	<resultMap id="BbsContentFListMap" type="egovframework.injeinc.foffice.ex.board.vo.BbsContentFVo">
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="subCont" column="SUB_CONT"/>
+		<result property="nameCont" column="NAME_CONT"/>
+		<result property="clobContSearch" column="CLOB_CONT_SEARCH"/>
+		<result property="countCont" column="COUNT_CONT"/>
+		<result property="regDt" column="REG_DT"/>
+	</resultMap>
+	
+	<resultMap id="BbsContentFMyListMap" type="egovframework.injeinc.foffice.ex.board.vo.BbsContentFVo">
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="cbName" column="CB_NAME"/>
+		<result property="subCont" column="SUB_CONT"/>
+		<result property="nameCont" column="NAME_CONT"/>
+		<result property="countCont" column="COUNT_CONT"/>
+		<result property="openYnCont" column="OPEN_YN_CONT"/>
+		<result property="ansYnCont" column="ANS_YN_CONT"/>
+		<result property="ansRYn" column="ANS_R_YN"/>
+		<result property="mwAdOpenYn" column="MW_AD_OPEN_YN"/>
+		<result property="mwNoReplyYn" column="MW_NO_REPLY_YN"/>
+		<result property="regDt" column="REG_DT"/>
+	</resultMap>
+
+	<insert id="insertBbsContentF" parameterType="BbsContentFVo">
+		<![CDATA[
+			INSERT INTO EZ_BBS_CONTENT
+			(
+				BC_IDX
+				, CB_IDX
+				, PARENT_SEQ
+				, ANSWER_STEP
+				, ANSWER_DEPTH
+		]]>
+		<if test="cateCont != null and cateCont != ''">
+				, CATE_CONT
+		</if>
+		<if test="subCont != null and subCont != ''">
+				, SUB_CONT
+		</if>
+		<if test="nameCont != null and nameCont != ''">
+				, NAME_CONT
+		</if>
+		<if test="addrCont != null and addrCont != ''">
+				, ADDR_CONT
+		</if>
+		<if test="emailCont != null and emailCont != ''">
+				, EMAIL_CONT
+		</if>
+		<if test="telCont != null and telCont != ''">
+				, TEL_CONT
+		</if>
+		<if test="phoneCont != null and phoneCont != ''">
+				, PHONE_CONT
+		</if>
+		<if test="clobCont != null and clobCont != ''">
+				, CLOB_CONT
+				, CLOB_CONT_SEARCH
+		</if>
+		<if test="ext1 != null and ext1 != ''">
+				, EXT1
+		</if>
+		<if test="ext2 != null and ext2 != ''">
+				, EXT2
+		</if>
+		<if test="ext3 != null and ext3 != ''">
+				, EXT3
+		</if>
+		<if test="ext4 != null and ext4 != ''">
+				, EXT4
+		</if>
+		<if test="ext5 != null and ext5 != ''">
+				, EXT5
+		</if>
+		<if test="ext6 != null and ext6 != ''">
+				, EXT6
+		</if>
+		<if test="ext7 != null and ext7 != ''">
+				, EXT7
+		</if>
+		<if test="ext8 != null and ext8 != ''">
+				, EXT8
+		</if>
+		<if test="ext9 != null and ext9 != ''">
+				, EXT9
+		</if>
+		<if test="ext10 != null and ext10 != ''">
+				, EXT10
+		</if>
+		<if test="chargeNameCont != null and chargeNameCont != ''">
+				, CHARGE_NAME_CONT
+		</if>
+		<if test="chargeTelCont != null and chargeTelCont != ''">
+				, CHARGE_TEL_CONT
+		</if>
+		<if test="openYnCont != null and openYnCont != ''">
+				, OPEN_YN_CONT
+		</if>
+		<if test="ansYnCont != null and ansYnCont != ''">
+				, ANS_YN_CONT
+		</if>
+		<if test="ansCompCont != null and ansCompCont != ''">
+				, ANS_COMP_CONT
+		</if>
+		<if test="apprYn != null and apprYn != ''">
+				, APPR_YN
+		</if>
+		<![CDATA[
+				, DUPCODE
+				, REG_DT
+				, REG_ID
+				, REG_IP
+			)
+			VALUES
+			(
+				#{bcIdx}
+				, #{cbIdx}
+				, #{parentSeq}
+				, #{answerStep}
+				, #{answerDepth}
+		]]>
+		<if test="cateCont != null and cateCont != ''">
+				, #{cateCont}
+		</if>
+		<if test="subCont != null and subCont != ''">
+				, #{subCont}
+		</if>
+		<if test="nameCont != null and nameCont != ''">
+				, #{nameCont}
+		</if>
+		<if test="addrCont != null and addrCont != ''">
+				, #{addrCont}
+		</if>
+		<if test="emailCont != null and emailCont != ''">
+				, #{emailCont}
+		</if>
+		<if test="telCont != null and telCont != ''">
+				, #{telCont}
+		</if>
+		<if test="phoneCont != null and phoneCont != ''">
+				, #{phoneCont}
+		</if>
+		<if test="clobCont != null and clobCont != ''">
+				, #{clobCont}
+				, #{clobContSearch}
+		</if>
+		<if test="ext1 != null and ext1 != ''">
+				, #{ext1}
+		</if>
+		<if test="ext2 != null and ext2 != ''">
+				, #{ext2}
+		</if>
+		<if test="ext3 != null and ext3 != ''">
+				, #{ext3}
+		</if>
+		<if test="ext4 != null and ext4 != ''">
+				, #{ext4}
+		</if>
+		<if test="ext5 != null and ext5 != ''">
+				, #{ext5}
+		</if>
+		<if test="ext6 != null and ext6 != ''">
+				, #{ext6}
+		</if>
+		<if test="ext7 != null and ext7 != ''">
+				, #{ext7}
+		</if>
+		<if test="ext8 != null and ext8 != ''">
+				, #{ext8}
+		</if>
+		<if test="ext9 != null and ext9 != ''">
+				, #{ext9}
+		</if>
+		<if test="ext10 != null and ext10 != ''">
+				, #{ext10}
+		</if>
+		<if test="chargeNameCont != null and chargeNameCont != ''">
+				, #{chargeNameCont}
+		</if>
+		<if test="chargeTelCont != null and chargeTelCont != ''">
+				, #{chargeTelCont}
+		</if>
+		<if test="openYnCont != null and openYnCont != ''">
+				, #{openYnCont}
+		</if>
+		<if test="ansYnCont != null and ansYnCont != ''">
+				, #{ansYnCont}
+		</if>
+		<if test="ansCompCont != null and ansCompCont != ''">
+				, #{ansCompCont}
+		</if>
+		<if test="apprYn != null and apprYn != ''">
+				, #{apprYn}
+		</if>
+		<![CDATA[
+				, #{dupCode}
+				, NOW()
+				, #{regId}
+				, #{regIp}
+			)
+		]]>
+	</insert>
+	
+	<update id="updateBbsContentF" parameterType="BbsContentFVo">
+		<![CDATA[
+			UPDATE EZ_BBS_CONTENT 
+			SET MOD_DT = NOW()
+				, MOD_ID = #{modId}
+				, MOD_IP = #{modIp}
+		]]>
+		<if test="cateCont != null and cateCont != ''">
+				, CATE_CONT = #{cateCont}
+		</if>
+		<if test="subCont != null and subCont != ''">
+				, SUB_CONT = #{subCont}
+		</if>
+		<if test="nameCont != null and nameCont != ''">
+				, NAME_CONT = #{nameCont}
+		</if>
+		<if test="addrCont != null and addrCont != ''">
+				, ADDR_CONT = #{addrCont}
+		</if>
+		<if test="emailCont != null and emailCont != ''">
+				, EMAIL_CONT = #{emailCont}
+		</if>
+		<if test="telCont != null and telCont != ''">
+				, TEL_CONT = #{telCont}
+		</if>
+		<if test="phoneCont != null and phoneCont != ''">
+				, PHONE_CONT = #{phoneCont}
+		</if>
+		<if test="clobCont != null and clobCont != ''">
+				, CLOB_CONT = #{clobCont}
+				, CLOB_CONT_SEARCH = #{clobContSearch}
+		</if>
+		<if test="ext1 != null and ext1 != ''">
+				, EXT1 = #{ext1}
+		</if>
+		<if test="ext2 != null and ext2 != ''">
+				, EXT2 = #{ext2}
+		</if>
+		<if test="ext3 != null and ext3 != ''">
+				, EXT3 = #{ext3}
+		</if>
+		<if test="ext4 != null and ext4 != ''">
+				, EXT4 = #{ext4}
+		</if>
+		<if test="ext5 != null and ext5 != ''">
+				, EXT5 = #{ext5}
+		</if>
+		<if test="ext6 != null and ext6 != ''">
+				, EXT6 = #{ext6}
+		</if>
+		<if test="ext7 != null and ext7 != ''">
+				, EXT7 = #{ext7}
+		</if>
+		<if test="ext8 != null and ext8 != ''">
+				, EXT8 = #{ext8}
+		</if>
+		<if test="ext9 != null and ext9 != ''">
+				, EXT9 = #{ext9}
+		</if>
+		<if test="ext10 != null and ext10 != ''">
+				, EXT10 = #{ext10}
+		</if>
+		<if test="chargeNameCont != null and chargeNameCont != ''">
+				, CHARGE_NAME_CONT = #{chargeNameCont}
+		</if>
+		<if test="chargeTelCont != null and chargeTelCont != ''">
+				, CHARGE_TEL_CONT = #{chargeTelCont}
+		</if>
+		<if test="openYnCont != null and openYnCont != ''">
+				, OPEN_YN_CONT = #{openYnCont}
+		</if>
+		<if test="ansYnCont != null and ansYnCont != ''">
+				, ANS_YN_CONT = #{ansYnCont}
+		</if>
+		<if test="ansCompCont != null and ansCompCont != ''">
+				, ANS_COMP_CONT = #{ansCompCont}
+		</if>
+		<if test="apprYn != null and apprYn != ''">
+				, APPR_YN = #{apprYn}
+		</if>
+		<![CDATA[
+			WHERE CB_IDX = #{cbIdx}
+			AND BC_IDX = #{bcIdx}
+			AND DUPCODE = #{searchDupcode}
+		]]>
+	</update>
+	
+	<update id="deleteBbsContentF" parameterType="BbsContentFVo">
+		<![CDATA[
+			UPDATE EZ_BBS_CONTENT
+			SET 
+				BC_DEL_YN = 'Y'
+				, MOD_DT = NOW()
+				, MOD_ID = #{modId}
+				, MOD_IP = #{modIp}
+			WHERE CB_IDX = #{cbIdx}
+			AND BC_IDX = #{bcIdx}
+			AND DUPCODE = #{searchDupcode}
+		]]>
+	</update>
+	
+	<select id="selectBbsContentF" parameterType="BbsContentFVo" resultMap="BbsContentFViewMap">
+		<![CDATA[
+			SELECT * FROM EZ_BBS_CONTENT
+			WHERE BC_DEL_YN = 'N'
+			AND CB_IDX = #{cbIdx}
+			AND BC_IDX = #{bcIdx}
+		]]>
+	</select>
+	
+	<sql id="searchBbsContentF">
+		<if test="searchCateCont != null and searchCateCont != ''">
+			<![CDATA[
+				AND CATE_CONT = #{searchCateCont}
+			]]>
+		</if>
+		<if test="searchNameCont != null and searchNameCont != ''">
+			<![CDATA[
+				AND NAME_CONT = #{searchNameCont}
+			]]>
+		</if>
+		<if test="searchOpenYnCont != null and searchOpenYnCont != ''">
+			<if test="searchOpenYnCont == 21000100">
+				<![CDATA[
+					AND OPEN_YN_CONT = '21000100' AND MW_AD_OPEN_YN = 'N'
+				]]>
+			</if>
+			<if test="searchOpenYnCont == 21000200">
+				<![CDATA[
+					AND (OPEN_YN_CONT = '21000200' OR MW_AD_OPEN_YN = 'Y')
+				]]>
+			</if>
+		</if>
+		<if test="searchPlaceType != null and searchPlaceType != ''">
+			<![CDATA[
+				AND PLACE_TYPE IN ('Y', #{searchCateCont})
+			]]>
+		</if>
+		<if test="searchDupcode != null and searchDupcode != ''">
+			<![CDATA[
+				AND DUPCODE = #{searchDupcode}
+			]]>
+		</if>
+		<include refid="searchBbsContentFKeyword"/>
+	</sql>
+	
+	<sql id="searchBbsContentFKeyword">
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == &quot;subCont&quot;">AND
+				SUB_CONT LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == &quot;nameCont&quot;">AND
+				NAME_CONT LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == &quot;addrCont&quot;">AND
+				ADDR_CONT LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == &quot;emailCont&quot;">AND
+				EMAIL_CONT LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == &quot;telCont&quot;">AND
+				TEL_CONT LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == &quot;phoneCont&quot;">AND
+				PHONE_CONT LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == &quot;clobCont&quot;">AND
+				CLOB_CONT_SEARCH LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == &quot;ext1&quot;">AND
+				EXT1 LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == &quot;ext2&quot;">AND
+				EXT2 LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == &quot;ext3&quot;">AND
+				EXT3 LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == &quot;ext4&quot;">AND
+				EXT4 LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == &quot;ext5&quot;">AND
+				EXT5 LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == &quot;ext6&quot;">AND
+				EXT6 LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == &quot;ext7&quot;">AND
+				EXT7 LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == &quot;ext8&quot;">AND
+				EXT8 LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == &quot;ext9&quot;">AND
+				EXT9 LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == &quot;ext10&quot;">AND
+				EXT10 LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == &quot;captionCont&quot;">AND
+				CAPTION_CONT LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == &quot;chargeNameCont&quot;">AND
+				CHARGE_NAME_CONT LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == &quot;chargeTelCont&quot;">AND
+				CHARGE_TEL_CONT LIKE CONCAT('%',#{searchKeyword},'%')
+			</if>
+		</if>
+	</sql>
+	
+	<select id="selectPagBbsContentF" parameterType="BbsContentFVo" resultMap="BbsContentFPagMap">
+		<![CDATA[
+			SELECT 
+				BC_IDX
+				, CB_IDX
+				, PARENT_SEQ
+				, ANSWER_STEP
+				, ANSWER_DEPTH
+				, NOTI_YN
+				, CATE_CONT
+				, SUB_CONT
+				, NAME_CONT
+				, ADDR_CONT
+				, EMAIL_CONT
+				, TEL_CONT
+				, PHONE_CONT
+				, CLOB_CONT_SEARCH
+				, EXT1
+				, EXT2
+				, EXT3
+				, EXT4
+				, EXT5
+				, EXT6
+				, EXT7
+				, EXT8
+				, EXT9
+				, EXT10
+				, SUB_LINK_CONT
+				, M_LINK_CONT
+				, THUMNAIL_CONT
+				, COUNT_CONT
+				, CHARGE_NAME_CONT
+				, CHARGE_TEL_CONT
+				, OPEN_YN_CONT
+				, ANS_YN_CONT
+				, ANS_WRITER
+				, ANS_R_YN
+				, ANS_DT
+				, MW_AD_OPEN_YN
+				, MW_NO_REPLY_YN
+				, DEL_RSN_CD
+				, DUPCODE
+				, REG_DT
+				, (SELECT COUNT(*) FROM EZ_CONTENT_FILE WHERE USE_YN = 'Y' AND CB_IDX = B.CB_IDX AND BC_IDX = B.BC_IDX) AS FILE_CNT
+			FROM (
+				SELECT /*+ FIRST_ROWS */ A.*, @rownum := @rownum + 1 as RN FROM (
+					SELECT 
+						BC_IDX
+						, CB_IDX
+						, PARENT_SEQ
+						, ANSWER_STEP
+						, ANSWER_DEPTH
+						, NOTI_YN
+						, CATE_CONT
+						, SUB_CONT
+						, NAME_CONT
+						, ADDR_CONT
+						, EMAIL_CONT
+						, TEL_CONT
+						, PHONE_CONT
+						, CLOB_CONT_SEARCH
+						, EXT1
+						, EXT2
+						, EXT3
+						, EXT4
+						, EXT5
+						, EXT6
+						, EXT7
+						, EXT8
+						, EXT9
+						, EXT10
+						, SUB_LINK_CONT
+						, M_LINK_CONT
+						, THUMNAIL_CONT
+						, COUNT_CONT
+						, CHARGE_NAME_CONT
+						, CHARGE_TEL_CONT
+						, OPEN_YN_CONT
+						, ANS_YN_CONT
+						, ANS_WRITER
+						, ANS_R_YN
+						, ANS_DT
+						, MW_AD_OPEN_YN
+						, MW_NO_REPLY_YN
+						, DEL_RSN_CD
+						, DUPCODE
+						, REG_DT
+					FROM EZ_BBS_CONTENT A
+					WHERE BC_DEL_YN = 'N'
+					AND CB_IDX = #{cbIdx}
+					AND (@rownum:=0)=0
+		]]>
+		<include refid="searchBbsContentF"/>
+		<![CDATA[
+					ORDER BY PARENT_SEQ DESC, ANSWER_STEP ASC
+				) A WHERE @rownum < #{lastIndex}
+			) B WHERE RN > #{firstIndex}
+		]]>
+	</select>
+	
+	<select id="selectBbsContentFCnt" parameterType="BbsContentFVo" resultType="java.lang.Integer">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM EZ_BBS_CONTENT
+			WHERE BC_DEL_YN = 'N'
+			AND CB_IDX = #{cbIdx}
+		]]>
+		<include refid="searchBbsContentF"/>
+	</select>
+	
+	<select id="selectListBbsContentF" parameterType="BbsContentFVo" resultMap="BbsContentFListMap">
+		<![CDATA[
+			SELECT /*+ FIRST_ROWS */ A.*, @rownum := @rownum + 1 as RN FROM (
+				SELECT 
+					BC_IDX
+					, CATE_CONT
+					, SUB_CONT
+					, NAME_CONT
+					, CLOB_CONT_SEARCH
+					, COUNT_CONT
+					, REG_DT
+				FROM EZ_BBS_CONTENT
+				WHERE BC_DEL_YN = 'N'
+				AND CB_IDX = #{cbIdx}
+				AND (@rownum:=0)=0
+		]]>
+		<include refid="searchBbsContentF"/>
+		<if test="searchNameContInArr != null and searchNameContInArr.size != 0">
+			AND NAME_CONT IN  
+			<foreach collection="searchNameContArr" item="item" separator="," close=")" open="(">
+				<![CDATA[
+					#{item}
+				]]>
+			</foreach>
+		</if>
+		<if test="searchNameContNotInArr != null and searchNameContNotInArr != ''">
+			AND NAME_CONT NOT IN
+			<foreach collection="searchNameContNotInArr" item="item" separator="," close=")" open="(">
+				<![CDATA[
+					#{item}
+				]]>
+			</foreach>
+		</if>
+		<![CDATA[
+				ORDER BY BC_IDX DESC
+			) A WHERE @rownum < #{lastIndex}
+		]]>
+	</select>
+	
+	<update id="updateBbsContentFStep" parameterType="BbsContentFVo">
+		<![CDATA[
+			UPDATE EZ_BBS_CONTENT
+			SET ANSWER_STEP = ANSWER_STEP + 1
+			WHERE PARENT_SEQ = #{parentSeq}
+			AND ANSWER_STEP >= #{answerStep}
+		]]>
+	</update>
+	
+	<update id="updateBbsContentFCount" parameterType="BbsContentFVo">
+		<![CDATA[
+			UPDATE EZ_BBS_CONTENT
+			SET COUNT_CONT = COUNT_CONT+1
+			WHERE CB_IDX = #{cbIdx}
+			AND BC_IDX = #{bcIdx}  
+		]]>
+	</update>
+	
+	<select id="selectPagBbsContentFMyMinwon" parameterType="BbsContentFVo" resultMap="BbsContentFMyListMap">
+		<![CDATA[
+			SELECT 
+				BC_IDX
+				, CB_IDX
+				, (SELECT CB_NAME FROM EZ_CMS_BBS WHERE CB_IDX = B.CB_IDX AND USE_YN = 'Y') AS CB_NAME
+				, SUB_CONT
+				, NAME_CONT
+				, COUNT_CONT
+				, OPEN_YN_CONT
+				, ANS_YN_CONT
+				, ANS_R_YN
+				, MW_AD_OPEN_YN
+				, MW_NO_REPLY_YN
+				, REG_DT
+			FROM (
+				SELECT /*+ FIRST_ROWS */ A.*, @rownum := @rownum + 1 as RN FROM (
+					SELECT 
+						BC_IDX
+						, CB_IDX
+						, SUB_CONT
+						, NAME_CONT
+						, COUNT_CONT
+						, OPEN_YN_CONT
+						, ANS_YN_CONT
+						, ANS_R_YN
+						, MW_AD_OPEN_YN
+						, MW_NO_REPLY_YN
+						, REG_DT
+					FROM EZ_BBS_CONTENT A
+					WHERE BC_DEL_YN = 'N'
+					AND CB_IDX IN (SELECT A.CB_IDX FROM EZ_CMS_BBS_VIEW A LEFT OUTER JOIN EZ_BBS_CONFIG B ON A.CB_IDX = B.CB_IDX WHERE B.BBS_TEMPLET_GBN = '16050700')
+					AND DUPCODE = #{searchDupcode}
+		]]>
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 1">
+				<![CDATA[
+					AND SUB_CONT LIKE CONCAT('%',#{searchKeyword},'%')
+				]]>
+			</if>
+			<if test="searchCondition == 2">
+				<![CDATA[
+					AND CLOB_CONT_SEARCH LIKE CONCAT('%',#{searchKeyword},'%')
+				]]>
+			</if>
+		</if>
+		<![CDATA[
+					AND (@rownum:=0)=0
+					ORDER BY PARENT_SEQ DESC, ANSWER_STEP ASC
+				) A WHERE @rownum < #{lastIndex}
+			) B WHERE RN > #{firstIndex}
+		]]>
+	</select>
+	
+	<select id="selectBbsContentFMyMinwonCnt" parameterType="BbsContentFVo" resultType="java.lang.Integer">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM EZ_BBS_CONTENT
+			WHERE BC_DEL_YN = 'N'
+			AND CB_IDX IN (SELECT A.CB_IDX FROM EZ_CMS_BBS_VIEW A LEFT OUTER JOIN EZ_BBS_CONFIG B ON A.CB_IDX = B.CB_IDX WHERE B.BBS_TEMPLET_GBN = '16050700')
+			AND DUPCODE = #{searchDupcode}
+		]]>
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 1">
+				<![CDATA[
+					AND SUB_CONT LIKE CONCAT('%',#{searchKeyword},'%')
+				]]>
+			</if>
+			<if test="searchCondition == 2">
+				<![CDATA[
+					AND CLOB_CONT_SEARCH LIKE CONCAT('%',#{searchKeyword},'%')
+				]]>
+			</if>
+		</if>
+	</select>
+	
+</mapper>

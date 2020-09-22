@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SnsDao">
+	
+	<insert id="insertSnsContents" parameterType="SnsCollectVo">
+		<![CDATA[
+			INSERT INTO SNS_CONTENTS (SNS_IDX, SNS_TYPE, SNS_REGDT, SNS_DESC, SNS_LINKURL, SNS_THUMNAIL, USE_YN, REGDT, REGID, SNS_REGID, SNS_REGNM, SNS_PROFILEIMG, SNS_TN_HEIGHT, SNS_TN_WIDTH, SNS_KEYWORD, SITE_DOMAIN )
+			SELECT  #{snsIdx}, #{snsType}, #{snsRegdt}, #{snsDesc}, #{snsLinkurl}, #{snsThumnail}, #{useYn}, TO_CHAR(SYSDATE,'yyyymmddhh24miss'), #{regid}, #{snsRegid}, #{snsRegnm}, #{snsProfileimg}, #{snsTNHeight}, #{snsTNWidth}, #{snsKeyword}, #{siteDomain}
+			FROM DUAL
+			WHERE  NOT EXISTS (SELECT 1
+						        FROM   SNS_CONTENTS
+						        WHERE  SNS_IDX = #{snsIdx}
+						        AND    SNS_TYPE = #{snsType} )
+		]]>
+	</insert>
+	
+	<update id="updateSnsProhibitWord">
+		<![CDATA[
+		UPDATE SNS_CONTENTS A
+		SET    USE_YN = 'N' ,
+		       EZ_PROHIBIT_WORD = (SELECT WMSYS.WM_CONCAT(WORD)
+								        FROM   EZ_PROHIBIT_WORD
+								        WHERE  INSTR(A.SNS_DESC, WORD) > 0 AND USE_YN = 'Y' )
+		WHERE  EXISTS (SELECT 1
+				        FROM   EZ_PROHIBIT_WORD
+				        WHERE  INSTR(A.SNS_DESC, WORD) > 0 AND USE_YN = 'Y' )
+		AND    USE_YN IS NULL
+		]]>
+	</update>
+	
+	<resultMap id="selectSnsListForValidationMap" type="SnsContentsVo">
+		<result property="snsIdx" column="SNS_IDX"/>
+		<result property="snsType" column="SNS_TYPE"/>
+		<result property="snsRegdt" column="SNS_REGDT"/>
+		<result property="snsDesc" column="SNS_DESC"/>
+		<result property="snsLinkurl" column="SNS_LINKURL"/>
+		<result property="snsThumnail" column="SNS_THUMNAIL"/>
+		<result property="snsHashtag" column="SNS_HASHTAG"/>
+		<result property="useYn" column="USE_YN"/>
+		<result property="regdt" column="REGDT"/>
+		<result property="moddt" column="MODDT"/>
+		<result property="regid" column="REGID"/>
+		<result property="modid" column="MODID"/>
+		<result property="snsRegid" column="SNS_REGID"/>
+		<result property="snsRegnm" column="SNS_REGNM"/>
+		<result property="snsProfileimg" column="SNS_PROFILEIMG"/>
+		<result property="snsTNHeight" column="SNS_TN_HEIGHT"/>
+		<result property="snsTNWidth" column="SNS_TN_WIDTH"/>
+		<result property="snsProhibitWord" column="SNS_PROHIBIT_WORD"/>
+		<result property="snsKeyword" column="SNS_KEYWORD"/>
+	</resultMap>
+	
+	<select id="selectSnsListForValidation" parameterType="SnsContentsVo" resultMap="selectSnsListForValidationMap">
+	<![CDATA[
+		SELECT *
+		FROM   (SELECT ROWNUM RN,
+		               T.*
+	        FROM   (SELECT SNS_IDX,
+	                       SNS_TYPE,
+	                       SNS_REGDT,
+	                       SNS_DESC,
+	                       SNS_LINKURL,
+	                       SNS_THUMNAIL,
+	                       SNS_HASHTAG,
+	                       USE_YN,
+	                       REGDT,
+	                       MODDT,
+	                       REGID,
+	                       MODID,
+	                       SNS_REGID,
+	                       SNS_REGNM,
+	                       SNS_PROFILEIMG,
+	                       SNS_TN_HEIGHT,
+	                       SNS_TN_WIDTH,
+	                       SNS_PROHIBIT_WORD,
+	                       SNS_KEYWORD
+		                FROM   SNS_CONTENTS
+		                WHERE  1=1
+		                ]]>
+		                <if test="tabUseYn != null">
+		                	<if test="tabUseYn != null and tabUseYn != ''">
+		                		<![CDATA[ AND USE_YN = #{tabUseYn} ]]>
+		                	</if>
+		                	<if test="tabUseYn == null or tabUseYn == ''">
+		                		<![CDATA[ AND USE_YN IS NULL ]]>
+		                	</if>
+		                </if>
+		                <if test="snsDesc != null and snsDesc != ''">
+				         	<![CDATA[ AND SNS_DESC LIKE '%' || #{snsDesc} || '%' ]]>
+				        </if>
+	<![CDATA[ 
+				        AND SITE_DOMAIN = #{siteDomain}
+		                ORDER BY SNS_REGDT DESC ) T)
+		WHERE RN BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	]]>
+	</select> 
+	
+	<select id="selectSnsHashtagList" parameterType="SnsHashtagVo" resultType="SnsHashtagVo">
+	<![CDATA[
+		SELECT *
+		FROM   (SELECT ROWNUM RN,
+		               T.*
+		        FROM   (SELECT HS_IDX hsIdx,
+		                       HASHTAG hashtag,
+		                       VIEW_CNT viewCnt,
+		                       SNS_CNT snsCnt
+		                FROM   EZ_SNS_HASHTAG
+		                WHERE  1=1
+		                AND USE_YN = 'Y'
+		                ORDER BY HS_IDX DESC ) T)
+		WHERE RN BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	]]>
+	</select>
+	
+	<select id="selectSnsProhibitWordList" parameterType="SnsProhibitWordVo" resultType="SnsProhibitWordVo">
+	<![CDATA[
+		SELECT *
+		FROM   (SELECT ROWNUM RN,
+		               T.*
+		        FROM   (SELECT PW_IDX pwIdx,
+		                       WORD word
+		                FROM   EZ_PROHIBIT_WORD
+		                WHERE  1=1
+		                AND USE_YN = 'Y'
+		                ORDER BY PW_IDX DESC ) T)
+		WHERE RN BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	]]>
+	</select>
+	
+	<select id="selectSnsSearchKeywordList" parameterType="SnsSearchKeywordVo" resultType="SnsSearchKeywordVo">
+	<![CDATA[
+		SELECT *
+		FROM   (SELECT ROWNUM RN,
+		               T.*
+		        FROM   (SELECT SK_IDX skIdx,
+		                       KEYWORD   keyword
+		                FROM   SNS_SEARCH_KEYWORD
+		                WHERE  1=1
+		                AND USE_YN = 'Y'
+		       ]]>
+		                <if test="tabSnsType != null">
+		                	<if test="tabSnsType != null and tabSnsType != ''">
+		                		AND SNS_TYPE = #{tabSnsType}
+		                	</if>
+		                	<if test="tabSnsType == null or tabSnsType == ''">
+		                		AND SNS_TYPE IS NULL
+		                	</if>
+		                </if>
+		       <![CDATA[
+		                ORDER BY SK_IDX DESC ) T)
+		WHERE RN BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	]]>
+	</select>
+	
+	<select id="selectSnsListCntForValidation" parameterType="SnsContentsVo" resultType="int">
+	<![CDATA[
+		SELECT COUNT(*)
+        FROM   SNS_CONTENTS
+        WHERE  1=1
+        AND SITE_DOMAIN = #{siteDomain}
+    ]]>
+		<if test="tabUseYn != null">
+         	<if test="tabUseYn != null and tabUseYn != ''">
+         		<![CDATA[ AND USE_YN = #{tabUseYn} ]]>
+         	</if>
+         	<if test="tabUseYn == null or tabUseYn == ''">
+         		<![CDATA[ AND USE_YN IS NULL ]]>
+         	</if>
+         </if>
+         <if test="snsDesc != null and snsDesc != ''">
+         	<![CDATA[ AND SNS_DESC LIKE '%' || #{snsDesc} || '%' ]]>
+         </if>
+	</select>
+	
+	<select id="selectSnsHashtagListCnt" parameterType="SnsHashtagVo" resultType="int">
+	<![CDATA[
+		SELECT COUNT(*)
+        FROM   EZ_SNS_HASHTAG
+        WHERE  1=1
+        AND USE_YN = 'Y'
+    ]]>
+	</select>
+	
+	<select id="selectSnsProhibitWordListCnt" parameterType="SnsProhibitWordVo" resultType="int">
+	<![CDATA[
+		SELECT COUNT(*)
+        FROM   EZ_PROHIBIT_WORD
+        WHERE  1=1
+        AND    USE_YN = 'Y'
+    ]]>
+	</select>
+
+	<select id="selectSnsSearchKeywordListCnt" parameterType="SnsSearchKeywordVo" resultType="int">
+	<![CDATA[
+		SELECT COUNT(*)
+        FROM   SNS_SEARCH_KEYWORD
+        WHERE  1=1
+        AND    USE_YN = 'Y'
+    ]]>
+        <if test="tabSnsType != null">
+        	<if test="tabSnsType != null and tabSnsType != ''">
+        		<![CDATA[ AND SNS_TYPE = #{tabSnsType} ]]>
+        	</if>
+        	<if test="tabSnsType == null or tabSnsType == ''">
+        		<![CDATA[ AND SNS_TYPE IS NULL ]]>
+        	</if>
+        </if>
+	</select>
+	
+	<update id="updateSnsByUseYn" parameterType="SnsContentsVo">
+	<![CDATA[
+		UPDATE SNS_CONTENTS
+		SET    USE_YN = #{useYn}
+				, MODDT = to_char(sysdate,'yyyymmddhh24miss')
+		WHERE  SNS_IDX = #{snsIdx}
+	]]>
+	</update>
+	
+	<update id="updateSnsContentsHashtag">
+	<![CDATA[
+		UPDATE SNS_CONTENTS A
+		SET    EZ_SNS_HASHTAG = (SELECT WMSYS.WM_CONCAT(HASHTAG)
+		        FROM   EZ_SNS_HASHTAG
+		        WHERE  INSTR(A.SNS_DESC || A.SNS_REGNM, HASHTAG) > 0
+		        AND USE_YN = 'Y' )
+		WHERE SITE_DOMAIN = #{siteDomain}
+	]]>
+	</update>
+	
+	<select id="selectSearchKeywordListForContents" resultType="SnsSearchKeywordVo">
+	<![CDATA[
+		SELECT KEYWORD keyword,
+		       SEARCH_TYPE searchType,
+		       SNS_TYPE snsType,
+		       IS_VALID isValid
+		FROM   SNS_SEARCH_KEYWORD
+		WHERE SEARCH_TYPE = 'contents'
+	]]>
+	</select>
+
+	<select id="selectSearchKeywordListForUser" resultType="SnsSearchKeywordVo">
+	<![CDATA[
+		SELECT KEYWORD keyword,
+		       SEARCH_TYPE searchType,
+		       SNS_TYPE snsType,
+		       IS_VALID isValid
+		FROM   SNS_SEARCH_KEYWORD
+		WHERE SEARCH_TYPE = 'user'
+	]]>
+	</select>
+	
+	<update id="updateSnsHashtagForSnsCnt">
+	<![CDATA[	
+		UPDATE EZ_SNS_HASHTAG A
+		SET    SNS_CNT = (SELECT COUNT(*)
+					        FROM   SNS_CONTENTS
+					        WHERE  INSTR(SNS_DESC || SNS_REGNM, A.HASHTAG) > 0
+					        AND    USE_YN = 'Y' )
+	]]>	
+	</update>
+	
+	<update id="updateProhibitWordForDelete" parameterType="SnsProhibitWordVo">
+	<![CDATA[
+		UPDATE EZ_PROHIBIT_WORD
+		SET    USE_YN = 'N',
+		       REG_DT = to_char(sysdate, 'yyyymmddhh24miss')
+		WHERE  PW_IDX = #{pwIdx}
+	]]>
+	</update>
+	
+	<insert id="insertProhibitWord" parameterType="SnsProhibitWordVo">
+	<![CDATA[
+		INSERT INTO EZ_PROHIBIT_WORD(PW_IDX, WORD, USE_YN, REG_ID, REG_DT)
+		VALUES(#{pwIdx}, #{word}, 'Y', #{regId}, to_char(sysdate, 'yyyymmddhh24miss'))
+	]]>
+	</insert>
+
+	<update id="updateHashtagForDelete" parameterType="SnsHashtagVo">
+	<![CDATA[
+		UPDATE EZ_SNS_HASHTAG
+		SET    USE_YN = 'N',
+		       REGDT = to_char(sysdate, 'yyyymmddhh24miss')
+		WHERE  HS_IDX = #{hsIdx}
+	]]>
+	</update>
+	
+	<insert id="insertHashtag" parameterType="SnsHashtagVo">
+	<![CDATA[
+		INSERT INTO EZ_SNS_HASHTAG(HS_IDX, HASHTAG, USE_YN, REGID, REGDT)
+		VALUES(#{hsIdx}, #{hashtag}, 'Y', #{regid}, to_char(sysdate, 'yyyymmddhh24miss'))
+	]]>
+	</insert>
+
+	<update id="updateSearchKeywordForDelete" parameterType="SnsSearchKeywordVo">
+	<![CDATA[
+		UPDATE SNS_SEARCH_KEYWORD
+		SET    USE_YN = 'N',
+		       REGDT = to_char(sysdate, 'yyyymmddhh24miss')
+		WHERE  SK_IDX = #{skIdx}
+	]]>
+	</update>
+	
+	<insert id="insertSearchKeyword" parameterType="SnsSearchKeywordVo">
+	<![CDATA[
+		INSERT INTO SNS_SEARCH_KEYWORD(SK_IDX, KEYWORD, SEARCH_TYPE, SNS_TYPE, USE_YN, REGID, REGDT, IS_VALID)
+		VALUES(#{skIdx}, #{keyword}, #{searchType}, #{snsType}, 'Y', #{regid}, to_char(sysdate, 'yyyymmddhh24miss'), #{isValid})
+	]]>
+	</insert>
+
+	
+	<select id="selectBannendWordList" parameterType="String" resultType="int">
+	<![CDATA[
+		SELECT
+			COUNT(*)
+         FROM
+         	EZ_PROHIBIT_WORD
+        WHERE
+        		INSTR(#{word}, WORD) > 0 
+        	AND
+        		USE_YN = 'Y'
+    ]]>
+	</select>	
+	
+</mapper>

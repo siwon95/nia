@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<accessip>
+<allow-ip>0:0:0:0:0:0:0:1</allow-ip>
+<allow-ip>*</allow-ip>
+<allow-ip>180.182.20.150</allow-ip>
+<allow-ip>200.4.10.*</allow-ip>
+<allow-ip>11.11.11.11</allow-ip>
+<allow-ip>11.11.11.11</allow-ip>
+<allow-ip>98.15.12.110</allow-ip>
+<allow-ip>98.15.14.172</allow-ip>
+<allow-ip>98.15.14.173</allow-ip>
+<allow-ip>98.15.14.174</allow-ip>
+<allow-ip>98.15.14.175</allow-ip>
+<allow-ip>98.15.14.176</allow-ip>
+<allow-ip>98.15.14.172</allow-ip>
+<allow-ip>98.15.14.173</allow-ip>
+<allow-ip>98.15.14.174</allow-ip>
+<allow-ip>98.15.14.175</allow-ip>
+<allow-ip>98.15.14.176</allow-ip>
+<allow-ip>127.0.0.*</allow-ip>
+</accessip>

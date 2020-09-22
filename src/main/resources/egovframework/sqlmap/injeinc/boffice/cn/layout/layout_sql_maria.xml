@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed Mar 11 16:37:10 KST 2020-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LayoutDao">
+	
+	<resultMap id="LayoutMap" type="egovframework.injeinc.boffice.cn.layout.vo.LayoutVo">
+		<result property="siteNm" column="SITE_NM"/>		<!--사이트이름-->
+		<result property="siteCd" column="SITE_CD"/>		<!--사이트코드-->
+		<result property="layoutCode" column="LAYOUT_CODE"/>		<!--레이아웃코드-->
+		<result property="layoutDesc" column="LAYOUT_DESC"/>		<!--레이아웃설명-->
+		<result property="layoutContent" column="LAYOUT_CONTENT"/>		<!--레이아웃컨텐츠-->
+		<result property="filePath" column="FILE_PATH"/>		<!--파일경로-->			
+		<result property="regId" column="REG_ID"/>		<!--등록자아이디-->
+		<result property="regDt" column="REG_DT"/>		<!--등록일시-->		
+		<result property="modId" column="MOD_ID"/>		<!--수정자아이디-->
+		<result property="modDt" column="MOD_DT"/>		<!--수정일시-->
+	</resultMap>
+
+	<select id="selectListLayout" parameterType="LayoutVo" resultMap="LayoutMap">
+			<![CDATA[	
+			SELECT 
+				(SELECT MAX(SITE_NM) FROM EZ_SITE WHERE SITE_CD=A.SITE_CD) AS SITE_NM
+				,SITE_CD
+				,LAYOUT_CODE
+				,LAYOUT_DESC
+				,LAYOUT_CONTENT
+				,FILE_PATH
+				,REG_ID
+				,REG_DT
+				,MOD_ID
+				,MOD_DT
+			FROM EZ_LAYOUT A
+			WHERE 1=1
+		]]>
+			<if test="siteCd != null and siteCd != ''">
+			<![CDATA[	
+			and
+					SITE_CD = #{siteCd}
+			]]>
+			</if>
+			<![CDATA[	
+		    ORDER BY SITE_CD ASC, LAYOUT_CODE ASC
+	  	]]>
+	</select>
+	
+	<select id="viewLayout" parameterType="LayoutVo" resultMap="LayoutMap">
+	<![CDATA[	
+		SELECT
+			(SELECT MAX(SITE_NM) FROM EZ_SITE WHERE SITE_CD=A.SITE_CD) AS SITE_NM
+				,SITE_CD
+				,LAYOUT_CODE
+				,LAYOUT_DESC
+				,LAYOUT_CONTENT
+				,FILE_PATH
+				,REG_ID
+				,REG_DT
+				,MOD_ID
+				,MOD_DT
+		FROM EZ_LAYOUT A
+		WHERE SITE_CD = #{siteCd} AND LAYOUT_CODE=#{layoutCode}
+	]]>
+	</select>
+
+	<insert id="insertLayout" parameterType="LayoutVo">
+	<![CDATA[	
+			INSERT INTO EZ_LAYOUT(
+				SITE_CD
+				,LAYOUT_CODE
+				,LAYOUT_DESC
+				,LAYOUT_CONTENT
+				,FILE_PATH
+				,REG_ID
+				,REG_DT
+			)VALUES(
+				#{siteCd}
+				,#{layoutCode}
+				,#{layoutDesc}
+				,#{layoutContent}
+				,#{filePath}
+				,#{regId}
+				,now()
+			)
+	]]>
+	</insert>
+	
+	<update id="updateLayout" parameterType="LayoutVo">
+	<![CDATA[	
+			UPDATE EZ_LAYOUT
+			SET	LAYOUT_DESC = #{layoutDesc}
+				,LAYOUT_CONTENT = #{layoutContent}
+				,FILE_PATH = #{filePath}
+				,MOD_ID = #{modId}
+				,MOD_DT = now()
+			WHERE SITE_CD = #{siteCd}
+			AND LAYOUT_CODE = #{layoutCode}
+	]]>
+	</update>
+	
+	<delete id="deleteLayout" parameterType="LayoutVo">
+	<![CDATA[	
+			DELETE FROM EZ_LAYOUT
+			WHERE SITE_CD = #{siteCd}
+			AND LAYOUT_CODE = #{layoutCode}
+	]]>
+	</delete>
+	
+</mapper>

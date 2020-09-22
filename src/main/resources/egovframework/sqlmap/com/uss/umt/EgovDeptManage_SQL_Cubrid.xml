@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="DeptManage">
+
+    <typeAlias  alias="DeptManageVO" type="egovframework.com.uss.umt.service.DeptManageVO"/>
+
+    <resultMap id="deptManageVO" class="egovframework.com.uss.umt.service.DeptManageVO">
+        <result property="orgnztId" 		column="ORGNZT_ID" 			columnIndex="1"/>
+        <result property="orgnztNm" 		column="ORGNZT_NM" 			columnIndex="2"/>
+        <result property="orgnztDc" 		column="ORGNZT_DC" 			columnIndex="3"/>
+        <result property="upperOrgnztId" 	column="UPPER_ORGNZT_ID" 	columnIndex="4"/>
+        <result property="ablAt" 			column="ABL_AT" 			columnIndex="5"/>
+        <result property="orgOrdr" 			column="ORG_ORDR" 			columnIndex="6"/>
+        <result property="level" 			column="LEVEL" 				columnIndex="7"/>
+    </resultMap>
+
+    <select id="deptManageDAO.selectDeptManageList" parameterClass="DeptManageVO" resultMap="deptManageVO">
+        <![CDATA[
+            SELECT ORGNZT_ID,
+                   ORGNZT_NM,
+                   ORGNZT_DC,
+                   UPPER_ORGNZT_ID,
+                   ABL_AT,
+                   ORG_ORDR,
+                   LEVEL
+              FROM COMTNORGNZTINFO
+        ]]>
+        <dynamic prepend="WHERE">    
+        	<isNotEmpty prepend="AND" property="searchOrgnztId">
+               ORGNZT_ID = #searchOrgnztId#
+           	</isNotEmpty>
+        	<isNotEmpty prepend="AND" property="searchAblAt">
+               ABL_AT = #searchAblAt#
+           	</isNotEmpty>       
+           	<isNotEmpty property="searchKeyword">        	
+	           	<isEqual prepend="AND" property="searchCondition" compareValue="1">
+	               ORGNZT_NM LIKE '%'||#searchKeyword#||'%'
+	           	</isEqual>
+	           	<isEqual prepend="AND" property="searchCondition" compareValue="2">
+	               ORGNZT_DC LIKE '%'||#searchKeyword#||'%'
+	           	</isEqual> 
+           	</isNotEmpty>
+        </dynamic>   
+        <![CDATA[                  
+			START WITH UPPER_ORGNZT_ID = '0'
+			CONNECT BY PRIOR ORGNZT_ID = UPPER_ORGNZT_ID        	    			
+			ORDER SIBLINGS BY ORG_ORDR ASC        	
+        ]]>
+    </select>
+
+    <select id="deptManageDAO.selectDeptManageListTotCnt" parameterClass="DeptManageVO" resultClass="int">
+
+            SELECT COUNT(*) totcnt
+            FROM COMTNORGNZTINFO
+            <dynamic prepend="WHERE">
+	        	<isNotEmpty prepend="AND" property="searchOrgnztId">
+	            	ORGNZT_ID = #searchOrgnztId#
+	            </isNotEmpty>    
+	            <isNotEmpty prepend="AND" property="searchAblAt">
+               		ABL_AT = #searchAblAt#
+           		</isNotEmpty>        
+				<isNotEmpty property="searchKeyword">        	
+		           	<isEqual prepend="AND" property="searchCondition" compareValue="1">
+		               ORGNZT_NM LIKE '%'||#searchKeyword#||'%'
+		           	</isEqual>
+		           	<isEqual prepend="AND" property="searchCondition" compareValue="2">
+		               ORGNZT_DC LIKE '%'||#searchKeyword#||'%'
+		           	</isEqual> 
+           		</isNotEmpty>
+            </dynamic>
+    </select>
+    
+    <select id="deptManageDAO.selectDeptManage" resultMap="deptManageVO">
+        <![CDATA[
+            SELECT ORGNZT_ID,
+                   ORGNZT_NM,
+                   ORGNZT_DC,
+                   UPPER_ORGNZT_ID,
+                   ABL_AT,
+                   ORG_ORDR,
+                   LEVEL
+              FROM COMTNORGNZTINFO
+              WHERE ORGNZT_ID = #orgnztId#              
+			START WITH UPPER_ORGNZT_ID = '0'
+			CONNECT BY PRIOR ORGNZT_ID = UPPER_ORGNZT_ID
+        ]]>
+    </select>
+
+    <insert id="deptManageDAO.insertDeptManage" parameterClass="DeptManageVO">
+        <![CDATA[
+            INSERT INTO COMTNORGNZTINFO
+                   (ORGNZT_ID,
+                    ORGNZT_NM,
+                    ORGNZT_DC,
+                    UPPER_ORGNZT_ID,
+                    ABL_AT,
+                    ORG_ORDR)     
+            VALUES (#orgnztId#,
+                    #orgnztNm#, 
+                    #orgnztDc#,
+                    #upperOrgnztId#,
+                    'N',
+                    #orgOrdr#)   
+        ]]>
+    </insert>     
+
+    <update id="deptManageDAO.updateDeptManage" parameterClass="DeptManageVO">
+            UPDATE COMTNORGNZTINFO
+               SET ORGNZT_NM = #orgnztNm#,
+                   ORGNZT_DC = #orgnztDc#,
+                   ORG_ORDR = #orgOrdr#
+             WHERE ORGNZT_ID = #orgnztId#      
+    </update>    
+    
+    <delete id="deptManageDAO.deleteDeptManage" parameterClass="DeptManageVO">
+        <!-- <![CDATA[
+            DELETE FROM COMTNORGNZTINFO
+             WHERE ORGNZT_ID = #orgnztId#    
+        ]]> -->
+        <![CDATA[
+            UPDATE COMTNORGNZTINFO
+               SET ABL_AT = 'Y'
+             WHERE ORGNZT_ID = #orgnztId#
+        ]]>
+    </delete>  
+
+</sqlMap>

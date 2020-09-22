@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SearchthemeDao">
+	
+	<resultMap id="SearchthemeMap" type="egovframework.injeinc.boffice.searchtheme.vo.SearchthemeVo">
+		<result property="stIdx" column="ST_IDX"/>		<!--idx-->
+		<result property="groupCd" column="GROUP_CD"/>		<!--그룹-->
+		<result property="title" column="TITLE"/>		<!--제목-->
+		<result property="url" column="URL"/>		<!--URL-->
+		<result property="introduce" column="INTRODUCE"/>		<!--소개-->
+		<result property="tags" column="TAGS"/>		<!--태그-->
+		<result property="department" column="DEPARTMENT"/>		<!--부서-->
+		<result property="telNum" column="TEL_NUM"/>		<!--연락처-->
+		<result property="streFileNm" column="STRE_FILE_NM"/>		<!--저장이미지명-->
+		<result property="orignlFileNm" column="ORIGNL_FILE_NM"/>		<!--원본이미지명-->
+		<result property="filePath" column="FILE_PATH"/>		<!--이미지경로-->
+		<result property="remYn" column="REM_YN"/>		<!--삭제유무-->
+		<result property="useYn" column="USE_YN"/>		<!--사용유무-->
+		<result property="regDt" column="REG_DT"/>		<!--등록일-->
+		<result property="regId" column="REG_ID"/>		<!--등록아이디-->
+		<result property="modDt" column="MOD_DT"/>		<!--수정일-->
+		<result property="modId" column="MOD_ID"/>		<!--수정아이디-->
+	</resultMap>
+	
+	<resultMap id="GroupCdMap" type="egovframework.injeinc.boffice.searchtheme.vo.SearchthemeVo">
+		<result property="groupCd" column="GROUP_CD"/>		<!--그룹-->
+	</resultMap>
+	<!-- 리스트 출력 -->
+	<select id="selectListSearchtheme" parameterType="SearchthemeVo" resultMap="SearchthemeMap">
+		<![CDATA[
+			SELECT * FROM (SELECT ROWNUM AS rn, TB.* FROM (	
+				SELECT ST_IDX
+				,GROUP_CD
+				,TITLE
+				,URL
+				,INTRODUCE
+				,TAGS
+				,DEPARTMENT
+				,TEL_NUM
+				,STRE_FILE_NM
+				,ORIGNL_FILE_NM
+				,FILE_PATH
+				,REM_YN
+				,USE_YN
+				,REG_DT
+				,REG_ID
+				,MOD_DT
+				,MOD_ID
+				FROM SEARCH_THEME
+				WHERE REM_YN = 'N'
+		]]>		 
+				<if test="useYn != null and useYn != ''">AND
+				<![CDATA[	
+						USE_YN = #{useYn}
+				]]>
+				</if>
+				<if test="schgroupcd != null and schgroupcd != ''">AND
+				<![CDATA[	
+						GROUP_CD = #{schgroupcd}
+				]]>
+				</if>
+				<if test="searchKeyword != null and searchKeyword != ''">
+				 	<if test="searchCondition == &quot;schtitle&quot;">
+					<![CDATA[	
+							AND TITLE LIKE CONCAT('%',#{searchKeyword},'%')
+					]]>	
+				 	</if>
+				 	<if test="searchCondition == &quot;schintroduce&quot;">
+					<![CDATA[	
+							AND INTRODUCE LIKE CONCAT('%',#{searchKeyword},'%')
+					]]>	
+				 	</if>
+				 	<if test="searchCondition == &quot;schtags&quot;">
+						<![CDATA[
+							AND TAGS LIKE CONCAT('%',#{searchKeyword},'%')
+						]]>
+				 	</if>
+				 	<if test="searchCondition == &quot;schdepartment&quot;">
+						<![CDATA[
+							AND DEPARTMENT LIKE CONCAT('%',#{searchKeyword},'%')
+						]]>
+				 	</if>
+				</if>		
+				<![CDATA[
+				ORDER BY ST_IDX DESC
+				) TB) TBL WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+	
+	<!--게시물 총 개수 -->
+	<select id="selectPagSearchtheme" parameterType="SearchthemeVo" resultType="int">
+	<![CDATA[
+			SELECT COUNT(*)
+			FROM SEARCH_THEME
+			WHERE REM_YN = 'N'
+	]]>		  
+				<if test="useYn != null and useYn != ''">
+					<![CDATA[
+						AND USE_YN = #{useYn}
+					]]>
+				</if>
+				<if test="schgroupcd != null and schgroupcd != ''">
+					<![CDATA[
+						AND GROUP_CD = #{schgroupcd}
+					]]>
+				</if>
+				<if test="searchKeyword != null and searchKeyword != ''">
+				 	<if test="searchCondition == &quot;schtitle&quot;">
+						<![CDATA[
+							AND TITLE LIKE CONCAT('%',#{searchKeyword},'%')
+						]]>
+				 	</if>
+				 	<if test="searchCondition == &quot;schintroduce&quot;">
+						<![CDATA[
+							AND INTRODUCE LIKE CONCAT('%',#{searchKeyword},'%')
+						]]>
+				 	</if>
+				 	<if test="searchCondition == &quot;schtags&quot;">
+						<![CDATA[
+							AND TAGS LIKE CONCAT('%',#{searchKeyword},'%')
+						]]>
+				 	</if>
+				 	<if test="searchCondition == &quot;schdepartment&quot;">
+						<![CDATA[
+							AND DEPARTMENT LIKE CONCAT('%',#{searchKeyword},'%')
+						]]>
+				 	</if>
+				</if>		
+		<![CDATA[		
+		    ORDER BY ST_IDX DESC
+		]]>
+	</select>
+	
+	<!-- 그룹 리스트 조회  -->
+	<select id="selectListGroupCd" resultMap="GroupCdMap">
+		<![CDATA[		
+			SELECT DISTINCT(GROUP_CD)
+			FROM SEARCH_THEME
+		]]>
+	</select>
+	
+	<!-- 삭제(update)  -->
+	<update id="deleteSearchtheme" parameterType="SearchthemeVo">
+		<![CDATA[		
+			UPDATE SEARCH_THEME
+			SET REM_YN = 'Y' 
+			WHERE ST_IDX = #{stIdx}
+		]]>
+	</update>
+	
+	<!-- 상세 조회  -->
+	<select id="selectSearchtheme" parameterType="SearchthemeVo" resultMap="SearchthemeMap">
+		<![CDATA[		
+			SELECT ST_IDX
+				,GROUP_CD
+				,TITLE
+				,URL
+				,INTRODUCE
+				,TAGS
+				,DEPARTMENT
+				,TEL_NUM
+				,STRE_FILE_NM
+				,ORIGNL_FILE_NM
+				,FILE_PATH
+				,REM_YN
+				,USE_YN
+				,REG_DT
+				,REG_ID
+				,MOD_DT
+				,MOD_ID
+			FROM SEARCH_THEME
+			WHERE ST_IDX = #{stIdx}
+		]]>
+	</select>
+	
+	<!-- 등록  -->
+	<insert id="insertSearchtheme" parameterType="SearchthemeVo">
+		<![CDATA[		
+			INSERT INTO SEARCH_THEME(
+			ST_IDX
+			,GROUP_CD
+			,TITLE
+			,URL
+			,INTRODUCE
+			,TAGS
+			,DEPARTMENT
+			,TEL_NUM
+			,STRE_FILE_NM
+			,ORIGNL_FILE_NM
+			,FILE_PATH
+			,REM_YN
+			,USE_YN
+			,REG_DT
+			,REG_ID
+			)VALUES(
+			#{stIdx}
+			,#{groupCd}
+			,#{title}
+			,#{url}
+			,#{introduce}
+			,#{tags}
+			,#{department}
+			,#{telNum}
+			,#{streFileNm}
+			,#{orignlFileNm}
+			,#{filePath}
+			,'N'
+			,'Y'
+			,TO_CHAR(SYSDATE,'YYYY/MM/DD')
+			,#{regId}
+			)
+		]]>
+	</insert>
+	
+	<!-- 사용여부 체크  -->
+	<update id="updateSearchthemeUseYn" parameterType="HashMap">
+		<![CDATA[		
+			UPDATE SEARCH_THEME 
+				SET 
+				USE_YN = (CASE
+				WHEN USE_YN = 'Y' THEN 'N'
+				WHEN USE_YN = 'N' THEN 'Y'
+				END)
+				,MOD_ID = #{modId}
+				,MOD_DT = TO_CHAR(SYSDATE,'YYYY/MM/DD')
+			WHERE ST_IDX = #{stIdx} 
+		]]>
+	</update>
+	
+	<!-- 수정  -->
+	<update id="updateSearchtheme" parameterType="SearchthemeVo">
+		<![CDATA[		
+			UPDATE SEARCH_THEME
+			SET GROUP_CD = #{groupCd}
+			,TITLE = #{title}
+			,URL = #{url}
+			,INTRODUCE = #{introduce}
+			,TAGS = #{tags}
+			,DEPARTMENT = #{department}
+			,TEL_NUM = #{telNum}
+			,STRE_FILE_NM = #{streFileNm}
+			,ORIGNL_FILE_NM = #{orignlFileNm}
+			,FILE_PATH = #{filePath}
+			,MOD_DT = TO_CHAR(SYSDATE,'YYYY/MM/DD')
+			,MOD_ID = #{modId}
+			WHERE ST_IDX = #{stIdx}
+		]]>
+	</update>
+	
+	<!-- 파일삭제  -->
+	<update id="deleteSearchthemeFile" parameterType="HashMap">
+		<![CDATA[		
+			UPDATE	 SEARCH_THEME
+				SET STRE_FILE_NM = ''
+				,ORIGNL_FILE_NM = ''
+				,FILE_PATH = ''
+			WHERE ST_IDX = #{stIdx}
+		]]>
+	</update>
+	
+	<!-- 파일경로 조회  -->
+	<select id="selectFilePath" parameterType="String" resultType="String">
+		<![CDATA[		
+			SELECT FILE_PATH
+			FROM SEARCH_THEME
+			WHERE ST_IDX = #{stIdx}
+		]]>
+	</select>
+	
+</mapper>

@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ReservationMainUserDao">	
+	<resultMap id="ResMainUserMap" type="egovframework.injeinc.foffice.ex.reservationMain.vo.ReservationMainUserVo">
+		<result property="rmiIdx" column="RMI_IDX"/>		<!--idx-->
+		<result property="rmiTitle" column="RMI_TITLE"/>		<!--제목-->
+		<result property="rmiPostSdt" column="RMI_POST_SDT"/>		<!--게시시작날짜-->
+		<result property="rmiPostEdt" column="RMI_POST_EDT"/>		<!--게시마감날짜-->
+		<result property="rmiLink" column="RMI_LINK"/>		<!--링크url-->
+		<result property="rmiTarget" column="RMI_TARGET"/>		<!--타겟-->
+		<result property="rmiMainOrgname" column="RMI_MAIN_ORGNAME"/>		<!--메인원본파일명-->
+		<result property="rmiMainRename" column="RMI_MAIN_RENAME"/>		<!--메인저장파일명-->
+		<result property="rmiMainPath" column="RMI_MAIN_PATH"/>		<!--메인저장경로-->
+		<result property="rmiBannerOrgname" column="RMI_BANNER_ORGNAME"/>		<!--베너원본파일명-->
+		<result property="rmiBannerRename" column="RMI_BANNER_RENAME"/>		<!--베너저장파일명-->
+		<result property="rmiBannerPath" column="RMI_BANNER_PATH"/>		<!--베너저장경로-->
+		<result property="rmiContent" column="RMI_CONTENT"/>		<!--이미지설명(메인)-->
+		<result property="rmiContent2" column="RMI_CONTENT2"/>		<!--이미지설명(베너)-->
+		<result property="rmiPostYn" column="RMI_POST_YN"/>		<!--게시상태-->
+		<result property="regDt" column="REG_DT"/>		<!--등록날짜-->
+		<result property="regId" column="REG_ID"/>		<!--등록자ID-->
+		<result property="modDt" column="MOD_DT"/>		<!--수정날짜-->
+		<result property="modId" column="MOD_ID"/>		<!--수정자ID-->
+	</resultMap>
+	
+	<!-- 이미지 리스트 -->
+	<select id="selectListReservationMainImg" resultMap="ResMainUserMap">
+		<![CDATA[
+			SELECT * FROM (SELECT ROWNUM RN, A.* FROM (	
+				SELECT
+				    RMI_IDX
+					,RMI_TITLE
+					,RMI_POST_SDT
+					,RMI_POST_EDT
+					,RMI_LINK
+					,RMI_TARGET
+					,RMI_MAIN_ORGNAME
+					,RMI_MAIN_RENAME
+					,RMI_MAIN_PATH
+					,RMI_BANNER_ORGNAME
+					,RMI_BANNER_RENAME
+					,RMI_BANNER_PATH
+					,RMI_CONTENT
+					,RMI_CONTENT2
+					,RMI_POST_YN
+					,REG_DT
+					,REG_ID
+					,MOD_DT
+					,MOD_ID
+				FROM RESERVATION_MAIN_IMG
+				WHERE USE_YN = 'Y'
+				AND RMI_POST_YN = 'Y'
+				AND RMI_POST_SDT < TO_CHAR(SYSDATE, 'yyyymmddhh24miss')
+                AND RMI_POST_EDT > TO_CHAR(SYSDATE, 'yyyymmddhh24miss')
+				ORDER BY RMI_IDX DESC
+			) A) WHERE RN BETWEEN 1 AND 5
+	]]>	
+	</select>
+	
+	<select id="selectListReservationMainNew" parameterType="HashMap" resultType="egovMap">
+		<![CDATA[
+			SELECT * FROM(
+SELECT ROWNUM RN, B.* FROM(
+SELECT * FROM(
+				SELECT
+					'L' AS TYPE,
+				    A.CL_IDX AS IDX,
+				    A.CL_NAME  AS TITLE,
+				    B.LC_GB AS GB,
+				    (SELECT CD_SUBJECT FROM EZ_DEPARTMENT WHERE CD_IDX = B.DEPT) AS DEPT,
+				    (SELECT CODE_NAME FROM EZ_CMM_CODE WHERE CODE = B.LC_ORGANIZATION1) AS  ORG_NAME,
+				    CASE WHEN LC_RECEIVE_SDATE > TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') THEN '강좌대기' 
+				    	 WHEN LC_RECEIVE_SDATE < TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') AND LC_RECEIVE_EDATE > TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') THEN '접수중'
+                         WHEN LC_ADD_YN = 'Y' AND LC_RECEIVE_EDATE < TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') AND LC_ADD_SDATE > TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') THEN '강좌대기'
+                         WHEN LC_ADD_YN = 'Y' AND LC_ADD_EDATE < TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') AND LC_ST_DATE > TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') THEN '강좌대기'
+                         WHEN LC_ADD_YN = 'Y' AND LC_ADD_SDATE < TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') AND LC_ADD_EDATE > TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') THEN '접수중'
+                         WHEN LC_RECEIVE_EDATE < TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') AND LC_ST_DATE > TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') THEN '강좌대기'
+                         WHEN LC_ST_DATE < TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') AND LC_ED_DATE > TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') THEN '강좌시작'
+                         WHEN LC_ED_DATE < TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') THEN '강좌종료'
+                         END AS STATE,
+				    TO_CHAR(TO_DATE(LC_ST_DATE, 'yyyy-mm-dd/hh24mi'),'yyyy-mm-dd') AS SDATE,
+                    TO_CHAR(TO_DATE(LC_ED_DATE, 'yyyy-mm-dd/hh24mi'),'yyyy-mm-dd') AS EDATE,
+				    B.LC_HITS AS CNT,
+				    (SELECT CF_RENAME FROM EZ_CMM_FILES WHERE CF_GROUP='LECTURE' AND USE_YN = 'Y' AND CF_PKIDX = A.CL_IDX) AS FILE_NAME,
+				    (SELECT CF_PATH FROM EZ_CMM_FILES WHERE CF_GROUP='LECTURE' AND USE_YN = 'Y' AND CF_PKIDX = A.CL_IDX) AS FILE_PATH,
+				    TO_CHAR(TO_DATE(B.REG_DT, 'YYYYMMDDHH24MISS'), 'YYYY/MM/DD hh24:mi:ss') AS REG_DT,
+				    B.LC_ACCEPT_ONLINE AS RI_LOT_USE
+				FROM LECTURE A, LECTURE_CONFIG B
+				WHERE A.CL_IDX = B.CL_IDX
+				AND A.USE_YN = 'Y'
+				AND B.LC_APPROVAL_YN = 'Y'
+				AND A.CL_STS_CODE NOT IN ('31020000', 'RCCSL') 
+				
+				UNION ALL
+				
+				SELECT
+					'R' AS TYPE,
+				    RI_IDX AS IDX,
+				    RI_TITLE AS TITLE,
+				    RI_TYPE AS GB,
+				    (SELECT CD_SUBJECT FROM EZ_DEPARTMENT WHERE CD_IDX = ri.RI_MANAGE_DEPT) AS DEPT,
+                    RI_SUPERVISION_ORG AS ORG_NAME,
+				    CASE WHEN RI_RESERVATION_SDATE||' '||LPAD(RI_RESERVATION_SDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_SDATE_MM, 2, '0') >= TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi') THEN '예약대기'
+	                     WHEN RI_RESERVATION_SDATE||' '||LPAD(RI_RESERVATION_SDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_SDATE_MM, 2, '0') <= TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi')
+	                          AND TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi') <= RI_RESERVATION_EDATE||' '||LPAD(RI_RESERVATION_EDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_EDATE_MM, 2, '0') THEN '예약중'
+	                     WHEN RI_RESERVATION_EDATE||' '||LPAD(RI_RESERVATION_EDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_EDATE_MM, 2, '0') <= TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi')
+	                          AND RI_CONFIRM_SDATE||' '||LPAD(RI_CONFIRM_SDATE_HH, 2, '0')||':'||LPAD(RI_CONFIRM_SDATE_MM, 2, '0') >= TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi') THEN '예약완료'
+	                     WHEN RI_CONFIRM_SDATE||' '||LPAD(RI_CONFIRM_SDATE_HH, 2, '0')||':'||LPAD(RI_CONFIRM_SDATE_MM, 2, '0') >= TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi')
+	                          AND RI_CONFIRM_EDATE||' '||LPAD(RI_CONFIRM_EDATE_HH, 2, '0')||':'||LPAD(RI_CONFIRM_SDATE_MM, 2, '0') >= TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi') THEN '당첨발표'
+	                     WHEN RI_SDATE <= TO_CHAR(SYSDATE, 'yyyy-mm-dd') AND RI_EDATE >= TO_CHAR(SYSDATE, 'yyyy-mm-dd') THEN '행사중'
+	            	ELSE '' END STATE,
+				    RI_SDATE AS SDATE,
+                    RI_EDATE AS EDATE,
+				    RI_READ_CNT AS CNT,
+				    RI_IMAGE_FILE_ID  AS FILE_NAME,
+				    '' AS FILE_PATH, 
+				    TO_CHAR(REG_DT, 'YYYY/MM/DD hh24:mi:ss') AS REG_DT,
+				    RI_LOT_USE
+				FROM EZ_RESERVATION_INDEX ri
+				WHERE USE_YN = 'Y'
+				AND RI_CONFIRM_YN = 'Y'
+                AND RI_TYPE = 'E'
+				
+				UNION ALL
+				
+				SELECT
+					'R' AS TYPE,
+				    RI_IDX AS IDX,
+				    RI_TITLE AS TITLE,
+				    RI_TYPE AS GB,
+				    (SELECT CD_SUBJECT FROM EZ_DEPARTMENT WHERE CD_IDX = ri.RI_MANAGE_DEPT) AS DEPT,
+                    (SELECT CODE_NAME FROM EZ_CMM_CODE WHERE CODE = RI_SUPERVISION_ORG) AS ORG_NAME,
+				    CASE WHEN RI_RESERVATION_SDATE||' '||LPAD(RI_RESERVATION_SDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_SDATE_MM, 2, '0') >= TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi') THEN '예약대기'
+	                     WHEN RI_RESERVATION_SDATE||' '||LPAD(RI_RESERVATION_SDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_SDATE_MM, 2, '0') <= TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi')
+	                          AND TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi') <= RI_RESERVATION_EDATE||' '||LPAD(RI_RESERVATION_EDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_EDATE_MM, 2, '0') THEN '예약중'
+	            	ELSE '예약완료' END STATE,
+				    RI_SDATE AS SDATE,
+                    RI_EDATE AS EDATE,
+				    RI_READ_CNT AS CNT,
+				    RI_IMAGE_FILE_ID  AS FILE_NAME,
+				    '' AS FILE_PATH, 
+				    TO_CHAR(REG_DT, 'YYYY/MM/DD hh24:mi:ss') AS REG_DT,
+				    RI_LOT_USE
+				FROM EZ_RESERVATION_INDEX ri
+				WHERE USE_YN = 'Y'
+				AND RI_CONFIRM_YN = 'Y'
+                AND RI_TYPE = 'F'
+			)A ORDER BY REG_DT DESC
+			 )B )WHERE RN BETWEEN 1 AND 40
+		]]>
+			<if test="sort != null and sort != ''">
+				<if test="sort == &quot;CNT&quot;">
+					<![CDATA[
+						ORDER BY CNT DESC, REG_DT DESC
+					]]>
+				</if>
+			</if>
+	</select>
+	
+	<!-- 동별 메인 강좌/행사 안내 리스트 -->
+	<select id="selectListDongMain" parameterType="HashMap" resultType="egovMap">
+		<![CDATA[
+			SELECT * FROM(
+				SELECT ROWNUM RN, B.* FROM(
+					SELECT * FROM(
+						SELECT 
+						    A.CL_IDX  AS IDX,
+						    A.CL_NAME  AS TITLE,
+						    B.LC_GB  AS GB,
+						    (SELECT CODE_NAME FROM EZ_CMM_CODE WHERE CODE = A.CL_STS_CODE) AS STATE,
+						    CASE WHEN LC_RECEIVE_SDATE > TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') THEN '강좌대기' 
+						    	 WHEN LC_RECEIVE_SDATE < TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') AND LC_RECEIVE_EDATE > TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') THEN '접수중'
+	                             WHEN LC_ADD_YN = 'Y' AND LC_RECEIVE_EDATE < TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') AND LC_ADD_SDATE > TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') THEN '강좌대기'
+	                             WHEN LC_ADD_YN = 'Y' AND LC_ADD_EDATE < TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') AND LC_ST_DATE > TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') THEN '강좌대기'
+	                             WHEN LC_ADD_YN = 'Y' AND LC_ADD_SDATE < TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') AND LC_ADD_EDATE > TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') THEN '접수중'
+	                             WHEN LC_RECEIVE_EDATE < TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') AND LC_ST_DATE > TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') THEN '강좌대기'
+	                             WHEN LC_ST_DATE < TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') AND LC_ED_DATE > TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') THEN '강좌시작'
+	                             WHEN LC_ED_DATE < TO_CHAR(sysdate, 'YYYY-MM-DD/HH24MI') THEN '강좌종료'
+	                             END AS STATE2,
+						    TO_CHAR(TO_DATE(A.REG_DT, 'YYYYMMDDHH24MISS'), 'YYYY-MM-DD') AS REG_DT,
+						    B.LC_PLACE_NAME AS PLACE_NAME
+						FROM LECTURE A, LECTURE_CONFIG B
+						WHERE A.CL_IDX = B.CL_IDX
+						AND B.USE_YN = 'Y'
+						AND B.LC_APPROVAL_YN = 'Y'
+						AND A.CL_STS_CODE NOT IN ('31020000','RCCSL')
+						AND LC_ORGANIZATION1 = #{org}
+						
+						UNION ALL
+						
+						SELECT 
+						    RI_IDX AS IDX,
+						    RI_TITLE AS TITLE,
+						    RI_TYPE AS GB,
+						    CASE WHEN RI_RESERVATION_SDATE||' '||LPAD(RI_RESERVATION_SDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_SDATE_MM, 2, '0') >= TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi') THEN '예약대기'
+						         WHEN RI_RESERVATION_SDATE||' '||LPAD(RI_RESERVATION_SDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_SDATE_MM, 2, '0') <= TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi')
+						              AND TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi') <= RI_RESERVATION_EDATE||' '||LPAD(RI_RESERVATION_EDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_EDATE_MM, 2, '0') THEN '예약중'
+						    ELSE '예약완료' END STATE,
+						    '' AS STATE2,
+						    TO_CHAR(REG_DT, 'YYYY-MM-DD') AS REG_DT,
+						    RI_PLACE AS PLACE_NAME
+						FROM EZ_RESERVATION_INDEX
+						WHERE USE_YN = 'Y'
+						AND RI_CONFIRM_YN = 'Y'
+						AND RI_TYPE = 'E'
+						AND RI_MANAGE_DEPT = #{dept}
+					) A ORDER BY A.REG_DT DESC
+				) B 
+			) WHERE RN BETWEEN 1 AND 5
+		]]>
+	</select>
+	
+	<select id="selectTotalReservationPagMapList" parameterType="ReservationUserInfoVo" resultType="egovMap">
+	<![CDATA[
+		SELECT *
+		FROM (
+				SELECT T.*, ROWNUM RN
+				FROM (
+						SELECT *
+						FROM   (
+								SELECT CL_IDX RI_IDX,
+						               LM_IDX RU_IDX,
+						               'L' R_TYPE,
+						               LM_STATE STATE,
+						               CAN_YN CAN_YN,
+						               PAY_STATE PAY_STATE,
+						               (SELECT LC_NAME FROM   LECTURE_CONFIG WHERE  CL_IDX = A.CL_IDX ) TITLE,
+						               '' RI_ONLINE_PAY_YN,
+						               TO_DATE(REG_DT, 'YYYYMMDDHH24MISS') REGDT
+						        FROM   LECTURE_MEMBER A
+						        WHERE OWN_AUTH = #{ruDupkey}
+	]]>
+								<if test="riType != &quot;ALL&quot; and riType != &quot;L&quot;">
+							        AND 1=2
+							    </if>    
+	<![CDATA[					        
+						        UNION ALL
+						        SELECT A.RI_IDX,
+						        	   A.RU_IDX,
+						               RI_TYPE,
+						               RU_LOT_RESULT,
+						               RU_DEL_YN,
+						               PAY_STATUS,
+						               RI_TITLE,
+						               RI_ONLINE_PAY_YN,
+						               A.REG_DT REGDT
+						        FROM   RESERVATION_USER_INFO A,
+						               EZ_RESERVATION_INDEX B
+						        WHERE  A.RI_IDX = B.RI_IDX
+						        AND   RU_DUPKEY = #{ruDupkey}
+	]]>
+						        <if test="riType != &quot;ALL&quot; and riType != &quot;F&quot; and riType != &quot;T&quot; and riType != &quot;E&quot;">
+							        AND 1=2
+							   </if>	        
+						        <if test="riType == &quot;ALL&quot;">
+						        	AND   RI_TYPE IN ('F','T','E')
+						        </if>
+						        <if test="riType == &quot;F&quot;">
+						        	AND   RI_TYPE = 'F'
+						        </if>
+						        <if test="riType == &quot;T&quot;">
+						        	AND   RI_TYPE = 'T'
+						        </if>
+						        <if test="riType == &quot;E&quot;">
+						        	AND   RI_TYPE = 'E'
+						        </if>
+		<![CDATA[
+						               )
+						ORDER BY REGDT DESC ) T	)
+		WHERE RN BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+	
+	<select id="selectTotalReservationPagMapListCnt" parameterType="ReservationUserInfoVo" resultType="Integer">
+	<![CDATA[
+		SELECT COUNT(*)
+		FROM   (SELECT 1
+		        FROM   LECTURE_MEMBER A
+		        WHERE OWN_AUTH = #{ruDupkey}
+	]]>
+		        <if test="riType != &quot;ALL&quot; and riType != &quot;L&quot;">
+			        AND 1=2
+			     </if>   
+	<![CDATA[
+		        UNION ALL
+		        SELECT 1
+		        FROM   RESERVATION_USER_INFO A,
+		               EZ_RESERVATION_INDEX B
+		        WHERE  A.RI_IDX = B.RI_IDX
+		        AND   RU_DUPKEY = #{ruDupkey}
+	]]>
+		       	<if test="riType != &quot;ALL&quot; and riType != &quot;F&quot; and riType != &quot;T&quot; and riType != &quot;E&quot;">
+			        AND 1=2
+			   	</if>
+		        <if test="riType == &quot;ALL&quot;">
+		        	AND   RI_TYPE IN ('F','T','E')
+		        </if>
+		        <if test="riType == &quot;F&quot;">
+		        	AND   RI_TYPE = 'F'
+		        </if>
+		        <if test="riType == &quot;T&quot;">
+		        	AND   RI_TYPE = 'T'
+		        </if>
+		        <if test="riType == &quot;E&quot;">
+		        	AND   RI_TYPE = 'E'
+		        </if>
+		 )
+	</select>
+</mapper>

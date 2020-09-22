@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<bean name="egovIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" 	ref="mixPrefixSample" />
+		<property name="blockSize" 	value="10"/>
+		<property name="table"	   	value="EZ_IDS"/>
+		<property name="tableName"	value="SAMPLE"/>
+	</bean>
+
+	<bean name="mixPrefixSample" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="SAMPLE-" />
+		<property name="cipers" value="5" />
+		<property name="fillChar" value="0" />
+	</bean>
+
+	<!-- UMS 로그 -->
+	<bean name="umsLogIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="blockSize"  value="1"/>
+		<property name="table"      value="EZ_IDS"/>
+		<property name="tableName"  value="UMS_LOG"/>
+	</bean>
+
+	<!-- 게시판 EZ_BBS_CONTENT -->
+	<bean name="bbsContentIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="blockSize"  value="1"/>
+		<property name="table"      value="EZ_IDS"/>
+		<property name="tableName"  value="EZ_BBS_CONTENT"/>
+	</bean>
+	
+	<!-- 공약은행 KCM_PLEDGE_BANK -->
+	<bean name="pledgeIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="blockSize"  value="1"/>
+		<property name="table"      value="EZ_IDS"/>
+		<property name="tableName"  value="KCM_PLEDGE_BANK"/>
+	</bean>
+
+
+
+	
+	<bean name="reservationFacTeamIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy"   ref="reservationFacTeamStrategy" />
+		<property name="blockSize"  value="1"/>
+		<property name="table"      value="EZ_IDS"/>
+		<property name="tableName"  value="TB_PLAYGROUND_TEAM"/>
+	</bean>
+	<bean name="reservationFacTeamStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix"   value="RT" />
+		<property name="cipers"   value="8" />
+		<property name="fillChar" value="0" />
+	</bean>
+	
+	<!-- 설문조사 목록 -->
+	<bean name="pollListIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy"   ref="pollListStrategy" />
+		<property name="blockSize"  value="1"/>
+		<property name="table"      value="EZ_IDS"/>
+		<property name="tableName"  value="EZ_POLL_LIST"/>
+	</bean>
+	<bean name="pollListStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix"   value="PL" />
+		<property name="cipers"   value="8" />
+		<property name="fillChar" value="0" />
+	</bean>
+
+	<!-- 설문조사 질문 목록 -->
+	<bean name="pollQuestionIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy"   ref="pollQuestionStrategy" />
+		<property name="blockSize"  value="1"/>
+		<property name="table"      value="EZ_IDS"/>
+		<property name="tableName"  value="EZ_POLL_QUESTION"/>
+	</bean>
+	<bean name="pollQuestionStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix"   value="PQ" />
+		<property name="cipers"   value="8" />
+		<property name="fillChar" value="0" />
+	</bean>
+
+	<!-- 설문조사 참가자 목록 -->
+	<bean name="pollUserIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy"   ref="pollUserStrategy" />
+		<property name="blockSize"  value="1"/>
+		<property name="table"      value="EZ_IDS"/>
+		<property name="tableName"  value="EZ_POLL_USER"/>
+	</bean>
+	<bean name="pollUserStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix"   value="PU" />
+		<property name="cipers"   value="8" />
+		<property name="fillChar" value="0" />
+	</bean>
+
+	<!-- 금지 아이디 목록 -->
+	<bean name="prohibitIdIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy"   ref="prohibitIdStrategy" />
+		<property name="blockSize"  value="1"/>
+		<property name="table"      value="EZ_IDS"/>
+		<property name="tableName"  value="EZ_PROHIBIT_ID"/>
+	</bean>
+	<bean name="prohibitIdStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix"   value="PI" />
+		<property name="cipers"   value="8" />
+		<property name="fillChar" value="0" />
+	</bean>
+
+	<!-- 관리자 관리 -->
+	<bean name="mgrListIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy"   ref="mgrListStrategy" />
+		<property name="blockSize"  value="1"/>
+		<property name="table"      value="EZ_IDS"/>
+		<property name="tableName"  value="EZ_MGR_LIST"/>
+	</bean>
+	<bean name="mgrListStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix"   value="ML" />
+		<property name="cipers"   value="8" />
+		<property name="fillChar" value="0" />
+	</bean>
+	
+	<!-- 권한롤 관리 -->
+	<bean name="roleIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy"   ref="roleStrategy" />
+		<property name="blockSize"  value="1"/>
+		<property name="table"      value="EZ_IDS"/>
+		<property name="tableName"  value="EZ_ROLE"/>
+	</bean>
+	<bean name="roleStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix"   value="RL" />
+		<property name="cipers"   value="8" />
+		<property name="fillChar" value="0" />
+	</bean>
+
+	<!-- 예약 기본 -->
+	<bean name="reservationIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy"   ref="reservationStrategy" />
+		<property name="blockSize"  value="1"/>
+		<property name="table"      value="EZ_IDS"/>
+		<property name="tableName"  value="RESERVATION_INDEX"/>
+	</bean>
+	<bean name="reservationStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix"   value="RI" />
+		<property name="cipers"   value="6" />
+		<property name="fillChar" value="0" />
+	</bean>
+
+	<!-- 예약 접수자 -->
+	<bean name="reservationUserIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy"   ref="reservationUserStrategy" />
+		<property name="blockSize"  value="1"/>
+		<property name="table"      value="EZ_IDS"/>
+		<property name="tableName"  value="RESERVATION_USER"/>
+	</bean>
+	<bean name="reservationUserStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix"   value="RU" />
+		<property name="cipers"   value="6" />
+		<property name="fillChar" value="0" />
+	</bean>
+	
+	<!-- 보건소 진료예약 접수자 -->
+	<bean name="reservationUserHealthIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy"   ref="reservationUserHealthStrategy" />
+		<property name="blockSize"  value="1"/>
+		<property name="table"      value="EZ_IDS"/>
+		<property name="tableName"  value="RESERVATION_USER_INFO_HEALTH"/>
+	</bean>
+	<bean name="reservationUserHealthStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix"   value="RU" />
+		<property name="cipers"   value="6" />
+		<property name="fillChar" value="0" />
+	</bean>
+	
+	<!-- 보건소 진료예약 접수자 -->
+	<bean name="reservationUserEtcIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy"   ref="reservationUserEtcStrategy" />
+		<property name="blockSize"  value="1"/>
+		<property name="table"      value="EZ_IDS"/>
+		<property name="tableName"  value="RESERVATION_USER_INFO"/>
+	</bean>
+	<bean name="reservationUserEtcStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix"   value="RU" />
+		<property name="cipers"   value="6" />
+		<property name="fillChar" value="0" />
+	</bean>
+
+	<bean name="egovFileIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" ref="fileStrategy" />
+		<property name="blockSize" 	value="1"/>
+		<property name="table"	   	value="EZ_IDS"/>
+		<property name="tableName"	value="FILE_ID"/>
+	</bean>
+
+	<bean name="fileStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="FILE_" />
+		<property name="cipers" value="15" />
+		<property name="fillChar" value="0" />
+	</bean>
+
+	<!-- 통합검색테마  -->
+	<bean name="searchthemeIdService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" 	ref="searchthemeStrategy" />
+		<property name="blockSize" 	value="1"/>
+		<property name="table"	   	value="EZ_IDS"/>
+		<property name="tableName"	value="SEARCH_THEME"/>
+	</bean>
+
+	<bean name="searchthemeStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="ST" />
+		<property name="cipers" value="8" />
+		<property name="fillChar" value="0" />
+	</bean>
+
+	<!-- 퀵링크 관리  -->
+	<bean name="quickIdService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" 	ref="quickStrategy" />
+		<property name="blockSize" 	value="1"/>
+		<property name="table"	   	value="EZ_IDS"/>
+		<property name="tableName"	value="EZ_CMS_QUICK_LINK"/>
+	</bean>
+
+	<bean name="quickStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="Q" />
+		<property name="cipers" value="8" />
+		<property name="fillChar" value="0" />
+	</bean>
+
+	<!-- 메인 레이어 팝업 관리  -->
+	<bean name="mainLayerPopupIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" 	ref="mainLayerPopupStrategy" />
+		<property name="blockSize" 	value="1"/>
+		<property name="table"	   	value="EZ_IDS"/>
+		<property name="tableName"	value="MAIN_LAYER_POPUP"/>
+	</bean>
+
+	<bean name="mainLayerPopupStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="ML" />
+		<property name="cipers" value="8" />
+		<property name="fillChar" value="0" />
+	</bean>
+
+	<!-- 메인 팝업존 관리  -->
+	<bean name="mainPopupZoneIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" 	ref="mainPopupZoneStrategy" />
+		<property name="blockSize" 	value="1"/>
+		<property name="table"	   	value="EZ_IDS"/>
+		<property name="tableName"	value="MAIN_POPUP_ZONE"/>
+	</bean>
+
+	<bean name="mainPopupZoneStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="MZ" />
+		<property name="cipers" value="8" />
+		<property name="fillChar" value="0" />
+	</bean>
+
+	<!-- 빠른서비스 관리  -->
+	<bean name="hotManageIdService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" 	ref="hotManageStrategy" />
+		<property name="blockSize" 	value="1"/>
+		<property name="table"	   	value="EZ_IDS"/>
+		<property name="tableName"	value="HOT_LIST"/>
+	</bean>
+
+	<bean name="hotManageStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="HL" />
+		<property name="cipers" value="8" />
+		<property name="fillChar" value="0" />
+	</bean>
+
+
+	<!--  메인 상단이미지 -->
+	<bean name="topImagesIdService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" 	ref="topImagesStrategy" />
+		<property name="blockSize" 	value="1"/>
+		<property name="table"	   	value="EZ_IDS"/>
+		<property name="tableName"	value="TOP_IMAGES"/>
+	</bean>
+
+	<bean name="topImagesStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="TI" />
+		<property name="cipers" value="8" />
+		<property name="fillChar" value="0" />
+	</bean>
+
+	<!--  회원 가입 -->
+	<bean name="userFIdService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" 	ref="userFStrategy" />
+		<property name="blockSize" 	value="1"/>
+		<property name="table"	   	value="EZ_IDS"/>
+		<property name="tableName"	value="EZ_CMS_USER"/>
+	</bean>
+
+	<bean name="userFStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="U" />
+		<property name="cipers" value="8" />
+		<property name="fillChar" value="0" />
+	</bean>
+
+	<!-- 공통파일관리  -->
+	<bean name="cmmFilesIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy"   ref="cmmFilesStrategy" />
+		<property name="blockSize"  value="1"/>
+		<property name="table"      value="EZ_IDS"/>
+		<property name="tableName"  value="EZ_CMM_FILES"/>
+	</bean>
+	<bean name="cmmFilesStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix"   value="CF" />
+		<property name="cipers"   value="8" />
+		<property name="fillChar" value="0" />
+	</bean>
+	
+	<!-- 통합예약메인관리 -->
+	<bean name="reservationMainIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" 	ref="reservationMainStrategy" />
+		<property name="blockSize" 	value="1"/>
+		<property name="table"	   	value="EZ_IDS"/>
+		<property name="tableName"	value="RESERVATION_MAIN_IMG"/>
+	</bean>
+
+	<bean name="reservationMainStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="RMI" />
+		<property name="cipers" value="8" />
+		<property name="fillChar" value="0" />
+	</bean>
+
+	<bean name="mainImageIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+        <property name="dataSource" ref="dataSource" />
+        <property name="strategy"   ref="mainImageIdStrategy" />
+        <property name="blockSize"  value="1"/>
+        <property name="table"      value="EZ_IDS"/>
+        <property name="tableName"  value="EZ_MAIN_IMAGE"/>
+    </bean>
+    <bean name="mainImageIdStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+        <property name="prefix"   value="MSI" />
+        <property name="cipers"   value="16" />
+        <property name="fillChar" value="0" />
+    </bean>
+    
+    <bean name="AccessIpIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+        <property name="dataSource" ref="dataSource" />
+        <property name="strategy"   ref="AccessIpIdStrategy" />
+        <property name="blockSize"  value="1"/>
+        <property name="table"      value="EZ_IDS"/>
+        <property name="tableName"  value="EZ_ACCESS_IP"/>
+    </bean>
+    <bean name="AccessIpIdStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+        <property name="prefix"   value="AI" />
+        <property name="cipers"   value="8" />
+        <property name="fillChar" value="0" />
+    </bean>
+ 
+	<bean name="SocialCommentIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy"   ref="socialcommentStrategy" />
+		<property name="blockSize"  value="1"/>
+		<property name="table"      value="EZ_IDS"/>
+		<property name="tableName"  value="EZ_USER_COMMENT"/>
+	</bean>
+	<bean name="socialcommentStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix"   value="SC" />
+		<property name="cipers"   value="9" />
+		<property name="fillChar" value="0" />
+	</bean>
+	
+	<bean name="pushIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy"   ref="pushStrategy" />
+		<property name="blockSize"  value="1"/>
+		<property name="table"      value="EZ_IDS"/>
+		<property name="tableName"  value="PUSH_INFO"/>
+	</bean>
+	<bean name="pushStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix"   value="PI" />
+		<property name="cipers"   value="8" />
+		<property name="fillChar" value="0" />
+	</bean>
+	
+	<bean name="recommendbookIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy"   ref="recommendbookStrategy" />
+		<property name="blockSize"  value="1"/>
+		<property name="table"      value="EZ_IDS"/>
+		<property name="tableName"  value="RECOMMENDBOOK"/>
+	</bean>
+	<bean name="recommendbookStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix"   value="RB" />
+		<property name="cipers"   value="8" />
+		<property name="fillChar" value="0" />
+	</bean>
+	
+	<!-- 금지어 -->
+	<bean name="prohibitWordService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" 	ref="prohibitStrategy" />
+		<property name="blockSize" 	value="1"/>
+		<property name="table"	   	value="EZ_IDS"/>
+		<property name="tableName"	value="EZ_PROHIBIT_WORD"/>
+	</bean>
+
+	<bean name="prohibitStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="PW" />
+		<property name="cipers" value="8" />
+		<property name="fillChar" value="0" />
+	</bean>
+
+	<!-- SNS 해시태그 -->
+	<bean name="hashtagService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" 	ref="hashtagStrategy" />
+		<property name="blockSize" 	value="1"/>
+		<property name="table"	   	value="EZ_IDS"/>
+		<property name="tableName"	value="SNS_HASHTAG"/>
+	</bean>
+
+	<bean name="hashtagStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="HS" />
+		<property name="cipers" value="8" />
+		<property name="fillChar" value="0" />
+	</bean>
+
+	<!-- SNS 검색어 -->
+	<bean name="searchKeywordService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy" 	ref="searchKeywordStrategy" />
+		<property name="blockSize" 	value="1"/>
+		<property name="table"	   	value="EZ_IDS"/>
+		<property name="tableName"	value="SNS_SEARCH_KEYWORD"/>
+	</bean>
+
+	<bean name="searchKeywordStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix" value="SK" />
+		<property name="cipers" value="8" />
+		<property name="fillChar" value="0" />
+	</bean>
+
+    <!-- 개별공시지가 의견및 이의 신청 -->
+    <bean name="LandPriceUserIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrService" destroy-method="destroy">
+		<property name="dataSource" ref="dataSource" />
+		<property name="strategy"   ref="landPriceUserStrategy" />
+		<property name="blockSize"  value="1"/>
+		<property name="table"      value="EZ_IDS"/>
+		<property name="tableName"  value="TB_ACCEPT_LANDPRICE"/>
+	</bean>
+	<bean name="landPriceUserStrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+		<property name="prefix"   value="LP" />
+		<property name="cipers"   value="7" />
+		<property name="fillChar" value="0" />
+	</bean>
+
+</beans>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Mon Mar 09 15:50:21 KST 2020-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserMenuSatisfactionDao">
+
+	<resultMap id="UserMenuSatisfactionMap" type="egovframework.injeinc.boffice.cn.menu.vo.UserMenuSatisfactionVo">
+		<result property="idx" column="IDX"/> <!--일련번호-->
+		<result property="menuCode" column="MENU_CODE"/> <!--메뉴코드-->
+		<result property="point" column="POINT"/> <!--만족도점수-->
+		<result property="contents" column="CONTENTS"/> <!--만족도내용-->
+		<result property="regDt" column="REG_DT"/> <!--날짜-->
+		<result property="userId" column="USER_ID"/> <!--회원아이디-->
+		<result property="siteCd" column="SITE_CD"/> <!--사이트코드-->
+	</resultMap>
+	
+	<insert id="insertUserMenuSatisfaction" parameterType="UserMenuSatisfactionVo">
+	<![CDATA[	
+		INSERT INTO EZ_USER_MENU_SATISFACTION(
+			IDX
+			,MENU_CODE
+			,POINT
+			,CONTENTS
+			,REG_DT
+			,USER_ID
+			,SITE_CD
+			,DEL_YN
+		) VALUES(
+			(select NVL(MAX(IDX),0)+1 FROM EZ_USER_MENU_SATISFACTION EUMS)
+			,#{menuCode}
+			,#{point}
+			,#{contents}
+			,NOW()
+			,#{userId}
+			,#{siteCd}
+			,'N'
+		)
+	]]>
+	</insert>
+	
+	<select id="pageUserMenuSatisfaction" parameterType="UserMenuSatisfactionVo" resultType="hashMap">
+	<![CDATA[	
+		SELECT * FROM (
+			SELECT 
+				ROWNUM AS RN
+				,IDX
+				,MENU_CODE
+				,POINT
+				,CONTENTS
+				,REG_DT
+				,SITE_CD
+				,USER_ID
+		  FROM EZ_USER_MENU_SATISFACTION
+		  WHERE DEL_YN='N' AND SITE_CD=#{siteCd} AND MENU_CODE=#{menuCode}
+		  ORDER BY IDX DESC
+		  ) A1 WHERE 
+		 RN BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	]]>
+	</select>
+	<select id="selectUserMenuSatisfactionIpCnt" parameterType="UserMenuSatisfactionVo" resultType="int">
+	<![CDATA[	
+			SELECT 
+				COUNT(*)
+		  FROM EZ_USER_MENU_SATISFACTION
+		  WHERE DEL_YN='N' AND SITE_CD=#{siteCd} AND MENU_CODE=#{menuCode}
+		  AND DATE_FORMAT(REG_DT,'%Y-%m-%d')=DATE_FORMAT(NOW(),'%Y-%m-%d')
+		  AND USER_ID=#{userId}
+	]]>
+	</select>
+	
+	<select id="selectUserMenuSatisfactionCnt" parameterType="UserMenuSatisfactionVo" resultType="int">
+	<![CDATA[	
+			SELECT 
+				COUNT(*)
+		  FROM EZ_USER_MENU_SATISFACTION
+		  WHERE DEL_YN='N' AND SITE_CD=#{siteCd} AND MENU_CODE=#{menuCode}
+	]]>
+	</select>
+	
+	<delete id="deleteUserMenuSatisfaction" parameterType="UserMenuSatisfactionVo">
+	<![CDATA[	
+		UPDATE EZ_USER_MENU_SATISFACTION SET DEL_YN='Y'
+		WHERE
+ 			SITE_CD=#{siteCd} AND MENU_CODE=#{menuCode} AND IDX=#{idx}
+	 ]]>
+	</delete>
+
+</mapper>

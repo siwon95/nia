@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PollAnswerDao">
+	<resultMap id="PollAnswerViewMap" type="egovframework.injeinc.boffice.ex.poll.vo.PollAnswerViewVo">
+		<result property="plIdx" column="PL_IDX"/>
+		<result property="puIdx" column="PU_IDX"/>
+		<result property="puName" column="PU_NAME"/>
+		<result property="puId" column="PU_ID"/>
+		<result property="pqIdx" column="PQ_IDX"/>
+		<result property="pqSort" column="PQ_SORT"/>
+		<result property="pqTitle" column="PQ_TITLE"/>
+		<result property="pqType" column="PQ_TYPE"/>
+		<result property="pqItemCnt" column="PQ_ITEM_CNT"/>
+		<result property="pqItemList" column="PQ_ITEM_LIST"/>
+		<result property="pqEtc" column="PQ_ETC"/>
+		<result property="paAnswer" column="PA_ANSWER"/>
+		<result property="paText" column="PA_TEXT"/>
+	</resultMap>
+
+	<insert id="insertPollAnswer" parameterType="PollAnswerVo">
+		<![CDATA[	
+			INSERT INTO EZ_POLL_ANSWER
+			(
+				PA_PUIDX
+				, PA_PQIDX
+				, PA_ANSWER
+				, PA_TEXT
+			)
+			VALUES
+			(
+				#{paPuidx}
+				, #{paPqidx}
+				, #{paAnswer}
+				, #{paText}
+			)
+		]]>
+	</insert>
+	
+	<delete id="deletePollAnswer" parameterType="PollAnswerVo">
+		<![CDATA[	
+			DELETE EZ_POLL_ANSWER
+			WHERE PA_PUIDX = #{paPuidx}
+		]]>
+	</delete>
+	
+	<sql id="searchPollAnswer">
+		<if test="pqType == &quot;radio&quot;">
+			<![CDATA[	
+				AND PA_ANSWER = #{paAnswer}
+			]]>
+		</if>
+		<if test="pqType == &quot;selectbox&quot;">
+			<![CDATA[	
+				AND PA_ANSWER = #{paAnswer}
+			]]>
+		</if>
+		<if test="pqType == &quot;checkbox&quot;">
+			<![CDATA[	
+				AND PA_ANSWER LIKE '%'||#{paAnswer}||'%'
+			]]>
+		</if>
+	</sql>
+	
+	<sql id="searchPollAnswer2">
+		<if test="pqType == &quot;radio&quot;">
+			<![CDATA[	
+				AND PA_ANSWER = #{paAnswer}
+			]]>
+		</if>
+		<if test="pqType == &quot;selectbox&quot;">
+			<![CDATA[	
+				AND PA_ANSWER = #{paAnswer}
+			]]>
+		</if>
+		<if test="pqType == &quot;checkbox&quot;">
+			<![CDATA[	
+				AND PA_ANSWER LIKE '%'||#{paAnswer}||'%'
+			]]>
+		</if>
+		<if test="pqType == &quot;text&quot;">
+			<![CDATA[	
+				AND PQ_TYPE = #{pqType} AND PA_TEXT is not null
+			]]>
+		</if>
+		<if test="pqType == &quot;textarea&quot;">
+			<![CDATA[	
+				AND PQ_TYPE = #{pqType} AND PA_TEXT is not null
+			]]>
+		</if>
+	</sql>
+	
+	<select id="selectPagPollAnswer" parameterType="PollAnswerViewVo" resultMap="PollAnswerViewMap">
+		<![CDATA[	
+			SELECT * FROM (
+				SELECT /*+ FIRST_ROWS */ A.*, ROWNUM RN FROM (
+					SELECT *
+					FROM EZ_POLL_ANSWER_VIEW
+					WHERE PQ_IDX = #{pqIdx}
+		]]>
+		<include refid="searchPollAnswer"/>
+		<![CDATA[	
+					ORDER BY PU_IDX DESC
+				) A WHERE ROWNUM <= #{lastIndex}
+			) WHERE RN > #{firstIndex}
+		]]>
+	</select>
+	
+	<select id="selectPollAnswerCnt" parameterType="PollAnswerViewVo" resultType="java.lang.Integer">
+		<![CDATA[	
+			SELECT COUNT(*)
+			FROM EZ_POLL_ANSWER_VIEW
+			WHERE PQ_IDX = #{pqIdx}
+		]]>
+		<include refid="searchPollAnswer2"/>
+	</select>
+	
+	<select id="selectListPollAnswer" parameterType="PollAnswerViewVo" resultMap="PollAnswerViewMap">
+		<![CDATA[	
+			SELECT * 
+			FROM EZ_POLL_ANSWER_VIEW
+			WHERE PU_IDX = #{puIdx}
+			ORDER BY PQ_SORT ASC
+		]]>
+	</select>
+	
+</mapper>

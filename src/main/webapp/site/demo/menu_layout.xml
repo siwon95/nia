@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu><menu-layout>
+  <site-cd>demo</site-cd>
+  <site-nm>null</site-nm>
+  <menu-code>10000000000000000000000</menu-code>
+  <sort-order>1000000000000</sort-order>
+  <menu-nm>HOME</menu-nm>
+  <menu-title></menu-title>
+  <satisfy-show-yn>null</satisfy-show-yn>
+  <charger-show-yn>Y</charger-show-yn>
+  <social-show-yn></social-show-yn>
+  <menu-path>HOME</menu-path>
+  <user-menu-url></user-menu-url>
+  <layout-url>null</layout-url>
+  <menu-type>contents</menu-type>
+  <dept-info></dept-info>
+  <head-content><![CDATA[null]]></head-content>
+  <metatag-content><![CDATA[]]></metatag-content>
+  <show-yn>N</show-yn>
+</menu-layout>
+</menu>

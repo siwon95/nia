@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SocialDao">
+
+	<resultMap id="SocialMap" type="egovframework.injeinc.common.social.vo.SocialVo">		
+		<result property="socialId" column="REG_ID"/>
+		<result property="nickName" column="REG_NAME"/>
+		<result property="profileImage" column="PROFILE_URL"/>
+		<result property="menuUrl" column="MENU_URL"/>
+		<result property="commentCont" column="COMMENT_CONT"/>
+		<result property="regdt" column="REG_DT"/>
+		<result property="scidx" column="SC_IDX"/>
+	</resultMap>
+	
+		
+	<resultMap id="PushMap" type="egovframework.injeinc.common.social.vo.PushVo">		
+		<result property="piIdx" column="PI_IDX"/>
+		<result property="piRegistrationId" column="PI_REGISTRATION_ID"/>
+		<result property="piGubun" column="PI_GUBUN"/>		
+	</resultMap>
+
+	
+
+	<insert id="insertUserComment" parameterType="SocialVo">
+		<![CDATA[
+			INSERT INTO EZ_USER_COMMENT
+			(
+				 SC_IDX
+			    ,MENU_URL
+			    ,REG_NAME
+			    ,PROFILE_URL
+			    ,REG_ID
+			    ,COMMENT_CONT
+			    ,REG_DT
+			)
+			VALUES
+			(
+				#{scidx}
+				,#{menuUrl}
+				,#{nickName}
+				,#{profileImage}
+				,#{socialId}
+				,#{commentCont}
+				,DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i')				
+			)
+		]]>
+	</insert>
+	
+	<select id="selectCommentList" parameterType="SocialVo" resultMap="SocialMap">
+		<![CDATA[
+			SELECT * FROM (
+				SELECT /*+ FIRST_ROWS */ A.*, @rownum := @rownum + 1 as RN FROM (
+					SELECT * 
+					FROM EZ_USER_COMMENT
+					WHERE SC_IDX > ' ' 
+					AND MENU_URL = #{menuUrl}
+					AND (@rownum:=0)=0
+		
+					ORDER BY REG_DT DESC,SC_IDX DESC
+				) A WHERE @rownum < #{lastIndex}
+			) B WHERE RN > #{firstIndex}
+		]]>
+	</select>
+	
+	<select id="selectCommentListCnt" parameterType="SocialVo" resultType="int">
+		<![CDATA[
+			SELECT COUNT(SC_IDX) CNT FROM EZ_USER_COMMENT
+			WHERE MENU_URL=#{menuUrl}			
+		]]>
+	</select>
+	
+	<delete id="deleteComment" parameterType="SocialVo">
+		<![CDATA[
+			DELETE 
+			FROM EZ_USER_COMMENT
+			WHERE SC_IDX=#{scidx}
+		]]>
+	</delete>
+	
+	
+	<select id="selectPushListAndroid" resultType="String">
+		<![CDATA[		
+			SELECT PI_REGISTRATION_ID
+			FROM PUSH_INFO
+			WHERE				
+			PI_GUBUN = '1'
+			ORDER BY PI_IDX			
+		]]>
+	</select>
+	
+	<select id="selectPushListIos" resultType="String">
+		<![CDATA[		
+			SELECT PI_REGISTRATION_ID
+			FROM PUSH_INFO
+			WHERE				
+			PI_GUBUN = '2'
+			ORDER BY PI_IDX			
+		]]>
+	</select>
+	
+	<select id="UserPWd" resultType="egovMap">
+		<![CDATA[	
+			SELECT CU_ID,CU_PWD
+			FROM EZ_CMS_USER
+			WHERE				
+			P_HOMEPAGE = 'L'			
+		]]>
+	</select>
+	
+	<update id="updatePwd" parameterType="Map">
+		<![CDATA[
+			UPDATE EZ_CMS_USER
+			SET CU_PWD = #{cuPwd}
+			WHERE CU_ID = #{cuId}
+			AND P_HOMEPAGE = 'L'
+		]]>
+	</update>
+	
+	<delete id="deletePushInfo" parameterType="PushVo">
+		
+			DELETE 
+			FROM PUSH_INFO
+			WHERE PI_REGISTRATION_ID=#{piRegistrationId}
+		
+	</delete>
+	
+	<insert id="insertPushInfo" parameterType="PushVo">
+		
+			INSERT INTO  PUSH_INFO
+			(PI_IDX,PI_REGISTRATION_ID,PI_GUBUN) VALUES
+			(#{piIdx},#{piRegistrationId},#{piGubun})
+		
+	</insert>
+	
+</mapper>

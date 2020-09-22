@@ -1,0 +1,1038 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Tue Mar 10 09:35:09 KST 2020-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BbsContentDao">
+	
+	<resultMap id="BbsContentListMap" type="egovframework.injeinc.boffice.ex.board.vo.BbsContentVo">
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="cbName" column="CB_NAME"/>
+		<result property="bbsTempletGbn" column="BBS_TEMPLET_GBN"/>
+		<result property="notiYn" column="NOTI_YN"/>
+		<result property="answerDepth" column="ANSWER_DEPTH"/>
+		<result property="subCont" column="SUB_CONT"/>
+		<result property="nameCont" column="NAME_CONT"/>
+		<result property="thumnailCont" column="THUMNAIL_CONT"/>
+		<result property="countCont" column="COUNT_CONT"/>
+		<result property="ansYnCont" column="ANS_YN_CONT"/>
+		<result property="ansWriter" column="ANS_WRITER"/>
+		<result property="ansRYn" column="ANS_R_YN"/>
+		<result property="apprYn" column="APPR_YN"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="fileCnt" column="FILE_CNT"/>
+		<result property="ext1" column="EXT1"/>
+		<result property="commentCnt" column="COMMENT_CNT"/>
+	</resultMap>
+	
+	<resultMap id="BbsContentViewMap" type="java.util.HashMap">
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="parentSeq" column="PARENT_SEQ"/>
+		<result property="answerStep" column="ANSWER_STEP"/>
+		<result property="answerDepth" column="ANSWER_DEPTH"/>
+		<result property="notiYn" column="NOTI_YN"/>
+		<result property="cateCont" column="CATE_CONT"/>
+		<result property="subCont" column="SUB_CONT"/>
+		<result property="nameCont" column="NAME_CONT"/>
+		<result property="addrCont" column="ADDR_CONT"/>
+		<result property="emailCont" column="EMAIL_CONT"/>
+		<result property="telCont" column="TEL_CONT"/>
+		<result property="phoneCont" column="PHONE_CONT"/>
+		<result property="clobCont" column="CLOB_CONT" javaType="java.lang.String" jdbcType="CLOB"/>
+		<result property="clobCont_search" column="CLOB_CONT_SEARCH"/>
+		<result property="ext1" column="EXT1"/>
+		<result property="ext2" column="EXT2"/>
+		<result property="ext3" column="EXT3"/>
+		<result property="ext4" column="EXT4"/>
+		<result property="ext5" column="EXT5"/>
+		<result property="ext6" column="EXT6"/>
+		<result property="ext7" column="EXT7"/>
+		<result property="ext8" column="EXT8"/>
+		<result property="ext9" column="EXT9"/>
+		<result property="ext10" column="EXT10"/>
+		<result property="subLinkCont" column="SUB_LINK_CONT"/>
+		<result property="mLinkCont" column="M_LINK_CONT"/>
+		<result property="thumnailCont" column="THUMNAIL_CONT"/>
+		<result property="captionCont" column="CAPTION_CONT" javaType="java.lang.String" jdbcType="CLOB"/>
+		<result property="countCont" column="COUNT_CONT"/>
+		<result property="chargeNameCont" column="CHARGE_NAME_CONT"/>
+		<result property="chargeTelCont" column="CHARGE_TEL_CONT"/>
+		<result property="openYnCont" column="OPEN_YN_CONT"/>
+		<result property="ansYnCont" column="ANS_YN_CONT"/>
+		<result property="ansCompCont" column="ANS_COMP_CONT"/>
+		<result property="ansWriter" column="ANS_WRITER"/>
+		<result property="ansRYn" column="ANS_R_YN"/>
+		<result property="ansContent" column="ANS_CONTENT" javaType="java.lang.String" jdbcType="CLOB"/>
+		<result property="ansDt" column="ANS_DT"/>
+		<result property="mwAdOpenYn" column="MW_AD_OPEN_YN"/>
+		<result property="mwNoReplyYn" column="MW_NO_REPLY_YN"/>
+		<result property="mwStatusCont" column="MW_STATUS_CONT"/>
+		<result property="apprYn" column="APPR_YN"/>
+		<result property="placeType" column="PLACE_TYPE"/>
+		<result property="delRsnCd" column="DEL_RSN_CD"/>
+		<result property="bcDelYn" column="BC_DEL_YN"/>
+		<result property="dupcode" column="DUPCODE"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="regIp" column="REG_IP"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+		<result property="modIp" column="MOD_IP"/>
+		<result property="department" column="DEPARTMENT"/>
+		<result property="caCdidx" column="CA_CDIDX"/>
+		<result property="cdSubject" column="CD_SUBJECT"/>
+		<result property="subjectCode" column="SUBJECT_CODE"/>
+		<result property="shortCut" column="SHORT_CUT"/>
+		<result property="clobCont2" column="CLOB_CONT2" javaType="java.lang.String" jdbcType="CLOB"/>
+		<result property="pushYn" column="PUSH_YN"/>
+		<result property="commentYn" column="COMMENT_YN"/>
+		<result property="commentCnt" column="COMMENT_CNT"/>
+	</resultMap>
+
+	<insert id="insertBbsContent" parameterType="BbsContentVo">
+		<![CDATA[
+			INSERT INTO EZ_BBS_CONTENT
+			(
+				BC_IDX
+				, CB_IDX
+				, PARENT_SEQ
+				, ANSWER_STEP
+				, ANSWER_DEPTH
+		]]>
+		<if test="notiYn != null and notiYn != ''">
+			<![CDATA[	, NOTI_YN ]]>
+		</if>
+		<if test="cateCont != null and cateCont != ''">
+			<![CDATA[	, CATE_CONT ]]>
+		</if>
+		<if test="subCont != null and subCont != ''">
+			<![CDATA[	, SUB_CONT ]]>
+		</if>
+		<if test="nameCont != null and nameCont != ''">
+			<![CDATA[	, NAME_CONT ]]>
+		</if>
+		<if test="addrCont != null and addrCont != ''">
+			<![CDATA[	, ADDR_CONT ]]>
+		</if>
+		<if test="emailCont != null and emailCont != ''">
+			<![CDATA[	, EMAIL_CONT ]]>
+		</if>
+		<if test="telCont != null and telCont != ''">
+			<![CDATA[	, TEL_CONT ]]>
+		</if>
+		<if test="phoneCont != null and phoneCont != ''">
+			<![CDATA[	, PHONE_CONT ]]>
+		</if>
+		<if test="clobCont != null and clobCont != ''">
+			<![CDATA[
+			, CLOB_CONT
+			, CLOB_CONT_SEARCH 
+			]]>
+		</if>
+		<if test="ext1 != null and ext1 != ''">
+			<![CDATA[	, EXT1 ]]>
+		</if>
+		<if test="ext2 != null and ext2 != ''">
+			<![CDATA[	, EXT2 ]]>
+		</if>
+		<if test="ext3 != null and ext3 != ''">
+			<![CDATA[	, EXT3 ]]>
+		</if>
+		<if test="ext4 != null and ext4 != ''">
+			<![CDATA[	, EXT4 ]]>
+		</if>
+		<if test="ext5 != null and ext5 != ''">
+			<![CDATA[	, EXT5 ]]>
+		</if>
+		<if test="ext6 != null and ext6 != ''">
+			<![CDATA[	, EXT6 ]]>
+		</if>
+		<if test="ext7 != null and ext7 != ''">
+			<![CDATA[	, EXT7 ]]>
+		</if>
+		<if test="ext8 != null and ext8 != ''">
+			<![CDATA[	, EXT8 ]]>
+		</if>
+		<if test="ext9 != null and ext9 != ''">
+			<![CDATA[	, EXT9	]]>
+		</if>
+		<if test="ext10 != null and ext10 != ''">
+			<![CDATA[	, EXT10	]]>
+		</if>
+		<if test="subLinkCont != null and subLinkCont != ''">
+			<![CDATA[	, SUB_LINK_CONT	]]>
+		</if>
+		<if test="mLinkCont != null and mLinkCont != ''">
+			<![CDATA[	, M_LINK_CONT	]]>
+		</if>
+		<if test="thumnailCont != null and thumnailCont != ''">
+			<![CDATA[	, THUMNAIL_CONT	]]>
+		</if>
+		<if test="captionCont != null and captionCont != ''">
+			<![CDATA[	, CAPTION_CONT	]]>
+		</if>
+		<if test="chargeNameCont != null and chargeNameCont != ''">
+			<![CDATA[	, CHARGE_NAME_CONT	]]>
+		</if>
+		<if test="chargeTelCont != null and chargeTelCont != ''">
+			<![CDATA[	, CHARGE_TEL_CONT	]]>
+		</if>
+		<if test="openYnCont != null and openYnCont != ''">
+			<![CDATA[	, OPEN_YN_CONT	]]>
+		</if>
+		<if test="ansYnCont != null and ansYnCont != ''">
+			<![CDATA[	, ANS_YN_CONT	]]>
+		</if>
+		<if test="ansCompCont != null and ansCompCont != ''">
+			<![CDATA[	, ANS_COMP_CONT	]]>
+		</if>
+		<if test="placeType != null and placeType != ''">
+			<![CDATA[	, PLACE_TYPE	]]>
+		</if>
+		<if test="dupcode != null and dupcode != ''">
+			<![CDATA[	, DUPCODE	]]>
+		</if>
+		<if test="clobCont2 != null and clobCont2 != ''">
+			<![CDATA[	, CLOB_CONT2	]]>			
+		</if>
+		<![CDATA[
+				, REG_DT
+				, REG_ID
+				, REG_IP
+				, DEPARTMENT
+				, CA_CDIDX
+				, CD_SUBJECT
+				, SUBJECT_CODE
+				, SHORT_CUT
+			)
+			VALUES
+			(
+				#{bcIdx}
+				, #{cbIdx}
+				, #{parentSeq}
+				, #{answerStep}
+				, #{answerDepth}
+		]]>
+		<if test="notiYn != null and notiYn != ''">
+			<![CDATA[	, #{notiYn} ]]>
+		</if>
+		<if test="cateCont != null and cateCont != ''">
+			<![CDATA[	, #{cateCont} ]]>
+		</if>
+		<if test="subCont != null and subCont != ''">
+			<![CDATA[	, #{subCont} ]]>
+		</if>
+		<if test="nameCont != null and nameCont != ''">
+			<![CDATA[	, #{nameCont} ]]>
+		</if>
+		<if test="addrCont != null and addrCont != ''">
+			<![CDATA[	, #{addrCont} ]]>
+		</if>
+		<if test="emailCont != null and emailCont != ''">
+			<![CDATA[	, #{emailCont} ]]>
+		</if>
+		<if test="telCont != null and telCont != ''">
+			<![CDATA[	, #{telCont} ]]>
+		</if>
+		<if test="phoneCont != null and phoneCont != ''">
+			<![CDATA[	, #{phoneCont} ]]>
+		</if>
+		<if test="clobCont != null and clobCont != ''">
+			<![CDATA[
+				, #{clobCont}
+				, #{clobContSearch}
+			 ]]>
+		</if>
+		<if test="ext1 != null and ext1 != ''">
+			<![CDATA[	, #{ext1} ]]>
+		</if>
+		<if test="ext2 != null and ext2 != ''">
+			<![CDATA[	, #{ext2} ]]>
+		</if>
+		<if test="ext3 != null and ext3 != ''">
+			<![CDATA[	, #{ext3} ]]>
+		</if>
+		<if test="ext4 != null and ext4 != ''">
+			<![CDATA[	, #{ext4} ]]>
+		</if>
+		<if test="ext5 != null and ext5 != ''">
+			<![CDATA[	, #{ext5} ]]>
+		</if>
+		<if test="ext6 != null and ext6 != ''">
+			<![CDATA[	, #{ext6} ]]>
+		</if>
+		<if test="ext7 != null and ext7 != ''">
+			<![CDATA[	, #{ext7} ]]>
+		</if>
+		<if test="ext8 != null and ext8 != ''">
+			<![CDATA[	, #{ext8} ]]>
+		</if>
+		<if test="ext9 != null and ext9 != ''">
+			<![CDATA[	, #{ext9} ]]>
+		</if>
+		<if test="ext10 != null and ext10 != ''">
+			<![CDATA[	, #{ext10} ]]>
+		</if>
+		<if test="subLinkCont != null and subLinkCont != ''">
+			<![CDATA[	, #{subLinkCont} ]]>
+		</if>
+		<if test="mLinkCont != null and mLinkCont != ''">
+			<![CDATA[	, #{mLinkCont} ]]>
+		</if>
+		<if test="thumnailCont != null and thumnailCont != ''">
+			<![CDATA[	, #{thumnailCont} ]]>
+		</if>
+		<if test="captionCont != null and captionCont != ''">
+			<![CDATA[	, #{captionCont} ]]>
+		</if>
+		<if test="chargeNameCont != null and chargeNameCont != ''">
+			<![CDATA[	, #{chargeNameCont} ]]>
+		</if>
+		<if test="chargeTelCont != null and chargeTelCont != ''">
+			<![CDATA[	, #{chargeTelCont} ]]>
+		</if>
+		<if test="openYnCont != null and openYnCont != ''">
+			<![CDATA[	, #{openYnCont} ]]>
+		</if>
+		<if test="ansYnCont != null and ansYnCont != ''">
+			<![CDATA[	, #{ansYnCont} ]]>
+		</if>
+		<if test="ansCompCont != null and ansCompCont != ''">
+			<![CDATA[	, #{ansCompCont} ]]>
+		</if>
+		<if test="placeType != null and placeType != ''">
+			<![CDATA[	, #{placeType} ]]>
+		</if>
+		<if test="dupcode != null and dupcode != ''">
+			<![CDATA[	, #{dupcode} ]]>
+		</if>
+		<if test="clobCont2 != null and clobCont2 != ''">
+			<![CDATA[	, #{clobCont2}	 ]]>		
+		</if>
+		<![CDATA[
+				, SYSDATE
+				, #{regId}
+				, #{regIp}
+				, #{department}
+				, #{caCdidx}
+				, #{cdSubject}
+				, #{subjectCode}
+				, #{shortCut}
+			)
+		 ]]>
+	</insert>
+	
+	<update id="updateBbsContent" parameterType="BbsContentVo">
+		<![CDATA[
+			UPDATE EZ_BBS_CONTENT 
+			SET MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+				, MOD_IP = #{modIp}
+		]]>
+		<if test="notiYn != null and notiYn != ''">
+			<![CDATA[	, NOTI_YN = #{notiYn} ]]>
+		</if>
+		<if test="cateCont != null and cateCont != ''">
+			<![CDATA[	, CATE_CONT = #{cateCont} ]]>
+		</if>
+		<if test="subCont != null and subCont != ''">
+			<![CDATA[	, SUB_CONT = #{subCont} ]]>
+		</if>
+		<if test="nameCont != null and nameCont != ''">
+			<![CDATA[	, NAME_CONT = #{nameCont} ]]>
+		</if>
+		<if test="addrCont != null and addrCont != ''">
+			<![CDATA[	, ADDR_CONT = #{addrCont} ]]>
+		</if>
+		<if test="emailCont != null and emailCont != ''">
+			<![CDATA[	, EMAIL_CONT = #{emailCont} ]]>
+		</if>
+		<if test="telCont != null and telCont != ''">
+			<![CDATA[	, TEL_CONT = #{telCont} ]]>
+		</if>
+		<if test="phoneCont != null and phoneCont != ''">
+			<![CDATA[	, PHONE_CONT = #{phoneCont} ]]>
+		</if>
+		<if test="clobCont != null and clobCont != ''">
+			<![CDATA[
+				, CLOB_CONT = #{clobCont}
+				, CLOB_CONT_SEARCH = #{clobContSearch}
+			]]>
+		</if>
+		<if test="ext1 != null and ext1 != ''">
+			<![CDATA[	, EXT1 = #{ext1} ]]>
+		</if>
+		<if test="ext2 != null and ext2 != ''">
+			<![CDATA[	, EXT2 = #{ext2} ]]>
+		</if>
+		<if test="ext3 != null and ext3 != ''">
+			<![CDATA[	, EXT3 = #{ext3} ]]>
+		</if>
+		<if test="ext4 != null and ext4 != ''">
+			<![CDATA[	, EXT4 = #{ext4} ]]>
+		</if>
+		<if test="ext5 != null and ext5 != ''">
+			<![CDATA[	, EXT5 = #{ext5} ]]>
+		</if>
+		<if test="ext6 != null and ext6 != ''">
+			<![CDATA[	, EXT6 = #{ext6} ]]>
+		</if>
+		<if test="ext7 != null and ext7 != ''">
+			<![CDATA[	, EXT7 = #{ext7} ]]>
+		</if>
+		<if test="ext8 != null and ext8 != ''">
+			<![CDATA[	, EXT8 = #{ext8} ]]>
+		</if>
+		<if test="ext9 != null and ext9 != ''">
+			<![CDATA[	, EXT9 = #{ext9} ]]>
+		</if>
+		<if test="ext10 != null and ext10 != ''">
+			<![CDATA[	, EXT10 = #{ext10} ]]>
+		</if>
+		<if test="subLinkCont != null and subLinkCont != ''">
+			<![CDATA[	, SUB_LINK_CONT = #{subLinkCont} ]]>
+		</if>
+		<if test="mLinkCont != null and mLinkCont != ''">
+			<![CDATA[	, M_LINK_CONT = #{mLinkCont} ]]>
+		</if>
+		<if test="thumnailCont != null and thumnailCont != ''">
+			<![CDATA[	, THUMNAIL_CONT = #{thumnailCont} ]]>
+		</if>
+		<if test="captionCont != null and captionCont != ''">
+			<![CDATA[	, CAPTION_CONT = #{captionCont} ]]>
+		</if>
+		<if test="chargeNameCont != null and chargeNameCont != ''">
+			<![CDATA[	, CHARGE_NAME_CONT = #{chargeNameCont} ]]>
+		</if>
+		<if test="chargeTelCont != null and chargeTelCont != ''">
+			<![CDATA[	, CHARGE_TEL_CONT = #{chargeTelCont} ]]>
+		</if>
+		<if test="openYnCont != null and openYnCont != ''">
+			<![CDATA[	, OPEN_YN_CONT = #{openYnCont} ]]>
+		</if>
+		<if test="ansYnCont != null and ansYnCont != ''">
+			<![CDATA[	, ANS_YN_CONT = #{ansYnCont} ]]>
+		</if>
+		<if test="ansCompCont != null and ansCompCont != ''">
+			<![CDATA[	, ANS_COMP_CONT = #{ansCompCont} ]]>
+		</if>
+		<if test="apprYn != null and apprYn != ''">
+			<![CDATA[	, APPR_YN = #{apprYn} ]]>
+		</if>
+		<if test="placeType != null and placeType != ''">
+			<![CDATA[	, PLACE_TYPE = #{placeType} ]]>
+		</if>
+		<if test="delRsnCd != null and delRsnCd != ''">
+			<![CDATA[	, DEL_RSN_CD = #{delRsnCd} ]]>
+		</if>
+		<if test="department != null and department != ''">
+			<![CDATA[	, DEPARTMENT = #{department} ]]>
+		</if>
+		<if test="caCdidx != null and caCdidx != ''">
+			<![CDATA[	, CA_CDIDX = #{caCdidx} ]]>
+		</if>
+		<if test="cdSubject != null and cdSubject != ''">
+			<![CDATA[	, CD_SUBJECT = #{cdSubject} ]]>
+		</if>
+		<if test="subjectCode != null and subjectCode != ''">
+			<![CDATA[	, SUBJECT_CODE = #{subjectCode} ]]>
+		</if>		
+		<if test="subjectCode != null and subjectCode != ''">
+			<![CDATA[	, SUBJECT_CODE = #{subjectCode} ]]>
+		</if>		
+		<if test="shortCut != null and shortCut != ''">
+			<![CDATA[	, SHORT_CUT = #{shortCut} ]]>
+		</if>
+		<if test="clobCont2 != null and clobCont2 != ''">
+			<![CDATA[	, CLOB_CONT2 = #{clobCont2}		 ]]>	
+		</if>
+		<![CDATA[	
+			WHERE CB_IDX = #{cbIdx}
+			AND BC_IDX = #{bcIdx}
+		]]>
+	</update>
+	
+	<update id="deleteBbsContent" parameterType="BbsContentVo">
+		<![CDATA[	
+			UPDATE EZ_BBS_CONTENT
+			SET 
+				BC_DEL_YN = 'Y'
+				, MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+				, MOD_IP = #{modIp}
+			WHERE CB_IDX = #{cbIdx}
+			AND BC_IDX = #{bcIdx}
+		]]>
+	</update>
+	
+	<select id="selectBbsContent" parameterType="BbsContentVo" resultMap="BbsContentViewMap">
+		<![CDATA[	
+			SELECT * FROM EZ_BBS_CONTENT
+			WHERE CB_IDX = #{cbIdx}
+			AND BC_IDX = #{bcIdx}
+		]]>
+		
+	</select>
+	
+	<sql id="searchBbsContent">
+		<if test="searchStartDate != null and searchStartDate != ''">
+			<if test="searchEndDate != null and searchEndDate != ''">
+			<![CDATA[	
+				AND REG_DT BETWEEN TO_DATE(#{searchStartDate}, 'YYYY-MM-DD')
+									AND TO_DATE(#{searchEndDate}, 'YYYY-MM-DD') + 1
+			]]>
+			</if>
+		</if>
+		<if test="searchCbIdx != null and searchCbIdx != ''">
+		<![CDATA[	
+			AND
+			
+				CB_IDX = TO_NUMBER(#{searchCbIdx})
+		]]>
+		</if>
+		<if test="searchCbIdxArr != null and searchCbIdxArr.size!=0">
+		<![CDATA[	
+			AND
+			CB_IDX IN
+		]]>
+			<foreach collection="searchCbIdxArr" item="item" separator="," close=")" open="(">
+			<![CDATA[		
+					#{item}
+			]]>
+			</foreach>
+		</if>
+		<if test="searchDelYn != null and searchDelYn != ''">
+		<![CDATA[	
+			AND
+				BC_DEL_YN = #{searchDelYn}
+		]]>
+		</if>
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 1">
+				<![CDATA[	AND SUB_CONT LIKE '%'||#{searchKeyword}||'%' ]]>
+			</if>
+			<if test="searchCondition == 2">
+				<![CDATA[	AND NAME_CONT LIKE '%'||#{searchKeyword}||'%' ]]>
+				
+			</if>
+			<if test="searchCondition == 3">
+				<![CDATA[	AND CLOB_CONT_SEARCH LIKE '%'||#{searchKeyword}||'%' ]]>
+			</if>
+		</if>
+	</sql>
+	
+	<select id="selectPagBbsContent" parameterType="BbsContentVo" resultMap="BbsContentListMap">
+		<![CDATA[	
+			SELECT 
+				BC_IDX
+				, CB_IDX
+				, (SELECT CB_NAME FROM EZ_CMS_BBS WHERE CB_IDX = B.CB_IDX AND USE_YN = 'Y' ) AS CB_NAME
+				, (SELECT BBS_TEMPLET_GBN FROM EZ_BBS_CONFIG WHERE CB_IDX = B.CB_IDX) AS BBS_TEMPLET_GBN
+				, NOTI_YN
+				, ANSWER_DEPTH
+				, SUB_CONT
+				, NAME_CONT
+				, THUMNAIL_CONT
+				, COUNT_CONT
+				, ANS_YN_CONT
+				, ANS_WRITER
+				, ANS_R_YN
+				, APPR_YN
+				, REG_DT
+				, (SELECT COUNT(*) FROM EZ_CONTENT_FILE WHERE USE_YN = 'Y' AND CB_IDX = B.CB_IDX AND BC_IDX = B.BC_IDX) AS FILE_CNT
+				, CASE (SELECT COMMENT_YN FROM EZ_BBS_CONFIG WHERE CB_IDX = B.CB_IDX) WHEN 'Y' THEN (SELECT COUNT(*) FROM EZ_BBS_COMMENT WHERE CM_DEL_YN = 'N' AND BC_IDX = B.BC_IDX) ELSE 0 END AS COMMENT_CNT
+				, EXT1
+			FROM (
+				SELECT /*+ FIRST_ROWS */ A.*, ROWNUM RN FROM (
+					SELECT 
+						BC_IDX
+						, CB_IDX
+						, NOTI_YN
+						, ANSWER_DEPTH
+						, SUB_CONT
+						, NAME_CONT
+						, THUMNAIL_CONT
+						, COUNT_CONT
+						, ANS_YN_CONT
+						, ANS_WRITER
+						, ANS_R_YN
+						, APPR_YN
+						, DEL_RSN_CD
+						, TO_CHAR(REG_DT, 'YYYY-MM-DD')    AS REG_DT
+						, EXT1
+					FROM EZ_BBS_CONTENT A
+					WHERE 1 = 1
+		]]>
+		<include refid="searchBbsContent"/>
+		<![CDATA[	
+					ORDER BY PARENT_SEQ DESC, ANSWER_STEP ASC
+				) A WHERE ROWNUM <= #{lastIndex}
+			) B WHERE RN > #{firstIndex}
+		]]>
+	</select>
+	
+	<select id="selectBbsContentCnt" parameterType="BbsContentVo" resultType="java.lang.Integer">
+		<![CDATA[	
+			SELECT COUNT(*)
+			FROM EZ_BBS_CONTENT
+			WHERE 1 = 1
+		]]>
+		<include refid="searchBbsContent"/>
+	</select>
+	
+	<select id="selectListBbsContent" parameterType="BbsContentVo" resultMap="BbsContentListMap">
+		
+		<![CDATA[	
+			SELECT
+				BC_IDX
+				, CB_IDX
+				, (SELECT CB_NAME FROM EZ_CMS_BBS WHERE CB_IDX = A.CB_IDX AND USE_YN = 'Y') AS CB_NAME
+				, (SELECT BBS_TEMPLET_GBN FROM EZ_BBS_CONFIG WHERE CB_IDX = A.CB_IDX) AS BBS_TEMPLET_GBN
+				, NOTI_YN
+				, ANSWER_DEPTH
+				, SUB_CONT
+				, NAME_CONT
+				, THUMNAIL_CONT
+				, COUNT_CONT
+				, ANS_YN_CONT
+				, ANS_WRITER
+				, ANS_R_YN
+				, APPR_YN
+				, TO_CHAR(REG_DT, 'YYYY-MM-DD')    AS REG_DT
+				, (SELECT COUNT(*) FROM EZ_CONTENT_FILE WHERE USE_YN = 'Y' AND CB_IDX = A.CB_IDX AND BC_IDX = A.BC_IDX) AS FILE_CNT
+				, (SELECT CD_SUBJECT FROM EZ_DEPARTMENT WHERE CD_IDX = CA_CDIDX) AS CD_SUBJECT
+				, CA_CDIDX
+				, EXT1
+			FROM EZ_BBS_CONTENT A
+			WHERE 1 = 1
+		]]>
+		<include refid="searchBbsContent"/>
+		<![CDATA[
+			ORDER BY PARENT_SEQ DESC, ANSWER_STEP ASC
+		]]>
+	</select>
+	
+	<update id="updateBbsContentBcDelYn" parameterType="BbsContentVo">
+		<![CDATA[	
+			UPDATE EZ_BBS_CONTENT
+			SET 
+				BC_DEL_YN = #{bcDelYn}
+				, MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+				, MOD_IP = #{modIp}
+			WHERE 
+		]]>
+		<if test="searchBcIdxArr != null">
+			<![CDATA[	BC_IDX IN  ]]>
+			<foreach collection="searchBcIdxArr" item="item" separator="," close=")" open="("> 
+				<![CDATA[	#{item}  ]]>
+			</foreach>
+		</if>
+	</update>
+	
+	<update id="updateBbsContentDelRsnCd" parameterType="BbsContentVo">
+		<![CDATA[	
+			UPDATE EZ_BBS_CONTENT
+			SET 
+				DEL_RSN_CD = #{delRsnCd}
+				, MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+				, MOD_IP = #{modIp}
+			WHERE 
+		]]>
+		<if test="searchBcIdxArr != null">
+		<![CDATA[	
+			BC_IDX IN  
+		]]>
+			<foreach collection="searchBcIdxArr" item="item" separator="," close=")" open="(">
+				<![CDATA[	
+					#{item}
+				]]>
+			</foreach>
+		</if>
+	</update>
+	
+	<update id="updateBbsContentStep" parameterType="BbsContentVo">
+		<![CDATA[	
+			UPDATE EZ_BBS_CONTENT
+			SET ANSWER_STEP = ANSWER_STEP + 1
+			WHERE PARENT_SEQ = #{parentSeq}
+			AND ANSWER_STEP >= #{answerStep}
+		]]>
+	</update>
+	
+	<update id="updateBbsContentAnswer" parameterType="BbsContentVo">
+		<![CDATA[	
+			UPDATE EZ_BBS_CONTENT 
+			SET 
+				CHARGE_NAME_CONT = #{chargeNameCont}
+				, CHARGE_TEL_CONT = #{chargeTelCont}
+				, ANS_YN_CONT = '22000100'
+				, ANS_WRITER = #{ansWriter}
+				, ANS_CONTENT = #{ansContent}
+				, ANS_R_YN = #{ansRYn}
+				, ANS_DT = SYSDATE
+				, MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+				, MOD_IP = #{modIp}
+			WHERE CB_IDX = #{cbIdx}
+			AND BC_IDX = #{bcIdx}
+		]]>
+	</update>
+	
+	<update id="updateBbsContentCount" parameterType="BbsContentVo">
+		<![CDATA[	
+			UPDATE EZ_BBS_CONTENT
+			SET COUNT_CONT = COUNT_CONT+1
+			WHERE CB_IDX = #{cbIdx}
+			AND BC_IDX = #{bcIdx}  
+		]]>
+	</update>
+	
+	<update id="updateBbsContentClobAutoMake" parameterType="BbsContentVo">
+		<![CDATA[	
+			UPDATE EZ_BBS_CONTENT 
+			SET 
+				CLOB_CONT = #{clobCont}
+				, CLOB_CONT_SEARCH = #{clobContSearch}
+				, CLOB_CONT2 = #{clobCont2}
+			WHERE CB_IDX = #{cbIdx}
+			AND BC_IDX = #{bcIdx}
+		]]>
+	</update>
+	
+	<update id="updateBbsContentMove" parameterType="BbsContentVo">
+		<![CDATA[	
+			UPDATE EZ_BBS_CONTENT 
+			SET 
+				CB_IDX = #{newCbIdx}
+			WHERE 
+			CB_IDX = #{cbIdx} AND
+			BC_IDX = #{bcIdx}
+		]]>
+	</update>
+	<update id="insertBbsContentCopy" parameterType="BbsContentVo">
+		<![CDATA[	
+			INSERT INTO EZ_BBS_CONTENT(
+				BC_IDX
+				,CB_IDX
+				,PARENT_SEQ
+				,ANSWER_STEP
+				,ANSWER_DEPTH
+				,NOTI_YN
+				,CATE_CONT
+				,SUB_CONT
+				,NAME_CONT
+				,ADDR_CONT
+				,EMAIL_CONT
+				,TEL_CONT
+				,PHONE_CONT
+				,CLOB_CONT
+				,CLOB_CONT_SEARCH
+				,EXT1
+				,EXT2
+				,EXT3
+				,EXT4
+				,EXT5
+				,EXT6
+				,EXT7
+				,EXT8
+				,EXT9
+				,EXT10
+				,SUB_LINK_CONT
+				,M_LINK_CONT
+				,THUMNAIL_CONT
+				,CAPTION_CONT
+				,COUNT_CONT
+				,CHARGE_NAME_CONT
+				,CHARGE_TEL_CONT
+				,OPEN_YN_CONT
+				,ANS_YN_CONT
+				,ANS_COMP_CONT
+				,ANS_WRITER
+				,ANS_CONTENT
+				,ANS_R_YN
+				,ANS_DT
+				,MW_AD_OPEN_YN
+				,MW_NO_REPLY_YN
+				,MW_STATUS_CONT
+				,APPR_YN
+				,PLACE_TYPE
+				,DEL_RSN_CD
+				,BC_DEL_YN
+				,DUPCODE
+				,REG_DT
+				,REG_ID
+				,REG_IP
+				,MOD_DT
+				,MOD_ID 
+				,DEPARTMENT
+				,CA_CDIDX
+				,CD_SUBJECT
+				,SUBJECT_CODE
+				,SHORT_CUT
+				,CLOB_CONT2
+			)
+			SELECT
+				#{newBcIdx}
+				,#{newCbIdx}
+				,#{newBcIdx}
+				,ANSWER_STEP
+				,ANSWER_DEPTH
+				,NOTI_YN
+				,CATE_CONT
+				,SUB_CONT
+				,NAME_CONT
+				,ADDR_CONT
+				,EMAIL_CONT
+				,TEL_CONT
+				,PHONE_CONT
+				,CLOB_CONT
+				,CLOB_CONT_SEARCH
+				,EXT1
+				,EXT2
+				,EXT3
+				,EXT4
+				,EXT5
+				,EXT6
+				,EXT7
+				,EXT8
+				,EXT9
+				,EXT10
+				,SUB_LINK_CONT
+				,M_LINK_CONT
+				,THUMNAIL_CONT
+				,CAPTION_CONT
+				,COUNT_CONT
+				,CHARGE_NAME_CONT
+				,CHARGE_TEL_CONT
+				,OPEN_YN_CONT
+				,ANS_YN_CONT
+				,ANS_COMP_CONT
+				,ANS_WRITER
+				,ANS_CONTENT
+				,ANS_R_YN
+				,ANS_DT
+				,MW_AD_OPEN_YN
+				,MW_NO_REPLY_YN
+				,MW_STATUS_CONT
+				,APPR_YN
+				,PLACE_TYPE
+				,DEL_RSN_CD
+				,BC_DEL_YN
+				,DUPCODE
+				,SYSDATE
+				,REG_ID
+				,REG_IP
+				,SYSDATE
+				,MOD_ID
+				,DEPARTMENT
+				,CA_CDIDX
+				,CD_SUBJECT
+				,SUBJECT_CODE
+				,SHORT_CUT
+				,CLOB_CONT2
+			FROM EZ_BBS_CONTENT
+			WHERE 
+			CB_IDX = #{cbIdx} AND
+			BC_IDX = #{bcIdx}
+		]]>
+	</update>
+	
+	<select id="selectListBbsContentQnA" parameterType="BbsContentVo" resultMap="BbsContentListMap">
+		<![CDATA[	
+			SELECT
+				BC_IDX
+				, CB_IDX
+				, (SELECT CB_NAME FROM EZ_CMS_BBS WHERE CB_IDX = A.CB_IDX AND USE_YN = 'Y') AS CB_NAME
+				, (SELECT BBS_TEMPLET_GBN FROM EZ_BBS_CONFIG WHERE CB_IDX = A.CB_IDX) AS BBS_TEMPLET_GBN
+				, NOTI_YN
+				, ANSWER_DEPTH
+				, SUB_CONT
+				, NAME_CONT
+				, THUMNAIL_CONT
+				, COUNT_CONT
+				, ANS_YN_CONT
+				, ANS_WRITER
+				, ANS_R_YN
+				, APPR_YN
+				, TO_CHAR(REG_DT, 'YYYY-MM-DD')      AS REG_DT
+				, (SELECT COUNT(*) FROM EZ_CONTENT_FILE WHERE USE_YN = 'Y' AND CB_IDX = A.CB_IDX AND BC_IDX = A.BC_IDX) AS FILE_CNT
+				,EXT1
+			FROM EZ_BBS_CONTENT A
+			WHERE BC_DEL_YN = 'N'
+			AND CB_IDX = 21
+			AND ANS_R_YN = 'N'
+		]]>
+		<if test="searchAnsWriter != null and searchAnsWriter != ''">
+			<![CDATA[	
+				AND ANS_WRITER = #{searchAnsWriter}
+				AND ANS_WRITER IS NOT NULL
+			]]>
+		</if>
+		<![CDATA[	
+			ORDER BY CB_IDX DESC
+		]]>
+	</select>
+	
+	<!--RSS 게시물 목록 -->
+	<select id="selectRssListBbsContent" parameterType="BbsContentVo" resultMap="BbsContentListMap">
+		<![CDATA[	
+			SELECT 
+				BC_IDX
+				, CB_IDX
+				, (SELECT CB_NAME FROM EZ_CMS_BBS WHERE CB_IDX = B.CB_IDX AND USE_YN = 'Y') AS CB_NAME
+				, (SELECT BBS_TEMPLET_GBN FROM EZ_BBS_CONFIG WHERE CB_IDX = B.CB_IDX) AS BBS_TEMPLET_GBN
+				, NOTI_YN
+				, ANSWER_DEPTH
+				, SUB_CONT
+				, NAME_CONT
+				, THUMNAIL_CONT
+				, COUNT_CONT
+				, ANS_YN_CONT
+				, ANS_WRITER
+				, ANS_R_YN
+				, APPR_YN
+				, REG_DT
+				, (SELECT COUNT(*) FROM EZ_CONTENT_FILE WHERE USE_YN = 'Y' AND CB_IDX = B.CB_IDX AND BC_IDX = B.BC_IDX) AS FILE_CNT
+				, (SELECT RSS_USE_YN FROM EZ_BBS_CONFIG WHERE CB_IDX = #{cbIdx} and RSS_USE_YN = 'Y') AS RSS_USE_YN
+				, EXT1 
+			FROM (
+				SELECT /*+ FIRST_ROWS */ A.*, ROWNUM RN FROM (
+					SELECT 
+						BC_IDX
+						, CB_IDX
+						, NOTI_YN
+						, ANSWER_DEPTH
+						, SUB_CONT
+						, NAME_CONT
+						, THUMNAIL_CONT
+						, COUNT_CONT
+						, ANS_YN_CONT
+						, ANS_WRITER
+						, ANS_R_YN
+						, APPR_YN
+						, DEL_RSN_CD
+						, TO_CHAR(REG_DT, 'YYYY-MM-DD')      AS REG_DT
+						, (SELECT RSS_USE_YN FROM EZ_BBS_CONFIG WHERE CB_IDX = #{cbIdx} and RSS_USE_YN = 'Y') AS RSS_USE_YN
+						, EXT1 
+					FROM EZ_BBS_CONTENT A
+					WHERE 1 = 1 and CB_IDX = #{cbIdx}
+					AND BC_DEL_YN = 'N'
+		]]>
+		<include refid="searchBbsContent"/>
+		<![CDATA[	
+					ORDER BY PARENT_SEQ DESC, ANSWER_STEP ASC
+				) A WHERE ROWNUM <= #{lastIndex} AND RSS_USE_YN = 'Y'
+			) B WHERE RN > #{firstIndex}
+		]]>
+	</select>
+	
+	<!-- RSS 게시물 총 개수 -->
+	<select id="selectPagRssListBbsContent" parameterType="BbsContentVo" resultType="int">
+		<![CDATA[	
+			SELECT COUNT(*)
+			FROM EZ_BBS_CONTENT	
+			WHERE ROWNUM <= 20
+		]]>  
+		<if test="searchKeyword != null and searchKeyword != ''">
+		 	<if test="searchCondition == 1">
+				<![CDATA[	
+					AND SUB_CONT LIKE '%'||#{searchKeyword}||'%'
+				]]>
+			</if>
+			<if test="searchCondition == 2">
+			<![CDATA[	
+				AND NAME_CONT LIKE '%'||#{searchKeyword}||'%'
+			]]>	
+			</if>
+		</if>		
+		<![CDATA[	
+		    ORDER BY BC_IDX DESC
+		]]>
+	</select>
+	
+	<!-- 게시판그룹가져오기 -->
+	<select id="selectCmsbbsGroup" parameterType="BbsContentVo" resultType="String">
+	<![CDATA[	
+			SELECT 
+			  SUBSTR(SYS_CONNECT_BY_PATH(CB_CD,'>'),2) as CB_CD
+			FROM EZ_CMS_BBS
+			where CB_IDX=#{cbIdx}
+			AND USE_YN ='Y'
+			START WITH CB_UPR_CD='16000000'
+			CONNECT BY NOCYCLE PRIOR CB_CD=CB_UPR_CD
+	]]>
+	</select>
+	
+	<!-- 게시판그룹가져오기 -->
+	
+	<select id="selectUpDownParentSeq" parameterType="BbsContentVo" resultType="int">
+	<![CDATA[	
+			SELECT NVL(MAX(PARENT_SEQ),0) FROM EZ_BBS_CONTENT WHERE CB_IDX=#{cbIdx} 
+	]]>
+			<if test="mode == &quot;up&quot;">
+	<![CDATA[				
+				AND PARENT_SEQ=(
+					SELECT MIN(PARENT_SEQ) FROM EZ_BBS_CONTENT WHERE CB_IDX=#{cbIdx} AND PARENT_SEQ>(
+							SELECT PARENT_SEQ FROM EZ_BBS_CONTENT WHERE CB_IDX=#{cbIdx} AND BC_IDX=#{bcIdx}
+						)
+				)
+	]]>			
+			</if>
+			<if test="mode == &quot;down&quot;">
+	<![CDATA[				
+				AND PARENT_SEQ=(
+					SELECT MAX(PARENT_SEQ) FROM EZ_BBS_CONTENT WHERE CB_IDX=#{cbIdx} AND PARENT_SEQ<(
+							SELECT PARENT_SEQ FROM EZ_BBS_CONTENT WHERE CB_IDX=#{cbIdx} AND BC_IDX=#{bcIdx}
+						)
+				)
+	]]>			
+			</if>
+	</select>
+	<select id="selectUpDownParentSeqFrom" parameterType="BbsContentVo" resultType="int">
+	
+			SELECT MAX(PARENT_SEQ) FROM EZ_BBS_CONTENT WHERE CB_IDX=#{cbIdx} AND BC_IDX=#{bcIdx}
+	
+	</select>
+	<update id="sortMyParentSeqZero" parameterType="BbsContentVo">
+	<![CDATA[	
+			UPDATE EZ_BBS_CONTENT SET PARENT_SEQ = '9999999' WHERE CB_IDX=#{cbIdx} AND PARENT_SEQ=(
+				SELECT PARENT_SEQ FROM EZ_BBS_CONTENT WHERE CB_IDX=#{cbIdx} AND BC_IDX=#{bcIdx}
+			)
+	]]>
+	</update>
+	<update id="sortTargetParentSeq" parameterType="BbsContentVo">
+			<![CDATA[	
+			UPDATE EZ_BBS_CONTENT SET PARENT_SEQ = #{parentSeq} WHERE CB_IDX=#{cbIdx} AND PARENT_SEQ=(
+			]]>
+				<if test="mode == &quot;up&quot;">
+				<![CDATA[			
+					SELECT MIN(PARENT_SEQ) FROM EZ_BBS_CONTENT WHERE CB_IDX=#{cbIdx} AND PARENT_SEQ>${parentSeq}
+				]]>	
+			</if>
+			<if test="mode == &quot;down&quot;">
+				<![CDATA[	
+					SELECT MAX(PARENT_SEQ) FROM EZ_BBS_CONTENT WHERE CB_IDX=#{cbIdx} AND PARENT_SEQ<${parentSeq}
+				]]>
+			</if>
+			
+			)
+		
+	</update>	
+	<update id="sortMyParentSeq" parameterType="BbsContentVo">
+	<![CDATA[	
+			UPDATE EZ_BBS_CONTENT SET PARENT_SEQ = #{parentSeq} WHERE CB_IDX=#{cbIdx} AND PARENT_SEQ='9999999'
+	]]>
+	</update>
+	
+	<update id="updateBoardStatusR" parameterType="BbsContentVo">
+	<![CDATA[	
+		UPDATE EZ_BBS_CONTENT
+		   SET ANS_R_YN = #{ansRYn}
+		 WHERE CB_IDX = #{cbIdx}
+		   AND BC_IDX = #{bcIdx}  
+	]]>  
+	</update>
+	
+</mapper>

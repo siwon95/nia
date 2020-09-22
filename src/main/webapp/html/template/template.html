@@ -1,0 +1,3368 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title>통합관리시스템</title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,maximum-scale=1,minimum-scale=1" />
+
+<link rel="stylesheet" type="text/css" href="/plugin/jstree//dist/themes/default/style.min.css" />
+<link rel="stylesheet" type="text/css" href="/css/cms/font-awesome.min.css" />
+<link rel="stylesheet" type="text/css" href="/css/cms/base.css" />
+<link rel="stylesheet" type="text/css" href="/css/cms/content.css" />
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/plugin/jstree//dist/jstree.min.js"></script>
+<script src="/js/cms/lib.js"></script>
+<script src="/js/cms/common.js"></script>
+<!-- Page Head -->
+<!-- 페이지 전용 스타일/스크립트 -->
+<script src="/plugin/ckeditor/ckeditor.js"></script>
+<script>
+$(function(){
+	
+	
+
+	/* 트리 */
+	$('#menuTree').css("display","").jstree({
+		"core":{"check_callback":true},
+	    "plugins":["dnd"] //, "plugins":["checkbox"]
+	}).bind("loaded.jstree",function(event, data){ //로딩시
+		$("#menuTree").jstree("select_node", "ul > li:first");
+		var Selectednode = $("#menuTree").jstree("get_selected");
+		$("#menuTree").jstree("open_node", Selectednode, false, true);
+		
+	}).bind("select_node.jstree", function(event, data){ //선택시
+		if(data.node.id && data.node.id != 'j1_1'){
+			var param = data.node.a_attr['data-param'].split(",");
+			siteGo(param[0],param[1],param[2]);
+		}
+	
+	}).bind("move_node.jstree",function(event,data){
+		var instance = $('#menuTree').jstree(true);
+		var pr = instance.get_node(data.node.parent);
+		if(pr.id == "#" || (pr.id).replace("000000000000","") != (pr.id)){
+			alert("TOP 메뉴로 이동 할수 없습니다!");
+			document.location.reload();
+			return;
+		}
+		if((data.node.id).replace("0000000000","") != (data.node.id)){
+			alert("TOP 메뉴는 이동 할 수 없습니다!");
+			document.location.reload();
+			return;
+		}
+		var pr = instance.get_node(data.node.parent);
+		document.myorder.preSortOrder.value = pr.id;
+		document.myorder.moveOrderStep.value = data.position;
+		if(data.position==0){
+			document.myorder.moveSortOrder.value = "0";
+		}else{
+			document.myorder.moveSortOrder.value = pr.children[data.position-1];
+		}
+		document.myorder.nowSortOrder.value = data.node.id;
+		var tempHtml = "<div id=\"html\" style=\"padding:5px;width:210px;border:1px solid #99BBE8\"><ul><li>재정렬 중입니다.<br /> 잠시만 기다려 주십시요!</li></ul></div>";
+		document.getElementById("html").innerHTML=tempHtml;
+		document.myorder.submit();
+	});
+
+	//버튼이벤트
+	$(".btn_save").click(function(e){
+		e.preventDefault();
+		$(document.MenuVo).attr("action", "/boffice_noDeco/cn/menu/Menu_User_Create.do").submit();
+	});
+	$(".btn_saveAllSite").click(function(e){
+		e.preventDefault();
+		$(document.MenuVo).attr("action", "/boffice_noDeco/cn/menu/Menu_User_Create_All.do").submit();
+	});
+	$(".btn_saveAllMenu").click(function(e){
+		e.preventDefault();
+		if(confirm("전체컨텐츠를 반영하시겠습니까?")){
+			document.location.href="/boffice/cn/menu/User_Menu_Contents_Create_File.do";
+		}
+	});
+	$(".btn_add").click(function(e){
+		e.preventDefault();
+		if($("#siteCd").val() == ""){
+			alert("사이트를 선택하여 주십시요.");
+			$("#siteCd").focus();
+			return;
+		}
+		$('#iMenuDetail').get(0).contentWindow.doListAdd();
+	});
+	
+	//
+	$("#siteCd").change(function(){
+		siteGo($(this).val(),'','');
+	});
+});
+
+function siteGo(inSiteCode,inMenuCode,adminMenuUrl){
+	if(inMenuCode==""){
+		document.location.href="menu_list.do?siteCd="+inSiteCode+"&menuCode="+inMenuCode;
+	}else{
+		$("#iMenuDetail").attr("src","/boffice_noDeco/cn/menu/menu_detail.do?siteCd="+inSiteCode+"&menuCode="+inMenuCode);
+		$("#tapMenuUrl").val("/boffice_noDeco/cn/menu/menu_detail.do?siteCd="+inSiteCode+"&menuCode="+inMenuCode);
+		$("#tapAdminUrl").val(adminMenuUrl);
+	}
+}
+</script>
+<!-- //페이지 전용 스타일/스크립트 -->
+<!-- //Page Head -->
+</head>
+<body>
+<div id="wrap">
+	<!-- 상단영역 -->
+	
+
+
+
+
+
+
+
+<div id="header">
+	<h1><a href="/boffice/sy/mgr/MgrMain.do?cmm_code=MM010000"><img src="/images/cms/logo.png" alt="콘텐츠 통합관리 솔루션 EASYFRAME"></a></h1>
+	<a href="#gnb" class="btn_gnbOpen">메뉴열기</a>
+	<!-- 상단메뉴영역 -->
+	<div id="gnb">
+		<ul>
+			
+			
+					
+					
+					
+					<li >
+						<a href="">
+							<img src="/images/cms/icon_monitor.png" alt="">
+							
+							
+							
+							
+							시스템관리
+						</a>	
+						
+						
+							
+						
+							
+								
+								
+								
+									<ul>
+								
+								<li >
+									<a href="">부서및직원관리</a>
+									
+									
+										
+									
+										
+									
+										
+											
+											
+											
+												<ul>
+											
+											<li >
+												<a href="/boffice/group/dept/GroupDept_List.do">부서관리</a>
+											</li>
+										
+									
+										
+											
+											
+											
+											<li >
+												<a href="/boffice/group/emp/Emp_List.do">직원정보관리</a>
+											</li>
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+										</ul>
+									
+							
+						
+							
+						
+							
+						
+							
+								
+								
+								
+								<li >
+									<a href="">운영자관리</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+											
+											
+											
+												<ul>
+											
+											<li >
+												<a href="/boffice/sy/mgr/MgrList.do">운영자관리</a>
+											</li>
+										
+									
+										
+											
+											
+											
+											<li >
+												<a href="/boffice/sy/menu/MgrMenuList.do">관리메뉴설정</a>
+											</li>
+										
+									
+										
+											
+											
+											
+											<li >
+												<a href="/boffice/sy/mgr/RoleList.do">권한설정</a>
+											</li>
+										
+									
+										
+											
+											
+											
+											<li >
+												<a href="/boffice/sy/accessIp/accessIpList.do">접속허용설정</a>
+											</li>
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+										</ul>
+									
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+								
+								
+								
+								<li >
+									<a href="/boffice/sy/mgr/MgrMyForm.do">관리자정보변경</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+							
+						
+							
+								
+								
+								
+								<li >
+									<a href="/boffice/sy/code/Code_List.do">공통코드</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+							
+						
+							
+								
+								
+								
+								<li >
+									<a href="/boffice/sy/progrm/ProgramList.do">프로그램관리</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+						
+								</li>
+							</ul>
+						
+					</li>
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+					
+					
+					
+					<li  class="active">
+						<a href="">
+							
+							<img src="/images/cms/icon_content.png" alt="">
+							
+							
+							
+							컨텐츠관리
+						</a>	
+						
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+								
+								
+								
+									<ul>
+								
+								<li >
+									<a href="/boffice/cn/site/site_list.do">사이트관리</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+							
+						
+							
+								
+								
+								
+								<li  class="active">
+									<a href="/boffice/cn/menu/menu_list.do">컨텐츠관리</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+							
+						
+							
+								
+								
+								
+								<li >
+									<a href="/boffice/cn/layout/layout_list.do">템플릿관리</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+						
+								</li>
+							</ul>
+						
+					</li>
+				
+			
+				
+			
+				
+			
+				
+			
+					
+					
+					
+					<li >
+						<a href="">
+							
+							
+							<img src="/images/cms/icon_board.png" alt="">
+							
+							
+							게시판관리
+						</a>	
+						
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+								
+								
+								
+									<ul>
+								
+								<li >
+									<a href="/boffice/sy/board/BoardList.do">게시판관리</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+							
+						
+							
+								
+								
+								
+								<li >
+									<a href="/boffice/sy/board/ezBbsTemplet_list.do">게시판 템플릿관리</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+							
+						
+							
+								
+								
+								
+								<li >
+									<a href="/boffice/ex/board/BbsContentList.do">게시물관리</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+						
+								</li>
+							</ul>
+						
+					</li>
+				
+			
+				
+			
+				
+			
+				
+			
+					
+					
+					
+					<li >
+						<a href="">
+							
+							
+							
+							<img src="/images/cms/icon_manage.png" alt="">
+							
+							운영관리
+						</a>	
+						
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+								
+								
+								
+									<ul>
+								
+								<li >
+									<a href="">팝업/배너 관리</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+											
+											
+											
+												<ul>
+											
+											<li >
+												<a href="/boffice/main/layerPopup/MainLayerPopupList.do">팝업관리</a>
+											</li>
+										
+									
+										
+											
+											
+											
+											<li >
+												<a href="/boffice/main/popupZone/MainPopupZoneList.do">배너관리</a>
+											</li>
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+										</ul>
+									
+							
+						
+							
+						
+							
+						
+							
+								
+								
+								
+								<li >
+									<a href="/boffice/common/files/CmmFilesList.do">파일업로드관리</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+							
+						
+							
+								
+								
+								
+								<li >
+									<a href="">통계관리</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+											
+											
+											
+												<ul>
+											
+											<li >
+												<a href="/boffice/stat/selectWebLogStatToday.do">웹로그현황(오늘)</a>
+											</li>
+										
+									
+										
+											
+											
+											
+											<li >
+												<a href="/boffice/stat/selectWebLogStatSummary.do">웹로그현황(요약)</a>
+											</li>
+										
+									
+										
+											
+											
+											
+											<li >
+												<a href="/boffice/stat/selectWebLogStatPeriod.do">기간별 접속통계</a>
+											</li>
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+										</ul>
+									
+							
+						
+							
+						
+							
+						
+							
+						
+							
+								
+								
+								
+								<li >
+									<a href="/boffice/ex/poll/PollList.do">설문관리</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+							
+						
+							
+								
+								
+								
+								<li >
+									<a href="">공약제안</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+											
+											
+											
+												<ul>
+											
+											<li >
+												<a href="/boffice/pledge/PledgeList.do">공약은행</a>
+											</li>
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+										</ul>
+									
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+						
+								</li>
+							</ul>
+						
+					</li>
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+					
+					
+					
+					<li >
+						<a href="">
+							
+							
+							
+							
+							<img src="/images/cms/icon_member.png" alt="">
+							회원관리
+						</a>	
+						
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+								
+								
+								
+									<ul>
+								
+								<li >
+									<a href="/boffice/sy/group/GroupConfig_List.do">회원그룹관리</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+							
+						
+							
+								
+								
+								
+								<li >
+									<a href="/boffice/sy/user/User_List.do">회원목록</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+							
+						
+							
+								
+								
+								
+								<li >
+									<a href="/boffice/sy/userstatistics/UserStatistics_List.do">회원가입통계</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+							
+						
+							
+								
+								
+								
+								<li >
+									<a href="/boffice/sy/userlog/UserLog_List.do">로그인 기록</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+						
+								</li>
+							</ul>
+						
+					</li>
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+					
+					
+					
+					<li >
+						<a href="">
+							
+							
+							
+							
+							
+							기타관리
+						</a>	
+						
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+						
+							
+								
+								
+								
+									<ul>
+								
+								<li >
+									<a href="/boffice/ex/holiday/HolidayList.do">공휴일관리</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+							
+						
+							
+								
+								
+								
+								<li >
+									<a href="/boffice/sy/prohibit/ProhibitIdList.do">금지아이디관리</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+							
+						
+							
+								
+								
+								
+								<li >
+									<a href="/boffice/ex/mail/MailList.do">메일발송관리</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+							
+						
+							
+								
+								
+								
+								<li >
+									<a href="/boffice/ex/umsLog/UmsLogList.do">UMS발송관리</a>
+									
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+										
+									
+									
+							
+						
+						
+								</li>
+							</ul>
+						
+					</li>
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+		</ul>
+	</div>
+	<!-- //상단메뉴영역 -->
+	<div id="topNav">
+		<a href="#" class="btn_alarmToggle">
+			<span class="soundOnly">알림메세지</span><em>0</em>
+		</a>
+		<div class="alarmList">
+			<h6>공지사항</h6>
+			<ul class="notice">
+				<li><a href="#컨텐츠관리">
+					0건의 발행대기 컨텐츠가 있습니다.
+				</a></li>
+				<li class="empty">공지사항이 없습니다.</li>
+			</ul>
+			<h6>알림메세지</h6>
+			<ul class="message">
+				
+				
+					<li class="empty">메세지가 없습니다.</li>
+				
+			</ul>
+		</div>
+		<span class="user">
+			<img src="/images/cms/icon_user.png" alt="">
+			<b>easyframe님</b>
+			<a href="#" id="btn_logout">로그아웃</a>
+		</span>
+	</div>
+</div>
+	<!-- //상단영역 -->
+	<div id="container">
+		
+		<!-- 컨텐츠영역 -->
+		<div class="content">
+			<!-- 컨텐츠 타이틀 -->
+			
+
+
+
+
+
+
+
+
+<div class="sectionTitle">
+	<h2>컨텐츠관리</h2>
+	<div class="titleNav">
+		<ul></ul>
+	</div>
+</div>
+			<!-- //컨텐츠 타이틀 -->
+			
+			<form name="myorder" method="post" action="/boffice/cn/menu/menu_order.do">
+	<input type="hidden" name="preSortOrder" value=""/>
+	<input type="hidden" name="moveOrderStep" value=""/>
+	<input type="hidden" name="moveSortOrder" value=""/>
+	<input type="hidden" name="nowSortOrder" value=""/>
+	<input type="hidden" name="siteCd" value="test2"/>
+	<input type="hidden" name="menuCode" value="10000000000000000000000"/>
+	</form>
+	
+	<div class="section divGroup leftTree">
+		<div class="left">
+			<div class="siteSelect">
+				<form id="MenuVoSearch" name="MenuVoSearch" action="/boffice/cn/menu/menu_list.do?siteCd=test2&amp;menuCode=" method="post">
+				<input id="menuCode" name="menuCode" type="hidden" value="10000000000000000000000"/>
+				<select id="siteCd" name="siteCd" title="사이트선택" class="w100p">
+					<option value="">사이트선택</option>
+					<option value="yangcheon">양천구청</option><option value="demo">데모사이트</option><option value="test">테스트</option><option value="test2" selected="selected">테스트2</option>
+				</select>
+				</form>
+			</div>
+			<div class="treeTopBtn">
+				<input type="button" value="메뉴수정적용" class="btn_inline btn_save">
+				<input type="button" value="하위메뉴추가" class="btn_inline btn_add">
+				
+				<!-- <input type="button" value="전체사이트적용" class="btn_inline btn_saveAllSite"> -->
+				
+			</div>
+			
+				
+				
+			<form id="MenuVo" name="MenuVo" action="/boffice/cn/menu/menu_list.do?siteCd=test2&amp;menuCode=" method="post">
+			<input id="menuCode" name="menuCode" type="hidden" value="10000000000000000000000"/>
+			<input id="siteCd" name="siteCd" type="hidden" value="test2"/>
+			<input id="menuDepth" name="menuDepth" type="hidden" value="0"/>
+			<input id="sortOrder" name="sortOrder" type="hidden" value="1000000000000"/>
+			<input id="chargeDeptCode" name="chargeDeptCode" type="hidden" value=""/>
+			
+			
+			
+			<div id="menuTree" class="optionBar rows2">
+				
+					
+					
+					
+					
+					
+					
+					
+						
+							
+						
+						
+					
+					
+						
+							<ul>
+								<li id="1000000000000">
+									<a href="#" class="" data-param="test2,10000000000000000000000,/boffice_noDeco/cn/menu/User_Menu_Contents_Form.do?siteCd=test2&amp;menuCode=10000000000000000000000">HOME</a>
+						
+						
+						
+									
+					
+				
+				
+				</li>
+				</ul>
+			</div>
+			</form>
+				
+			
+		</div>
+		<div class="right">
+			
+				
+				
+			<input type="hidden" name="tapMenuUrl" id="tapMenuUrl" value="/boffice_noDeco/cn/menu/menu_detail.do?siteCd=test2&menuCode=10000000000000000000000"/>
+			<input type="hidden" name="tapAdminUrl" id="tapAdminUrl" value=""/>
+			
+			<!-- <input type="button" id="btnMenu" value="메뉴관리 " class="btn_inline" onclick="tabMenuGo()"/> -->
+			<!-- <input type="button" id="btnAdmin" value="컨텐츠관리" class="btn_inline" onclick="tabAdminGo()"/> -->
+			<iframe name="iMenuDetail" id="iMenuDetail" style="width:100%;height:1100px" src="/boffice_noDeco/cn/menu/menu_detail.do?siteCd=test2&menuCode="></iframe>
+				
+			
+		</div>
+	</div>
+		</div>
+		<!-- //컨텐츠 영역 -->
+
+		<!-- 메뉴얼영역 -->
+		
+
+
+<div class="aside">
+	<div class="asideTitle">
+		<h5>메뉴얼</h5>
+	</div>
+	<div class="asideContent">
+		<p>
+			메뉴를 관리하는 메뉴입니다.<br>
+			메뉴 추가/수정이 가능합니다
+		</p>
+		<h6>메뉴 등록</h6>
+		<ul>
+			<li>[하위메뉴추가] 버튼을 클릭합니다.</li>
+			<li>우측 폼을 통해서 정보를 입력합니다.</li>
+			<li>우측 상단의 [저장]버튼을 통해서 저장합니다.</li>
+		</ul>
+		<h6>메뉴 적용</h6>
+		<ul>
+			<li>[메뉴수정적용] 버튼을 통해서 수정된 정보를 적용합니다.</li>
+		</ul>
+		<h6>메뉴 수정</h6>
+		<ul>
+			<li>트리에서 수정할 메뉴를 클릭합니다.</li>
+			<li>우측 폼을 통해서 정보를 수정합니다.</li>
+		</ul>
+	</div>
+	<a href="#" class="btn_asideToggle">메뉴얼 열고닫기</a>
+</div>
+		<!-- //메뉴얼영역 -->
+	</div>
+	<!-- 하단영역 -->
+	
+
+
+<div id="footer">
+	Copyrightⓒ INJEINC 2018. All Rights Reserved.
+</div>
+	<!-- //하단영역 -->
+</div>
+<div id="loading"><div></div></div>
+<div id="overlay"></div>
+</body>
+</html>

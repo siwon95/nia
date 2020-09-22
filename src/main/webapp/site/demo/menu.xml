@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu>
+<menu-part-0>
+  <site-cd>demo</site-cd>
+  <menu-code>10000000000000000000000</menu-code>
+  <sort-order>1000000000000</sort-order>
+  <menu-nm>HOME</menu-nm>
+  <menu-title></menu-title>
+  <menu-depth>0</menu-depth>
+  <menu-path>HOME</menu-path>
+  <user-menu-url></user-menu-url>
+  <head-content></head-content>
+  <layout-url>null</layout-url>
+  <link-type>normal</link-type>
+  <main-or-sub>main</main-or-sub>
+  <show-yn>N</show-yn>
+  <child-menu></child-menu>
+</menu-part-0>
+
+</menu>

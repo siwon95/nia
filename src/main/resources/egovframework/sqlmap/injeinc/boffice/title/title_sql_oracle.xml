@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TitleDao">
+    
+	<resultMap id="eMap" type="egovframework.rte.psl.dataaccess.util.EgovMap">
+		<result property="mmName" column="MM_NAME"/>
+		<result property="menuNavigation" column="MENU_NAVIGATION"/>
+		<result property="menuNavigationCd" column="MENU_NAVIGATION_CD"/>
+		<result property="mmHelpLength" column="MM_HELP_LENGTH"/>
+		<result property="mmHelp" column="MM_HELP" javaType="java.lang.String" jdbcType="CLOB"/>
+	</resultMap>
+	
+	<select id="selectTitle" parameterType="String" resultMap="eMap">
+		<![CDATA[	
+		    SELECT 
+			  MM_NAME
+			  , SUBSTR(SYS_CONNECT_BY_PATH(MM_NAME,' > '), INSTR(SYS_CONNECT_BY_PATH(MM_NAME,' > '), ' > ', '2')) AS MENU_NAVIGATION
+			  , SUBSTR(SYS_CONNECT_BY_PATH(MM_CD,' ^ '), INSTR(SYS_CONNECT_BY_PATH(MM_CD,' ^ '), ' ^ ', '2')) AS MENU_NAVIGATION_CD
+			  , NVL(LENGTH(MM_HELP),0) AS MM_HELP_LENGTH
+			  , MM_HELP
+			FROM EZ_MGR_MENU
+			WHERE USE_YN = 'Y' AND MM_CD = #{cmmCode}
+			START WITH MM_CD = 'AD000000' 
+			CONNECT BY PRIOR MM_CD = MM_UPR_CD
+			ORDER SIBLINGS BY ORD_NO ASC
+		]]>
+	</select>
+	
+</mapper>

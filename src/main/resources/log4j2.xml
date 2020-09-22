@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<Appenders>
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d %5p [%c] %m%n" />
+		</Console>
+		<!-- 
+		<RollingFile name="RollingFile" fileName="D:/logs/app.log" 
+			filePattern="logs/app-%d{MM-dd-yyyy}.log.gz" ignoreExceptions="false">
+			<PatternLayout>
+				<Pattern>%d %5p [%c] %m%n</Pattern>
+			</PatternLayout>
+			<TimeBasedTriggeringPolicy />
+		</RollingFile>
+		 -->
+		 <File name="file" fileName="D:/logs/app.log" append="true">
+		  	<PatternLayout pattern="%d %5p [%c] %m%n" />
+		 </File>
+	</Appenders>
+	<Loggers>
+		<!-- https://logging.apache.org/log4j/2.x/
+		<Logger name="com.ibatis" level="DEBUG" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="file" />
+		</Logger>
+		-->
+		<Logger name="java.sql.Connection" level="DEBUG" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="file" />
+		</Logger>
+		<Logger name="java.sql.Statement" level="DEBUG" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="file" />
+		</Logger>
+		<Logger name="java.sql.PreparedStatement" level="DEBUG" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="file" />
+		</Logger>
+		<Logger name="java.sql.ResultSet" level="DEBUG" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="file" />
+		</Logger>
+		
+		<Logger name="jdbc.sqlonly" level="INFO" additivity="false">
+			<AppenderRef ref="file" />
+			<AppenderRef ref="console" />
+		</Logger>
+		
+		<Logger name="egovframework" level="DEBUG" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="file" />
+		</Logger>
+ 		<Logger name="org.springframework" level="ERROR" additivity="false">
+			<AppenderRef ref="file" />
+			<AppenderRef ref="console" />
+		</Logger>
+		<Logger name="org.springframework.web.servlet.DispatcherServlet" level="DEBUG" additivity="false">
+			<AppenderRef ref="file" />
+			<AppenderRef ref="console" />
+		</Logger>
+		<logger name="net.sf.ehcache" additivity="false">
+	        <level value="DEBUG" />
+	        <appender-ref ref="console" />
+	    </logger>
+		<Root level="ERROR">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="file" />
+		</Root>
+	</Loggers>
+</Configuration>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="progrmDao">
+
+    <!-- 프로그램목록 관리 -->
+	<resultMap id="progrmMap" type="egovframework.injeinc.boffice.sy.progrm.vo.ProgrmVo">
+		<result property="progrmFileNm" column="PROGRM_FILE_NM"/>
+		<result property="progrmKoreanNm" column="PROGRM_KOREAN_NM"/>
+		<result property="progrmDc" column="PROGRM_DC"/>
+		<result property="url" column="URL"/>
+		<result property="progrmGrpNm" column="PROGRM_GRP_NM"/>
+	</resultMap> 
+
+	<select id="selectProgrmList" parameterType="comDefaultVO" resultMap="progrmMap">
+		<![CDATA[
+	       SELECT * FROM ( SELECT @rownum := @rownum + 1 as RN, TB.* FROM (
+				SELECT 
+					PROGRM_FILE_NM
+					, PROGRM_KOREAN_NM 
+					, CONCAT(SUBSTRING(PROGRM_DC, 1, 18), '...')    AS PROGRM_DC
+					, URL              
+					, PROGRM_GRP_NM
+				FROM 
+					EZ_PROGRM_LIST
+				WHERE (@rownum:=0)=0
+		
+		]]>
+			
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<if test="searchCondition == &quot;&quot;">
+				<![CDATA[
+				AND
+					 ( PROGRM_FILE_NM LIKE  CONCAT('%', #{searchKeyword},'%')  OR PROGRM_FILE_NM LIKE  CONCAT('%', #{searchKeyword},'%') OR PROGRM_KOREAN_NM LIKE  CONCAT('%', #{searchKeyword},'%') ) 
+				]]>
+				</if>
+				<if test="searchCondition == 1"><![CDATA[
+				AND
+					 PROGRM_FILE_NM LIKE  CONCAT('%', #{searchKeyword},'%')  
+				 ]]>
+				</if>
+				<if test="searchCondition == 2">
+				<![CDATA[
+				AND
+					 PROGRM_GRP_NM LIKE  CONCAT('%', #{searchKeyword},'%')  
+				 ]]>
+				</if>
+				<if test="searchCondition == 3">
+				<![CDATA[
+				AND
+					 PROGRM_KOREAN_NM LIKE  CONCAT('%', #{searchKeyword},'%')  
+				]]>
+				</if>
+			</if>
+			<![CDATA[
+		
+				ORDER BY 
+					PROGRM_GRP_NM ASC
+	       ) TB ) Z WHERE RN BETWEEN #{firstIndex}+1 AND #{firstIndex} + #{recordCountPerPage}
+		 ]]>
+	</select> 
+
+	<!-- 총건수 조회  -->
+	<select id="selectProgrmListTotCnt" parameterType="comDefaultVO" resultType="int">
+		<![CDATA[
+		SELECT 
+			COUNT(*)
+		  FROM 
+		  	EZ_PROGRM_LIST
+	   ]]>
+		<where>
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<if test="searchCondition == &quot;&quot;">
+				<![CDATA[
+				AND
+					 ( PROGRM_FILE_NM LIKE  CONCAT('%', #{searchKeyword},'%')  OR PROGRM_FILE_NM LIKE  CONCAT('%', #{searchKeyword},'%') OR PROGRM_KOREAN_NM LIKE  CONCAT('%', #{searchKeyword},'%') ) 
+				]]>
+				</if>
+				<if test="searchCondition == 1">
+				<![CDATA[
+				AND
+					 PROGRM_FILE_NM LIKE  CONCAT('%', #{searchKeyword},'%')  
+				]]>
+				</if>
+				<if test="searchCondition == 2">
+				<![CDATA[
+				AND
+					 PROGRM_GRP_NM LIKE  CONCAT('%', #{searchKeyword},'%') 
+				]]> 
+				</if>
+				<if test="searchCondition == 3">
+				<![CDATA[
+				AND
+					 PROGRM_KOREAN_NM LIKE  CONCAT('%', #{searchKeyword},'%')
+				]]> 
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<select id="selectProgrm" parameterType="comDefaultVO" resultMap="progrmMap">
+		<![CDATA[
+			SELECT
+				PROGRM_FILE_NM          
+				, PROGRM_KOREAN_NM     
+				, PROGRM_DC                  
+				, URL                            
+				, PROGRM_GRP_NM          
+			 FROM 
+				EZ_PROGRM_LIST
+			WHERE 
+					PROGRM_FILE_NM = #{searchKeyword}
+		]]>
+		
+	</select>
+	
+	<insert id="insertProgrm">
+		<![CDATA[
+			INSERT INTO EZ_PROGRM_LIST 
+				( PROGRM_FILE_NM
+				  , PROGRM_KOREAN_NM
+				  , PROGRM_DC
+				  , URL
+				  , PROGRM_GRP_NM )
+			VALUES ( #{progrmFileNm}
+				  , #{progrmKoreanNm}
+				  , #{progrmDc}
+				  , #{url}
+				  , #{progrmGrpNm} )
+		]]>
+	</insert>
+
+	<update id="updateProgrm">
+		<![CDATA[
+			UPDATE 
+				EZ_PROGRM_LIST 
+			SET PROGRM_KOREAN_NM=#{progrmKoreanNm}
+				, PROGRM_DC      =#{progrmDc}
+				, URL            =#{url}
+				, PROGRM_GRP_NM  =#{progrmGrpNm}
+			WHERE 
+					PROGRM_FILE_NM=#{progrmFileNm}
+		]]>
+		
+	</update>
+
+	<delete id="deleteProgrm">
+		<![CDATA[                   
+			DELETE 
+			 FROM 
+			 	EZ_PROGRM_LIST              
+			WHERE 
+					PROGRM_FILE_NM=#{progrmFileNm}      
+		]]>
+	</delete> 
+	
+	<select id="selectProgrmDupCnt" parameterType="progrmVo" resultType="int">
+		<![CDATA[
+		SELECT 
+			COUNT(*) 
+		  FROM 
+		  	EZ_PROGRM_LIST
+		 WHERE 
+		 		PROGRM_FILE_NM = #{progrmFileNm}
+		 ]]>
+		
+	</select>
+	
+	<select id="selectProgrmGrp" parameterType="String" resultType="String">
+		<![CDATA[
+		SELECT 
+			 PROGRM_GRP_NM
+		  FROM 
+		  	EZ_PROGRM_LIST
+		 WHERE 
+		 		URL = #{url}
+		]]>
+	</select>
+
+</mapper>

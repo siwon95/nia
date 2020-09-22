@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Fri Mar 13 13:32:30 KST 2020-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="QuickDao">
+
+	<resultMap id="QuickMap" type="egovframework.injeinc.boffice.quick.vo.QuickVo">
+		<result property="cqlIdx" column="CQL_IDX"/>
+		<result property="cqlName" column="CQL_NAME"/>
+		<result property="cqlLink" column="CQL_LINK"/>
+		<result property="cqlCode" column="CQL_CODE"/>
+		<result property="cqlCodeName" column="CQL_CODE_NAME"/>
+		<result property="cqlTarget" column="CQL_TARGET"/>
+		<result property="cqlSort" column="CQL_SORT"/>
+		<result property="cqlHotYn" column="CQL_HOT_YN"/>
+		<result property="cqlNewYn" column="CQL_NEW_YN"/>
+		<result property="cqlUse" column="CQL_USE"/>
+		<result property="useYn" column="USE_YN"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+	</resultMap>
+	
+	<insert id="insertQuick" parameterType="QuickVo">
+		<![CDATA[	
+			INSERT INTO EZ_CMS_QUICK_LINK
+			(
+				CQL_IDX
+				, CQL_NAME
+				, CQL_LINK
+				, CQL_CODE
+				, CQL_TARGET
+				, CQL_SORT
+				, CQL_HOT_YN
+				, CQL_NEW_YN
+				, REG_ID
+			)
+			VALUES
+			(
+				#{cqlIdx}
+				, #{cqlName}
+				, #{cqlLink}
+				, #{cqlCode}
+				, #{cqlTarget}
+				, #{cqlSort}
+				, #{cqlHotYn}
+				, #{cqlNewYn}
+				, #{regId}
+			)
+		]]>
+	</insert>
+	
+	<update id="updateQuick" parameterType="QuickVo">
+		<![CDATA[	
+			UPDATE EZ_CMS_QUICK_LINK
+			SET CQL_NAME = #{cqlName}
+				, CQL_LINK = #{cqlLink}
+				, CQL_CODE = #{cqlCode}
+				, CQL_TARGET = #{cqlTarget}
+		]]>
+		<if test="cqlSort != null and cqlSort != ''">
+			<![CDATA[	
+				, CQL_SORT = #{cqlSort}
+			]]>
+		</if>
+		<![CDATA[	
+				, CQL_HOT_YN = #{cqlHotYn}
+				, CQL_NEW_YN = #{cqlNewYn}
+				, CQL_USE = #{cqlUse}
+				, MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+			WHERE CQL_IDX= #{cqlIdx}
+		]]>
+	</update>
+	
+	<update id="updateQuickEtcInfo" parameterType="QuickVo">
+		<![CDATA[	
+			UPDATE EZ_CMS_QUICK_LINK
+			SET
+				MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+		]]>
+		<if test="cqlHotYn != null and cqlHotYn != ''">
+			<![CDATA[	
+				,CQL_HOT_YN = #{cqlHotYn}
+			]]>
+		</if>
+		<if test="cqlNewYn != null and cqlNewYn != ''">
+			<![CDATA[	
+				,CQL_NEW_YN = #{cqlNewYn}
+			]]>
+		</if>
+		<if test="cqlUse != null and cqlUse != ''">
+			<if test="cqlUse == &quot;Y&quot;">
+			<![CDATA[		
+				,CQL_USE ='Y'
+				, CQL_SORT = (SELECT NVL(MAX(CQL_SORT), 0)+1 FROM EZ_CMS_QUICK_LINK WHERE USE_YN = 'Y' AND CQL_USE = 'Y' AND CQL_CODE = #{cqlCode})
+			]]>	
+			</if>
+			<if test="cqlUse == &quot;N&quot;">
+			<![CDATA[		
+				,CQL_USE = 'N'
+				, CQL_SORT = 0
+			]]>	
+			</if>
+		</if>
+		<![CDATA[	
+			WHERE CQL_IDX= #{cqlIdx}
+		]]>
+	</update>
+	
+	<!-- 삭제 -->
+	<update id="deleteQuick" parameterType="QuickVo">
+		<![CDATA[	
+			UPDATE EZ_CMS_QUICK_LINK
+			SET USE_YN = 'N'
+				, MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+			WHERE CQL_IDX = #{cqlIdx}
+		]]>
+	</update>
+	
+	<select id="selectQuick" parameterType="QuickVo" resultMap="QuickMap">
+		<![CDATA[	
+			SELECT
+				CQL_IDX
+				, CQL_NAME
+				, CQL_LINK
+				, CQL_CODE
+				, (SELECT  CODE_NAME FROM EZ_CMM_CODE WHERE CODE = CQL_CODE) AS CQL_CODE_NAME
+				, CQL_TARGET
+				, CQL_SORT
+				, CQL_HOT_YN
+				, CQL_NEW_YN
+				, CQL_USE
+				, USE_YN
+				, REG_DT
+				, REG_ID
+				, MOD_DT
+				, MOD_ID
+			FROM EZ_CMS_QUICK_LINK
+			WHERE USE_YN = 'Y'
+			AND CQL_IDX = #{cqlIdx}
+		]]>
+	</select>
+	
+	<sql id="searchQuick">
+		<if test="searchCqlCode != null and searchCqlCode != ''">
+			<![CDATA[	
+				AND CQL_CODE = #{searchCqlCode}
+			]]>
+		</if>
+		<if test="searchCqlCodeArr != null and searchCqlCodeArr.size!=0">
+		<![CDATA[	
+			AND CQL_CODE IN
+		]]>
+			<foreach collection="searchCqlCodeArr" item="item" separator="," close=")" open="(">
+			<![CDATA[		
+					#{item}
+			]]>
+			</foreach>
+		</if>
+		<if test="searchCqlUse != null and searchCqlUse != ''">
+			<![CDATA[		
+				AND CQL_USE = #{searchCqlUse}
+			]]>
+		</if>
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 1">
+				<![CDATA[		
+					AND CQL_NAME LIKE '%'||#{searchKeyword}||'%'
+				]]>
+			</if>
+			<if test="searchCondition == 2">
+				<![CDATA[	
+					AND CQL_LINK LIKE '%'||#{searchKeyword}||'%'
+				]]>
+			</if>
+		</if>
+	</sql>
+	
+	<select id="selectPagQuick" parameterType="QuickVo" resultMap="QuickMap">
+		<![CDATA[	
+			SELECT * FROM (
+				SELECT /*+ FIRST_ROWS */ A.*, ROWNUM RN FROM (
+					SELECT 
+						CQL_IDX
+						, CQL_NAME
+						, CQL_LINK
+						, CQL_CODE
+						, (SELECT  CODE_NAME FROM EZ_CMM_CODE WHERE CODE = CQL_CODE) AS CQL_CODE_NAME
+						, CQL_TARGET
+						, CQL_SORT
+						, CQL_HOT_YN
+						, CQL_NEW_YN
+						, CQL_USE
+						, USE_YN
+						, REG_DT
+						, REG_ID
+						, MOD_DT
+						, MOD_ID
+					FROM EZ_CMS_QUICK_LINK
+					WHERE USE_YN = 'Y'
+		]]>
+		<include refid="searchQuick"/>
+		<if test="searchOrder != null and searchOrder != ''">
+		<if test="searchOrder == 1">
+			<![CDATA[	
+				ORDER BY CQL_CODE ASC, CQL_SORT ASC, CQL_NAME ASC
+			]]>
+		</if>
+		<if test="searchOrder == 2">
+			<![CDATA[	
+				ORDER BY CQL_CODE ASC, CQL_NAME ASC
+			]]>
+		</if>
+		</if>
+		<if test="searchOrder == null or searchOrder == ''">
+			<![CDATA[	
+				ORDER BY CQL_CODE ASC, CQL_SORT ASC, CQL_NAME ASC
+			]]>
+		</if>
+		<![CDATA[	
+				) A WHERE ROWNUM <= #{lastIndex}
+			) WHERE RN > #{firstIndex}
+		]]>
+	</select>
+	
+	<select id="selectQuickCnt" parameterType="QuickVo" resultType="java.lang.Integer">
+		<![CDATA[	
+			SELECT COUNT(*)
+			FROM EZ_CMS_QUICK_LINK
+			WHERE USE_YN = 'Y'
+		]]>
+		<include refid="searchQuick"/>
+	</select>
+	
+	<select id="selectListQuick" parameterType="QuickVo" resultMap="QuickMap">
+		<![CDATA[	
+			SELECT 
+				CQL_IDX
+				, CQL_NAME
+				, CQL_LINK
+				, CQL_CODE
+				, (SELECT  CODE_NAME FROM EZ_CMM_CODE WHERE CODE = CQL_CODE) AS CQL_CODE_NAME
+				, CQL_TARGET
+				, CQL_SORT
+				, CQL_HOT_YN
+				, CQL_NEW_YN
+				, CQL_USE
+				, USE_YN
+				, REG_DT
+				, REG_ID
+				, MOD_DT
+				, MOD_ID
+			FROM EZ_CMS_QUICK_LINK
+			WHERE USE_YN = 'Y'
+		]]>
+		<include refid="searchQuick"/>
+		<if test="searchOrder != null and searchOrder != ''">
+		<if test="searchOrder == 1">
+			<![CDATA[	
+				ORDER BY CQL_CODE ASC, CQL_SORT ASC, CQL_NAME ASC
+			]]>
+		</if>
+		<if test="searchOrder == 2">
+			<![CDATA[	
+				ORDER BY CQL_CODE ASC, CQL_NAME ASC
+			]]>
+		</if>
+		</if>
+		<if test="searchOrder == null or searchOrder == ''">
+			<![CDATA[	
+				ORDER BY CQL_CODE ASC, CQL_SORT ASC, CQL_NAME ASC
+			]]>
+		</if>
+	</select>
+	
+	<select id="selectQuickMaxSort" parameterType="QuickVo" resultType="java.lang.Integer">
+		<![CDATA[	
+			SELECT NVL(MAX(CQL_SORT), 0)
+			FROM EZ_CMS_QUICK_LINK
+			WHERE USE_YN = 'Y'
+			AND CQL_USE = 'Y'
+			AND CQL_CODE = #{cqlCode}
+		]]>
+	</select>
+	
+	<update id="updateQuickCqlSort" parameterType="QuickVo">
+		<![CDATA[	
+			UPDATE EZ_CMS_QUICK_LINK 
+			SET CQL_SORT = #{cqlSort}
+			WHERE CQL_IDX = #{cqlIdx}
+		]]>
+	</update>
+	
+	<update id="updateQuickCqlSortChange" parameterType="QuickVo">
+		<![CDATA[	
+			UPDATE EZ_CMS_QUICK_LINK 
+			SET CQL_SORT = #{changeSort}
+			WHERE USE_YN = 'Y'
+			AND CQL_USE = 'Y'
+			AND CQL_CODE = #{cqlCode}
+			AND CQL_SORT = #{cqlSort}
+		]]>
+	</update>
+	
+	<update id="updateQuickCqlSortReAlign" parameterType="QuickVo">
+		<![CDATA[	
+			UPDATE EZ_CMS_QUICK_LINK 
+			SET CQL_SORT = CQL_SORT - 1
+			WHERE USE_YN = 'Y'
+			AND CQL_USE = 'Y'
+			AND CQL_CODE = #{cqlCode}
+			AND CQL_SORT > #{cqlSort}
+		]]>
+	</update>
+	
+</mapper>

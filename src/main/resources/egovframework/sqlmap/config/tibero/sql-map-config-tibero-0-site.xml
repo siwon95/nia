@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+
+
+<sqlMapConfig>
+
+	<typeHandler callback="egovframework.rte.psl.orm.ibatis.support.ClobStringTypeHandler" javaType="java.lang.String" jdbcType="CLOB" />
+	
+	<sqlMap resource="egovframework/sqlmap/com/cmm/fms/EgovFile_SQL_Oracle.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/common/code/cmm_code_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/common/code/code_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/common/weblog/weblog_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/common/authority/authority_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/common/files/cmm_files_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/common/pg/pg_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/common/sms/sms_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/common/social/social_sql.xml"/>	
+	
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/ex/mail/mail_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/ex/umsLog/ums_log_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/ex/snsLog/sns_log_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/ex/sns/sns_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/ex/holiday/holiday_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/ex/reservation/reservation_event_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/ex/reservationEtc/reservation_etc_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/ex/reservationFac/reservation_fac_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/ex/reservationRent/reservation_rent_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/ex/reservationHealth/reservation_health_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/ex/reservationMain/reservationMain_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/ex/poll/poll_answer_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/ex/poll/poll_list_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/ex/poll/poll_question_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/ex/poll/poll_user_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/ex/board/bbs_content_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/ex/board/content_file_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/ex/bbs/boardAdmin/boardAdmin_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/ex/bbs/gBoardAdmin/gBoardAdmin_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/ex/mainImage/main_image_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/sy/menu/mgr_menu_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/sy/mgr/mgr_authority_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/sy/mgr/mgr_list_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/sy/mgr/mgr_main_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/sy/mgr/mgr_main_config_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/sy/code/code_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/sy/reservation/reservation_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/sy/accessip/access_ip_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/sy/user/cms_user_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/sy/group/groupConfig_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/sy/userlog/user_log_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/sy/userstatistics/userstatistics_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/sy/board/board_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/sy/board/cms_bbs_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/sy/file/file_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/sy/prohibit/prohibit_id_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/sy/fileupload/fileupload_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/sy/board/ezBbsTemplet_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/sy/progrm/progrm_sql.xml"/>
+
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/cn/file/ez_file_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/cn/file/ez_user_file_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/cn/content/content_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/cn/site/site_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/cn/layout/layout_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/cn/menu/menu_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/cn/menu/user_menu_contents_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/cn/menu/user_menu_satisfaction_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/login/login_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/group/dept/groupDept_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/group/emp/emp_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/searchtheme/searchtheme_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/quick/quick_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/title/title_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/hot/manage/hotManage_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/hot/stat/hotStat_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/main/top/topImages_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/main/layerPopup/main_layer_popup_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/boffice/main/popupZone/main_popup_zone_sql.xml"/>
+	
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/foffice/ex/poll/poll_answerF_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/foffice/ex/poll/poll_listF_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/foffice/ex/poll/poll_questionF_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/foffice/ex/poll/poll_userF_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/foffice/ex/siteMap/siteMap_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/foffice/ex/bbs/bbsF_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/foffice/ex/bbs/bbsCustomF_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/foffice/ex/reservationMain/reservationMainUser_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/foffice/ex/sns/snsF_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/foffice/ex/myscrap/myScrapUser_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/foffice/ex/board/bbs_contentF_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/foffice/ex/board/content_minwon_resultF_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/foffice/ex/emp/empF_sql.xml" />
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/foffice/ex/dept/deptF_sql.xml"/>
+	
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/foffice/rss/rss_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/foffice/user/userF_sql.xml"/>
+	<sqlMap resource="egovframework/sqlmap/injeinc_tibero/foffice/login/loginF_sql.xml"/>
+</sqlMapConfig>

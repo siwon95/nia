@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="HotStatDao">
+	
+	<resultMap id="HotStatMonthMap" type="egovframework.injeinc.boffice.hot.stat.vo.HotStatVo">
+		<result property="hlTitle" column="HL_TITLE"/>	
+		<result property="m1" column="m1"/>		<!--1월-->
+		<result property="m2" column="m2"/>		<!--2월-->
+		<result property="m3" column="m3"/>		<!--3월-->
+		<result property="m4" column="m4"/>		<!--4월-->
+		<result property="m5" column="m5"/>		<!--5월-->
+		<result property="m6" column="m6"/>		<!--6월-->
+		<result property="m7" column="m7"/>		<!--7월-->
+		<result property="m8" column="m8"/>		<!--8월-->
+		<result property="m9" column="m9"/>		<!--9월-->
+		<result property="m10" column="m10"/>		<!--10월-->
+		<result property="m11" column="m11"/>		<!--11월-->
+		<result property="m12" column="m12"/>		<!--12월-->
+		<result property="sum" column="sum"/>		<!--합계-->
+	</resultMap>
+	
+	<resultMap id="HotStatDayMap" type="egovframework.injeinc.boffice.hot.stat.vo.HotStatVo">
+		<result property="hlTitle" column="HL_TITLE"/>		<!--1일-->
+		<result property="d1" column="d1"/>		<!--1일-->
+		<result property="d2" column="d2"/>		<!--2일-->
+		<result property="d3" column="d3"/>		<!--3일-->
+		<result property="d4" column="d4"/>		<!--4일-->
+		<result property="d5" column="d5"/>		<!--5일-->
+		<result property="d6" column="d6"/>		<!--6일-->
+		<result property="d7" column="d7"/>		<!--7일-->
+		<result property="d8" column="d8"/>		<!--8일-->
+		<result property="d9" column="d9"/>		<!--9일-->
+		<result property="d10" column="d10"/>		<!--10일-->
+		<result property="d11" column="d11"/>		<!--11일-->
+		<result property="d12" column="d12"/>		<!--12일-->
+		<result property="d13" column="d13"/>		<!--13일-->
+		<result property="d14" column="d14"/>		<!--14일-->
+		<result property="d15" column="d15"/>		<!--15일-->
+		<result property="d16" column="d16"/>		<!--16일-->
+		<result property="d17" column="d17"/>		<!--17일-->
+		<result property="d18" column="d18"/>		<!--18일-->
+		<result property="d19" column="d19"/>		<!--19일-->
+		<result property="d20" column="d20"/>		<!--20일-->
+		<result property="d21" column="d21"/>		<!--21일-->
+		<result property="d22" column="d22"/>		<!--22일-->
+		<result property="d23" column="d23"/>		<!--23일-->
+		<result property="d24" column="d24"/>		<!--24일-->
+		<result property="d25" column="d25"/>		<!--25일-->
+		<result property="d26" column="d26"/>		<!--26일-->
+		<result property="d27" column="d27"/>		<!--27일-->
+		<result property="d28" column="d28"/>		<!--28일-->
+		<result property="d29" column="d29"/>		<!--29일-->
+		<result property="d30" column="d30"/>		<!--30일-->
+		<result property="d31" column="d31"/>		<!--31일-->
+		<result property="sum" column="sum"/>		<!--합계-->
+	</resultMap>
+	
+	<!-- 월별 리스트 출력 -->
+	<select id="selectListHotStatMonth" parameterType="HotStatVo" resultMap="HotStatMonthMap">
+		<![CDATA[
+			SELECT HL_TITLE 
+					,SUM(CASE WHEN HLS_MONTH='01' THEN HLS_HIT END) AS m1
+					,SUM(CASE WHEN HLS_MONTH='02' THEN HLS_HIT END) AS m2
+					,SUM(CASE WHEN HLS_MONTH='03' THEN HLS_HIT END) AS m3
+					,SUM(CASE WHEN HLS_MONTH='04' THEN HLS_HIT END) AS m4
+					,SUM(CASE WHEN HLS_MONTH='05' THEN HLS_HIT END) AS m5
+					,SUM(CASE WHEN HLS_MONTH='06' THEN HLS_HIT END) AS m6
+					,SUM(CASE WHEN HLS_MONTH='07' THEN HLS_HIT END) AS m7
+					,SUM(CASE WHEN HLS_MONTH='08' THEN HLS_HIT END) AS m8
+					,SUM(CASE WHEN HLS_MONTH='09' THEN HLS_HIT END) AS m9
+					,SUM(CASE WHEN HLS_MONTH='10' THEN HLS_HIT END) AS m10
+					,SUM(CASE WHEN HLS_MONTH='11' THEN HLS_HIT END) AS m11
+					,SUM(CASE WHEN HLS_MONTH='12' THEN HLS_HIT END) AS m12
+					,SUM(HLS_HIT) AS sum
+			FROM (
+					SELECT HL_TITLE
+							,HLS_YEAR
+							,HLS_MONTH
+							,HLS_HLIDX
+							,SUM(HLS_HIT) AS HLS_HIT
+					FROM EZ_HOT_LIST_STAT A, EZ_HOT_LIST B
+					WHERE A.HLS_HLIDX = B.HL_IDX
+					AND HLS_YEAR = #{schyear}
+					GROUP BY HL_TITLE,HLS_HLIDX,HLS_YEAR,HLS_MONTH 
+				ORDER BY HLS_HLIDX,HLS_YEAR, HLS_MONTH
+			) A GROUP BY HL_TITLE
+		]]>
+	</select>
+	
+	<!-- 일별 리스트 출력 -->
+	<select id="selectListHotStatDay" parameterType="HotStatVo" resultMap="HotStatDayMap">
+		<![CDATA[
+			SELECT HL_TITLE 
+					,SUM(CASE WHEN HLS_DAY='01' THEN HLS_HIT END) AS d1
+					,SUM(CASE WHEN HLS_DAY='02' THEN HLS_HIT END) AS d2
+					,SUM(CASE WHEN HLS_DAY='03' THEN HLS_HIT END) AS d3
+					,SUM(CASE WHEN HLS_DAY='04' THEN HLS_HIT END) AS d4
+					,SUM(CASE WHEN HLS_DAY='05' THEN HLS_HIT END) AS d5
+					,SUM(CASE WHEN HLS_DAY='06' THEN HLS_HIT END) AS d6
+					,SUM(CASE WHEN HLS_DAY='07' THEN HLS_HIT END) AS d7
+					,SUM(CASE WHEN HLS_DAY='08' THEN HLS_HIT END) AS d8
+					,SUM(CASE WHEN HLS_DAY='09' THEN HLS_HIT END) AS d9
+					,SUM(CASE WHEN HLS_DAY='10' THEN HLS_HIT END) AS d10
+					,SUM(CASE WHEN HLS_DAY='11' THEN HLS_HIT END) AS d11
+					,SUM(CASE WHEN HLS_DAY='12' THEN HLS_HIT END) AS d12
+					,SUM(CASE WHEN HLS_DAY='13' THEN HLS_HIT END) AS d13
+					,SUM(CASE WHEN HLS_DAY='14' THEN HLS_HIT END) AS d14
+					,SUM(CASE WHEN HLS_DAY='15' THEN HLS_HIT END) AS d15
+					,SUM(CASE WHEN HLS_DAY='16' THEN HLS_HIT END) AS d16
+					,SUM(CASE WHEN HLS_DAY='17' THEN HLS_HIT END) AS d17
+					,SUM(CASE WHEN HLS_DAY='18' THEN HLS_HIT END) AS d18
+					,SUM(CASE WHEN HLS_DAY='19' THEN HLS_HIT END) AS d19
+					,SUM(CASE WHEN HLS_DAY='20' THEN HLS_HIT END) AS d20
+					,SUM(CASE WHEN HLS_DAY='21' THEN HLS_HIT END) AS d21
+					,SUM(CASE WHEN HLS_DAY='22' THEN HLS_HIT END) AS d22
+					,SUM(CASE WHEN HLS_DAY='23' THEN HLS_HIT END) AS d23
+					,SUM(CASE WHEN HLS_DAY='24' THEN HLS_HIT END) AS d24
+					,SUM(CASE WHEN HLS_DAY='25' THEN HLS_HIT END) AS d25
+					,SUM(CASE WHEN HLS_DAY='26' THEN HLS_HIT END) AS d26
+					,SUM(CASE WHEN HLS_DAY='27' THEN HLS_HIT END) AS d27
+					,SUM(CASE WHEN HLS_DAY='28' THEN HLS_HIT END) AS d28
+					,SUM(CASE WHEN HLS_DAY='29' THEN HLS_HIT END) AS d29
+					,SUM(CASE WHEN HLS_DAY='30' THEN HLS_HIT END) AS d30
+					,SUM(CASE WHEN HLS_DAY='31' THEN HLS_HIT END) AS d31
+					,SUM(HLS_HIT) AS sum
+			FROM (
+					SELECT HL_TITLE
+							,HLS_YEAR
+							,HLS_MONTH
+							,HLS_DAY
+							,HLS_HLIDX
+							,SUM(HLS_HIT) AS HLS_HIT
+					FROM EZ_HOT_LIST_STAT A, EZ_HOT_LIST B
+					WHERE A.HLS_HLIDX = B.HL_IDX
+					AND HLS_YEAR = #{schyear}
+					AND HLS_MONTH = #{schmonth} 
+					GROUP BY HL_TITLE,HLS_HLIDX,HLS_YEAR,HLS_MONTH,HLS_DAY 
+					ORDER BY HLS_HLIDX,HLS_YEAR, HLS_MONTH,HLS_DAY
+			) A GROUP BY HL_TITLE
+		]]>
+	</select>
+	
+	<!--게시물 총 개수 -->
+	<select id="selectPagHotStat" parameterType="HotStatVo" resultType="int">
+	<![CDATA[
+			SELECT COUNT(*) 
+			FROM 
+			(SELECT DISTINCT HLS_HLIDX
+			FROM EZ_HOT_LIST_STAT)
+	]]>	
+	</select>
+	
+	<!-- 빠른서비스 오늘날짜로의 조회수 조회  -->
+	<select id="selectHotViewCnt" parameterType="hashMap" resultType="int">
+	<![CDATA[	
+			SELECT COUNT(*)
+			FROM EZ_HOT_LIST_STAT
+			WHERE HLS_YEAR = #{year}
+			AND HLS_MONTH = #{month}
+			AND HLS_DAY = #{day}
+			AND HLS_HLIDX = #{hlIdx}
+	]]>	
+	</select>
+	
+	<!-- 빠른서비스 오늘날짜로 데이터 넣기  -->
+	<insert id="insertHotViewCnt" parameterType="hashMap">
+		<![CDATA[
+			INSERT INTO EZ_HOT_LIST_STAT(HLS_YEAR, 
+				HLS_MONTH,
+				HLS_DAY,
+				HLS_HLIDX,
+				HLS_HIT
+				)VALUES(
+				#{year},
+				#{month},
+				#{day},
+				#{hlIdx},
+				1
+				)
+		]]>
+	</insert>
+	
+	<!-- 빠른서비스 오늘날짜로 조회수+1  -->
+	<update id="updateHotViewCnt" parameterType="hashMap">
+		<![CDATA[
+			UPDATE EZ_HOT_LIST_STAT SET
+			HLS_HIT = HLS_HIT + 1
+			WHERE HLS_YEAR = #{year}
+			AND HLS_MONTH = #{month}
+			AND HLS_DAY = #{day}
+			AND HLS_HLIDX = #{hlIdx}
+		]]>
+	</update>
+</mapper>

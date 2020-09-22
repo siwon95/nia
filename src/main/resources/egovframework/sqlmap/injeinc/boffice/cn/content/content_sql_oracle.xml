@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Thu Mar 12 17:56:29 KST 2020-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ContentDao">
+	
+	<resultMap id="ContentMap" type="egovframework.injeinc.boffice.cn.content.vo.ContentVo">
+		<result property="siteCd" column="SITE_CD"/> <!--사이트 코드-->
+		<result property="menuCode" column="MENU_CODE"/> <!--메뉴코드-->
+		<result property="userMenuUrl" column="USER_MENU_URL"/> <!--컨텐츠경로-->
+	</resultMap>
+	
+	<update id="insertContent" parameterType="ContentVo">
+		<![CDATA[		
+			UPDATE EZ_USER_MENU_CONTENTS
+			SET BODY_CONTENT = #{contentBody}
+			WHERE MENU_CODE = #{menuCode}
+			AND SITE_CD = #{siteCd}
+	  	]]>
+	</update>
+	
+	<select id="selectListContent" resultMap="ContentMap">
+		<![CDATA[	
+			SELECT SITE_CD
+				, MENU_CODE
+				, USER_MENU_URL
+				FROM EZ_USER_MENU
+				WHERE USER_MENU_URL LIKE '%.jsp'
+			AND MENU_TYPE = 'contents'
+			AND USE_YN = 'Y'
+		]]>
+	</select>
+	
+</mapper>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SyCodeDao">
+	<resultMap id="CodeMap" type="egovframework.injeinc.boffice.sy.code.vo.SyCodeVo">
+		<result property="id" column="ID"/>
+		<result property="parent" column="PARENT"/>
+		<result property="text" column="TEXT"/>
+		<result property="position" column="POSITION"/>
+		<result property="codeValue" column="CODE_VALUE"/>
+	</resultMap>
+		
+	<!-- 팝업존 메인/서브  -->	
+	<resultMap id="popupZoneCode" type="egovframework.injeinc.boffice.sy.code.vo.CmmCodeVo">
+		<result property="code" column="CODE"/>	
+		<result property="codeName" column="CODE_NAME"/>	
+		<result property="codeUpr" column="CODE_UPR"/>	
+	</resultMap>
+	
+	<select id="selectCode" parameterType="HashMap" resultMap="CodeMap">
+		<![CDATA[
+			SELECT     CODE ID
+				      , CASE CODE_UPR WHEN '0' THEN '#' ELSE CODE_UPR END PARENT
+				      , CODE_NAME TEXT
+				      , ORD_NO POSITION
+				      , CODE_VALUE
+				FROM   EZ_CMM_CODE
+				ORDER BY ORD_NO
+		]]>
+    </select>
+    
+	<insert id="insertCode" parameterType="java.util.HashMap">
+		
+		<![CDATA[
+		INSERT INTO EZ_CMM_CODE (
+		       CODE
+		      ,CODE_NAME 
+		      ,CODE_UPR 
+		      ,ORD_NO 
+		      ,USE_YN 
+		      ,REG_DT 
+		      )VALUES(  
+           	   #{sid}
+		      ,#{stext}
+		      ,#{sparent}
+		      ,#{sposition}
+		      ,'Y' 
+		      ,CAST(DATE_FORMAT(NOW(),'%Y%m%d%H%i%s') AS CHAR) 
+		     )		 
+		]]>      
+	</insert>
+	
+	<delete id="deleteAllCode" parameterType="java.util.HashMap">
+		<![CDATA[
+			DELETE FROM EZ_CMM_CODE
+		]]>
+	</delete>	
+	
+	<!-- /** 팝업존 코드 목록*/ -->
+	<select id="selectPopupZoneCodeList" parameterType="CmmCodeVo" resultMap="popupZoneCode">
+		<![CDATA[
+			SELECT 
+				CODE
+				, CODE_NAME
+				, CODE_UPR
+				FROM EZ_CMM_CODE 
+			WHERE CODE_UPR='35000000'
+	  ]]>
+    </select>
+    
+    <select id="selectLastCodeOrdNoByCodeUpr" parameterType="CmmCodeVo" resultType="Integer">
+		<![CDATA[
+			SELECT MAX(ORD_NO) ORDNO
+			FROM   EZ_CMM_CODE
+			WHERE  (CODE_UPR = #{codeUpr}
+			OR CODE = #{codeUpr})
+			AND    USE_YN ='Y'
+	  	]]>
+    </select>
+
+    <select id="selectNowOrdNo" parameterType="CmmCodeVo" resultType="Integer">
+		<![CDATA[
+			SELECT ORD_NO
+			FROM   EZ_CMM_CODE
+			WHERE  CODE_UPR = #{codeUpr}
+			AND	   CODE     = #{code}
+	  	]]>
+    </select>
+    
+    <update id="updateCodeOrdNoPlusAfterOrdNo" parameterType="Integer">
+		<![CDATA[
+			UPDATE EZ_CMM_CODE
+			SET ORD_NO = ORD_NO + 1
+			WHERE ORD_NO >= #{ordNo}
+	     ]]> 
+	</update>
+
+    <update id="updateCodeOrdNoMinusAfterOrdNo" parameterType="Integer">
+		<![CDATA[
+			UPDATE EZ_CMM_CODE
+			SET ORD_NO = ORD_NO - 1
+			WHERE ORD_NO > #{ordNo}
+	    ]]>  
+	</update>
+
+    <update id="updateCode" parameterType="CmmCodeVo">
+		<![CDATA[
+			UPDATE EZ_CMM_CODE
+			SET  CODE_NAME  = #{codeName}
+				,CODE_VALUE = #{codeValue}
+			WHERE  CODE_UPR = #{codeUpr}
+			AND	   CODE     = #{code}
+	    ]]>
+	</update>
+	
+	<delete id="deleteCode" parameterType="cmmCodeVo">
+		<![CDATA[
+			DELETE FROM EZ_CMM_CODE
+			WHERE CODE IN (
+				WITH RECURSIVE REC (CODE,CODE_UPR) AS
+				( 
+				    SELECT  CODE
+				         ,  CODE_UPR
+				      FROM  EZ_CMM_CODE 
+				      WHERE CODE = #{code} AND CODE_UPR = #{codeUpr}
+				
+				     UNION ALL
+				    
+				    SELECT  T.CODE
+				    	 ,  T.CODE_UPR
+				      FROM  EZ_CMM_CODE T 
+				      INNER JOIN REC R ON T.CODE_UPR = R.CODE 
+				)
+					  SELECT CODE
+					    FROM REC R	
+							)
+		]]>		
+	</delete>
+	
+	<update id="updateCodeOrdNoForUp" parameterType="CmmCodeVo">
+		<![CDATA[
+				UPDATE EZ_CMM_CODE
+				SET ORD_NO = ORD_NO + 1
+				WHERE ORD_NO = ( SELECT ORD_NO - 1 FROM EZ_CMM_CODE WHERE CODE = #{code} );
+				
+				UPDATE EZ_CMM_CODE
+				SET ORD_NO = ORD_NO - 1
+				WHERE CODE = #{code};
+		]]>
+	</update>
+	
+	<update id="updateCodeOrdNoForDown" parameterType="CmmCodeVo">
+		<![CDATA[
+				UPDATE EZ_CMM_CODE
+				SET ORD_NO = ORD_NO - 1
+				WHERE ORD_NO = ( SELECT ORD_NO + 1 FROM EZ_CMM_CODE WHERE CODE = #{code} );
+				
+				UPDATE EZ_CMM_CODE
+				SET ORD_NO = ORD_NO + 1
+				WHERE CODE = #{code};
+		 ]]>
+	</update>
+    
+</mapper>

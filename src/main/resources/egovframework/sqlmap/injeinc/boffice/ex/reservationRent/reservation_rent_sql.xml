@@ -1,0 +1,1233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ReservationRentDao">
+
+	<resultMap id="ReservationRentMap" type="egovframework.injeinc.boffice.ex.reservation.vo.ReservationIndexVo">
+		<result property="riIdx" column="RI_IDX"/>
+		<result property="riTitle" column="RI_TITLE"/>
+		<result property="riSupervisionOrg" column="RI_SUPERVISION_ORG"/>
+		<result property="riSupervisionOrgName" column="RI_SUPERVISION_ORG_NAME"/>
+		<result property="riManageDept" column="RI_MANAGE_DEPT"/>
+		<result property="riManageDeptTxt" column="RI_MANAGE_DEPT_TXT"/>
+		<result property="riLotUse" column="RI_LOT_USE"/>
+		<result property="riConfirmYn" column="RI_CONFIRM_YN"/>
+		<result property="riProgress" column="RI_PROGRESS"/>
+		<result property="riSdate" column="RI_SDATE"/>
+		<result property="riEdate" column="RI_EDATE"/>
+		<result property="riReservationSdate" column="RI_RESERVATION_SDATE"/>
+		<result property="riReservationEdate" column="RI_RESERVATION_EDATE"/>
+		<result property="riImageFileId" column="RI_IMAGE_FILE_ID"/>
+		<result property="riReadCnt" column="RI_READ_CNT"/>
+	</resultMap>
+
+	<resultMap id="ReservationRentViewMap" type="egovframework.injeinc.boffice.ex.reservation.vo.ReservationIndexVo">
+		<result property="riIdx" column="RI_IDX"/>
+		<result property="riType" column="RI_TYPE"/>
+		<result property="riTitle" column="RI_TITLE"/>
+		<result property="riSupervisionOrg" column="RI_SUPERVISION_ORG"/>
+		<result property="riSupervisionOrgName" column="RI_SUPERVISION_ORG_NAME"/>
+		<result property="riManageDept" column="RI_MANAGE_DEPT"/>
+		<result property="riManageDeptTxt" column="RI_MANAGE_DEPT_TXT"/>
+		<result property="riProgress" column="RI_PROGRESS"/>
+		<result property="riTel1" column="RI_TEL1"/>
+		<result property="riTel2" column="RI_TEL2"/>
+		<result property="riTel3" column="RI_TEL3"/>
+		<result property="riPlace" column="RI_PLACE"/>
+		<result property="riPay" column="RI_PAY"/>
+		<result property="riGuide" column="RI_GUIDE"/>
+		<result property="riDayWeek" column="RI_DAY_WEEK"/>
+		<result property="riLotUse" column="RI_LOT_USE"/>
+		<result property="riOffLotUse" column="RI_OFF_LOT_USE"/>
+		<result property="riSdate" column="RI_SDATE"/>
+		<result property="riEdate" column="RI_EDATE"/>
+		<result property="riSiteUrl" column="RI_SITE_URL"/>
+		<result property="riUserloginType" column="RI_USERLOGIN_TYPE"/>
+		<result property="riRecruitCnt" column="RI_RECRUIT_CNT"/>
+		<result property="riRecruitMaxCnt" column="RI_RECRUIT_MAX_CNT"/>
+		<result property="riReservationSdate" column="RI_RESERVATION_SDATE"/>
+		<result property="riReservationSdateHh" column="RI_RESERVATION_SDATE_HH"/>
+		<result property="riReservationSdateMm" column="RI_RESERVATION_SDATE_MM"/>
+		<result property="riReservationEdate" column="RI_RESERVATION_EDATE"/>
+		<result property="riReservationEdateHh" column="RI_RESERVATION_EDATE_HH"/>
+		<result property="riReservationEdateMm" column="RI_RESERVATION_EDATE_MM"/>
+		<result property="riConfirmYn" column="RI_CONFIRM_YN"/>
+		<result property="riHaveFac" column="RI_HAVE_FAC"/>
+		<result property="riImageFileId" column="RI_IMAGE_FILE_ID"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="riAccCnt" column="RI_ACC_CNT"/>
+		<result property="ruLotResult" column="RU_LOT_RESULT"/>
+		<result property="ruIdx" column="RU_IDX"/>
+		<result property="useYn" column="USE_YN"/>
+		<result property="riRentCnt" column="RI_RENT_CNT"/>
+	</resultMap>
+	
+	<resultMap id="ReservationRentViewMap2" type="egovframework.injeinc.boffice.ex.reservation.vo.ReservationIndexVo">
+		<result property="riIdx" column="RI_IDX"/>
+		<result property="riType" column="RI_TYPE"/>
+		<result property="riTitle" column="RI_TITLE"/>
+		<result property="riSupervisionOrg" column="RI_SUPERVISION_ORG"/>
+		<result property="riSupervisionOrgName" column="RI_SUPERVISION_ORG_NAME"/>
+		<result property="riManageDept" column="RI_MANAGE_DEPT"/>
+		<result property="riManageDeptTxt" column="RI_MANAGE_DEPT_TXT"/>
+		<result property="riProgress" column="RI_PROGRESS"/>
+		<result property="riTel1" column="RI_TEL1"/>
+		<result property="riTel2" column="RI_TEL2"/>
+		<result property="riTel3" column="RI_TEL3"/>
+		<result property="riPlace" column="RI_PLACE"/>
+		<result property="riPay" column="RI_PAY"/>
+		<result property="riGuide" column="RI_GUIDE"/>
+		<result property="riDayWeek" column="RI_DAY_WEEK"/>
+		<result property="riLotUse" column="RI_LOT_USE"/>
+		<result property="riOffLotUse" column="RI_OFF_LOT_USE"/>
+		<result property="riSdate" column="RI_SDATE"/>
+		<result property="riEdate" column="RI_EDATE"/>
+		<result property="riSiteUrl" column="RI_SITE_URL"/>
+		<result property="riUserloginType" column="RI_USERLOGIN_TYPE"/>
+		<result property="riRecruitCnt" column="RI_RECRUIT_CNT"/>
+		<result property="riRecruitMaxCnt" column="RI_RECRUIT_MAX_CNT"/>
+		<result property="riReservationSdate" column="RI_RESERVATION_SDATE"/>
+		<result property="riReservationSdateHh" column="RI_RESERVATION_SDATE_HH"/>
+		<result property="riReservationSdateMm" column="RI_RESERVATION_SDATE_MM"/>
+		<result property="riReservationEdate" column="RI_RESERVATION_EDATE"/>
+		<result property="riReservationEdateHh" column="RI_RESERVATION_EDATE_HH"/>
+		<result property="riReservationEdateMm" column="RI_RESERVATION_EDATE_MM"/>
+		<result property="riConfirmYn" column="RI_CONFIRM_YN"/>
+		<result property="riHaveFac" column="RI_HAVE_FAC"/>
+		<result property="riImageFileId" column="RI_IMAGE_FILE_ID"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="riAccCnt" column="RI_ACC_CNT"/>
+		<result property="riRentCnt" column="RI_RENT_CNT"/>
+	</resultMap>
+
+	<resultMap id="ReservationRentAddItemMap" type="egovframework.injeinc.boffice.ex.reservation.vo.ReservationAddItemVo">
+		<result property="riIdx" column="RI_IDX"/>
+		<result property="raIdx" column="RA_IDX"/>
+		<result property="raTitle" column="RA_TITLE"/>
+		<result property="raContent" column="RA_CONTENT"/>
+	</resultMap>
+
+	<resultMap id="ReservationRentItemMap" type="egovframework.injeinc.boffice.ex.reservation.vo.ReservationItemVo">
+		<result property="riIdx" column="RI_IDX"/>
+		<result property="rtIdx" column="RT_IDX"/>
+		<result property="rtItemType" column="RT_ITEM_TYPE"/>
+		<result property="rtItemTitle" column="RT_ITEM_TITLE"/>
+		<result property="rtItemExample" column="RT_ITEM_EXAMPLE"/>
+		<result property="rtItemExampleLen" column="RT_ITEM_EXAMPLE_LEN"/>
+		<result property="rtItemNotice" column="RT_ITEM_NOTICE"/>
+		<result property="rtItemUseCheck" column="RT_ITEM_USE_CHECK"/>
+		<result property="rtItemEtcUseCheck" column="RT_ITEM_ETC_USE_CHECK"/>
+		<result property="rtAnswer" column="RT_ANSWER"/>
+		<result property="rtEtcAnswer" column="RT_ETC_ANSWER"/>
+	</resultMap>
+
+	<resultMap id="ReservationRentUserInfoMap" type="egovframework.injeinc.boffice.ex.reservation.vo.ReservationUserInfoVo">
+		<result property="riIdx" column="RI_IDX"/>
+		<result property="ruIdx" column="RU_IDX"/>
+		<result property="ruName" column="RU_NAME"/>
+		<result property="ruDupkey" column="RU_DUPKEY"/>
+		<result property="ruZipcode" column="RU_ZIPCODE"/>
+		<result property="ruAddress" column="RU_ADDRESS"/>
+		<result property="ruAddressDtl" column="RU_ADDRESS_DTL"/>
+		<result property="ruTel" column="RU_TEL"/>
+		<result property="ruHp" column="RU_HP"/>
+		<result property="ruEmail" column="RU_EMAIL"/>
+		<result property="ruLotResult" column="RU_LOT_RESULT"/>
+		<result property="ruUserloginType" column="RU_USERLOGIN_TYPE"/>
+		<result property="ruIp" column="RU_IP"/>
+		<result property="ruReservationName" column="RU_RESERVATION_NAME"/>
+		<result property="raIdx" column="RA_IDX"/>
+		<result property="ruReservationDay" column="RU_RESERVATION_DAY"/>
+		<result property="ruReservationRetDay" column="RU_RESERVATION_RET_DAY"/>
+		<result property="ruReDay" column="RU_RE_DAY"/>
+		<result property="ruBirth" column="RU_BIRTH"/>
+	</resultMap>
+	
+	<resultMap id="ReservationRentUserInfoMap2" type="egovframework.injeinc.boffice.ex.reservation.vo.ReservationUserInfoVo">
+		<result property="riIdx" column="RI_IDX"/>
+		<result property="ruIdx" column="RU_IDX"/>
+		<result property="ruName" column="RU_NAME"/>
+		<result property="ruDupkey" column="RU_DUPKEY"/>
+		<result property="ruZipcode" column="RU_ZIPCODE"/>
+		<result property="ruAddress" column="RU_ADDRESS"/>
+		<result property="ruAddressDtl" column="RU_ADDRESS_DTL"/>
+		<result property="ruTel" column="RU_TEL"/>
+		<result property="ruHp" column="RU_HP"/>
+		<result property="ruEmail" column="RU_EMAIL"/>
+		<result property="ruLotResult" column="RU_LOT_RESULT"/>
+		<result property="ruUserloginType" column="RU_USERLOGIN_TYPE"/>
+		<result property="ruIp" column="RU_IP"/>
+		<result property="ruReservationName" column="RU_RESERVATION_NAME"/>
+		<result property="raIdx" column="RA_IDX"/>
+		<result property="ruReservationDay" column="RU_RESERVATION_DAY"/>
+		<result property="ruReservationRetDay" column="RU_RESERVATION_RET_DAY"/>
+		<result property="ruReDay" column="RU_RE_DAY"/>
+		<result property="ruBirth" column="RU_BIRTH"/>
+		<result property="ruDelYn" column="RU_DEL_YN"/>
+	</resultMap>
+
+	<resultMap id="ReservationMyRentMap" type="egovframework.injeinc.boffice.ex.reservation.vo.ReservationIndexVo">
+		<result property="riIdx" column="RI_IDX"/>
+		<result property="ruIdx" column="RU_IDX"/>
+		<result property="riTitle" column="RI_TITLE"/>
+		<result property="riManageDeptTxt" column="RI_MANAGE_DEPT_TXT"/>
+		<result property="ruReservationDay" column="RU_RESERVATION_DAY"/>
+		<result property="ruReservationTime" column="RA_CONTENT"/>
+		<result property="riProgress" column="RI_PROGRESS"/>
+		<result property="ruLotResult" column="RU_LOT_RESULT"/>
+	</resultMap>
+
+	<insert id="insertReservationRent" parameterType="ReservationIndexVo">
+		<![CDATA[ 
+			INSERT INTO EZ_RESERVATION_INDEX
+			(
+			    RI_IDX
+                , RI_TYPE
+	            , RI_TITLE
+	            , RI_SUPERVISION_ORG
+	            , RI_MANAGE_DEPT
+	            , RI_TEL1
+	            , RI_TEL2
+	            , RI_TEL3
+	            , RI_PLACE
+	            , RI_PAY
+	            , RI_GUIDE
+	            , RI_LOT_USE
+	            , RI_OFF_LOT_USE
+	            , RI_SDATE
+	            , RI_EDATE
+	            , RI_HAVE_FAC
+	            , RI_SITE_URL
+	            , RI_USERLOGIN_TYPE
+	            , RI_RECRUIT_CNT
+	            , RI_RECRUIT_MAX_CNT
+	            , RI_RESERVATION_SDATE
+	            , RI_RESERVATION_SDATE_HH
+	            , RI_RESERVATION_SDATE_MM
+	            , RI_RESERVATION_EDATE
+	            , RI_RESERVATION_EDATE_HH
+	            , RI_RESERVATION_EDATE_MM
+	            , RI_CONFIRM_YN
+	            , RI_DAY_WEEK
+	            , RI_IMAGE_FILE_ID
+	            , REG_ID
+	            , REG_DT
+	            , USE_YN
+	            , RI_RENT_CNT
+			)
+			VALUES
+			(
+				#{riIdx}
+				,#{riType}
+	            ,#{riTitle}
+	            ,#{riSupervisionOrg}
+	            ,#{riManageDept}
+	            ,#{riTel1}
+	            ,#{riTel2}
+	            ,#{riTel3}
+	            ,#{riPlace}
+	            ,#{riPay}
+	            ,#{riGuide}
+	            ,#{riLotUse}
+	            ,#{riOffLotUse}
+	            ,#{riSdate}
+	            ,#{riEdate}
+	            ,#{riHaveFac}
+	            ,#{riSiteUrl}
+	            ,#{riUserloginType}
+	            ,#{riRecruitCnt}
+	            ,#{riRecruitMaxCnt}
+	            ,#{riReservationSdate}
+	            ,#{riReservationSdateHh}
+	            ,#{riReservationSdateMm}
+	            ,#{riReservationEdate}
+	            ,#{riReservationEdateHh}
+	            ,#{riReservationEdateMm}
+	            ,#{riConfirmYn}
+	            ,#{riDayWeek}
+	            ,#{riImageFileId}
+	            ,#{regId}
+	            ,sysdate
+	            ,'Y'
+	            ,#{riRentCnt}
+			)
+		]]>
+	</insert>
+
+	<insert id="insertReservationRentAddItem" parameterType="ReservationAddItemVo">
+		<![CDATA[ 
+			INSERT INTO RESERVATION_ADD_ITEM
+			(
+			    RI_IDX
+	            , RA_IDX
+	            , RA_TITLE
+	            , RA_CONTENT
+	            , REG_ID
+	            , REG_DT
+			)
+			VALUES
+			(
+				#{riIdx}
+				,#{raIdx}
+				,#{raTitle}
+				,#{raContent}
+				,#{regId}
+				,sysdate
+			)
+		]]>
+	</insert>
+
+	<update id="updateReservationRent" parameterType="ReservationIndexVo">
+		<![CDATA[ 
+			UPDATE EZ_RESERVATION_INDEX
+			SET
+			   RI_TITLE = #{riTitle},
+		       RI_SUPERVISION_ORG = #{riSupervisionOrg},
+		       RI_MANAGE_DEPT = #{riManageDept},
+		       RI_TEL1 = #{riTel1},
+		       RI_TEL2 = #{riTel2},
+		       RI_TEL3 = #{riTel3},
+		       RI_PLACE = #{riPlace},
+		       RI_PAY = #{riPay},
+		       RI_GUIDE = #{riGuide},
+		       RI_LOT_USE = #{riLotUse},
+		       RI_OFF_LOT_USE = #{riOffLotUse},
+		       RI_DAY_WEEK = #{riDayWeek},
+		       RI_SDATE = #{riSdate},
+		       RI_EDATE = #{riEdate},
+		       RI_SITE_URL = #{riSiteUrl},
+		       RI_USERLOGIN_TYPE = #{riUserloginType},
+		       RI_RECRUIT_CNT = #{riRecruitCnt},
+		       RI_RECRUIT_MAX_CNT = #{riRecruitMaxCnt},
+		       RI_RESERVATION_SDATE = #{riReservationSdate},
+		       RI_RESERVATION_SDATE_HH = #{riReservationSdateHh},
+		       RI_RESERVATION_SDATE_MM = #{riReservationSdateMm},
+		       RI_RESERVATION_EDATE = #{riReservationEdate},
+		       RI_RESERVATION_EDATE_HH = #{riReservationEdateHh},
+		       RI_RESERVATION_EDATE_MM = #{riReservationEdateMm},
+		       RI_CONFIRM_YN = #{riConfirmYn},
+		       RI_HAVE_FAC = #{riHaveFac},
+		       RI_IMAGE_FILE_ID = #{riImageFileId},
+			   MOD_DT = SYSDATE,
+			   MOD_ID = #{modId},
+			   RI_RENT_CNT = #{riRentCnt}
+			WHERE RI_IDX = #{riIdx}
+		]]>
+	</update>
+
+	<update id="deleteReservationRent" parameterType="ReservationIndexVo">
+		<![CDATA[ 
+			UPDATE EZ_RESERVATION_INDEX
+			SET
+				USE_YN = 'N'
+				, MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+			WHERE RI_IDX = #{riIdx}
+		]]>
+	</update>
+
+	<select id="selectReservationRent" parameterType="ReservationIndexVo" resultMap="ReservationRentViewMap">
+		<![CDATA[ 
+			SELECT
+				ri.RI_IDX,
+		        ri.RI_TYPE,
+		        ri.RI_TITLE,
+		        ri.RI_SUPERVISION_ORG,
+		        (SELECT CODE_NAME FROM EZ_CMM_CODE WHERE CODE = ri.RI_SUPERVISION_ORG) AS RI_SUPERVISION_ORG_NAME,
+		        ri.RI_MANAGE_DEPT,
+		        (SELECT CD_SUBJECT FROM EZ_DEPARTMENT WHERE CD_IDX = ri.RI_MANAGE_DEPT) RI_MANAGE_DEPT_TXT,
+		        CASE WHEN RI_RESERVATION_SDATE||' '||LPAD(RI_RESERVATION_SDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_SDATE_MM, 2, '0') >= TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi') THEN '예약대기'
+                     WHEN RI_RESERVATION_SDATE||' '||LPAD(RI_RESERVATION_SDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_SDATE_MM, 2, '0') <= TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi')
+                          AND TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi') <= RI_RESERVATION_EDATE||' '||LPAD(RI_RESERVATION_EDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_EDATE_MM, 2, '0') THEN '예약중'
+            	ELSE '예약완료' END RI_PROGRESS,
+		        ri.RI_TEL1,
+		        ri.RI_TEL2,
+		        ri.RI_TEL3,
+		        ri.RI_PLACE,
+		        ri.RI_PAY,
+		        ri.RI_GUIDE,
+		        ri.RI_DAY_WEEK,
+		        ri.RI_LOT_USE,
+		        ri.RI_OFF_LOT_USE,
+		        ri.RI_SDATE,
+		        ri.RI_EDATE,
+		        ri.RI_SITE_URL,
+		        ri.RI_USERLOGIN_TYPE,
+		        ri.RI_RECRUIT_CNT,
+		        ri.RI_RECRUIT_MAX_CNT,
+		        ri.RI_RESERVATION_SDATE,
+		        ri.RI_RESERVATION_SDATE_HH,
+		        ri.RI_RESERVATION_SDATE_MM,
+		        ri.RI_RESERVATION_EDATE,
+		        ri.RI_RESERVATION_EDATE_HH,
+		        ri.RI_RESERVATION_EDATE_MM,
+		        ri.RI_CONFIRM_YN,
+		        ri.RI_HAVE_FAC,
+		        ri.RI_IMAGE_FILE_ID,
+		        ri.REG_ID,
+		        ri.REG_DT,
+		        (SELECT COUNT(*) FROM RESERVATION_USER_INFO WHERE RI_IDX = ri.RI_IDX AND RU_DEL_YN = 'N' AND RU_LOT_RESULT != 'Z')	RI_ACC_CNT,
+		        ru.RU_LOT_RESULT,
+                ru.RU_IDX,
+                ru.RU_DEL_YN USE_YN,
+                ri.RI_RENT_CNT
+			FROM EZ_RESERVATION_INDEX ri
+			LEFT OUTER JOIN RESERVATION_USER_INFO ru ON ri.RI_IDX = ru.RI_IDX AND ru.RU_DUPKEY = #{ruDupkey}
+			WHERE ri.USE_YN = 'Y'
+			AND ri.RI_IDX = #{riIdx}
+		]]>
+	</select>
+	
+	<select id="selectReservationRent2" parameterType="ReservationIndexVo" resultMap="ReservationRentViewMap">
+	<![CDATA[ 	
+		SELECT * FROM (
+				SELECT /*+ FIRST_ROWS */ A.*, ROWNUM RN FROM (
+			SELECT
+				ri.RI_IDX,
+		        ri.RI_TYPE,
+		        ri.RI_TITLE,
+		        ri.RI_SUPERVISION_ORG,
+		        (SELECT CODE_NAME FROM EZ_CMM_CODE WHERE CODE = ri.RI_SUPERVISION_ORG) AS RI_SUPERVISION_ORG_NAME,
+		        ri.RI_MANAGE_DEPT,
+		        (SELECT CD_SUBJECT FROM EZ_DEPARTMENT WHERE CD_IDX = ri.RI_MANAGE_DEPT) RI_MANAGE_DEPT_TXT,
+		        CASE WHEN RI_RESERVATION_SDATE||' '||LPAD(RI_RESERVATION_SDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_SDATE_MM, 2, '0') >= TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi') THEN '예약대기'
+                     WHEN RI_RESERVATION_SDATE||' '||LPAD(RI_RESERVATION_SDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_SDATE_MM, 2, '0') <= TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi')
+                          AND TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi') <= RI_RESERVATION_EDATE||' '||LPAD(RI_RESERVATION_EDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_EDATE_MM, 2, '0') THEN '예약중'
+            	ELSE '예약완료' END RI_PROGRESS,
+		        ri.RI_TEL1,
+		        ri.RI_TEL2,
+		        ri.RI_TEL3,
+		        ri.RI_PLACE,
+		        ri.RI_PAY,
+		        ri.RI_GUIDE,
+		        ri.RI_DAY_WEEK,
+		        ri.RI_LOT_USE,
+		        ri.RI_OFF_LOT_USE,
+		        ri.RI_SDATE,
+		        ri.RI_EDATE,
+		        ri.RI_SITE_URL,
+		        ri.RI_USERLOGIN_TYPE,
+		        ri.RI_RECRUIT_CNT,
+		        ri.RI_RECRUIT_MAX_CNT,
+		        ri.RI_RESERVATION_SDATE,
+		        ri.RI_RESERVATION_SDATE_HH,
+		        ri.RI_RESERVATION_SDATE_MM,
+		        ri.RI_RESERVATION_EDATE,
+		        ri.RI_RESERVATION_EDATE_HH,
+		        ri.RI_RESERVATION_EDATE_MM,
+		        ri.RI_CONFIRM_YN,
+		        ri.RI_HAVE_FAC,
+		        ri.RI_IMAGE_FILE_ID,
+		        ri.REG_ID,
+		        ri.REG_DT,
+		        (SELECT COUNT(*) FROM RESERVATION_USER_INFO WHERE RI_IDX = ri.RI_IDX AND RU_DEL_YN = 'N')	RI_ACC_CNT,
+		        ru.RU_LOT_RESULT,
+                ru.RU_IDX,
+                ru.RU_DEL_YN USE_YN,
+                ri.RI_RENT_CNT
+			FROM EZ_RESERVATION_INDEX ri
+			LEFT OUTER JOIN RESERVATION_USER_INFO ru ON ri.RI_IDX = ru.RI_IDX AND ru.RU_DUPKEY = #{ruDupkey}
+			WHERE ri.USE_YN = 'Y'
+			AND ri.RI_IDX = #{riIdx}
+			ORDER BY ru.ru_idx
+			
+			
+				) A WHERE ROWNUM <= #{lastIndex}
+			) WHERE RN > #{firstIndex}
+			
+	]]>		
+	</select>
+	
+	<!-- 추첨방법체크 -->
+	<select id="selectReservationRentLotUse" parameterType="ReservationIndexVo" resultType="String">
+		<![CDATA[ 
+			SELECT RI_LOT_USE FROM EZ_RESERVATION_INDEX WHERE RI_IDX = #{riIdx}
+		]]>
+	</select>
+
+	<select id="selectListReservationRentCal" parameterType="ReservationRentVo" resultType="egovMap">
+		<![CDATA[ 
+		SELECT  #{year}               YEAR
+	                 ,  #{month}              MONTH
+	                 ,  DECODE(GREATEST(T_DUMMY.RNUM + 1 - #{startWeekMonth},0),0,'',DECODE(GREATEST(T_DUMMY.RNUM + 1 - #{startWeekMonth},#{lastDayMonth}),#{lastDayMonth},TO_CHAR(T_DUMMY.RNUM + 1 - #{startWeekMonth}),''))
+	                                         DAY
+	                 ,  T_DUMMY.RNUM           CELL_NUM
+	                 ,  T_DUMMY.WEEKS + 1      WEEKS
+	                 ,  T_DUMMY.WEEK           WEEK
+	                 ,  CASE T_DUMMY.WEEK WHEN 1 THEN 'Y' WHEN 7 THEN 'Y' ELSE 'N' END AS REST_AT
+	                 ,  (
+	                    SELECT 'Y' FROM EZ_RESERVATION_INDEX WHERE RI_IDX = #{riIdx} AND INSTR(RI_DAY_WEEK, T_DUMMY.WEEK) > 0
+	                               AND LPAD(#{year},4,'0')||'-'
+	                                      ||LPAD(#{month},2,'0')||'-'
+	                                      ||LPAD(DECODE(GREATEST(T_DUMMY.RNUM + 1 - #{startWeekMonth},0),0,'',DECODE(GREATEST(T_DUMMY.RNUM + 1 - #{startWeekMonth},#{lastDayMonth}),#{lastDayMonth},TO_CHAR(T_DUMMY.RNUM + 1 - #{startWeekMonth}),''))
+	                    			             ,2,'0'
+	                    			            ) BETWEEN RI_SDATE AND RI_EDATE
+	                    ) AS RI_RESERVATION_YN
+
+	              FROM  (
+	                    SELECT  (W.W*7) + D.D RNUM
+	                         ,  W.W WEEKS
+	                         ,  D.D WEEK
+	                      FROM  (
+							    SELECT 0 W  FROM DUAL
+							    UNION ALL
+							    SELECT 1 FROM DUAL
+							    UNION ALL
+							    SELECT 2 FROM DUAL
+							    UNION ALL
+							    SELECT 3 FROM DUAL
+							    UNION ALL
+							    SELECT 4 FROM DUAL
+							    UNION ALL
+							    SELECT 5 FROM DUAL
+							    ) W,
+							    (
+							    SELECT 1 D FROM DUAL
+							    UNION ALL
+							    SELECT 2 FROM DUAL
+							    UNION ALL
+							    SELECT 3 FROM DUAL
+							    UNION ALL
+							    SELECT 4 FROM DUAL
+							    UNION ALL
+							    SELECT 5 FROM DUAL
+							    UNION ALL
+							    SELECT 6 FROM DUAL
+							    UNION ALL
+							    SELECT 7 FROM DUAL
+	                            ) D
+	                    ORDER BY (W.W*7) + D.D
+	            ) T_DUMMY
+				ORDER BY T_DUMMY.RNUM
+		]]>
+	</select>
+
+
+
+	<sql id="searchReservationRent">
+		<if test="riConfirmYn != null and riConfirmYn != ''">
+			<![CDATA[  AND RI_CONFIRM_YN = #{riConfirmYn} ]]>
+		</if>
+		<if test="searchKeywordFrom != null and searchKeywordFrom != ''">
+			<![CDATA[  AND #{searchKeywordFrom} BETWEEN RI_SDATE AND RI_EDATE  ]]>
+		</if>
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == &quot;title&quot;">AND
+				<![CDATA[ 
+					RI_TITLE LIKE '%'||#{searchKeyword}||'%'
+				 ]]>
+			</if>
+			<if test="searchCondition == &quot;org&quot;">AND
+				<![CDATA[ 
+					RI_SUPERVISION_ORG LIKE '%'||#{searchKeyword}||'%'
+				 ]]>
+			</if>
+			<if test="searchCondition == &quot;all&quot;">AND
+				<![CDATA[ 
+					(RI_TITLE LIKE '%'||#{searchKeyword}||'%' OR RI_SUPERVISION_ORG LIKE '%'||#{searchKeyword}||'%')
+				 ]]>
+			</if>
+		</if>
+		<if test="riManageDept != null and riManageDept != ''">
+			<![CDATA[ 
+				AND RI_MANAGE_DEPT = #{riManageDept}
+			]]>
+		</if>
+		<if test="riReservationSdate != null and riReservationSdate != ''">
+			<if test="riReservationEdate != null and riReservationEdate != ''">
+				<![CDATA[ 
+					AND (#{riReservationSdate} between RI_RESERVATION_SDATE AND RI_RESERVATION_EDATE OR #{riReservationEdate} between RI_RESERVATION_SDATE AND RI_RESERVATION_EDATE)
+				]]>
+			</if>
+			<if test="riReservationEdate == null or riReservationEdate == ''">
+				<![CDATA[ 
+					AND #{riReservationSdate} between RI_RESERVATION_SDATE AND RI_RESERVATION_EDATE
+				]]>
+			</if>
+		</if>
+		<if test="riReservationSdate == null or riReservationSdate == ''">
+			<if test="riReservationEdate != null and riReservationEdate != ''">
+				<![CDATA[ 
+					AND #{riReservationEdate} between RI_RESERVATION_SDATE AND RI_RESERVATION_EDATE
+				]]>
+			</if>
+		</if>
+		<if test="strList != null and strList.size!=0">
+			<![CDATA[ 
+			AND (RI_DAY_WEEK LIKE
+			]]>
+			<foreach collection="strList" item="item" separator="OR RI_DAY_WEEK LIKE" close=")">
+	            <![CDATA[  '%'||#{item}||'%' ]]>
+		    </foreach>
+	    </if>
+	</sql>
+
+	<select id="selectPagReservationRent" parameterType="ReservationIndexVo" resultMap="ReservationRentMap">
+		<![CDATA[ 
+			SELECT * FROM (
+				SELECT /*+ FIRST_ROWS */ A.*, ROWNUM RN FROM (
+					SELECT
+						RI_IDX,
+				        RI_TITLE,
+				        RI_SUPERVISION_ORG,
+				        (SELECT CODE_NAME FROM EZ_CMM_CODE WHERE CODE = RI_SUPERVISION_ORG) AS RI_SUPERVISION_ORG_NAME,
+				        RI_MANAGE_DEPT,
+		        		(SELECT CD_SUBJECT FROM EZ_DEPARTMENT WHERE CD_IDX = ri.RI_MANAGE_DEPT) RI_MANAGE_DEPT_TXT,
+				        DECODE(RI_LOT_USE, 'OL', '온라인추첨', 'OO', '온라인 선착순', 'OF', '기타 접수') RI_LOT_USE,
+				        DECODE(RI_CONFIRM_YN, 'Y', '승인', 'N', '미승인') RI_CONFIRM_YN,
+				        CASE WHEN RI_RESERVATION_SDATE||' '||LPAD(RI_RESERVATION_SDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_SDATE_MM, 2, '0') >= TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi') THEN '예약대기'
+		                     WHEN RI_RESERVATION_SDATE||' '||LPAD(RI_RESERVATION_SDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_SDATE_MM, 2, '0') <= TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi')
+		                          AND TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi') <= RI_RESERVATION_EDATE||' '||LPAD(RI_RESERVATION_EDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_EDATE_MM, 2, '0') THEN '예약중'
+		            	ELSE '예약완료' END RI_PROGRESS,
+		            	RI_SDATE,
+		            	RI_EDATE,
+				        RI_RESERVATION_SDATE,
+				        RI_RESERVATION_EDATE,
+				        RI_IMAGE_FILE_ID,
+				        RI_READ_CNT
+					FROM EZ_RESERVATION_INDEX ri
+					WHERE USE_YN = 'Y'
+					AND RI_TYPE = #{riType}
+		]]>
+		<include refid="searchReservationRent"/>
+		<if test="searchOrg != null and searchOrg != ''">
+			<![CDATA[ 
+				AND RI_SUPERVISION_ORG = #{searchOrg}
+			]]>
+		</if>
+		<if test="sort != null and sort != ''">
+			<if test="sort == &quot;R&quot;">
+				<![CDATA[ ORDER BY REG_DT DESC ]]>
+			</if>
+			<if test="sort == &quot;V&quot;">
+				<![CDATA[ ORDER BY RI_READ_CNT DESC ]]>
+			</if>
+		</if>
+		<if test="sort == null or sort == ''">
+		<![CDATA[ ORDER BY REG_DT DESC ]]>
+		</if>
+		<![CDATA[ 
+				) A WHERE ROWNUM <= #{lastIndex}
+			) WHERE RN > #{firstIndex}
+		]]>
+	</select>
+
+	<select id="selectReservationRentCnt" parameterType="ReservationIndexVo" resultType="java.lang.Integer">
+		<![CDATA[ 
+			SELECT COUNT(*)
+			FROM EZ_RESERVATION_INDEX
+			WHERE USE_YN = 'Y'
+			AND RI_TYPE = #{riType}
+		]]>
+		<include refid="searchReservationRent"/>
+	</select>
+
+	<select id="selectListReservationRent" parameterType="ReservationIndexVo" resultMap="ReservationRentMap">
+		<![CDATA[ 
+			SELECT *
+			FROM EZ_RESERVATION_INDEX
+			WHERE USE_YN = 'Y'
+		]]>
+		<include refid="searchReservationRent"/>
+		<![CDATA[ 
+			ORDER BY REG_DT DESC
+		]]>
+	</select>
+
+	<select id="selectListReservationRentAddItem" parameterType="ReservationIndexVo" resultMap="ReservationRentAddItemMap">
+		<![CDATA[ 
+			SELECT
+				RI_IDX,
+				RA_IDX,
+				RA_TITLE,
+				RA_CONTENT
+			FROM RESERVATION_ADD_ITEM
+			WHERE RI_IDX = #{riIdx}
+			ORDER BY RA_IDX ASC
+		]]>
+	</select>
+	<select id="selectListReservationRentItem" parameterType="ReservationIndexVo" resultMap="ReservationRentItemMap">
+		<![CDATA[ 
+			SELECT
+			   RT.RI_IDX,
+		       RT.RT_IDX,
+		       RT.RT_ITEM_TYPE,
+		       RT.RT_ITEM_TITLE,
+		       RT.RT_ITEM_EXAMPLE,
+		       RT.RT_ITEM_EXAMPLE_LEN,
+		       RT.RT_ITEM_NOTICE,
+		       RT.RT_ITEM_USE_CHECK,
+		       RT.RT_ITEM_ETC_USE_CHECK,
+		       RA.RA_ANSWER as RT_ANSWER,
+		       RA.RA_ETC_ANSWER AS RT_ETC_ANSWER
+			FROM RESERVATION_ITEM RT
+			LEFT OUTER JOIN RESERVATION_USER_ANSWER RA ON RT.RI_IDX = RA.RI_IDX AND RT.RT_IDX = RA.RT_IDX AND RA.RU_IDX = #{ruIdx}
+			WHERE RT.RI_IDX = #{riIdx}
+			ORDER BY RT.RT_IDX ASC
+		]]>
+	</select>
+
+	<delete id="deleteReservationRentAddItem" parameterType="ReservationIndexVo">
+		<![CDATA[ 
+			DELETE FROM RESERVATION_ADD_ITEM
+			WHERE RI_IDX = #{riIdx}
+		]]>
+	</delete>
+
+	<delete id="deleteReservationRentItem" parameterType="ReservationIndexVo">
+		<![CDATA[ 
+			DELETE FROM RESERVATION_ITEM
+			WHERE RI_IDX = #{riIdx}
+		]]>
+	</delete>
+
+	<select id="selectListReservationRentUserInfo" parameterType="ReservationRentVo" resultMap="ReservationRentUserInfoMap">
+		<![CDATA[ 
+		SELECT * FROM (
+				SELECT /*+ FIRST_ROWS */ A.*, ROWNUM RN FROM (
+					SELECT
+					    RU_IDX,
+				        RI_IDX,
+				        RU_NAME,
+				        RU_DUPKEY,
+				        RU_ZIPCODE,
+				        RU_ADDRESS,
+				        RU_ADDRESS_DTL,
+				        RU_TEL,
+				        RU_HP,
+				        RU_EMAIL,
+				        RU_LOT_RESULT,
+				        RU_USERLOGIN_TYPE,
+				        RU_IP,
+				        RU_RESERVATION_NAME,
+				        RA_IDX,
+				        RU_RESERVATION_DAY,
+				        to_char(to_date(RU_RESERVATION_DAY,'yyyy-mm-dd')+35,'yyyy-mm-dd') RU_RESERVATION_RET_DAY,
+            			to_char(to_date(to_char(sysdate,'yyyymmdd'),'yyyymmdd') - to_date(replace(RU_RESERVATION_DAY,'-',''),'yyyymmdd')) RU_RE_DAY,
+            			to_char(to_date(RU_BIRTH,'yyyymmdd'),'yyyy.mm.dd') RU_BIRTH
+					FROM RESERVATION_USER_INFO
+					WHERE RU_DEL_YN = 'N'
+					AND RI_IDX = #{riIdx}
+					AND RA_IDX = #{raIdx}
+					ORDER BY RU_IDX DESC
+				) A WHERE ROWNUM <= #{lastIndex}
+			) WHERE RN > #{firstIndex}
+		]]>
+	</select>
+	
+	<select id="selectListReservationRentUserInfoCnt" parameterType="ReservationRentVo" resultType="java.lang.Integer">
+		<![CDATA[ 		
+				SELECT
+					COUNT(*)
+				FROM RESERVATION_USER_INFO
+				WHERE RU_DEL_YN = 'N'
+				AND RI_IDX = #{riIdx}
+				AND RA_IDX = #{raIdx}					
+		]]>
+	</select>
+	
+	<select id="selectListReservationRentFUserInfo" parameterType="ReservationRentVo" resultMap="ReservationRentUserInfoMap">
+		<![CDATA[ 
+		SELECT * FROM (
+				SELECT /*+ FIRST_ROWS */ A.*, ROWNUM RN FROM (
+					SELECT
+					    RU_IDX,
+				        RI_IDX,
+				        REGEXP_REPLACE(RU_NAME, '.', '*', 3)RU_NAME,
+				        RU_DUPKEY,
+				        RU_ZIPCODE,
+				        RU_ADDRESS,
+				        RU_ADDRESS_DTL,
+				        RU_TEL,
+				        REGEXP_REPLACE(RU_HP , '^(02|031|032|033|041|042|043|051|052|053|054|055|061|062|063|064|010|011|016|017|018|019|070|080)(.*)(....)', '\1-****-\3' )RU_HP,				        
+				        RU_EMAIL,
+				        RU_LOT_RESULT,
+				        RU_USERLOGIN_TYPE,
+				        RU_IP,
+				        RU_RESERVATION_NAME,
+				        RA_IDX,
+				        RU_RESERVATION_DAY,
+				        to_char(to_date(RU_RESERVATION_DAY,'yyyy-mm-dd')+35,'yyyy-mm-dd') RU_RESERVATION_RET_DAY,
+            			to_char(to_date(to_char(sysdate,'yyyymmdd'),'yyyymmdd') - to_date(replace(RU_RESERVATION_DAY,'-',''),'yyyymmdd')) RU_RE_DAY,
+            			to_char(to_date(RU_BIRTH,'yyyymmdd'),'yyyy.mm.dd') RU_BIRTH
+					FROM RESERVATION_USER_INFO
+					WHERE RU_DEL_YN = 'N'
+					AND RI_IDX = #{riIdx}
+					AND RA_IDX = #{raIdx}
+					AND RU_LOT_RESULT = 'S'
+					ORDER BY RU_IDX DESC
+				) A WHERE ROWNUM <= #{lastIndex}
+			) WHERE RN > #{firstIndex}
+		]]>
+	</select>
+	
+	<select id="selectListReservationRentFUserInfoCnt" parameterType="ReservationRentVo" resultType="java.lang.Integer">
+		<![CDATA[ 		
+				SELECT
+					COUNT(*)
+				FROM RESERVATION_USER_INFO
+				WHERE RU_DEL_YN = 'N'
+				AND RI_IDX = #{riIdx}
+				AND RA_IDX = #{raIdx}			
+				AND RU_LOT_RESULT = 'S'		
+		]]>
+	</select>
+	
+	<select id="selectReservationRentUserInfo" parameterType="ReservationUserInfoVo" resultMap="ReservationRentUserInfoMap">
+		<![CDATA[ 
+			SELECT RU_IDX,
+		       RI_IDX,
+		       RU_NAME,
+		       RU_DUPKEY,
+		       RU_ZIPCODE,
+		       RU_ADDRESS,
+		       RU_ADDRESS_DTL,
+		       RU_TEL,
+		       RU_HP,
+		       RU_EMAIL,
+		       RU_LOT_RESULT,
+		       RU_USERLOGIN_TYPE,
+		       RU_IP,
+		       RU_RESERVATION_NAME,
+		       RA_IDX,
+		       RU_RESERVATION_DAY,
+		       to_char(to_date(RU_RESERVATION_DAY,'yyyy-mm-dd')+35,'yyyy-mm-dd') RU_RESERVATION_RET_DAY,
+      		   to_char(to_date(to_char(sysdate,'yyyymmdd'),'yyyymmdd') - to_date(replace(RU_RESERVATION_DAY,'-',''),'yyyymmdd')) RU_RE_DAY,
+      		   RU_BIRTH
+		  FROM RESERVATION_USER_INFO
+		  WHERE RU_DEL_YN = 'N'
+		  AND RI_IDX = #{riIdx}
+		  AND RU_IDX = #{ruIdx}
+		]]>
+	</select>
+	
+	<select id="selectReservationRentUserInfoList" parameterType="ReservationUserInfoVo" resultMap="ReservationRentUserInfoMap2">
+		<![CDATA[ 
+			SELECT RU_IDX,
+		       RI_IDX,
+		       RU_NAME,
+		       RU_DUPKEY,
+		       RU_ZIPCODE,
+		       RU_ADDRESS,
+		       RU_ADDRESS_DTL,
+		       RU_TEL,
+		       RU_HP,
+		       RU_EMAIL,
+		       RU_LOT_RESULT,
+		       RU_USERLOGIN_TYPE,
+		       RU_IP,
+		       RU_RESERVATION_NAME,
+		       RA_IDX,
+		       RU_RESERVATION_DAY,
+		       to_char(to_date(RU_RESERVATION_DAY,'yyyy-mm-dd')+35,'yyyy-mm-dd') RU_RESERVATION_RET_DAY,
+      		   to_char(to_date(to_char(sysdate,'yyyymmdd'),'yyyymmdd') - to_date(replace(RU_RESERVATION_DAY,'-',''),'yyyymmdd')) RU_RE_DAY,
+      		   RU_BIRTH,
+      		   RU_DEL_YN
+		  FROM RESERVATION_USER_INFO
+		  WHERE RI_IDX = #{riIdx}
+		  AND RU_DUPKEY = #{ruDupkey}
+		]]>
+	</select>
+
+	<insert id="insertReservationRentUserInfo" parameterType="ReservationUserInfoVo">
+		<![CDATA[ 
+			INSERT INTO RESERVATION_USER_INFO
+			(
+			    RU_IDX,
+	            RI_IDX,
+	            RA_IDX,
+	            RU_NAME,
+	            RU_DUPKEY,
+	            RU_ZIPCODE,
+	            RU_ADDRESS,
+	            RU_ADDRESS_DTL,
+	            RU_HP,
+	            RU_RESERVATION_NAME,
+	            RU_RESERVATION_DAY,
+	            RU_LOT_RESULT,
+	            RU_USERLOGIN_TYPE,
+	            RU_IP,
+	            RU_DEL_YN,
+	            REG_ID,
+	            REG_DT,
+	            RU_BIRTH
+			)
+			VALUES
+			(
+				#{ruIdx},
+	            #{riIdx},
+	            #{raIdx},
+	            #{ruName},
+	            #{ruDupkey},
+	            #{ruZipcode},
+	            #{ruAddress},
+	            #{ruAddressDtl},
+	            #{ruHp},
+	            #{ruReservationName},
+	            #{ruReservationDay},
+	            #{ruLotResult},
+	            #{ruUserloginType},
+	            #{ruIp},
+	            'N',
+	            #{regId},
+	            sysdate,
+	            #{ruBirth}
+			)
+		]]>
+	</insert>
+
+	<insert id="insertReservationRentUserAnswer" parameterType="ReservationUserAnswerVo">
+		<![CDATA[ 
+			INSERT INTO RESERVATION_USER_ANSWER
+			(
+			    RI_IDX,
+	            RU_IDX,
+	            RT_IDX,
+	            RA_ITEM_TYPE,
+	            RA_ANSWER,
+	            RA_ETC_ANSWER
+			)
+			VALUES
+			(
+				#{riIdx},
+	            #{ruIdx},
+	            #{rtIdx},
+	            #{raItemType},
+	            #{raAnswer},
+	            #{raEtcAnswer}
+			)
+		]]>
+	</insert>
+
+	<update id="updateReservationRentUserInfo" parameterType="ReservationUserInfoVo">
+		<![CDATA[ 
+			UPDATE RESERVATION_USER_INFO
+			SET
+				RU_NAME = #{ruName},
+	            RU_DUPKEY = #{ruDupkey},
+	            RU_ZIPCODE = #{ruZipcode},
+	            RU_ADDRESS = #{ruAddress},
+	            RU_ADDRESS_DTL = #{ruAddressDtl},	            
+	            RU_TEL = #{ruTel},
+	            RU_HP = #{ruHp},
+	            RU_EMAIL = #{ruEmail},
+	            RU_RESERVATION_NAME = #{ruReservationName},
+	            RU_USERLOGIN_TYPE = #{ruUserloginType},
+	            RU_IP = #{ruIp},
+				MOD_DT = SYSDATE,
+				MOD_ID = #{modId}
+			WHERE RI_IDX = #{riIdx}
+			AND RU_IDX = #{ruIdx}
+		]]>
+	</update>
+	
+	<update id="updateReservationRentUserInfo2" parameterType="ReservationUserInfoVo">
+		<![CDATA[ 
+			UPDATE RESERVATION_USER_INFO
+			SET
+				RU_NAME = #{ruName},
+	            RU_DUPKEY = #{ruDupkey},
+	            RU_ZIPCODE = #{ruZipcode},
+	            RU_ADDRESS = #{ruAddress},
+	            RU_ADDRESS_DTL = #{ruAddressDtl},
+	            RU_RESERVATION_DAY = #{ruReservationDay},
+	            RU_TEL = #{ruTel},
+	            RU_HP = #{ruHp},
+	            RU_EMAIL = #{ruEmail},
+	            RU_RESERVATION_NAME = #{ruReservationName},
+	            RU_USERLOGIN_TYPE = #{ruUserloginType},
+	            RU_IP = #{ruIp},
+				MOD_DT = SYSDATE,
+				MOD_ID = #{modId}
+			WHERE RI_IDX = #{riIdx}
+			AND RU_IDX = #{ruIdx}
+		]]>
+	</update>
+
+	<delete id="deleteReservationRentUserAnswer" parameterType="ReservationUserInfoVo">
+		<![CDATA[ 
+			DELETE FROM RESERVATION_USER_ANSWER
+			WHERE RI_IDX = #{riIdx}
+			AND RU_IDX = #{ruIdx}
+		]]>
+	</delete>
+
+	<update id="updateReservationRentRuLotResult" parameterType="ReservationIndexVo">
+		<![CDATA[ 
+			UPDATE RESERVATION_USER_INFO
+			SET
+				RU_LOT_RESULT = 'S',
+				MOD_DT = SYSDATE,
+				MOD_ID = #{modId}
+			WHERE RU_IDX = #{ruIdx}
+            ]]>
+	</update>
+
+	<update id="deleteReservationRentUserInfo" parameterType="ReservationUserInfoVo">
+		<![CDATA[ 
+			UPDATE RESERVATION_USER_INFO
+			SET
+				RU_DEL_YN = 'Y',
+				MOD_DT = SYSDATE,
+				MOD_ID = #{modId}
+			WHERE RI_IDX = #{riIdx}
+			AND RU_IDX = #{ruIdx}
+		]]>
+	</update>
+
+	<select id="selectReservationRentConfirmCnt" parameterType="ReservationRentVo" resultType="java.lang.Integer">
+		<![CDATA[ 
+			SELECT COUNT(*)
+			FROM RESERVATION_USER_INFO
+			WHERE RI_IDX = #{riIdx}
+			AND RA_IDX = #{raIdx}
+			AND RU_RESERVATION_DAY = #{ruReservationDay}
+			AND RU_LOT_RESULT = 'S'
+       		AND RU_DEL_YN = 'N'
+		]]>
+	</select>
+
+	<select id="selectListReservationRentFix" parameterType="ReservationRentVo" resultType="egovMap">
+	<![CDATA[ 	
+		SELECT RAI.RI_IDX,
+		       RAI.RA_IDX,
+		       RAI.RA_CONTENT,
+		       RUI.RU_RESERVATION_DAY,
+		       CASE
+		           WHEN RUI.RU_RESERVATION_NAME IS NULL
+		               AND RUI.RU_NAME IS NOT NULL
+		           THEN SUBSTR(RUI.RU_NAME, 0, 1) || '**'
+		           ELSE RUI.RU_RESERVATION_NAME
+		       END RU_RESERVATION_NAME
+		  FROM RESERVATION_ADD_ITEM RAI
+		   LEFT OUTER JOIN RESERVATION_USER_INFO RUI
+		       ON RAI.RI_IDX = RUI.RI_IDX
+		       AND RAI.RA_IDX = RUI.RA_IDX
+		       AND RUI.RU_LOT_RESULT = 'S'
+		       AND RUI.RU_DEL_YN = 'N'
+		       AND RUI.RU_RESERVATION_DAY = #{ruReservationDay}
+		 WHERE RAI.RI_IDX = #{riIdx}
+		       AND RAI.RA_CONTENT IS NOT NULL
+		ORDER BY RAI.RA_IDX ASC
+	]]>
+	</select>
+
+	<select id="selectReservationRentUserInfoDupCnt" parameterType="ReservationUserInfoVo" resultType="java.lang.Integer">
+	<![CDATA[ 	
+			SELECT COUNT(*)
+			FROM RESERVATION_USER_INFO
+			WHERE RI_IDX = #{riIdx}			
+			AND RA_IDX = #{raIdx}
+ 			AND RU_DUPKEY = #{ruDupkey}
+ 			AND RU_DEL_YN = 'N'
+	]]>	
+	</select>
+
+	<sql id="searchReservationMyRent">
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == &quot;title&quot;">AND
+				<![CDATA[ 
+					RI.RI_TITLE LIKE '%'||#{searchKeyword}||'%'
+				]]>
+			</if>
+			<if test="searchCondition == &quot;org&quot;">AND
+				<![CDATA[ 
+					RI.RI_SUPERVISION_ORG LIKE '%'||#{searchKeyword}||'%'
+				]]>
+			</if>
+			<if test="searchCondition == &quot;all&quot;">AND
+				<![CDATA[ 
+					(RI.RI_TITLE LIKE '%'||#{searchKeyword}||'%' OR RI.RI_SUPERVISION_ORG LIKE '%'||#{searchKeyword}||'%')
+				]]>
+			</if>
+		</if>
+	</sql>
+
+	<select id="selectPagReservationMyRent" parameterType="ReservationIndexVo" resultMap="ReservationMyRentMap">
+		<![CDATA[ 
+			SELECT * FROM (
+				SELECT /*+ FIRST_ROWS */ A.*, ROWNUM RN FROM (
+					SELECT RI.RI_IDX, RU.RU_IDX, 
+						   RI.RI_TITLE, 
+						   DEPT.CD_SUBJECT RI_MANAGE_DEPT_TXT,
+						   RU.RU_RESERVATION_DAY, 
+						   ITEM.RA_CONTENT,
+					       CASE WHEN RI_RESERVATION_SDATE||' '||LPAD(RI_RESERVATION_SDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_SDATE_MM, 2, '0') >= TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI') THEN '예약대기'
+					           WHEN RI_RESERVATION_SDATE||' '||LPAD(RI_RESERVATION_SDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_SDATE_MM, 2, '0') <= TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI')
+					                AND TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI') <= RI_RESERVATION_EDATE||' '||LPAD(RI_RESERVATION_EDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_EDATE_MM, 2, '0') THEN '예약중'
+					       ELSE '예약완료' END RI_PROGRESS,
+					       CASE WHEN (SELECT COUNT(*) FROM RESERVATION_USER_INFO WHERE RI_IDX = RI.RI_IDX AND RU_DUPKEY <> #{ruDupkey} AND RU_RESERVATION_DAY = RU.RU_RESERVATION_DAY AND RU_LOT_RESULT = 'S' AND RU_DEL_YN = 'N') > 0 THEN '탈락'
+					       		WHEN RU_DEL_YN = 'Y' THEN '취소'
+					            WHEN RU_LOT_RESULT = 'R' THEN '접수'
+					            WHEN RU_LOT_RESULT = 'S' THEN '확정'
+					            END RU_LOT_RESULT
+					  FROM EZ_RESERVATION_INDEX RI
+					  INNER JOIN RESERVATION_USER_INFO RU ON RI.RI_IDX = RU.RI_IDX AND RU_DUPKEY = #{ruDupkey}
+					  INNER JOIN RESERVATION_ADD_ITEM ITEM ON ITEM.RI_IDX = RI.RI_IDX AND ITEM.RA_IDX = RU.RA_IDX
+					  INNER JOIN EZ_DEPARTMENT DEPT ON DEPT.CD_IDX = RI.RI_MANAGE_DEPT
+					WHERE RI.RI_TYPE = 'F'
+					AND RI.USE_YN = 'Y'
+		]]>
+		<include refid="searchReservationMyRent"/>
+		<![CDATA[ 
+					ORDER BY RU.REG_DT DESC
+				) A WHERE ROWNUM <= #{lastIndex}
+			) WHERE RN > #{firstIndex}
+		]]>
+	</select>
+
+	<select id="selectReservationMyRentCnt" parameterType="ReservationIndexVo" resultType="java.lang.Integer">
+		<![CDATA[ 
+			SELECT COUNT(*)
+			FROM EZ_RESERVATION_INDEX RI
+			  INNER JOIN RESERVATION_USER_INFO RU ON RI.RI_IDX = RU.RI_IDX AND RU_DUPKEY = #{ruDupkey}
+			  INNER JOIN RESERVATION_ADD_ITEM ITEM ON ITEM.RI_IDX = RI.RI_IDX AND ITEM.RA_IDX = RU.RA_IDX
+			  INNER JOIN EZ_DEPARTMENT DEPT ON DEPT.CD_IDX = RI.RI_MANAGE_DEPT
+			WHERE RI.RI_TYPE = 'F'
+			AND RI.USE_YN = 'Y'
+		]]>
+		<include refid="searchReservationMyRent"/>
+	</select>
+	
+	<select id="selectReservationMyRent" parameterType="ReservationIndexVo" resultMap="ReservationRentViewMap">
+		<![CDATA[ 
+			SELECT
+				ri.RI_IDX,
+		        ri.RI_TYPE,
+		        ri.RI_TITLE,
+		        ri.RI_SUPERVISION_ORG,
+		        (SELECT CODE_NAME FROM EZ_CMM_CODE WHERE CODE = ri.RI_SUPERVISION_ORG) AS RI_SUPERVISION_ORG_NAME,
+		        ri.RI_MANAGE_DEPT,
+		        (SELECT CD_SUBJECT FROM EZ_DEPARTMENT WHERE CD_IDX = ri.RI_MANAGE_DEPT) RI_MANAGE_DEPT_TXT,
+		        CASE WHEN RI_RESERVATION_SDATE||' '||LPAD(RI_RESERVATION_SDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_SDATE_MM, 2, '0') >= TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi') THEN '예약대기'
+                     WHEN RI_RESERVATION_SDATE||' '||LPAD(RI_RESERVATION_SDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_SDATE_MM, 2, '0') <= TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi')
+                          AND TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi') <= RI_RESERVATION_EDATE||' '||LPAD(RI_RESERVATION_EDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_EDATE_MM, 2, '0') THEN '예약중'
+            	ELSE '예약완료' END RI_PROGRESS,
+		        ri.RI_TEL1,
+		        ri.RI_TEL2,
+		        ri.RI_TEL3,
+		        ri.RI_PLACE,
+		        ri.RI_PAY,
+		        ri.RI_GUIDE,
+		        ri.RI_DAY_WEEK,
+		        ri.RI_LOT_USE,
+		        ri.RI_OFF_LOT_USE,
+		        ri.RI_SDATE,
+		        ri.RI_EDATE,
+		        ri.RI_SITE_URL,
+		        ri.RI_USERLOGIN_TYPE,
+		        ri.RI_RECRUIT_CNT,
+		        ri.RI_RECRUIT_MAX_CNT,
+		        ri.RI_RESERVATION_SDATE,
+		        ri.RI_RESERVATION_SDATE_HH,
+		        ri.RI_RESERVATION_SDATE_MM,
+		        ri.RI_RESERVATION_EDATE,
+		        ri.RI_RESERVATION_EDATE_HH,
+		        ri.RI_RESERVATION_EDATE_MM,
+		        ri.RI_CONFIRM_YN,
+		        ri.RI_HAVE_FAC,
+		        ri.RI_IMAGE_FILE_ID,
+		        ri.REG_ID,
+		        ri.REG_DT,
+		        (SELECT COUNT(*) FROM RESERVATION_USER_INFO WHERE RI_IDX = ri.RI_IDX AND RU_DEL_YN = 'N')	RI_ACC_CNT,
+		        ru.RU_LOT_RESULT,
+                ru.RU_IDX,
+                ru.RU_DEL_YN USE_YN,
+                ri.RI_RENT_CNT
+			FROM EZ_RESERVATION_INDEX ri
+			LEFT OUTER JOIN RESERVATION_USER_INFO ru ON ri.RI_IDX = ru.RI_IDX AND ru.RU_DUPKEY = #{ruDupkey}
+			WHERE ri.USE_YN = 'Y'
+			AND ru.RU_IDX = #{ruIdx}
+		]]>	
+	</select>
+	
+	<select id="selectReservationRentView" parameterType="ReservationIndexVo" resultMap="ReservationRentViewMap2">
+		<![CDATA[ 
+			SELECT
+				ri.RI_IDX,
+		        ri.RI_TYPE,
+		        ri.RI_TITLE,
+		        ri.RI_SUPERVISION_ORG,
+		        (SELECT CODE_NAME FROM EZ_CMM_CODE WHERE CODE = ri.RI_SUPERVISION_ORG) AS RI_SUPERVISION_ORG_NAME,
+		        ri.RI_MANAGE_DEPT,
+		        (SELECT CD_SUBJECT FROM EZ_DEPARTMENT WHERE CD_IDX = ri.RI_MANAGE_DEPT) RI_MANAGE_DEPT_TXT,
+		        CASE WHEN RI_RESERVATION_SDATE||' '||LPAD(RI_RESERVATION_SDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_SDATE_MM, 2, '0') >= TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi') THEN '예약대기'
+                     WHEN RI_RESERVATION_SDATE||' '||LPAD(RI_RESERVATION_SDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_SDATE_MM, 2, '0') <= TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi')
+                          AND TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi') <= RI_RESERVATION_EDATE||' '||LPAD(RI_RESERVATION_EDATE_HH, 2, '0')||':'||LPAD(RI_RESERVATION_EDATE_MM, 2, '0') THEN '예약중'
+            	ELSE '예약완료' END RI_PROGRESS,
+		        ri.RI_TEL1,
+		        ri.RI_TEL2,
+		        ri.RI_TEL3,
+		        ri.RI_PLACE,
+		        ri.RI_PAY,
+		        ri.RI_GUIDE,
+		        ri.RI_DAY_WEEK,
+		        ri.RI_LOT_USE,
+		        ri.RI_OFF_LOT_USE,
+		        ri.RI_SDATE,
+		        ri.RI_EDATE,
+		        ri.RI_SITE_URL,
+		        ri.RI_USERLOGIN_TYPE,
+		        ri.RI_RECRUIT_CNT,
+		        ri.RI_RECRUIT_MAX_CNT,
+		        ri.RI_RESERVATION_SDATE,
+		        ri.RI_RESERVATION_SDATE_HH,
+		        ri.RI_RESERVATION_SDATE_MM,
+		        ri.RI_RESERVATION_EDATE,
+		        ri.RI_RESERVATION_EDATE_HH,
+		        ri.RI_RESERVATION_EDATE_MM,
+		        ri.RI_CONFIRM_YN,
+		        ri.RI_HAVE_FAC,
+		        ri.RI_IMAGE_FILE_ID,
+		        ri.REG_ID,
+		        ri.REG_DT,
+		        (SELECT COUNT(*) FROM RESERVATION_USER_INFO WHERE RI_IDX = ri.RI_IDX AND RU_DEL_YN = 'N')	RI_ACC_CNT,
+		        ri.RI_RENT_CNT
+			FROM EZ_RESERVATION_INDEX ri
+			WHERE ri.USE_YN = 'Y'
+			AND ri.RI_IDX = #{riIdx}
+		]]>
+	</select>
+	
+	<select id="selectItemCountList" parameterType="ReservationUserInfoVo" resultType="egovMap">
+		<![CDATA[ 
+			SELECT count(RA_IDX) AS RA_CNT, RA_CONTENT FROM
+			(
+			select ru.RA_IDX, ra.RA_CONTENT
+			FROM EZ_RESERVATION_INDEX ri LEFT OUTER JOIN RESERVATION_USER_INFO ru ON ri.RI_IDX = ru.RI_IDX LEFT OUTER JOIN RESERVATION_ADD_ITEM ra ON ri.RI_IDX = ra.RI_IDX
+			WHERE ri.USE_YN = 'Y'
+			  AND RU_DEL_YN = 'N'
+			  AND ru.RA_IDX = ra.RA_IDX
+			  AND RU_RESERVATION_DAY = #{ruReservationDay}
+			  AND ri.RI_IDX = #{riIdx}
+			)A group by A.RA_IDX, RA_CONTENT
+		]]>
+	</select>
+
+	<!-- 관리부서 목록(관,과,동,보건소 목록)  -->
+	<select id="selectDeptCode" resultType="egovMap">
+	<![CDATA[ 
+		SELECT
+			CD_IDX, 
+			CD_SUBJECT 
+		FROM EZ_DEPARTMENT
+		WHERE (CD_SUBJECT LIKE '%과' OR CD_SUBJECT LIKE '%관' OR CD_SUBJECT LIKE '%동' OR CD_SUBJECT LIKE '%건소')
+		AND CD_USE = 'Y'
+        ORDER BY CD_CODE
+    ]]>
+	</select>
+	
+	<update id="updateReservationRentUserConfirm" parameterType="ReservationUserInfoVo">
+		<![CDATA[ 
+			UPDATE RESERVATION_USER_INFO
+			SET
+				RU_LOT_RESULT = #{ruLotResult},
+				MOD_DT = SYSDATE,
+				MOD_ID = #{modId}
+			WHERE RI_IDX = #{riIdx}
+			AND RU_IDX = #{ruIdx}
+		]]>
+	</update>
+</mapper>

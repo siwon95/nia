@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ContentFileDao">
+	<resultMap id="ContentFileMap" type="egovframework.injeinc.boffice.ex.board.vo.ContentFileVo" >
+		<result property="bcIdx"				column="BC_IDX"					/>
+		<result property="cbIdx"				column="CB_IDX"					/>
+		<result property="fileNo"				column="FILE_NO"				/>
+		<result property="fileStreCours"		column="FILE_STRE_COURS"		/>
+		<result property="streFileNm"			column="STRE_FILE_NM"			/>
+		<result property="orignlFileNm"			column="ORIGNL_FILE_NM"			/>
+		<result property="fileExtsn"			column="FILE_EXTSN"				/>
+		<result property="fileCn"				column="FILE_CN"				/>
+		<result property="fileSize"				column="FILE_SIZE"				/>
+		<result property="mcIdx"				column="MC_IDX"					/>
+		<result property="thumbnail"				column="THUMBNAIL"					/>
+	</resultMap>
+
+	<insert id="insertContentFile" parameterType="ContentFileVo">
+		<![CDATA[
+			INSERT INTO EZ_CONTENT_FILE
+			(
+				BC_IDX
+				, CB_IDX
+				, FILE_NO
+				, FILE_STRE_COURS
+				, STRE_FILE_NM
+				, ORIGNL_FILE_NM
+				, FILE_EXTSN
+				, FILE_CN
+				, FILE_SIZE
+				, MC_IDX
+				, REG_ID
+				, THUMBNAIL
+			)
+			VALUES
+			(
+				#{bcIdx}
+				, #{cbIdx}
+				, (SELECT NVL(MAX(FILE_NO), 0)+1 FROM EZ_CONTENT_FILE ECF WHERE BC_IDX = #{bcIdx} AND CB_IDX = #{cbIdx})
+				, #{fileStreCours}
+				, #{streFileNm}
+				, #{orignlFileNm}
+				, #{fileExtsn}
+				, #{fileCn}
+				, #{fileSize}
+				, #{mcIdx}
+				, #{regId}
+				, #{thumbnail}
+			)
+		]]>
+	</insert>
+	
+	<update id="deleteContentFile" parameterType="ContentFileVo">
+		<![CDATA[
+			UPDATE EZ_CONTENT_FILE
+			SET 
+				USE_YN = 'N'
+				, MOD_DT = NOW()
+				, MOD_ID = #{modId}
+			WHERE BC_IDX = #{bcIdx}
+			AND CB_IDX = #{cbIdx}
+			AND STRE_FILE_NM = #{streFileNm}
+		]]>
+	</update>
+	
+	<select id="selectContentFile" parameterType="ContentFileVo" resultMap="ContentFileMap">
+		<![CDATA[
+			SELECT 
+				 BC_IDX
+				, CB_IDX
+				, FILE_NO
+				, FILE_STRE_COURS
+				, STRE_FILE_NM
+				, ORIGNL_FILE_NM
+				, FILE_EXTSN
+				, FILE_CN
+				, FILE_SIZE
+				, MC_IDX
+				, THUMBNAIL
+			FROM EZ_CONTENT_FILE
+			WHERE USE_YN = 'Y'
+			AND BC_IDX = #{bcIdx}
+			AND CB_IDX = #{cbIdx}
+			AND STRE_FILE_NM = #{streFileNm}
+		]]>
+	</select>
+	
+	<select id="selectListContentFile" parameterType="ContentFileVo" resultMap="ContentFileMap">
+		<![CDATA[
+			SELECT
+				 BC_IDX
+				, CB_IDX
+				, FILE_NO
+				, FILE_STRE_COURS
+				, STRE_FILE_NM
+				, ORIGNL_FILE_NM
+				, FILE_EXTSN
+				, FILE_CN
+				, FILE_SIZE
+				, MC_IDX 
+				, THUMBNAIL
+			FROM EZ_CONTENT_FILE
+			WHERE USE_YN = 'Y'
+			AND CB_IDX = #{cbIdx}
+			AND BC_IDX = #{bcIdx}
+			/*AND MC_IDX IS NULL*/
+			ORDER BY FILE_NO ASC
+		]]>
+	</select>
+	
+	<select id="selectListContentFileOne" parameterType="ContentFileVo" resultMap="ContentFileMap">
+		<![CDATA[
+			SELECT * FROM (
+				SELECT A.*, ROWNUM RN FROM (
+					SELECT 
+						 BC_IDX
+						, CB_IDX
+						, FILE_NO
+						, FILE_STRE_COURS
+						, STRE_FILE_NM
+						, ORIGNL_FILE_NM
+						, FILE_EXTSN
+						, FILE_CN
+						, FILE_SIZE
+						, MC_IDX 
+						, THUMBNAIL
+					FROM EZ_CONTENT_FILE
+					WHERE USE_YN = 'Y'
+					AND CB_IDX = #{cbIdx}
+					AND BC_IDX = #{bcIdx}
+					/*AND MC_IDX IS NULL*/
+					ORDER BY FILE_NO ASC
+				) A
+			) WHERE RN = 1
+		]]>
+	</select>
+	
+</mapper>

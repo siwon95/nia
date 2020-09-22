@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FileDao">
+	
+	<resultMap id="fileMap" type="egovframework.injeinc.boffice.sy.file.vo.FileVo">
+		<result property="fileNo" column="FILE_NO"/>
+		<result property="fileName" column="FILE_NAME"/>
+		<result property="fileSize" column="FILE_SIZE"/>
+		<result property="filePath" column="FILE_PATH"/>
+		<result property="fileType" column="FILE_TYPE"/>
+		<result property="useYnFile" column="USE_YN_FILE"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regIdCode" column="REG_ID_CODE"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+	</resultMap>
+	
+	<!-- 카테고리 등록 -->
+	<update id="insertFile" parameterType="java.util.HashMap">
+		<![CDATA[ 
+			INSERT INTO TEST_FILE(
+				FILE_NO
+				,FILE_NAME
+				,FILE_SIZE
+				,FILE_PATH
+				,FILE_TYPE
+				,USE_YN_FILE
+				,REG_DT
+				,REG_ID_CODE
+			)VALUES(
+				 (SELECT NVL(MAX(FILE_NO),0) + 1 FROM TEST_FILE)
+				,#{fileName}
+				,#{fileSize}
+				,#{filePath}
+				,#{fileType}
+				,'Y'
+				,to_char(sysdate,'yyyymmddhh24miss')
+				,#{regIdCode}
+			)
+		]]>
+	</update>
+	
+</mapper>

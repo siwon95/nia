@@ -1,0 +1,1087 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="GroupDeptDao">
+	
+	<resultMap id="GroupDeptMap" type="egovframework.injeinc.boffice.group.dept.vo.GroupDeptVo">
+		<result property="cdIdx" column="CD_IDX"/>		<!--idx-->
+		<result property="cdSubject" column="CD_SUBJECT"/>		<!--이름-->
+		<result property="cdDepstep1" column="CD_DEPSTEP1"/>		<!--국코드-->
+		<result property="cdDepstep2" column="CD_DEPSTEP2"/>		<!--과코드-->
+		<result property="cdDepstep3" column="CD_DEPSTEP3"/>		<!--팀코드-->
+		<result property="cdText" column="CD_TEXT"/>		<!--주요업무-->			
+		<result property="cdUse" column="CD_USE"/>		<!--사용여부-->
+		<result property="cdDate" column="CD_DATE"/>		<!--등록일-->		
+		<result property="cdUpdate" column="CD_UPDATE"/>		<!--수정일-->
+		<result property="cdCode" column="CD_CODE"/>		<!--조직도코드-->
+		<result property="cdTel" column="CD_TEL"/>		<!--전화-->
+		<result property="cdFax" column="CD_FAX"/>		<!--팩스-->
+		<result property="cdArea" column="CD_AREA"/>		<!--위치-->
+		<result property="cdHomepage" column="CD_HOMEPAGE"/>		<!--홈페이지-->
+		<result property="cdEngSubject" column="CD_ENG_SUBJECT"/>		<!--영어이름-->
+		<result property="cdChiSubject" column="CD_CHI_SUBJECT"/>		<!--중국이름-->
+		<result property="deptPath" column="DEPT_PATH"/>
+		<result property="position" column="POSITION"/>
+	</resultMap>
+	
+	<resultMap id="GroupDeptMap2" type="egovframework.injeinc.boffice.group.dept.vo.GroupDeptVo">
+		<result property="cdIdx" column="CD_IDX"/>		<!--idx-->
+		<result property="cdSubject" column="CD_SUBJECT"/>		<!--이름-->
+		<result property="cdDepstep1" column="CD_DEPSTEP1"/>		<!--국코드-->
+		<result property="cdDepstep2" column="CD_DEPSTEP2"/>		<!--과코드-->
+		<result property="cdDepstep3" column="CD_DEPSTEP3"/>		<!--팀코드-->
+		<result property="cdText" column="CD_TEXT"/>		<!--주요업무-->			
+		<result property="cdUse" column="CD_USE"/>		<!--사용여부-->
+		<result property="cdDate" column="CD_DATE"/>		<!--등록일-->		
+		<result property="cdUpdate" column="CD_UPDATE"/>		<!--수정일-->
+		<result property="cdCode" column="CD_CODE"/>		<!--조직도코드-->
+		<result property="cdTel" column="CD_TEL"/>		<!--전화-->
+		<result property="cdFax" column="CD_FAX"/>		<!--팩스-->
+		<result property="cdArea" column="CD_AREA"/>		<!--위치-->
+		<result property="cdHomepage" column="CD_HOMEPAGE"/>		<!--홈페이지-->
+		<result property="cdEngSubject" column="CD_ENG_SUBJECT"/>		<!--영어이름-->
+		<result property="cdChiSubject" column="CD_CHI_SUBJECT"/>		<!--중국이름-->
+		<result property="orgTel" column="ORG_TEL"/>		<!--부서 우선순위 전화번호-->
+		<result property="modDt" column="MOD_DT"/>		<!--부서 우선순위 전화번호-->
+	</resultMap>
+	
+	<resultMap id="DepartGroupMap" type="egovframework.injeinc.boffice.group.dept.vo.GroupDeptVo">
+		<result property="cdIdx" column="CD_IDX"/>
+		<result property="cdSubject" column="CD_SUBJECT"/>
+		<result property="cdCode" column="CD_CODE"/>
+		<result property="level" column="LEVEL"/>
+	</resultMap>
+	
+	<resultMap id="CmsDepartGroupMap" type="egovframework.injeinc.boffice.group.dept.vo.CmsDepartGroupVo">
+		<result property="cdIdx" column="CD_IDX"/>
+		<result property="cdSubject" column="CD_SUBJECT"/>
+		<result property="cdDepstep2" column="CD_DEPSTEP2"/>
+	</resultMap>
+	
+	<resultMap id="CmsDepartGroup2Map" type="egovframework.injeinc.boffice.group.dept.vo.CmsDepartGroupVo">
+		<result property="cdIdx" column="CD_IDX"/>
+		<result property="cdSubject" column="CD_SUBJECT"/>
+		<result property="cdDepstep2" column="CD_DEPSTEP2"/>
+		<result property="cdDepstep3" column="CD_DEPSTEP3"/>
+	</resultMap>
+	
+	<!-- 부서별 리스트3 -->
+	<resultMap id="CmsDepartGroup3Map" type="egovframework.injeinc.boffice.group.dept.vo.CmsDepartGroupVo">
+		<result property="cdIdx" column="CD_IDX"/>
+		<result property="cdSubject" column="CD_SUBJECT"/>	
+	</resultMap>
+
+	<!-- 리스트 출력 -->
+	<select id="GroupDeptDao.selectListGroupDeptSub" parameterType="GroupDeptVo" resultMap="GroupDeptMap">
+		<![CDATA[	
+			SELECT 
+				CD_IDX
+				, CD_SUBJECT
+				, CD_DEPSTEP1
+				, CD_DEPSTEP2
+				, CD_DEPSTEP3
+				, CD_TEXT
+				, CD_USE
+				, CD_DATE
+				, CD_UPDATE
+				, CD_CODE
+				, CD_TEL
+				, CD_FAX
+				, CD_AREA
+				, CD_HOMEPAGE
+				, CD_ENG_SUBJECT
+				, CD_CHI_SUBJECT
+				, ''    AS DEPT_PATH
+				, ''    AS POSTITION
+			FROM EZ_DEPARTMENT
+			]]>
+			<if test="subframe == &quot;1&quot;">
+				<![CDATA[
+					WHERE CD_DEPSTEP2 = '00'
+					AND CD_DEPSTEP3 = '00'
+				]]>
+			</if>
+			<if test="subframe == &quot;2&quot;">
+				<![CDATA[
+					WHERE CD_DEPSTEP1 = #{cdDepstep1}
+					AND CD_DEPSTEP2 != '00'
+					AND CD_DEPSTEP3 = '00'
+				]]>
+			</if>
+			<if test="subframe == &quot;3&quot;">
+				<![CDATA[
+					WHERE CD_DEPSTEP1 = #{cdDepstep1}
+					AND CD_DEPSTEP2 = #{cdDepstep2}
+					AND CD_DEPSTEP3 != '00'
+				]]>
+			</if>
+			<if test="mode == &quot;department_admin&quot;">
+				<![CDATA[	
+					AND (
+							CONCAT(CD_DEPSTEP1,CD_DEPSTEP2,CD_DEPSTEP3) = (SELECT CONCAT(CD_DEPSTEP1,'0000') FROM EZ_DEPARTMENT WHERE CD_IDX = #{cdIdx})		
+					OR 
+					CONCAT(CD_DEPSTEP1,CD_DEPSTEP2,CD_DEPSTEP3) like 
+					CONCAT((SELECT CONCAT(CD_DEPSTEP1, CASE WHEN CD_DEPSTEP2 = '00' THEN ''ELSE CD_DEPSTEP2 END )FROM EZ_DEPARTMENT WHERE CD_IDX = #{cdIdx} ),'%')	
+					
+					OR 
+					CONCAT(CD_DEPSTEP1,CD_DEPSTEP2,CD_DEPSTEP3) like 
+					CONCAT((SELECT CONCAT(CD_DEPSTEP1,CD_DEPSTEP2,CASE WHEN CD_DEPSTEP3 = '00' THEN '' ELSE CD_DEPSTEP3 END)FROM EZ_DEPARTMENT WHERE CD_IDX = #{cdIdx}),'%')
+								
+						)
+				]]>	 
+			</if>
+			<![CDATA[
+			ORDER BY CD_DEPSTEP1 ASC, CD_DEPSTEP2 ASC, CD_DEPSTEP3 ASC 
+	  		]]>
+	</select>
+	
+	<!-- 목록 수정(체크) -->
+	<update id="GroupDeptDao.updateGroupDept" parameterType="GroupDeptVo">
+		<![CDATA[
+			UPDATE EZ_DEPARTMENT 
+			SET CD_USE = #{cdUse}
+			WHERE CD_IDX = #{cdIdx}
+		]]>
+	</update>
+	
+	<!-- 상위값 구하기(순서 위로 보낼때) -->
+	<select id="GroupDeptDao.selectMaxCdDepStep" parameterType="GroupDeptVo" resultType="String">
+		<![CDATA[
+			SELECT
+			]]>
+			<if test="subframe == &quot;1&quot;">
+				<![CDATA[
+					MAX(CD_DEPSTEP1) AS maxCdDepstep
+				]]>
+			</if>
+			<if test="subframe == &quot;2&quot;">
+				<![CDATA[
+					MAX(CD_DEPSTEP2) AS maxCdDepstep
+				]]>
+			</if>
+			<if test="subframe == &quot;3&quot;">
+				<![CDATA[
+					MAX(CD_DEPSTEP3) AS maxCdDepstep
+				]]>
+			</if>
+		<![CDATA[
+			FROM EZ_DEPARTMENT
+		]]>
+			<if test="subframe == &quot;1&quot;">
+				<![CDATA[
+					WHERE CD_DEPSTEP1 < #{cdDepstep1}
+				]]>
+			</if>
+			<if test="subframe == &quot;2&quot;">
+				<![CDATA[
+					WHERE CD_DEPSTEP1 = #{cdDepstep1}
+					AND CD_DEPSTEP2 < #{cdDepstep2}
+				]]>
+			</if>
+			<if test="subframe == &quot;3&quot;">
+				<![CDATA[
+					WHERE CD_DEPSTEP1 = #{cdDepstep1}
+					AND CD_DEPSTEP2 = #{cdDepstep2}
+					AND CD_DEPSTEP3 < #{cdDepstep3}
+				]]>
+			</if>
+	</select>
+	
+	<!-- 하위값 구하기(순서 아래로 보낼때) -->
+	<select id="GroupDeptDao.selectMinCdDepStep" parameterType="GroupDeptVo" resultType="String">
+		<![CDATA[
+			
+			SELECT
+		]]>
+			<if test="subframe == &quot;1&quot;">
+				<![CDATA[
+					MIN(CD_DEPSTEP1) AS minCdDepstep
+				]]>
+			</if>
+			<if test="subframe == &quot;2&quot;">
+				<![CDATA[
+					MIN(CD_DEPSTEP2) AS minCdDepstep
+				]]>
+			</if>
+			<if test="subframe == &quot;3&quot;">
+				<![CDATA[
+					MIN(CD_DEPSTEP3) AS minCdDepstep
+				]]>
+			</if>
+		<![CDATA[
+			FROM EZ_DEPARTMENT
+		]]>
+			<if test="subframe == &quot;1&quot;">
+			<![CDATA[	
+					WHERE CD_DEPSTEP1 > #{cdDepstep1}
+			]]>	
+			</if>
+			<if test="subframe == &quot;2&quot;">
+			<![CDATA[	
+					WHERE CD_DEPSTEP1 = #{cdDepstep1}
+					AND CD_DEPSTEP2  #{cdDepstep2}
+			]]>
+			</if>
+			<if test="subframe == &quot;3&quot;">
+			<![CDATA[	
+					WHERE CD_DEPSTEP1 = #{cdDepstep1}
+					AND CD_DEPSTEP2 = #{cdDepstep2}
+					AND CD_DEPSTEP3 > #{cdDepstep3}
+			]]>	
+			</if>
+	</select>
+	
+	<!-- 수정(당하는 번호를 임의값으로) -->
+	<update id="GroupDeptDao.updateTempCdDepStepList" parameterType="GroupDeptVo">
+		<![CDATA[
+			UPDATE EZ_DEPARTMENT 
+			SET 
+		]]>	
+			<if test="subframe == &quot;1&quot;">
+				<![CDATA[
+					CD_DEPSTEP1 = '999'
+					,CD_CODE = '999'
+				]]>
+					<if test="mod == &quot;up&quot;">
+				<![CDATA[		
+							WHERE CD_DEPSTEP1 = #{tempMaxCdDepstep}
+				]]>		
+					</if>
+					<if test="mod == &quot;down&quot;">
+					<![CDATA[	
+							WHERE CD_DEPSTEP1 = #{tempMinCdDepstep}
+					]]>
+					</if>
+			</if>
+			<if test="subframe == &quot;2&quot;">
+				<![CDATA[
+					CD_DEPSTEP2 = '999'
+					,CD_CODE = '999'
+					WHERE CD_DEPSTEP1 = #{cdDepstep1}
+				]]>
+				<if test="mod == &quot;up&quot;">
+					<![CDATA[
+						AND CD_DEPSTEP2 = #{tempMaxCdDepstep}
+					]]>
+				</if>
+				<if test="mod == &quot;down&quot;">
+					<![CDATA[
+						AND CD_DEPSTEP2 = #{tempMinCdDepstep}
+					]]>
+				</if>
+			</if>
+			<if test="subframe == &quot;3&quot;">
+				<![CDATA[
+					CD_DEPSTEP3 = '999'
+					,CD_CODE = '999'
+					WHERE CD_DEPSTEP1 = #{cdDepstep1}
+					AND CD_DEPSTEP2 = #{cdDepstep2}
+				]]>
+				<if test="mod == &quot;up&quot;">
+					<![CDATA[
+						AND CD_DEPSTEP3 = #{tempMaxCdDepstep}
+					]]>
+				</if>
+				<if test="mod == &quot;down&quot;">
+					<![CDATA[
+						AND CD_DEPSTEP3 = #{tempMinCdDepstep}
+					]]>
+				</if>
+			</if>
+	</update>
+	
+	<!-- 수정(첫번째 수정) -->
+	<update id="GroupDeptDao.updateCdDepStepList" parameterType="GroupDeptVo">
+		<![CDATA[
+			UPDATE EZ_DEPARTMENT 
+			SET 
+		]]>
+			<if test="subframe == &quot;1&quot;">
+				<if test="mod == &quot;up&quot;">
+				<![CDATA[	
+						CD_DEPSTEP1 = #{tempMaxCdDepstep}
+				]]>	
+				</if>
+				<if test="mod == &quot;down&quot;">
+				<![CDATA[	
+						CD_DEPSTEP1 = #{tempMinCdDepstep}
+				]]>	
+				</if>
+				<![CDATA[
+					WHERE CD_DEPSTEP1 = #{cdDepstep1}
+				]]>
+			</if>
+			<if test="subframe == &quot;2&quot;">
+				<if test="mod == &quot;up&quot;">
+					<![CDATA[
+						CD_DEPSTEP2 = #{tempMaxCdDepstep}
+					]]>
+				</if>
+				<if test="mod == &quot;down&quot;">
+					<![CDATA[
+						CD_DEPSTEP2 = #{tempMinCdDepstep}
+					]]>
+				</if>
+				<![CDATA[
+					WHERE CD_DEPSTEP1 = #{cdDepstep1}
+					AND CD_DEPSTEP2 = #{cdDepstep2}
+				]]>
+			</if>
+			<if test="subframe == &quot;3&quot;">
+				<if test="mod == &quot;up&quot;">
+				<![CDATA[	
+						CD_DEPSTEP3 = #{tempMaxCdDepstep}
+				]]>	
+				</if>
+				<if test="mod == &quot;down&quot;">
+				<![CDATA[	
+						CD_DEPSTEP3 = #{tempMinCdDepstep}
+				]]>	
+				</if>
+				<![CDATA[
+					WHERE CD_DEPSTEP1 = #{cdDepstep1}
+					AND CD_DEPSTEP2 = #{cdDepstep2}
+					AND CD_DEPSTEP3 = #{cdDepstep3}
+				]]>
+			</if>
+	</update>
+	
+	<!-- 수정(두번째 수정) -->
+	<update id="GroupDeptDao.updateCdDepStep2List" parameterType="GroupDeptVo">
+		<![CDATA[
+			UPDATE EZ_DEPARTMENT 
+			SET 
+		]]>	
+			<if test="subframe == &quot;1&quot;">
+				<if test="mod == &quot;up&quot;">
+				<![CDATA[	
+						CD_DEPSTEP1 = #{tempMinCdDepstep}
+				]]>
+				</if>
+				<if test="mod == &quot;down&quot;">
+				<![CDATA[	
+						CD_DEPSTEP1 = #{tempMaxCdDepstep}
+				]]>
+				</if>
+				<![CDATA[
+					WHERE CD_DEPSTEP1 = '999'
+				]]>
+			</if>
+			<if test="subframe == &quot;2&quot;">
+				<if test="mod == &quot;up&quot;">
+					<![CDATA[
+						CD_DEPSTEP2 = #{tempMinCdDepstep}
+					]]>
+				</if>
+				<if test="mod == &quot;down&quot;">
+					<![CDATA[
+						CD_DEPSTEP2 = #{tempMaxCdDepstep}
+					]]>
+				</if>
+				<![CDATA[
+					WHERE CD_DEPSTEP1 = #{cdDepstep1}
+					AND CD_DEPSTEP2 = '999'
+				]]>
+			</if>
+			<if test="subframe == &quot;3&quot;">
+				<if test="mod == &quot;up&quot;">
+					<![CDATA[
+						CD_DEPSTEP3 = #{tempMinCdDepstep}
+					]]>
+				</if>
+				<if test="mod == &quot;down&quot;">
+					<![CDATA[
+						CD_DEPSTEP3 = #{tempMaxCdDepstep}
+					]]>
+				</if>
+				<![CDATA[
+					WHERE CD_DEPSTEP1 = #{cdDepstep1}
+					AND CD_DEPSTEP2 = #{cdDepstep2}
+					AND CD_DEPSTEP3 = '999'
+				]]>
+			</if>
+	</update>
+	
+	<!-- 수정(cdCode 조합) -->
+	<update id="GroupDeptDao.updateCdCodeList" parameterType="GroupDeptVo">
+		<![CDATA[
+			UPDATE EZ_DEPARTMENT 
+			SET CD_CODE = CONCAT('d',CD_DEPSTEP1,CD_DEPSTEP2,CD_DEPSTEP3) 
+		]]>
+		<if test="subframe == &quot;1&quot;">
+			<![CDATA[
+				WHERE CD_DEPSTEP1 = #{tempMinCdDepstep}
+				OR CD_DEPSTEP1 = #{tempMaxCdDepstep}
+			]]>
+		</if>
+		<if test="subframe == &quot;2&quot;">
+			<![CDATA[
+				WHERE (CD_DEPSTEP2 = #{tempMinCdDepstep}
+				OR CD_DEPSTEP2 = #{tempMaxCdDepstep})
+				AND CD_DEPSTEP1 = #{cdDepstep1}
+			]]>
+		</if>
+		<if test="subframe == &quot;3&quot;">
+			<![CDATA[
+				WHERE (CD_DEPSTEP3 = #{tempMinCdDepstep}
+				OR CD_DEPSTEP3 = #{tempMaxCdDepstep})
+				AND CD_DEPSTEP1 = #{cdDepstep1}
+				AND CD_DEPSTEP2 = #{cdDepstep2}
+			]]>
+		</if>
+	</update>
+	
+	<!-- cdIdx 최대값 조회   -->
+	<select id="GroupDeptDao.selectMaxCdIdx" resultType="String">
+		<![CDATA[
+			SELECT UPPER(MAX(CD_IDX)) AS cdIdx
+			FROM EZ_DEPARTMENT
+			WHERE CD_IDX NOT IN ('DELETE','DISASSIGN')
+		]]>
+	</select>
+	
+	<!-- 등록   -->
+	<insert id="GroupDeptDao.insertGroupDept" parameterType="GroupDeptVo">
+		<![CDATA[
+			INSERT INTO EZ_DEPARTMENT(
+				CD_IDX
+				, CD_SUBJECT
+				, CD_DEPSTEP1
+				, CD_DEPSTEP2
+				, CD_DEPSTEP3
+				, CD_USE
+				, CD_DATE
+				, CD_UPDATE
+				, CD_CODE
+				, CD_UPR_CODE
+			)VALUES(
+				  CONCAT('D',#{cdIdx}) 
+				, #{cdSubject}
+		]]>
+		<if test="subframe == &quot;1&quot;">
+			<![CDATA[
+				, (SELECT 
+					LPAD((SELECT MAX(CD_DEPSTEP1)+1 
+								FROM EZ_DEPARTMENT ED),2,'0')
+					FROM EZ_DEPARTMENT ED LIMIT  1
+					)
+				, '00'
+				, '00'
+				, 'Y'
+				, DATE_FORMAT(NOW(),'%Y/%m/%d')
+				, DATE_FORMAT(NOW(),'%Y/%m/%d')
+				, CONCAT('D',(SELECT 
+									LPAD((SELECT MAX(CD_DEPSTEP1)+1 
+									FROM EZ_DEPARTMENT ED),2,'0') 
+							FROM EZ_DEPARTMENT ED LIMIT  1
+						 ),'0000')
+				, 'D000000' 
+			]]>
+		</if>
+		<if test="subframe == &quot;2&quot;">
+			<![CDATA[
+					, #{cdDepstep1}
+					, (SELECT 
+						LPAD((SELECT MAX(CD_DEPSTEP2)+1 
+									FROM EZ_DEPARTMENT ED WHERE CD_DEPSTEP1 = #{cdDepstep1}),2,'0') 
+						FROM EZ_DEPARTMENT ED LIMIT  1
+						)
+					, '00'
+					, 'Y'
+					, DATE_FORMAT(NOW(),'%Y/%m/%d')
+					, DATE_FORMAT(NOW(),'%Y/%m/%d')
+					, CONCAT('D'
+							,#{cdDepstep1}
+							,(SELECT LPAD((SELECT MAX(CD_DEPSTEP2)+1 
+										  FROM EZ_DEPARTMENT ED
+										  WHERE CD_DEPSTEP1 = #{cdDepstep1}),2,'0') 
+							  FROM EZ_DEPARTMENT ED LIMIT 1
+							  )
+							,'00'  )
+					, CONCAT('D',#{cdDepstep1},'0000')
+			]]>
+		</if>
+		<if test="subframe == &quot;3&quot;">
+			<![CDATA[
+					, #{cdDepstep1}
+					, #{cdDepstep2}
+					, (SELECT 
+						LPAD((SELECT MAX(CD_DEPSTEP3)+1 
+									FROM EZ_DEPARTMENT ED
+									WHERE CD_DEPSTEP1 = #{cdDepstep1} AND CD_DEPSTEP2 = #{cdDepstep2}),2,'0') 
+						FROM EZ_DEPARTMENT ED LIMIT 1
+						)
+					, 'Y'
+					, DATE_FORMAT(NOW(),'%Y/%m/%d')
+					, DATE_FORMAT(NOW(),'%Y/%m/%d')
+					, CONCAT('D'
+							, #{cdDepstep1}
+							,#{cdDepstep2}
+							,(SELECT LPAD((SELECT MAX(CD_DEPSTEP3)+1
+										   FROM EZ_DEPARTMENT ED
+										   WHERE CD_DEPSTEP1 = #{cdDepstep1} 
+										   AND CD_DEPSTEP2 = #{cdDepstep2}),2,'0') 
+							  FROM EZ_DEPARTMENT ED LIMIT 1
+							))
+					, CONCAT('D',#{cdDepstep1},#{cdDepstep2},'00')
+			]]>
+		</if>
+		
+		)
+		
+	</insert>
+	
+	<!-- 수정(cdCode 조합) -->
+	<update id="GroupDeptDao.updateGroupDeptSub" parameterType="GroupDeptVo">
+		<![CDATA[
+			UPDATE EZ_DEPARTMENT
+			SET CD_SUBJECT = #{cdSubject}
+		]]>
+		<if test="subframe == &quot;1&quot;">
+		<![CDATA[	
+				WHERE CD_CODE = #{fCode}
+		]]>
+		</if>
+		<if test="subframe == &quot;2&quot;">
+		<![CDATA[	
+				WHERE CD_CODE = #{fCode2}
+		]]>	
+		</if>
+		<if test="subframe == &quot;3&quot;">
+		<![CDATA[	
+				WHERE CD_CODE = #{fCode3}
+		]]>
+		</if>
+	</update>
+	
+	<!-- 삭제 -->
+	<delete id="GroupDeptDao.deleteGroupDept" parameterType="GroupDeptVo">
+		<![CDATA[
+			DELETE FROM EZ_DEPARTMENT
+			WHERE CD_IDX IN (
+				WITH RECURSIVE REC (CD_IDX,CD_CODE,CD_UPR_CODE) AS
+				( 
+				    SELECT  CD_IDX
+				    	 ,  CD_CODE
+				         ,  CD_UPR_CODE
+				      FROM  EZ_DEPARTMENT 
+				      WHERE CD_CODE = (SELECT CD_CODE FROM EZ_DEPARTMENT WHERE CD_IDX = #{cdIdx})
+				
+				     UNION ALL
+				    
+				    SELECT  T.CD_IDX
+				    	 ,  T.CD_CODE
+				    	 ,  T.CD_UPR_CODE
+				      FROM  EZ_DEPARTMENT T 
+				     INNER  JOIN REC R ON T.CD_UPR_CODE = R.CD_CODE 
+				)
+				SELECT CD_IDX
+				FROM  REC R	
+			)	
+		]]>
+	</delete>
+	
+	<select id="GroupDeptDao.selectGroupDept" parameterType="GroupDeptVo" resultMap="GroupDeptMap">
+		<![CDATA[
+			WITH RECURSIVE REC (CD_IDX,CD_URP_CODE,CD_CODE,CD_SUBJECT,LV) AS 
+			(
+				SELECT  CD_IDX 
+					  , CD_UPR_CODE 
+					  , CD_CODE 
+					  , CD_SUBJECT 
+					  , 1
+				FROM EZ_DEPARTMENT
+				WHERE CD_UPR_CODE = 'D000000'
+				
+				UNION ALL 
+				
+				SELECT  T.CD_IDX 
+					  , T.CD_UPR_CODE 
+					  , T.CD_CODE 
+					  , CONCAT(R.CD_SUBJECT, ' > ' ,T.CD_SUBJECT)
+					  , LV + 1
+				FROM EZ_DEPARTMENT T , REC R
+				WHERE T.CD_UPR_CODE = R.CD_CODE
+			)
+			
+				SELECT  A.CD_IDX
+					  , A.CD_SUBJECT
+					  , A.CD_DEPSTEP1
+					  , A.CD_DEPSTEP2
+					  , A.CD_DEPSTEP3
+					  , A.CD_TEXT
+					  , A.CD_USE
+					  , A.CD_DATE
+					  , A.CD_UPDATE
+					  , A.CD_CODE
+					  , A.CD_TEL
+					  , A.CD_FAX
+					  , A.CD_AREA
+					  , A.CD_HOMEPAGE
+					  , A.CD_ENG_SUBJECT
+					  , A.CD_CHI_SUBJECT
+				 	  , CONCAT(R.CD_SUBJECT,' > ',A.CD_SUBJECT) AS DEPT_PATH
+				 	  , R.LV+1
+				FROM REC R
+				LEFT JOIN EZ_DEPARTMENT A ON R.CD_CODE = A.CD_CODE
+				WHERE A.CD_CODE = (SELECT CD_CODE FROM EZ_DEPARTMENT WHERE CD_IDX = #{cdIdx})	
+		]]>
+	</select>
+	
+	<!-- 상세 수정 -->
+	<update id="GroupDeptDao.updateGroupDeptDetail" parameterType="GroupDeptVo">
+		<![CDATA[
+			UPDATE EZ_DEPARTMENT SET
+				  CD_SUBJECT = #{cdSubject}
+				, CD_UPDATE = DATE_FORMAT(NOW(),'%Y/%m/%d')
+				, CD_TEL = #{cdTel}
+				, CD_FAX = #{cdFax}
+				, CD_AREA = #{cdArea}
+				, CD_HOMEPAGE = #{cdHomepage}
+				, CD_TEXT = #{cdText}
+				, CD_ENG_SUBJECT = #{cdEngSubject}
+				, CD_CHI_SUBJECT = #{cdChiSubject}
+			WHERE CD_IDX = #{cdIdx}
+		]]>
+	</update>
+	
+	<!-- 상세 수정 -->
+	<update id="GroupDeptDao.updateGroupDeptStep" parameterType="GroupDeptVo">
+		<![CDATA[
+			UPDATE EZ_EMPLOYEE A SET
+		]]>
+		<if test="subframe == &quot;1&quot;">
+			<![CDATA[
+				CE_DEPSTEP1=#{cdSubject} 
+				,CE_DEPSTEP2=CASE WHEN (SELECT CD_DEPSTEP2 FROM EZ_DEPARTMENT where CD_IDX=A.CE_CDIDX)='00' THEN #{cdSubject}  ELSE CE_DEPSTEP2 END
+				,CE_DEPSTEP3=CASE WHEN (SELECT CD_DEPSTEP2 FROM EZ_DEPARTMENT where CD_IDX=A.CE_CDIDX)='00' AND  (SELECT CD_DEPSTEP3 FROM EZ_DEPARTMENT where CD_IDX=A.CE_CDIDX)='00' THEN #{cdSubject}  ELSE CE_DEPSTEP3 END
+				WHERE CE_CDIDX IN
+				(
+				    SELECT CD_IDX FROM EZ_DEPARTMENT WHERE CD_DEPSTEP1 = #{cdDepstep1}
+				)
+			]]>
+		</if>
+		<if test="subframe == &quot;2&quot;">
+			<![CDATA[
+				CE_DEPSTEP2=#{cdSubject} 
+				,CE_DEPSTEP3=CASE WHEN (SELECT CD_DEPSTEP3 FROM EZ_DEPARTMENT where CD_IDX=A.CE_CDIDX)='00' THEN #{cdSubject}  ELSE CE_DEPSTEP3 END
+				WHERE CE_CDIDX IN
+				(
+				    SELECT CD_IDX FROM EZ_DEPARTMENT WHERE CD_DEPSTEP1 = #{cdDepstep1} AND  CD_DEPSTEP2 = #{cdDepstep2}
+				)
+			]]>
+		</if>
+		<if test="subframe == &quot;3&quot;">
+			<![CDATA[
+				CE_DEPSTEP3=#{cdSubject} 
+				WHERE CE_CDIDX = #{cdIdx}
+			]]>
+		</if>
+	</update>
+	
+	<select id="GroupDeptDao.selectGroupDeptLayout" parameterType="hashMap" resultMap="GroupDeptMap2">
+		<![CDATA[
+			SELECT 
+				A.CD_IDX
+				, A.CD_SUBJECT
+				, A.CD_DEPSTEP1
+				, A.CD_DEPSTEP2
+				, A.CD_DEPSTEP3
+				, A.CD_TEXT
+				, A.CD_USE
+				, A.CD_DATE
+				, A.CD_UPDATE
+				, A.CD_CODE
+				, A.CD_TEL
+				, A.CD_FAX
+				, A.CD_AREA
+				, A.CD_HOMEPAGE
+				, A.CD_ENG_SUBJECT
+				, A.CD_CHI_SUBJECT
+                , B.ORG_TEL
+                , DATE_FORMAT(NOW(),'%Y-%m-%d') AS MOD_DT
+			 FRM 
+				EZ_DEPARTMENT A
+	            , (
+	                SELECT CHARGE_DEPT_CODE
+				                ,ORG_TEL
+				                ,MOD_DT
+		                FROM EZ_USER_MENU
+		                WHERE MENU_CODE = #{menuCode}
+		                  AND SITE_CD = #{siteCd}) B
+			WHERE 
+				A.CD_IDX = B.CHARGE_DEPT_CODE
+		]]>
+	</select> 
+	
+	<select id="GroupDeptDao.selectListDepartGroup" resultMap="DepartGroupMap">
+		<![CDATA[
+			WITH RECURSIVE REC (CD_IDX,CD_SUBJECT,CD_CODE, CD_USE, ORD_NO, LV) AS 
+			(
+				SELECT  '' AS CD_IDX
+					  , '' AS CD_SUBJECT
+					  , '' AS CD_CODE
+					  , '' AS CD_USE
+					  , CAST('' AS VARCHAR(100)) AS ORD_NO
+					  , 1
+				
+				UNION ALL 
+				
+				SELECT  CD_IDX
+					  , CD_SUBJECT
+					  , CD_CODE
+					  , CD_USE
+					  , LPAD(CONCAT(CD_CODE), 10,'0') AS ORD_NO
+					  , 1
+				FROM  EZ_DEPARTMENT
+				WHERE CD_UPR_CODE = 'D000000'
+				
+				UNION ALL 
+				
+				SELECT  T.CD_IDX
+					  , T.CD_SUBJECT
+					  , T.CD_CODE
+					  , T.CD_USE
+					  , CONCAT(R.ORD_NO , LPAD(T.CD_CODE,10,'0'))
+					  , LV + 1
+				FROM  EZ_DEPARTMENT T 
+				INNER JOIN REC R ON T.CD_UPR_CODE = R.CD_CODE
+			)
+				SELECT  CD_IDX 
+				      , CD_SUBJECT
+				      , CD_CODE
+				      , LV LEVEL
+				FROM REC
+				WHERE CD_CODE <> ''
+				AND CD_USE = 'Y'
+				ORDER  BY RPAD(ORD_NO,50,'0')
+		]]>
+	</select>
+	
+	<select id="GroupDeptDao.selectListCmsDepartGroup" resultMap="CmsDepartGroupMap">
+		<![CDATA[
+			SELECT 
+				  CD_IDX
+				, CD_SUBJECT
+				, CD_DEPSTEP2
+			FROM EZ_DEPARTMENT
+			WHERE CD_USE = 'Y'
+			AND CD_DEPSTEP3 = '00'
+			ORDER BY CD_CODE ASC
+		]]>
+	</select>
+	
+	<select id="GroupDeptDao.selectListCmsDepartGroup2" resultMap="CmsDepartGroup2Map">
+		<![CDATA[
+			SELECT 
+				  CD_IDX
+				, CD_SUBJECT
+				, CD_DEPSTEP2
+				, CD_DEPSTEP3
+			FROM EZ_DEPARTMENT
+			WHERE CD_USE = 'Y'
+			ORDER BY CD_CODE ASC
+		]]>
+	</select>
+	
+	<!-- 부서 리스트3 -->
+	<select id="GroupDeptDao.selectListCmsDepartGroup3" resultMap="CmsDepartGroup3Map">
+		<![CDATA[
+			SELECT 
+				CD_IDX
+				, CD_SUBJECT
+			 FROM 
+			 	EZ_DEPARTMENT
+			WHERE 
+				(CD_SUBJECT LIKE '%관' OR CD_SUBJECT LIKE '%과' OR CD_SUBJECT LIKE '%동')
+			ORDER BY CD_CODE ASC
+		]]>
+	</select>
+	
+	
+	
+	
+	
+	<resultMap id="dvDeptMap" type="egovframework.injeinc.boffice.group.dept.vo.GroupDeptVo">
+		<result property="dvDepth1" column="DV_DEPTH1"/>
+		<result property="dvDepth2" column="DV_DEPTH2"/>
+		<result property="dvDepth3" column="DV_DEPTH3"/>
+		<result property="dvIdxdepth1" column="DV_IDXDEPTH1"/>
+		<result property="dvIdxdepth2" column="DV_IDXDEPTH2"/>
+		<result property="dvIdxdepth3" column="DV_IDXDEPTH3"/>
+	</resultMap>
+	
+	<select id="GroupDeptDao.selectDepartment" parameterType="hashMap" resultMap="dvDeptMap">
+		SELECT DV_DEPTH1
+			,DV_DEPTH2
+			,DV_DEPTH3
+			,DV_IDXDEPTH1
+			,DV_IDXDEPTH2
+			,DV_IDXDEPTH3
+		FROM DEPARTMENT_VIEW
+		WHERE DV_DEPTH2 = #{ceDepstep2} 
+		AND DV_DEPTH3 = #{ceDepstep3}
+	</select>
+	<insert id="GroupDeptDao.insertEzDepartmentTemp" parameterType="GroupDeptVo"> 
+	<![CDATA[
+		INSERT INTO EZ_DEPARTMENT_TEMP(
+			TEAM_ID
+			,GROUP_ID
+			,TEAM_NAME
+			,REG_DT
+			,SORT_NO
+		) VALUES(
+			#{teamId}
+			,#{groupId}
+			,#{teamName}
+			,#{regDt}
+			,#{sortNo}
+		)
+	]]>
+	</insert>
+	<delete id="GroupDeptDao.deleteEzDepartmentTemp" parameterType="GroupDeptVo">
+	<![CDATA[
+		DELETE FROM EZ_DEPARTMENT_TEMP
+	]]>
+	</delete>
+	<update id="GroupDeptDao.updateCdUseEzDepartment" parameterType="GroupDeptVo">
+	<![CDATA[
+		UPDATE EZ_DEPARTMENT 
+		SET CD_USE='N'
+		WHERE CD_IDX NOT IN(
+			SELECT TEAM_ID FROM EZ_DEPARTMENT_TEMP
+		)
+	]]>
+	</update>
+	<insert id="GroupDeptDao.insertEzDepartment" parameterType="GroupDeptVo">
+	<![CDATA[
+		INSERT INTO EZ_DEPARTMENT(
+		CD_IDX
+		,CD_SUBJECT
+		,CD_DEPSTEP1
+		,CD_DEPSTEP2
+		,CD_DEPSTEP3
+		,CD_USE
+		,CD_DATE
+		,CD_UPDATE
+		,CD_CODE
+	)
+		SELECT 
+			TEAM_ID as CD_IDX
+			,TEAM_NAME as CD_SUBJECT
+			,STEP1 as CD_DEPSTEP1
+			,STEP2 as CD_DEPSTEP2
+			,STEP3 as CD_DEPSTEP3
+			,'Y' as CD_USE
+			,SUBSTR(REPLACE(REG_DATE,'-','/'),0,19) as CD_DATE
+			,SUBSTR(REPLACE(REG_DATE,'-','/'),0,19) as CD_UPDATE
+			,'D'||STEP1||STEP2||STEP3 as CD_CODE
+		FROM
+		  (SELECT A.* ,
+		    (SELECT LPAD(COUNT(*),2,'0')
+		    FROM EZ_DEPARTMENT_TEMP
+		    WHERE GROUP_ID=A.GROUP_ID
+		    AND SORT_NO  <=A.SORT_NO
+		    )    AS STEP1 ,
+		    '00' AS STEP2 ,
+		    '00' AS STEP3
+		  FROM EZ_DEPARTMENT_TEMP A
+		  WHERE GROUP_ID IN
+		    ( SELECT TEAM_ID FROM EZ_DEPARTMENT_TEMP WHERE GROUP_ID='ROOT'
+		    )
+		  UNION ALL
+		  SELECT A.* ,
+		    (SELECT
+		      (SELECT LPAD(COUNT(*),2,'0')
+		      FROM EZ_DEPARTMENT_TEMP
+		      WHERE GROUP_ID=B.GROUP_ID
+		      AND SORT_NO  <=B.SORT_NO
+		      )
+		    FROM EZ_DEPARTMENT_TEMP B
+		    WHERE TEAM_ID = A.GROUP_ID
+		    ) AS STEP1 ,
+		    (SELECT LPAD(COUNT(*),2,'0')
+		    FROM EZ_DEPARTMENT_TEMP
+		    WHERE GROUP_ID=A.GROUP_ID
+		    AND SORT_NO  <=A.SORT_NO
+		    )    AS STEP2 ,
+		    '00' AS STEP3
+		  FROM EZ_DEPARTMENT_TEMP A
+		  WHERE GROUP_ID IN
+		    (SELECT TEAM_ID
+		    FROM EZ_DEPARTMENT_TEMP
+		    WHERE GROUP_ID IN
+		      ( SELECT TEAM_ID FROM EZ_DEPARTMENT_TEMP WHERE GROUP_ID='ROOT'
+		      )
+		    )
+		  UNION ALL
+		  SELECT A.* ,
+		    (SELECT
+		      (SELECT LPAD(COUNT(*),2,'0')
+		      FROM EZ_DEPARTMENT_TEMP
+		      WHERE GROUP_ID=B.GROUP_ID
+		      AND SORT_NO  <=B.SORT_NO
+		      )
+		    FROM EZ_DEPARTMENT_TEMP B
+		    WHERE TEAM_ID=
+		      (SELECT GROUP_ID FROM EZ_DEPARTMENT_TEMP WHERE TEAM_ID=A.GROUP_ID
+		      )
+		    ) AS STEP1 ,
+		    (SELECT
+		      (SELECT LPAD(COUNT(*),2,'0')
+		      FROM EZ_DEPARTMENT_TEMP
+		      WHERE GROUP_ID=B.GROUP_ID
+		      AND SORT_NO <=B.SORT_NO
+		      )
+		    FROM EZ_DEPARTMENT_TEMP B
+		    WHERE TEAM_ID = A.GROUP_ID
+		    ) AS STEP2 ,
+		    (SELECT LPAD(COUNT(*),2,'0')
+		    FROM EZ_DEPARTMENT_TEMP
+		    WHERE GROUP_ID=A.GROUP_ID
+		    AND SORT_NO <=A.SORT_NO
+		    ) AS STEP3
+		  FROM EZ_DEPARTMENT_TEMP A
+		  WHERE GROUP_ID IN
+		    (SELECT TEAM_ID
+		    FROM EZ_DEPARTMENT_TEMP
+		    WHERE GROUP_ID IN
+		      (SELECT TEAM_ID
+		      FROM EZ_DEPARTMENT_TEMP
+		      WHERE GROUP_ID IN
+			( SELECT TEAM_ID FROM EZ_DEPARTMENT_TEMP WHERE GROUP_ID='ROOT'
+			)
+		      )
+		    )
+		  ) T
+		 WHERE TEAM_ID NOT IN(
+			SELECT CD_IDX FROM EZ_DEPARTMENT
+		 )
+
+	]]>
+	</insert>
+	<update id="GroupDeptDao.updateEzDepartment" parameterType="GroupDeptVo">
+	<![CDATA[
+		MERGE INTO EZ_DEPARTMENT T1 USING
+		(SELECT TEAM_ID                          AS CD_IDX ,
+		  TEAM_NAME                              AS CD_SUBJECT ,
+		  STEP1                                  AS CD_DEPSTEP1 ,
+		  STEP2                                  AS CD_DEPSTEP2 ,
+		  STEP3                                  AS CD_DEPSTEP3 ,
+		  'Y'                                    AS CD_USE ,
+		  SUBSTR(REPLACE(REG_DATE,'-','/'),0,19) AS CD_DATE ,
+		  'D'
+		  ||STEP1
+		  ||STEP2
+		  ||STEP3 AS CD_CODE
+		FROM
+		  (SELECT A.* ,
+		    (SELECT LPAD(COUNT(*),2,'0')
+		    FROM EZ_DEPARTMENT_TEMP
+		    WHERE GROUP_ID=A.GROUP_ID
+		    AND SORT_NO <=A.SORT_NO
+		    )    AS STEP1 ,
+		    '00' AS STEP2 ,
+		    '00' AS STEP3
+		  FROM EZ_DEPARTMENT_TEMP A
+		  WHERE GROUP_ID IN
+		    ( SELECT TEAM_ID FROM EZ_DEPARTMENT_TEMP WHERE GROUP_ID='ROOT'
+		    )
+		  UNION ALL
+		  SELECT A.* ,
+		    (SELECT
+		      (SELECT LPAD(COUNT(*),2,'0')
+		      FROM EZ_DEPARTMENT_TEMP
+		      WHERE GROUP_ID=B.GROUP_ID
+		      AND SORT_NO <=B.SORT_NO
+		      )
+		    FROM EZ_DEPARTMENT_TEMP B
+		    WHERE TEAM_ID = A.GROUP_ID
+		    ) AS STEP1 ,
+		    (SELECT LPAD(COUNT(*),2,'0')
+		    FROM EZ_DEPARTMENT_TEMP
+		    WHERE GROUP_ID=A.GROUP_ID
+		    AND SORT_NO  <=A.SORT_NO
+		    )    AS STEP2 ,
+		    '00' AS STEP3
+		  FROM EZ_DEPARTMENT_TEMP A
+		  WHERE GROUP_ID IN
+		    (SELECT TEAM_ID
+		    FROM EZ_DEPARTMENT_TEMP
+		    WHERE GROUP_ID IN
+		      ( SELECT TEAM_ID FROM EZ_DEPARTMENT_TEMP WHERE GROUP_ID='ROOT'
+		      )
+		    )
+		  UNION ALL
+		  SELECT A.* ,
+		    (SELECT
+		      (SELECT LPAD(COUNT(*),2,'0')
+		      FROM EZ_DEPARTMENT_TEMP
+		      WHERE GROUP_ID=B.GROUP_ID
+		      AND SORT_NO <=B.SORT_NO
+		      )
+		    FROM EZ_DEPARTMENT_TEMP B
+		    WHERE TEAM_ID=
+		      (SELECT GROUP_ID FROM EZ_DEPARTMENT_TEMP WHERE TEAM_ID=A.GROUP_ID
+		      )
+		    ) AS STEP1 ,
+		    (SELECT
+		      (SELECT LPAD(COUNT(*),2,'0')
+		      FROM EZ_DEPARTMENT_TEMP
+		      WHERE GROUP_ID=B.GROUP_ID
+		      AND SORT_NO <=B.SORT_NO
+		      )
+		    FROM EZ_DEPARTMENT_TEMP B
+		    WHERE TEAM_ID = A.GROUP_ID
+		    ) AS STEP2 ,
+		    (SELECT LPAD(COUNT(*),2,'0')
+		    FROM EZ_DEPARTMENT_TEMP
+		    WHERE GROUP_ID=A.GROUP_ID
+		    AND SORT_NO  <=A.SORT_NO
+		    ) AS STEP3
+		  FROM EZ_DEPARTMENT_TEMP A
+		  WHERE GROUP_ID IN
+		    (SELECT TEAM_ID
+		    FROM EZ_DEPARTMENT_TEMP
+		    WHERE GROUP_ID IN
+		      (SELECT TEAM_ID
+		      FROM EZ_DEPARTMENT_TEMP
+		      WHERE GROUP_ID IN
+		        ( SELECT TEAM_ID FROM EZ_DEPARTMENT_TEMP WHERE GROUP_ID='ROOT'
+		        )
+		      )
+		    )
+		  ) T
+		) T2 ON (T1.CD_IDX = T2.CD_IDX)
+		WHEN MATCHED THEN
+		  UPDATE
+		  SET 
+		    T1.CD_SUBJECT =T2.CD_SUBJECT ,
+		    T1.CD_DEPSTEP1=T2.CD_DEPSTEP1 ,
+		    T1.CD_DEPSTEP2=T2.CD_DEPSTEP2 ,
+		    T1.CD_DEPSTEP3=T2.CD_DEPSTEP3 ,
+		    T1.CD_USE     =T2.CD_USE ,
+		    T1.CD_DATE    =T2.CD_DATE ,
+		    T1.CD_UPDATE    = DATE_FORMAT(NOW(),'%Y-%m-%d %H:%m:%s') ,
+		    T1.CD_CODE    = CONCAT('D'
+		    ,T2.CD_DEPSTEP1
+		    ,T2.CD_DEPSTEP2
+		    ,T2.CD_DEPSTEP3)
+	]]>
+	</update>
+	
+	<select id="GroupDeptDao.selectListDepartment" resultType="GroupDeptVo">
+	<![CDATA[	
+			SELECT 
+				CD_IDX
+				, CD_SUBJECT
+				, CD_DEPSTEP1
+				, CD_DEPSTEP2
+				, CD_DEPSTEP3
+			FROM EZ_DEPARTMENT
+			WHERE CD_USE = 'Y'
+			ORDER BY CD_DEPSTEP1, CD_DEPSTEP2, CD_DEPSTEP3
+	]]>	
+	</select>
+
+</mapper>

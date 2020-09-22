@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PollListFDao">
+
+	<resultMap id="PollListFMap" type="egovframework.injeinc.foffice.ex.poll.vo.PollListFVo">
+		<result property="plIdx" column="PL_IDX"/>
+		<result property="plCdidx" column="PL_CDIDX"/>
+		<result property="plTitle" column="PL_TITLE"/>
+		<result property="plGuide" column="PL_GUIDE"/>
+		<result property="plAuthType" column="PL_AUTH_TYPE"/>
+		<result property="plAddrYn" column="PL_ADDR_YN"/>
+		<result property="plTelYn" column="PL_TEL_YN"/>
+		<result property="plHpYn" column="PL_HP_YN"/>
+		<result property="plEmailYn" column="PL_EMAIL_YN"/>
+		<result property="plNumber" column="PL_NUMBER"/>
+		<result property="plResultOpenYn" column="PL_RESULT_OPEN_YN"/>
+		<result property="plManagerName" column="PL_MANAGER_NAME"/>
+		<result property="plManagerTel" column="PL_MANAGER_TEL"/>
+		<result property="plStartDate" column="PL_START_DATE"/>
+		<result property="plEndDate" column="PL_END_DATE"/>
+		<result property="plUse" column="PL_USE"/>
+		<result property="useYn" column="USE_YN"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+		<result property="cdSubject" column="CD_SUBJECT"/>		
+		<result property="totalCnt" column="TOTAL_CNT"/>
+	</resultMap>
+	
+	<resultMap id="PollListFMap2" type="egovframework.injeinc.foffice.ex.poll.vo.PollListFVo">
+		<result property="plIdx" column="PL_IDX"/>
+		<result property="plCdidx" column="PL_CDIDX"/>
+		<result property="plTitle" column="PL_TITLE"/>
+		<result property="plGuide" column="PL_GUIDE"/>
+		<result property="plAuthType" column="PL_AUTH_TYPE"/>
+		<result property="plAddrYn" column="PL_ADDR_YN"/>
+		<result property="plTelYn" column="PL_TEL_YN"/>
+		<result property="plHpYn" column="PL_HP_YN"/>
+		<result property="plEmailYn" column="PL_EMAIL_YN"/>
+		<result property="plNumber" column="PL_NUMBER"/>
+		<result property="plResultOpenYn" column="PL_RESULT_OPEN_YN"/>
+		<result property="plManagerName" column="PL_MANAGER_NAME"/>
+		<result property="plManagerTel" column="PL_MANAGER_TEL"/>
+		<result property="plStartDate" column="PL_START_DATE"/>
+		<result property="plEndDate" column="PL_END_DATE"/>
+		<result property="plUse" column="PL_USE"/>
+		<result property="useYn" column="USE_YN"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+		<result property="cdSubject" column="CD_SUBJECT"/>
+		<result property="plGubun" column="PL_GUBUN"/>			
+	</resultMap>
+	
+	<resultMap id="PollDepartFMap" type="egovframework.injeinc.foffice.ex.poll.vo.PollDepartFVo">
+		<result property="cdIdx" column="CD_IDX"/>
+		<result property="cdSubject" column="CD_SUBJECT"/>
+		<result property="cdDepstep2" column="CD_DEPSTEP2"/>
+	</resultMap>
+	
+	<select id="selectPollListF" parameterType="PollListFVo" resultMap="PollListFMap">
+		<![CDATA[	
+			SELECT
+				PL_IDX
+				, PL_CDIDX
+				, PL_TITLE
+				, PL_GUIDE
+				, PL_AUTH_TYPE
+				, PL_ADDR_YN
+				, PL_TEL_YN
+				, PL_HP_YN
+				, PL_EMAIL_YN
+				, PL_NUMBER
+				, PL_RESULT_OPEN_YN
+				, PL_MANAGER_NAME
+				, PL_MANAGER_TEL
+				, PL_START_DATE
+				, PL_END_DATE
+				, PL_USE
+				, USE_YN
+				, REG_DT
+				, REG_ID
+				, MOD_DT
+				, MOD_ID
+				, (SELECT CD_SUBJECT FROM EZ_DEPARTMENT WHERE CD_IDX = PL_CDIDX) AS CD_SUBJECT
+				, (SELECT COUNT(*) FROM EZ_POLL_USER B WHERE B.PU_PLIDX = PL_IDX AND B.USE_YN = 'Y') AS TOTAL_CNT
+			FROM EZ_POLL_LIST
+			WHERE USE_YN = 'Y'
+			AND PL_IDX = #{plIdx}
+		]]>
+	</select>
+	
+	<select id="selectListPollListF" parameterType="PollListFVo" resultMap="PollListFMap">
+		<![CDATA[	
+			SELECT 
+				PL_IDX
+				, PL_CDIDX
+				, PL_TITLE
+				, PL_GUIDE
+				, PL_AUTH_TYPE
+				, PL_ADDR_YN
+				, PL_TEL_YN
+				, PL_HP_YN
+				, PL_EMAIL_YN
+				, PL_NUMBER
+				, PL_RESULT_OPEN_YN
+				, PL_MANAGER_NAME
+				, PL_MANAGER_TEL
+				, PL_START_DATE
+				, PL_END_DATE
+				, PL_USE
+				, USE_YN
+				, REG_DT
+				, REG_ID
+				, MOD_DT
+				, MOD_ID
+				, (SELECT CD_SUBJECT FROM EZ_DEPARTMENT WHERE CD_IDX = PL_CDIDX) AS CD_SUBJECT
+				, (SELECT COUNT(*) FROM EZ_POLL_USER B WHERE B.PU_PLIDX = PL_IDX AND B.USE_YN = 'Y') AS TOTAL_CNT
+			FROM EZ_POLL_LIST
+			WHERE USE_YN = 'Y'
+			AND PL_USE = 'Y'
+		]]>
+		<if test="searchCdIdx != null and searchCdIdx != ''">AND
+		<![CDATA[		
+				PL_CDIDX = #{searchCdIdx}
+		]]>
+		</if>
+		<if test="searchKeyword != null and searchKeyword != ''">AND
+		<![CDATA[		
+				PL_TITLE LIKE CONCAT('%',#{searchKeyword},'%')
+		]]>	
+		</if>
+		<![CDATA[	
+			ORDER BY PL_IDX DESC
+		]]>
+	</select>
+		
+	
+	<sql id="searchPollListF">
+		<if test="searchCdIdx != null and searchCdIdx != ''">
+		<![CDATA[		
+				AND PL_CDIDX = #{searchCdIdx}
+		]]>
+		</if>		
+		<if test="searchUse == &quot;Y&quot;">
+		<![CDATA[		
+				AND PL_USE = #{searchUse}
+				AND (PL_START_DATE <= DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s') AND DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s') <= PL_END_DATE )
+		]]>
+		</if>
+		<if test="searchUse == &quot;N&quot;">
+		<![CDATA[		
+				AND (PL_USE = #{searchUse} OR PL_END_DATE < DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s'))				
+		]]>	
+		</if>		
+		<if test="searchKeyword != null and searchKeyword != ''">
+		<![CDATA[		
+				AND PL_TITLE LIKE  CONCAT('%',#{searchKeyword},'%')
+		]]>	
+		</if>
+	</sql>
+	
+	<select id="selectPagPollList" parameterType="PollListFVo" resultMap="PollListFMap">
+		<![CDATA[		
+			SELECT * FROM (
+				SELECT /*+ FIRST_ROWS */ A.*, @rownum := @rownum + 1 as RN FROM (
+					SELECT
+						PL_IDX
+						, PL_CDIDX
+						, PL_TITLE
+						, PL_GUIDE
+						, PL_AUTH_TYPE
+						, PL_ADDR_YN
+						, PL_TEL_YN
+						, PL_HP_YN
+						, PL_EMAIL_YN
+						, PL_NUMBER
+						, PL_RESULT_OPEN_YN
+						, PL_MANAGER_NAME
+						, PL_MANAGER_TEL
+						, PL_START_DATE
+						, PL_END_DATE
+						, PL_USE
+						, USE_YN
+						, REG_DT
+						, REG_ID
+						, MOD_DT
+						, MOD_ID
+						, (SELECT CD_SUBJECT FROM EZ_DEPARTMENT WHERE CD_IDX = PL_CDIDX) AS CD_SUBJECT
+						, (SELECT COUNT(*) FROM EZ_POLL_USER B WHERE B.PU_PLIDX = PL_IDX AND B.USE_YN = 'Y') AS TOTAL_CNT
+					FROM EZ_POLL_LIST
+					WHERE USE_YN = 'Y'
+					AND (@rownum:=0)=0
+		]]>
+		<include refid="searchPollListF"/>
+		<![CDATA[		
+					ORDER BY PL_IDX DESC
+				) A WHERE @rownum < #{lastIndex}
+			) B WHERE RN > #{firstIndex}
+		]]>
+	</select>
+	
+	<select id="selectPollListCnt" parameterType="PollListFVo" resultType="java.lang.Integer">
+		<![CDATA[		
+			SELECT COUNT(*)
+			FROM EZ_POLL_LIST
+			WHERE USE_YN = 'Y'
+		]]>
+		<include refid="searchPollListF"/>
+	</select>
+	
+	<select id="selectPagAllPollList" parameterType="PollListFVo" resultMap="PollListFMap2">
+		<![CDATA[		
+			SELECT * FROM (
+				SELECT /*+ FIRST_ROWS */ A.*, @rownum := @rownum + 1 as RN FROM (
+					SELECT * FROM(
+		]]>			
+					<if test="searchUse == &quot;O&quot;">
+		<![CDATA[					
+						SELECT
+							PL_IDX
+							, PL_CDIDX
+							, PL_TITLE
+							, PL_GUIDE
+							, PL_AUTH_TYPE
+							, PL_ADDR_YN
+							, PL_TEL_YN
+							, PL_HP_YN
+							, PL_EMAIL_YN
+							, PL_NUMBER
+							, PL_RESULT_OPEN_YN
+							, PL_MANAGER_NAME
+							, PL_MANAGER_TEL
+							, PL_START_DATE
+							, PL_END_DATE
+							, PL_USE
+							, A.USE_YN
+	                        , A.REG_DT
+	                        , A.REG_ID
+	                        , A.MOD_DT
+	                        , A.MOD_ID
+							, (SELECT CD_SUBJECT FROM EZ_DEPARTMENT WHERE CD_IDX = PL_CDIDX) AS CD_SUBJECT
+							, 'N' PL_GUBUN
+						FROM EZ_POLL_LIST A,EZ_POLL_USER B
+	                    WHERE A.USE_YN = 'Y'
+	                    AND A.PL_IDX = B.PU_PLIDX
+	                    AND B.REG_DI = #{regDi}
+						AND (PL_USE = 'N' OR PL_END_DATE < DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s'))
+						UNION ALL
+						SELECT
+							PL_IDX
+							, PL_CDIDX
+							, PL_TITLE
+							, PL_GUIDE
+							, PL_AUTH_TYPE
+							, PL_ADDR_YN
+							, PL_TEL_YN
+							, PL_HP_YN
+							, PL_EMAIL_YN
+							, PL_NUMBER
+							, PL_RESULT_OPEN_YN
+							, PL_MANAGER_NAME
+							, PL_MANAGER_TEL
+							, PL_START_DATE
+							, PL_END_DATE
+							, PL_USE
+							, A.USE_YN
+	                        , A.REG_DT
+	                        , A.REG_ID
+	                        , A.MOD_DT
+	                        , A.MOD_ID
+							, (SELECT CD_SUBJECT FROM EZ_DEPARTMENT WHERE CD_IDX = PL_CDIDX) AS CD_SUBJECT
+							, 'Y' PL_GUBUN
+						FROM EZ_POLL_LIST A,EZ_POLL_USER B
+	                    WHERE A.USE_YN = 'Y'
+	                    AND A.PL_IDX = B.PU_PLIDX
+	                    AND B.REG_DI = #{regDi}
+						AND PL_USE = 'Y'
+						AND (PL_START_DATE <= DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s') AND DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s') <= PL_END_DATE )
+			]]>				
+						</if>				
+						<if test="searchUse == &quot;Y&quot;">
+			<![CDATA[					
+							SELECT
+							PL_IDX
+							, PL_CDIDX
+							, PL_TITLE
+							, PL_GUIDE
+							, PL_AUTH_TYPE
+							, PL_ADDR_YN
+							, PL_TEL_YN
+							, PL_HP_YN
+							, PL_EMAIL_YN
+							, PL_NUMBER
+							, PL_RESULT_OPEN_YN
+							, PL_MANAGER_NAME
+							, PL_MANAGER_TEL
+							, PL_START_DATE
+							, PL_END_DATE
+							, PL_USE
+							, A.USE_YN
+	                        , A.REG_DT
+	                        , A.REG_ID
+	                        , A.MOD_DT
+	                        , A.MOD_ID
+							, (SELECT CD_SUBJECT FROM EZ_DEPARTMENT WHERE CD_IDX = PL_CDIDX) AS CD_SUBJECT
+							, 'Y' PL_GUBUN
+						FROM EZ_POLL_LIST A,EZ_POLL_USER B
+	                    WHERE A.USE_YN = 'Y'
+	                    AND A.PL_IDX = B.PU_PLIDX
+	                    AND B.REG_DI = #{regDi}
+						AND PL_USE = 'Y'
+						AND (PL_START_DATE <= DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s') AND DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s') <= PL_END_DATE )
+		]]>					
+						</if>								
+						<if test="searchUse == &quot;N&quot;">
+		<![CDATA[						
+							SELECT
+							PL_IDX
+							, PL_CDIDX
+							, PL_TITLE
+							, PL_GUIDE
+							, PL_AUTH_TYPE
+							, PL_ADDR_YN
+							, PL_TEL_YN
+							, PL_HP_YN
+							, PL_EMAIL_YN
+							, PL_NUMBER
+							, PL_RESULT_OPEN_YN
+							, PL_MANAGER_NAME
+							, PL_MANAGER_TEL
+							, PL_START_DATE
+							, PL_END_DATE
+							, PL_USE
+							, A.USE_YN
+	                        , A.REG_DT
+	                        , A.REG_ID
+	                        , A.MOD_DT
+	                        , A.MOD_ID
+							, (SELECT CD_SUBJECT FROM EZ_DEPARTMENT WHERE CD_IDX = PL_CDIDX) AS CD_SUBJECT
+							, 'N' PL_GUBUN
+						FROM EZ_POLL_LIST A,EZ_POLL_USER B
+	                    WHERE A.USE_YN = 'Y'
+	                    AND A.PL_IDX = B.PU_PLIDX
+	                    AND B.REG_DI = #{regDi}
+						AND (PL_USE = 'N' OR PL_END_DATE < DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s'))
+			]]>				
+						</if>
+		<![CDATA[		
+						) B WHERE (@rownum:=0)=0
+					ORDER BY PL_IDX DESC
+				) A WHERE @rownum < #{lastIndex}
+			) C WHERE RN > #{firstIndex}
+		]]>
+	</select>
+	
+	<select id="selectAllPollListCnt" parameterType="PollListFVo" resultType="java.lang.Integer">
+		<![CDATA[		
+			SELECT COUNT(*)
+			FROM EZ_POLL_LIST A,EZ_POLL_USER B
+            WHERE A.USE_YN = 'Y'
+            AND A.PL_IDX = B.PU_PLIDX
+            AND B.REG_DI = #{regDi}
+         ]]> 
+			<if test="searchUse == &quot;Y&quot;">
+		<![CDATA[			
+				AND PL_USE = 'Y'
+				AND (PL_START_DATE <= DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s') AND DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s') <= PL_END_DATE )
+		]]>	
+			</if>
+			<if test="searchUse == &quot;N&quot;">
+		<![CDATA[			
+				AND (PL_USE = 'N' OR PL_END_DATE < DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s'))
+		]]>	
+			</if>			
+	</select>
+	
+	<select id="selectListPollDepartF" parameterType="PollListFVo" resultMap="PollDepartFMap">
+	<![CDATA[			
+			SELECT 
+				CD_IDX
+				, CD_SUBJECT
+				, CD_DEPSTEP2
+			FROM EZ_DEPARTMENT
+			WHERE CD_USE = 'Y' 
+			AND CD_DEPSTEP3 = '00'
+			ORDER BY CD_CODE ASC
+	]]>	
+	</select>
+	
+</mapper>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="HolidayDao">
+
+	<resultMap id="HolidayMap" type="egovframework.injeinc.boffice.ex.holiday.vo.HolidayVo">
+		<result property="holDate" column="HOL_DATE"/>
+		<result property="oldHolDate" column="HOL_DATE"/>
+		<result property="holName" column="HOL_NAME"/>
+		<result property="holCode" column="HOL_CODE"/>
+	</resultMap>
+
+	<insert id="insertHoliday" parameterType="HolidayVo">
+	<![CDATA[	
+			INSERT INTO EZ_HOLIDAY
+			(
+				  HOL_DATE
+				, HOL_NAME
+				, HOL_CODE
+			)
+			VALUES
+			(
+				  #{holDate}
+				, #{holName}
+				, #{holCode}
+			)
+	]]>	
+	</insert>
+	
+	<update id="updateHoliday" parameterType="HolidayVo">
+		<![CDATA[
+			UPDATE EZ_HOLIDAY 
+			SET HOL_NAME = #{holName},
+			HOL_CODE = #{holCode},
+			HOL_DATE = #{holDate}
+			WHERE HOL_DATE = #{oldHolDate}
+		]]>
+	</update>
+	
+	<delete id="deleteHoliday" parameterType="HolidayVo">
+	<![CDATA[
+		DELETE FROM EZ_HOLIDAY
+		WHERE HOL_DATE = #{holDate}
+	]]>
+	</delete>
+	
+	<select id="selectHoliday" parameterType="HolidayVo" resultMap="HolidayMap">
+		<![CDATA[
+			SELECT * FROM EZ_HOLIDAY
+			WHERE HOL_DATE = #{holDate}
+		]]>
+	</select>
+	
+	<select id="selectHolidayCnt" parameterType="HolidayVo" resultType="java.lang.Integer">
+		<![CDATA[
+			SELECT COUNT(*) FROM EZ_HOLIDAY
+			WHERE HOL_DATE = #{holDate}
+		]]>
+	</select>
+	
+	<select id="selectListHoliday" parameterType="HolidayVo" resultMap="HolidayMap">
+		<![CDATA[
+			SELECT * FROM EZ_HOLIDAY
+			WHERE 1 = 1
+		]]>
+		<if test="searchYear != null and searchYear != ''">
+		<![CDATA[
+			AND HOL_DATE LIKE CONCAT( #{searchYear} ,'%')
+		]]>
+		</if>
+		<if test="searchYear == null or searchYear == ''">
+			<![CDATA[
+				AND HOL_DATE >= CONCAT(DATE_FORMAT(NOW(), '%Y'),'-01-01')
+			]]>
+		</if>
+		<if test="holCode != null and holCode != ''">
+			<![CDATA[
+				AND hol_code = #{holCode}
+			]]>
+		</if>
+		<![CDATA[
+			ORDER BY HOL_DATE ASC
+		]]>
+	</select>
+	
+	<select id="selectListHolidayAll" resultType="java.lang.String">
+		<![CDATA[
+			SELECT HOL_DATE FROM EZ_HOLIDAY
+			ORDER BY HOL_DATE ASC
+		]]>
+	</select>
+	
+	<select id="selectHolYearGroup" resultType="java.lang.String">
+	<![CDATA[
+		
+			SELECT DATE_FORMAT(HOL_DATE, '%Y') AS HOL_YEAR
+			FROM EZ_HOLIDAY 
+			GROUP BY HOL_YEAR
+			ORDER BY HOL_YEAR ASC
+	]]>
+	</select>
+	
+</mapper>

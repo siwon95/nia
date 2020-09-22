@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AccessIpDao">
+	<insert id="insertAccessIp" parameterType="AccessIpVo">
+		<![CDATA[
+			INSERT INTO EZ_ACCESS_IP (AI_IDX, S_IP, E_IP, NOTE, REG_ID, REG_DT)
+			VALUES (#{ai_idx}, #{s_ip}, #{e_ip}, #{note}, #{reg_id}, NOW())
+		]]>
+	</insert>
+	
+	<select id="selectPagAccessIp" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM   EZ_ACCESS_IP
+			WHERE  USE_YN = 'Y'
+		]]>
+	</select>
+	
+	<select id="selectListAccessIp" resultType="AccessIpVo">
+		<![CDATA[
+			SELECT *
+			FROM   (SELECT @rownum := @rownum + 1 as RN,
+			               TB.*
+			        FROM   (SELECT AI_IDX, S_IP, E_IP, NOTE, REG_ID, REG_DT, MOD_ID, MOD_DT
+			                FROM   EZ_ACCESS_IP
+			                WHERE  USE_YN = 'Y'
+			                AND (@rownum:=0)=0
+			                ORDER BY REG_DT DESC ) TB ) A
+			WHERE RN BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+	
+	<select id="selectAccessIp" parameterType="AccessIpVo" resultType="AccessIpVo">
+		<![CDATA[
+			SELECT *
+			FROM   EZ_ACCESS_IP
+			WHERE  AI_IDX = #{ai_idx}
+			AND	   USE_YN = 'Y'
+		]]>
+	</select>
+
+	<select id="selectAllListAccessIp" resultType="AccessIpVo">
+		<![CDATA[
+			SELECT *
+			FROM   EZ_ACCESS_IP
+			WHERE  USE_YN = 'Y'
+		]]>
+	</select>
+	
+	<update id="updateAccessIp" parameterType="AccessIpVo">
+		<![CDATA[
+			UPDATE EZ_ACCESS_IP
+			SET    S_IP = #{s_ip} ,
+			       E_IP = #{e_ip} ,
+			       NOTE = #{note} ,
+			       MOD_ID = #{mod_id} ,
+			       MOD_DT = NOW()
+			WHERE  AI_IDX = #{ai_idx}
+			AND	   USE_YN = 'Y'
+		]]>
+	</update>
+	
+	<update id="updateAccessIpForDelete" parameterType="AccessIpVo">
+		<![CDATA[
+			UPDATE EZ_ACCESS_IP
+			SET    USE_YN = 'N',
+			       MOD_ID = #{mod_id} ,
+			       MOD_DT = NOW()
+			WHERE  AI_IDX = #{ai_idx}
+		]]>
+	</update>
+	
+</mapper>

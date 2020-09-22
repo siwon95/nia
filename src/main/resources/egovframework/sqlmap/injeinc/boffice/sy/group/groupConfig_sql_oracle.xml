@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="GroupConfigDao">
+	
+	<resultMap id="GroupConfigMap" type="egovframework.injeinc.boffice.sy.group.vo.GroupConfigVo">
+		<result property="gcIdx" column="GC_IDX"/>		<!--그룹키-->		
+		<result property="gcName" column="GC_NAME"/>		<!--그룹명-->
+		<result property="gcDesc" column="GC_DESC"/>		<!--그룹설명-->	
+		<result property="useYn" column="USE_YN"/>		<!--사용여부-->
+		<result property="regDt" column="REG_DT"/>		<!--등록일시-->
+		<result property="regId" column="REG_ID"/>		<!--등록자ID-->
+		<result property="modDt" column="MOD_DT"/>		<!--수정일시-->
+		<result property="modId" column="MOD_ID"/>		<!--수정자ID-->
+	</resultMap>
+	
+	<resultMap id="GroupConfigListMap" type="egovframework.injeinc.boffice.sy.group.vo.GroupConfigVo">
+		<result property="gcIdx" column="GC_IDX"/>		<!--그룹키-->		
+		<result property="gcName" column="GC_NAME"/>		<!--그룹명-->
+		<result property="gcDesc" column="GC_DESC"/>		<!--그룹설명-->
+		<result property="memberCount" column="MEMBER_COUNT"/>		<!-- 회원수 -->
+		<result property="useYn" column="USE_YN"/>		<!--사용여부-->	
+		<result property="regDt" column="REG_DT"/>		<!--등록일시-->				
+	</resultMap>
+	
+	<resultMap id="GroupConfigViewMap" type="egovframework.injeinc.boffice.sy.group.vo.GroupConfigVo">
+		<result property="gcIdx" column="GC_IDX"/>		<!--그룹키-->		
+		<result property="gcName" column="GC_NAME"/>		<!--그룹명-->
+		<result property="gcDesc" column="GC_DESC"/>		<!--그룹설명-->	
+	</resultMap>
+	
+	<resultMap id="UserGroupListMap" type="egovframework.injeinc.boffice.sy.group.vo.UserGroupVo">
+		<result property="cuIdx" column="CU_IDX"/>		<!--회원키-->
+		<result property="ugIdx" column="UG_IDX"/>		<!--맵핑키-->
+		<result property="cuId" column="CU_ID"/>		<!--회원ID-->
+		<result property="cuName" column="CU_NAME"/>		<!--회원이름-->
+		<result property="regDt" column="REG_DT"/>		<!--등록일시(그룹가입일)-->
+		<result property="lastLogDt" column="LAST_LOG_DT"/>		<!--최종방문일-->
+	</resultMap>
+	
+	<resultMap id="UserListMap" type="egovframework.injeinc.boffice.sy.user.vo.UserVo">
+		<result property="cuIdx" column="CU_IDX"/>		<!--회원키-->
+		<result property="cuId" column="CU_ID"/>		<!--회원아이디-->
+		<result property="cuName" column="CU_NAME"/>		<!--회원이름-->		
+		<result property="lastLogDt" column="LAST_LOG_DT"/>		<!--마지막로그인일시-->			
+		<result property="regDt" column="REG_DT"/>		<!--등록일시(가입일)-->						
+	</resultMap>	
+
+	<sql id="groupConfigSearch">
+		<if test="scRegDtSt != null and scRegDtSt != ''">
+			<if test="scRegDtEd != null and scRegDtEd != ''">
+			<![CDATA[
+				and
+				to_char(to_date(REG_DT, 'yyyymmddhh24miss'),'yyyymmdd')
+				BETWEEN
+				to_char(to_date(replace(#{scRegDtSt},'-',''), 'yyyymmddhh24miss'),'yyyymmdd')
+				AND
+				to_char(to_date(replace(#{scRegDtEd},'-',''), 'yyyymmddhh24miss'),'yyyymmdd')
+			]]>	
+			</if>	
+		</if>
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == ''">
+			<![CDATA[
+				and
+				GC_NAME LIKE '%' || #{searchKeyword} || '%'
+			]]>
+			</if>		
+			<if test="searchCondition == gcName">
+			<![CDATA[
+				and
+				GC_NAME LIKE '%' || #{searchKeyword} || '%'
+			]]>
+			</if>
+		</if>
+	</sql>
+	
+	<select id="selectPagGroupConfig" parameterType="GroupConfigVo" resultType="int">
+		<![CDATA[
+			SELECT 
+				COUNT(*)
+			FROM EZ_GROUP_CONFIG
+		]]>
+		<where>
+			<include refid="groupConfigSearch"/>
+		</where>
+	</select>
+	
+	<select id="selectListGroupConfig" parameterType="GroupConfigVo" resultMap="GroupConfigListMap">
+		<![CDATA[	
+		SELECT * FROM 
+			(SELECT ROWNUM AS RN, TB.* FROM
+				(SELECT GC.GC_IDX,
+					GC.GC_NAME,
+				    GC.GC_DESC,
+		    		GC.USE_YN,
+		    		(SELECT COUNT(*) FROM EZ_USER_GROUP UG WHERE UG.GC_IDX = GC.GC_IDX) AS "MEMBER_COUNT",
+		    		to_char(to_date(GC.REG_DT, 'yyyymmddhh24miss'),'yyyy-mm-dd hh:mi:ss') AS "REG_DT"
+				FROM
+				    EZ_GROUP_CONFIG GC
+	  	]]>
+		<where>
+			<if test="scRegDtSt != null and scRegDtSt != ''">
+				<if test="scRegDtEd != null and scRegDtEd != ''">
+				<![CDATA[			
+					and to_char(to_date(GC.REG_DT, 'yyyymmddhh24miss'),'yyyymmdd')
+					BETWEEN
+					to_char(to_date(replace(#{scRegDtSt},'-',''), 'yyyymmddhh24miss'),'yyyymmdd')
+					AND
+					to_char(to_date(replace(#{scRegDtEd},'-',''), 'yyyymmddhh24miss'),'yyyymmdd')
+					]]>
+				</if>
+			</if>
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<if test="searchCondition == ''">
+				<![CDATA[
+					and GC_NAME LIKE '%' || #{searchKeyword} || '%'
+				]]>
+				</if>		
+				<if test="searchCondition == gcName">
+				<![CDATA[
+					and GC_NAME LIKE '%' || #{searchKeyword} || '%'
+				]]>
+				</if>
+			</if>
+		</where>
+		<![CDATA[
+		GROUP BY GC.GC_IDX,
+			GC.GC_NAME,
+		    GC.GC_DESC,
+		    GC.USE_YN,
+		    GC.REG_DT
+		ORDER BY GC.GC_IDX DESC
+		) TB) TBL
+		WHERE RN BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	  	]]>
+	</select>
+		
+	<insert id="insertGroupConfig" parameterType="GroupConfigVo">
+	<![CDATA[
+		INSERT INTO EZ_GROUP_CONFIG(
+			GC_IDX,
+			GC_NAME,
+			GC_DESC,
+			USE_YN,
+			REG_DT,
+			REG_ID
+			)
+		VALUES(
+			(SELECT NVL(MAX(GC_IDX),0)+1 FROM EZ_GROUP_CONFIG),
+			#{gcName},
+			#{gcDesc},
+			'Y',
+			to_char(sysdate,'yyyymmddhh24miss'),
+			#{regId}
+			)
+	]]>
+	</insert>
+	
+	<update id="updateGroupConfig" parameterType="GroupConfigVo">
+		<![CDATA[
+			UPDATE EZ_GROUP_CONFIG SET
+				GC_NAME = #{gcName},
+				GC_DESC = #{gcDesc},
+				MOD_ID = #{modId},
+				MOD_DT = to_char(sysdate,'yyyymmddhh24miss')
+			WHERE GC_IDX = #{gcIdx}
+		]]>
+	</update>
+	
+	<select id="gcNameCheckAx" parameterType="String" resultType="Integer">
+	<![CDATA[
+		SELECT COUNT(*) FROM EZ_GROUP_CONFIG
+		WHERE CU_ID = #{cuId}
+	]]>
+	</select>
+
+	<select id="selectPagUserGroupMember" parameterType="int" resultType="int">
+		<![CDATA[
+			SELECT 
+				COUNT(*)
+			FROM EZ_USER_GROUP
+			WHERE GC_IDX = #{gcIdx}
+		]]>
+	</select>
+
+	
+	<select id="viewGroupConfig" parameterType="Integer" resultMap="GroupConfigViewMap">
+	<![CDATA[
+		SELECT GC_IDX,
+			GC_NAME,
+			GC_DESC
+		FROM EZ_GROUP_CONFIG
+		WHERE GC_IDX = #{gcIdx}
+	]]>
+	</select>
+	
+	<select id="selectListUserGroupMember" parameterType="UserGroupVo" resultMap="UserGroupListMap">
+	<![CDATA[
+		SELECT * FROM (SELECT ROWNUM AS RN,
+			UG.UG_IDX,
+			CU.CU_IDX,
+		    CU.CU_ID,
+		    CU.CU_NAME,
+		    to_char(to_date(replace(UG.REG_DT,'-',''), 'yyyymmddhh24miss'),'yyyymmdd') AS REG_DT,
+		    to_char(to_date(replace(CU.LAST_LOG_DT,'-',''), 'yyyymmddhh24miss'),'yyyymmdd') AS LAST_LOG_DT
+		   FROM EZ_USER_GROUP UG, EZ_CMS_USER CU
+		   WHERE UG.GC_IDX = #{gcIdx} AND UG.CU_IDX = CU.CU_IDX 
+		ORDER BY UG.UG_IDX) TB
+		WHERE RN BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	]]>
+	</select>
+	
+	<insert id="userGroupAddRegAx" parameterType="java.util.HashMap">
+		<![CDATA[
+					INSERT INTO EZ_USER_GROUP(
+						UG_IDX
+						, CU_IDX
+						, GC_IDX
+						, USE_YN
+						, REG_DT
+						, REG_ID
+					)
+					VALUES
+					(
+						(SELECT NVL(MAX(UG_IDX),0)+1 FROM EZ_USER_GROUP)
+						, #{cuIdx}
+						, #{gcIdx}
+						, 'Y'
+						, to_char(sysdate,'yyyymmddhh24miss')
+						, #{regId}
+					)
+	  ]]>
+	</insert>
+	
+	<delete id="userGroupRmvAx" parameterType="int">
+	<![CDATA[
+		DELETE FROM EZ_USER_GROUP
+		WHERE UG_IDX = #{ugIdx}
+	]]>
+	</delete>
+	
+	<select id="selectListUserGroupAdd" parameterType="UserVo" resultMap="UserListMap">
+		<![CDATA[
+		SELECT * FROM (SELECT ROWNUM AS RN, TB.* FROM(SELECT CU_IDX,
+		    CU_ID,
+		    CU_NAME,
+		    to_char(to_date(REG_DT, 'yyyymmddhh24miss'),'yyyy-mm-dd hh:mi:ss') AS REG_DT,
+		    to_char(to_date(LAST_LOG_DT, 'yyyymmddhh24miss'),'yyyy-mm-dd hh:mi:ss') AS LAST_LOG_DT
+		FROM
+		    EZ_CMS_USER
+	  	
+	  	WHERE CU_IDX NOT IN(SELECT CU_IDX FROM EZ_USER_GROUP WHERE GC_IDX = #{gcIdx})
+	  	]]>
+		<include refid="UserDao.userSearch"/>
+		<![CDATA[
+		ORDER BY CU_IDX DESC
+		) TB) TBL
+		WHERE RN BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	  	]]>
+	</select>
+				
+	<select id="selectPagUserGroupAdd" parameterType="UserVo" resultType="int">
+	<![CDATA[	
+			SELECT 
+				COUNT(*)
+			FROM EZ_CMS_USER
+		
+			WHERE CU_IDX NOT IN(SELECT CU_IDX FROM EZ_USER_GROUP WHERE GC_IDX = #{gcIdx})
+	]]>
+	<include refid="UserDao.userSearch"/>
+	</select>
+	
+	<!-- 회원그룹삭제 -->
+	<delete id="deleteGroupConfig" parameterType="String">
+		<![CDATA[
+			DECLARE 
+			BEGIN
+				
+				DELETE EZ_USER_GROUP WHERE GC_IDX = #{gcIdx};
+				
+				DELETE EZ_GROUP_CONFIG WHERE GC_IDX = #{gcIdx};
+
+			END;
+		]]>
+	</delete>
+	
+	<select id="selectListGroupConfigAll" resultType="egovMap">
+		<![CDATA[
+			SELECT
+				TO_CHAR(GC_IDX) AS CODE
+				, GC_NAME  AS CODE_NAME
+			FROM EZ_GROUP_CONFIG
+			WHERE USE_YN = 'Y'
+			ORDER BY GC_IDX DESC
+		]]>	
+	</select>
+	
+</mapper>

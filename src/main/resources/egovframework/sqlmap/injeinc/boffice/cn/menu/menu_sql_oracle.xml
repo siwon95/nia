@@ -1,0 +1,961 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Mon Mar 09 15:50:20 KST 2020-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MenuDao">
+	
+	<resultMap id="MenuCodeMap" type="egovframework.injeinc.boffice.cn.menu.vo.MenuVo">
+		<result property="menuCode" column="MENU_CODE"/> <!--메뉴 코드-->
+		<result property="sortOrder" column="SORT_ORDER"/> <!--정렬 순서-->
+	</resultMap>
+	
+	<resultMap id="MenuSelectMenuMap" type="egovframework.injeinc.boffice.cn.menu.vo.MenuVo">
+		<result property="menuCode" column="MENU_CODE"/> <!--메뉴 코드-->
+		<result property="sortOrder" column="SORT_ORDER"/> <!--정렬 순서-->
+		<result property="menuNm" column="MENU_NM"/> <!--메뉴 명-->
+		<result property="menuDepth" column="MENU_DEPTH"/> <!--메뉴깊이-->
+		<result property="adminMenuUrl" column="ADMIN_MENU_URL"/> <!--관리자메뉴URL-->
+		<result property="userMenuUrl" column="USER_MENU_URL"/> <!--관리자메뉴URL-->
+		<result property="menuType" column="MENU_TYPE"/> <!--메뉴타입-->
+		<result property="publishYn" column="PUBLISH_YN"/> <!--메뉴타입-->
+	</resultMap>
+
+	<resultMap id="MenuMap" type="egovframework.injeinc.boffice.cn.menu.vo.MenuVo">
+		<result property="siteCd" column="SITE_CD"/> <!--도메인CD-->
+		<result property="menuCode" column="MENU_CODE"/> <!--메뉴 코드-->
+		<result property="sortOrder" column="SORT_ORDER"/> <!--정렬 순서-->
+		<result property="menuNm" column="MENU_NM"/> <!--메뉴 명-->
+		<result property="title" column="TITLE"/> <!--제목-->
+		<result property="basePath" column="BASE_PATH"/> <!--기본경로-->
+		<result property="menuPath" column="MENU_PATH"/> <!--메뉴경로-->
+		<result property="menuDepth" column="MENU_DEPTH"/> <!--메뉴깊이-->
+		<result property="adminMenuUrl" column="ADMIN_MENU_URL"/> <!--관리자메뉴URL-->
+		<result property="userMenuUrl" column="USER_MENU_URL"/> <!--사용자메뉴URL-->
+		<result property="layoutCode" column="LAYOUT_CODE"/> <!--레이아웃코드-->
+		<result property="parentLayoutUseYn" column="PARENT_LAYOUT_USE_YN"/> <!--부모레이아웃사용여부-->
+		<result property="menuType" column="MENU_TYPE"/> <!--메뉴유형-->
+		<result property="linkType" column="LINK_TYPE"/> <!--링크유형-->
+		<result property="contentType" column="CONTENT_TYPE"/> <!--컨텐츠유형-->
+		<result property="controlNm" column="CONTROL_NM"/> <!--컨트롤명-->
+		<result property="methodNm" column="METHOD_NM"/> <!--함수명-->
+		<result property="chargeDeptCode" column="CHARGE_DEPT_CODE"/> <!--담당부서코드-->
+		<result property="chargerId" column="CHARGER_ID"/> <!--담당자 아이디-->
+		<result property="authType" column="AUTH_TYPE"/> <!--권한유형-->
+		<result property="authDeptCd" column="AUTH_DEPT_CD"/> <!--권한부서코드-->
+		<result property="contentSeqNo" column="CONTENT_SEQ_NO"/> <!--컨텐츠일련번호-->
+		<result property="headContents" column="HEAD_CONTENTS"/> <!--HEAD컨텐츠-->
+		<result property="footContents" column="FOOT_CONTENTS"/> <!--FOOT컨텐츠-->
+		<result property="titleImg" column="TITLE_IMG"/> <!--제목이미지-->
+		<result property="menuTitleImg" column="MENU_TITLE_IMG"/> <!--메뉴제목이미지-->
+		<result property="menuOnImg" column="MENU_ON_IMG"/> <!--메뉴온이미지-->
+		<result property="menuOffImg" column="MENU_OFF_IMG"/> <!--메뉴오프이미지-->
+		<result property="fileSeqNo" column="FILE_SEQ_NO"/> <!--파일일련번호-->
+		<result property="approvalYn" column="APPROVAL_YN"/> <!--승인여부-->
+		<result property="statisticsUseYn" column="STATISTICS_USE_YN"/> <!--통계사용여부-->
+		<result property="satisfyShowYn" column="SATISFY_SHOW_YN"/> <!--만족도표시여부-->
+		<result property="chargerShowYn" column="CHARGER_SHOW_YN"/> <!--담당자표시여부-->
+		<result property="showYn" column="SHOW_YN"/> <!--표시여부-->
+		<result property="useYn" column="USE_YN"/> <!--사용여부-->
+		<result property="regId" column="REG_ID"/> <!--등록자아이디-->
+		<result property="regDt" column="REG_DT"/> <!--등록 일시-->
+		<result property="modId" column="MOD_ID"/> <!--수정자아이디-->
+		<result property="modDt" column="MOD_DT"/> <!--수정 일시-->
+		<result property="snsUseYn" column="SNS_USE_YN"/> <!--SNS사용여부-->
+		<result property="pageCd" column="PAGE_CD"/> <!--페이지코드-->
+		<result property="orgChargeDeptCode" column="ORG_CHARGE_DEPT_CODE"/> <!--메뉴고정용부서-->
+		<result property="orgTel" column="ORG_TEL"/> <!--메뉴고정전화-->
+		<result property="headContent" column="HEAD_CONTENT"/> <!--메뉴 상단 컨텐츠-->
+		<result property="boonyaYn" column="BOONYA_YN"/> <!--분야별정보yn-->
+		<result property="socialShowYn" column="SOCIAL_SHOW_YN"/> <!--소셜사용여부-->
+		<result property="metaTagContent" column="METATAG_CONTENTS"/> <!--메타태그-->
+	</resultMap>
+	
+	<resultMap id="MenuMapLayout" type="egovframework.injeinc.boffice.cn.menu.vo.MenuVo">
+		<result property="siteCd" column="SITE_CD"/> <!--도메인CD-->
+		<result property="siteNm" column="SITE_NM"/> <!--도메인CD-->
+		<result property="menuCode" column="MENU_CODE"/> <!--메뉴 코드-->
+		<result property="sortOrder" column="SORT_ORDER"/> <!--정렬 순서-->
+		<result property="menuNm" column="MENU_NM"/> <!--메뉴 명-->
+		<result property="title" column="TITLE"/> <!--제목-->
+		<result property="basePath" column="BASE_PATH"/> <!--기본경로-->
+		<result property="menuPath" column="MENU_PATH"/> <!--메뉴경로-->
+		<result property="menuDepth" column="MENU_DEPTH"/> <!--메뉴깊이-->
+		<result property="adminMenuUrl" column="ADMIN_MENU_URL"/> <!--관리자메뉴URL-->
+		<result property="userMenuUrl" column="USER_MENU_URL"/> <!--사용자메뉴URL-->
+		<result property="layoutCode" column="LAYOUT_CODE"/> <!--레이아웃코드-->
+		<result property="parentLayoutUseYn" column="PARENT_LAYOUT_USE_YN"/> <!--부모레이아웃사용여부-->
+		<result property="menuType" column="MENU_TYPE"/> <!--메뉴유형-->
+		<result property="linkType" column="LINK_TYPE"/> <!--링크유형-->
+		<result property="contentType" column="CONTENT_TYPE"/> <!--컨텐츠유형-->
+		<result property="controlNm" column="CONTROL_NM"/> <!--컨트롤명-->
+		<result property="methodNm" column="METHOD_NM"/> <!--함수명-->
+		<result property="chargeDeptCode" column="CHARGE_DEPT_CODE"/> <!--담당부서코드-->
+		<result property="chargerId" column="CHARGER_ID"/> <!--담당자 아이디-->
+		<result property="authType" column="AUTH_TYPE"/> <!--권한유형-->
+		<result property="authDeptCd" column="AUTH_DEPT_CD"/> <!--권한부서코드-->
+		<result property="contentSeqNo" column="CONTENT_SEQ_NO"/> <!--컨텐츠일련번호-->
+		<result property="headContents" column="HEAD_CONTENTS"/> <!--HEAD컨텐츠-->
+		<result property="headContent" column="HEAD_CONTENT"/> <!--HEAD 내용-->
+		<result property="footContents" column="FOOT_CONTENTS"/> <!--FOOT컨텐츠-->
+		<result property="titleImg" column="TITLE_IMG"/> <!--제목이미지-->
+		<result property="menuTitleImg" column="MENU_TITLE_IMG"/> <!--메뉴제목이미지-->
+		<result property="menuOnImg" column="MENU_ON_IMG"/> <!--메뉴온이미지-->
+		<result property="menuOffImg" column="MENU_OFF_IMG"/> <!--메뉴오프이미지-->
+		<result property="fileSeqNo" column="FILE_SEQ_NO"/> <!--파일일련번호-->
+		<result property="approvalYn" column="APPROVAL_YN"/> <!--승인여부-->
+		<result property="statisticsUseYn" column="STATISTICS_USE_YN"/> <!--통계사용여부-->
+		<result property="satisfyShowYn" column="SATISFY_SHOW_YN"/> <!--만족도표시여부-->
+		<result property="chargerShowYn" column="CHARGER_SHOW_YN"/> <!--담당자표시여부-->
+		<result property="showYn" column="SHOW_YN"/> <!--표시여부-->
+		<result property="useYn" column="USE_YN"/> <!--사용여부-->
+		<result property="regId" column="REG_ID"/> <!--등록자아이디-->
+		<result property="regDt" column="REG_DT"/> <!--등록 일시-->
+		<result property="modId" column="MOD_ID"/> <!--수정자아이디-->
+		<result property="modDt" column="MOD_DT"/> <!--수정 일시-->
+		<result property="snsUseYn" column="SNS_USE_YN"/> <!--SNS사용여부-->
+		<result property="pageCd" column="PAGE_CD"/> <!--페이지코드-->
+		<result property="orgChargeDeptCode" column="ORG_CHARGE_DEPT_CODE"/> <!--메뉴고정용부서-->
+		<result property="orgTel" column="ORG_TEL"/> <!--메뉴고정전화-->
+		<result property="layoutUrl" column="LAYOUT_URL"/> <!--레이아웃 주소-->
+		<result property="deptInfo" column="DEPT_INFO"/> <!--검색엔진-->
+		<result property="socialShowYn" column="SOCIAL_SHOW_YN"/> <!--소셜사용여부-->
+		<result property="metaTagContent" column="METATAG_CONTENTS"/> <!--메타태그-->
+	</resultMap>
+	
+	<resultMap id="MenuMapLayout2" type="egovframework.injeinc.boffice.cn.menu.vo.MenuVo">
+		<result property="siteCd" column="SITE_CD"/> <!--도메인CD-->
+		<result property="siteNm" column="SITE_NM"/> <!--도메인CD-->
+		<result property="menuCode" column="MENU_CODE"/> <!--메뉴 코드-->
+		<result property="sortOrder" column="SORT_ORDER"/> <!--정렬 순서-->
+		<result property="menuNm" column="MENU_NM"/> <!--메뉴 명-->
+		<result property="title" column="TITLE"/> <!--제목-->
+		<result property="basePath" column="BASE_PATH"/> <!--기본경로-->
+		<result property="menuPath" column="MENU_PATH"/> <!--메뉴경로-->
+		<result property="menuDepth" column="MENU_DEPTH"/> <!--메뉴깊이-->
+		<result property="adminMenuUrl" column="ADMIN_MENU_URL"/> <!--관리자메뉴URL-->
+		<result property="userMenuUrl" column="USER_MENU_URL"/> <!--사용자메뉴URL-->
+		<result property="subMenuTitle" column="SUB_TITLE"/> <!--사용자서브타이틀-->
+		<result property="layoutCode" column="LAYOUT_CODE"/> <!--레이아웃코드-->
+		<result property="parentLayoutUseYn" column="PARENT_LAYOUT_USE_YN"/> <!--부모레이아웃사용여부-->
+		<result property="menuType" column="MENU_TYPE"/> <!--메뉴유형-->
+		<result property="linkType" column="LINK_TYPE"/> <!--링크유형-->
+		<result property="contentType" column="CONTENT_TYPE"/> <!--컨텐츠유형-->
+		<result property="controlNm" column="CONTROL_NM"/> <!--컨트롤명-->
+		<result property="methodNm" column="METHOD_NM"/> <!--함수명-->
+		<result property="chargeDeptCode" column="CHARGE_DEPT_CODE"/> <!--담당부서코드-->
+		<result property="chargerId" column="CHARGER_ID"/> <!--담당자 아이디-->
+		<result property="authType" column="AUTH_TYPE"/> <!--권한유형-->
+		<result property="authDeptCd" column="AUTH_DEPT_CD"/> <!--권한부서코드-->
+		<result property="contentSeqNo" column="CONTENT_SEQ_NO"/> <!--컨텐츠일련번호-->
+		<result property="headContents" column="HEAD_CONTENTS"/> <!--HEAD컨텐츠-->
+		<result property="headContent" column="HEAD_CONTENT"/> <!--HEAD컨텐츠-->
+		<result property="footContents" column="FOOT_CONTENTS"/> <!--FOOT컨텐츠-->
+		<result property="titleImg" column="TITLE_IMG"/> <!--제목이미지-->
+		<result property="menuTitleImg" column="MENU_TITLE_IMG"/> <!--메뉴제목이미지-->
+		<result property="menuOnImg" column="MENU_ON_IMG"/> <!--메뉴온이미지-->
+		<result property="menuOffImg" column="MENU_OFF_IMG"/> <!--메뉴오프이미지-->
+		<result property="fileSeqNo" column="FILE_SEQ_NO"/> <!--파일일련번호-->
+		<result property="approvalYn" column="APPROVAL_YN"/> <!--승인여부-->
+		<result property="statisticsUseYn" column="STATISTICS_USE_YN"/> <!--통계사용여부-->
+		<result property="satisfyShowYn" column="SATISFY_SHOW_YN"/> <!--만족도표시여부-->
+		<result property="chargerShowYn" column="CHARGER_SHOW_YN"/> <!--담당자표시여부-->
+		<result property="showYn" column="SHOW_YN"/> <!--표시여부-->
+		<result property="useYn" column="USE_YN"/> <!--사용여부-->
+		<result property="regId" column="REG_ID"/> <!--등록자아이디-->
+		<result property="regDt" column="REG_DT"/> <!--등록 일시-->
+		<result property="modId" column="MOD_ID"/> <!--수정자아이디-->
+		<result property="modDt" column="MOD_DT"/> <!--수정 일시-->
+		<result property="snsUseYn" column="SNS_USE_YN"/> <!--SNS사용여부-->
+		<result property="pageCd" column="PAGE_CD"/> <!--페이지코드-->
+		<result property="orgChargeDeptCode" column="ORG_CHARGE_DEPT_CODE"/> <!--메뉴고정용부서-->
+		<result property="orgTel" column="ORG_TEL"/> <!--메뉴고정전화-->
+		<result property="layoutUrl" column="LAYOUT_URL"/> <!--레이아웃 주소-->
+		<result property="deptInfo" column="DEPT_INFO"/> <!--검색엔진-->
+		<result property="socialShowYn" column="SOCIAL_SHOW_YN"/> <!--소셜사용여부-->
+		<result property="metaTagContent" column="METATAG_CONTENTS"/> <!--메타태그-->
+	</resultMap>
+	
+	<resultMap id="MenuMapLayout3" type="egovframework.injeinc.boffice.cn.menu.vo.MenuVo">
+		<result property="siteCd" column="SITE_CD"/> <!--도메인CD-->
+		<result property="siteNm" column="SITE_NM"/> <!--도메인CD-->
+		<result property="menuCode" column="MENU_CODE"/> <!--메뉴 코드-->
+		<result property="sortOrder" column="SORT_ORDER"/> <!--정렬 순서-->
+		<result property="menuNm" column="MENU_NM"/> <!--메뉴 명-->
+		<result property="title" column="TITLE"/> <!--제목-->
+		<result property="basePath" column="BASE_PATH"/> <!--기본경로-->
+		<result property="menuPath" column="MENU_PATH"/> <!--메뉴경로-->
+		<result property="menuDepth" column="MENU_DEPTH"/> <!--메뉴깊이-->
+		<result property="userMenuUrl" column="USER_MENU_URL"/> <!--사용자메뉴URL-->
+		<result property="layoutCode" column="LAYOUT_CODE"/> <!--레이아웃코드-->
+		<result property="menuType" column="MENU_TYPE"/> <!--메뉴유형-->
+		<result property="linkType" column="LINK_TYPE"/> <!--링크유형-->
+		<result property="chargeDeptCode" column="CHARGE_DEPT_CODE"/> <!--담당부서코드-->
+		<result property="chargerShowYn" column="CHARGER_SHOW_YN"/> <!--담당자표시여부-->
+		<result property="showYn" column="SHOW_YN"/> <!--표시여부-->
+		<result property="orgTel" column="ORG_TEL"/> <!--메뉴고정전화-->
+		<result property="headContent" column="HEAD_CONTENT"/> <!--HEAD컨텐츠-->
+		<result property="layoutUrl" column="LAYOUT_URL"/> <!--레이아웃 주소-->
+		<result property="metaTagContent" column="METATAG_CONTENTS"/> <!--메타태그-->
+	</resultMap>
+	
+	<resultMap id="MenuMapLayout4" type="egovframework.injeinc.boffice.cn.menu.vo.MenuVo">
+		<result property="menuNm" column="MENU_NM"/> <!--메뉴 명-->
+		<result property="menuDepth" column="MENU_DEPTH"/> <!--메뉴깊이-->
+		<result property="userMenuUrl" column="USER_MENU_URL"/> <!--사용자메뉴URL-->
+		<result property="linkType" column="LINK_TYPE"/> <!--링크유형-->
+		<result property="showYn" column="SHOW_YN"/> <!--표시여부-->
+	</resultMap>
+	
+	<resultMap id="MenuMapLayout5" type="egovframework.injeinc.boffice.cn.menu.vo.MenuVo">
+		<result property="menuCode" column="MENU_CODE"/> <!--메뉴 코드-->
+		<result property="sortOrder" column="SORT_ORDER"/> <!--정렬 순서-->
+		<result property="menuNm" column="MENU_NM"/> <!--메뉴 명-->
+		<result property="menuDepth" column="MENU_DEPTH"/> <!--메뉴깊이-->
+		<result property="userMenuUrl" column="USER_MENU_URL"/> <!--사용자메뉴URL-->
+		<result property="linkType" column="LINK_TYPE"/> <!--링크유형-->
+		<result property="cnt" column="CNT"/> <!--하위 메뉴 숫자-->
+	</resultMap>
+	
+	<resultMap id="UserMenuSubUrlsMap" type="egovframework.injeinc.boffice.cn.menu.vo.MenuVo">
+		<result property="siteCd" column="SITE_CD"/> <!--도메인CD-->
+		<result property="menuCode" column="MENU_CODE"/> <!--메뉴 코드-->
+		<result property="subMenuUrl" column="SUB_MENU_URL"/> 
+		<result property="subMenuTitle" column="SUB_TITLE"/> 
+	</resultMap>
+	
+	<insert id="insertMenu" parameterType="MenuVo">
+	<![CDATA[	
+		INSERT INTO EZ_USER_MENU(
+			SITE_CD
+			,MENU_CODE
+			,SORT_ORDER
+			,MENU_NM
+			,TITLE
+			,BASE_PATH
+			,MENU_PATH
+			,MENU_DEPTH
+			,ADMIN_MENU_URL
+			,USER_MENU_URL
+			,LAYOUT_CODE
+			,PARENT_LAYOUT_USE_YN
+			,MENU_TYPE
+			,LINK_TYPE
+			,CONTENT_TYPE
+			,CONTROL_NM
+			,METHOD_NM
+			,CHARGE_DEPT_CODE
+			,CHARGER_ID
+			,AUTH_TYPE
+			,AUTH_DEPT_CD
+			,CONTENT_SEQ_NO
+			,HEAD_CONTENTS
+			,FOOT_CONTENTS
+			,TITLE_IMG
+			,MENU_TITLE_IMG
+			,MENU_ON_IMG
+			,MENU_OFF_IMG
+			,FILE_SEQ_NO
+			,APPROVAL_YN
+			,STATISTICS_USE_YN
+			,SATISFY_SHOW_YN
+			,CHARGER_SHOW_YN
+			,SHOW_YN
+			,USE_YN
+			,REG_ID
+			,REG_DT
+			,MOD_ID
+			,MOD_DT
+			,SNS_USE_YN
+			,PAGE_CD
+			,ORG_CHARGE_DEPT_CODE
+			,ORG_TEL
+			,BOONYA_YN
+			,SOCIAL_SHOW_YN
+			,METATAG_CONTENTS
+		) VALUES(
+			#{siteCd}
+			,RPAD(#{menuCode},23,0)
+			,RPAD(#{sortOrder},13,'0')
+			,#{menuNm}
+			,''
+			,#{basePath}
+			,#{menuPath}
+			,((ROUND((LENGTH(RTRIM(#{sortOrder},'0'))-1)/2))+1)-1
+			,#{adminMenuUrl}
+			,'' 
+			,#{layoutCode}
+			,'Y'
+			,'contents'
+			,'normal'
+			,''
+			,''
+			,''
+			,''
+			,''
+			,''
+			,''
+			,''
+			,#{headContents}
+			,#{footContents}
+			,#{titleImg}
+			,#{menuTitleImg}
+			,#{menuOnImg}
+			,#{menuOffImg}
+			,#{fileSeqNo}
+			,'Y'
+			,'Y'
+			,#{satisfyShowYn}
+			,'Y'
+			,'N'
+			,'Y'
+			,#{regId}
+			,sysdate
+			,#{modId}
+			,sysdate
+			,'Y'
+			,''
+			,''
+			,''
+			,'N'
+			,#{socialShowYn}
+			,#{metaTagContent}
+		)
+		]]>
+	</insert>
+	<insert id="insertMenuSubUrls" parameterType="MenuVo">
+	<![CDATA[	
+		INSERT INTO EZ_USER_MENU_SUB_URLS(
+			SITE_CD
+			,MENU_CODE
+			,SUB_MENU_URL
+			,SUB_TITLE
+		) VALUES(
+			#{siteCd}
+			,#{menuCode}
+			,#{subMenuUrl}
+			,#{subMenuTitle}
+		)
+	]]>
+	</insert>
+	<delete id="deleteMenu" parameterType="MenuVo">
+	<![CDATA[	
+		DELETE FROM EZ_USER_MENU 
+		WHERE SITE_CD=#{siteCd} AND MENU_CODE=#{menuCode}
+	]]>
+	</delete>
+	
+	<select id="selectMenuUnderCount" parameterType="MenuVo" resultType="String">
+	<![CDATA[	
+					select 
+					count(*)
+					from EZ_USER_MENU 
+					where SORT_ORDER like ''||SUBSTR(#{sortOrder},0,((ROUND((LENGTH(RTRIM(#{sortOrder},'0'))-1)/2)*2)+1))||'%'
+					AND SITE_CD=#{siteCd}
+	]]>
+	</select>
+	
+	<delete id="deleteMenuSubUrls" parameterType="MenuVo">
+	<![CDATA[	
+		DELETE FROM EZ_USER_MENU_SUB_URLS 
+		WHERE SITE_CD=#{siteCd} AND MENU_CODE=#{menuCode}
+	]]>
+	</delete>
+	
+	<select id="selectMenuSubUrls" parameterType="MenuVo" resultMap="UserMenuSubUrlsMap">
+	<![CDATA[	
+			SELECT
+				SITE_CD
+				,MENU_CODE
+				,SUB_MENU_URL
+				,SUB_TITLE
+			FROM EZ_USER_MENU_SUB_URLS
+			WHERE MENU_CODE=#{menuCode} AND SITE_CD=#{siteCd}
+	]]>
+	</select> 
+	
+	<update id="updateMenu" parameterType="MenuVo">
+	<![CDATA[	
+		UPDATE EZ_USER_MENU SET
+			MENU_NM=#{menuNm}
+			,TITLE=#{title}
+			,ADMIN_MENU_URL=#{adminMenuUrl}
+			,USER_MENU_URL=#{userMenuUrl}
+			,LAYOUT_CODE=#{layoutCode}
+			,PARENT_LAYOUT_USE_YN=#{parentLayoutUseYn}
+			,MENU_TYPE=#{menuType}
+			,MENU_PATH=#{menuPath}
+			,LINK_TYPE=#{linkType}
+			,CONTENT_TYPE=#{contentType}
+			,CONTROL_NM=#{controlNm}
+			,METHOD_NM=#{methodNm}
+			,CHARGE_DEPT_CODE=#{chargeDeptCode}
+			,CHARGER_ID=#{chargerId}
+			,AUTH_TYPE=#{authType}
+			,AUTH_DEPT_CD=#{authDeptCd}
+			,CONTENT_SEQ_NO=#{contentSeqNo}
+			,HEAD_CONTENTS=#{headContents}
+			,FOOT_CONTENTS=#{footContents}
+			,TITLE_IMG=#{titleImg}
+			,MENU_TITLE_IMG=#{menuTitleImg}
+			,MENU_ON_IMG=#{menuOnImg}
+			,MENU_OFF_IMG=#{menuOffImg}
+			,FILE_SEQ_NO=#{fileSeqNo}
+			,APPROVAL_YN=#{approvalYn}
+			,STATISTICS_USE_YN=#{statisticsUseYn}
+			,SATISFY_SHOW_YN=#{satisfyShowYn}
+			,CHARGER_SHOW_YN=#{chargerShowYn}
+			,SHOW_YN=#{showYn}
+			,USE_YN=#{useYn}
+			,MOD_ID=#{modId}
+			,MOD_DT=sysdate
+			,SNS_USE_YN=#{snsUseYn}
+			,ORG_CHARGE_DEPT_CODE=#{orgChargeDeptCode}
+			,ORG_TEL=#{orgTel}
+			,HEAD_CONTENT=#{headContent}
+			,BOONYA_YN=#{boonyaYn}
+			,SOCIAL_SHOW_YN=#{socialShowYn}
+			,METATAG_CONTENTS=#{metaTagContent}
+		WHERE SITE_CD=#{siteCd} and MENU_CODE=#{menuCode}
+	]]>
+	</update>
+	
+	<update id="updateLinkMenu" parameterType="MenuVo">
+	<![CDATA[	
+		UPDATE EZ_USER_MENU SET
+			USER_MENU_URL=#{userMenuUrl}
+			,MOD_DT = SYSDATE
+		WHERE SITE_CD=#{siteCd} and MENU_CODE=#{menuCode}
+	]]>
+	</update>
+	
+	<insert id="insertMenuHistory" parameterType="MenuVo">
+	<![CDATA[	
+		INSERT INTO EZ_USER_MENU_HIS
+				SELECT (SELECT NVL(MAX(SEQ),0)+1 
+									FROM EZ_USER_MENU_HIS), 
+					A.*
+				FROM EZ_USER_MENU A
+				WHERE SITE_CD = #{siteCd}
+				AND MENU_CODE = #{menuCode}
+	]]> 
+	</insert>
+	
+	<select id="selectCreateSortOrder" parameterType="MenuVo" resultMap="MenuCodeMap">
+			<if test="sameLevel == &quot;Y&quot;">
+			<![CDATA[	
+			SELECT
+				RPAD(substr(max(SORT_ORDER),0,((ROUND((LENGTH(RTRIM(#{sortOrder},'0'))-1)/2)*2)+1))+1,13,'0')
+				|| TO_CHAR(sysdate,'YYYYmmddhh') as MENU_CODE
+				 ,RPAD(substr(max(SORT_ORDER),0,((ROUND((LENGTH(RTRIM(#{sortOrder},'0'))-1)/2)*2)+1))+1,13,'0') as SORT_ORDER
+			FROM EZ_USER_MENU
+				WHERE
+				SORT_ORDER like ''||substr(#{sortOrder},0,((ROUND((LENGTH(RTRIM(#{sortOrder},'0'))-1)/2)*2)+1)-2)||'%'
+				AND  SITE_CD= #{siteCd}
+			 ]]>
+			</if>
+			<if test="sameLevel == &quot;N&quot;">
+			<![CDATA[	
+			SELECT
+				RPAD(substr(max(SORT_ORDER),0,((ROUND((LENGTH(RTRIM(#{sortOrder},'0'))-1)/2)*2)+1)+2)+1,13,'0')
+				|| TO_CHAR(sysdate,'YYYYmmddhh') as MENU_CODE
+				,RPAD(substr(max(SORT_ORDER),0,((ROUND((LENGTH(RTRIM(#{sortOrder},'0'))-1)/2)*2)+1)+2)+1,13,'0') as SORT_ORDER
+			FROM EZ_USER_MENU 
+			WHERE  
+				SORT_ORDER like ''||substr(#{sortOrder},0,((ROUND((LENGTH(RTRIM(#{sortOrder},'0'))-1)/2)*2)+1))||'%'
+				AND  SITE_CD= #{siteCd}
+			 ]]>
+			</if>
+	</select> 
+	
+	<select id="selectHomeCodeChk" parameterType="MenuVo" resultType="int">
+	<![CDATA[	
+					SELECT
+						 COUNT(*)
+					FROM EZ_USER_MENU
+					WHERE
+					   SITE_CD= #{siteCd}
+	]]>
+	</select>
+	
+	<select id="selectEzUserMenu" parameterType="MenuVo" resultMap="MenuMap">
+		<![CDATA[	
+			SELECT
+				SITE_CD
+				, MENU_CODE
+				, SORT_ORDER
+				, MENU_NM
+				, TITLE
+				, BASE_PATH
+				, MENU_PATH
+				, MENU_DEPTH
+				, ADMIN_MENU_URL
+				, USER_MENU_URL
+				, LAYOUT_CODE
+				, PARENT_LAYOUT_USE_YN
+				, MENU_TYPE
+				, LINK_TYPE
+				, CONTENT_TYPE
+				, CONTROL_NM
+				, METHOD_NM
+				, CHARGE_DEPT_CODE
+				, CHARGER_ID
+				, AUTH_TYPE
+				, AUTH_DEPT_CD
+				, CONTENT_SEQ_NO
+				, HEAD_CONTENTS
+				, FOOT_CONTENTS
+				, TITLE_IMG
+				, MENU_TITLE_IMG
+				, MENU_ON_IMG
+				, MENU_OFF_IMG
+				, FILE_SEQ_NO
+				, APPROVAL_YN
+				, STATISTICS_USE_YN
+				, SATISFY_SHOW_YN
+				, CHARGER_SHOW_YN
+				, SHOW_YN
+				, USE_YN
+				, REG_ID
+				, REG_DT
+				, MOD_ID
+				, MOD_DT
+				, SNS_USE_YN
+				, PAGE_CD
+				, ORG_CHARGE_DEPT_CODE
+				, ORG_TEL
+				, HEAD_CONTENT
+				, BOONYA_YN
+				, SOCIAL_SHOW_YN
+				, METATAG_CONTENTS
+			FROM 
+				EZ_USER_MENU
+			WHERE
+					SITE_CD= #{siteCd}
+				AND 
+					MENU_CODE = #{menuCode}
+		]]>
+	</select>
+	<select id="selectEzUserMenuCreate" parameterType="MenuVo" resultMap="MenuMapLayout">
+	<![CDATA[	
+		SELECT
+			SITE_CD
+			, (SELECT MAX(SITE_NM) FROM EZ_SITE WHERE SITE_CD=A.SITE_CD) as SITE_NM
+			, MENU_CODE
+			, SORT_ORDER
+			, MENU_NM
+			, TITLE
+			, BASE_PATH
+			, MENU_PATH
+			, MENU_DEPTH
+			, ADMIN_MENU_URL
+			, USER_MENU_URL
+			, (SELECT MAX(FILE_PATH) FROM EZ_LAYOUT WHERE SITE_CD=#{siteCd} AND LAYOUT_CODE=A.LAYOUT_CODE) as LAYOUT_URL 
+			, LAYOUT_CODE
+			, PARENT_LAYOUT_USE_YN
+			, MENU_TYPE
+			, LINK_TYPE
+			, CONTENT_TYPE
+			, CONTROL_NM
+			, METHOD_NM
+			, CHARGE_DEPT_CODE
+			, CHARGER_ID
+			, AUTH_TYPE
+			, AUTH_DEPT_CD
+			, CONTENT_SEQ_NO
+			, HEAD_CONTENTS
+			, HEAD_CONTENT
+			, FOOT_CONTENTS
+			, TITLE_IMG
+			, MENU_TITLE_IMG
+			, MENU_ON_IMG
+			, MENU_OFF_IMG
+			, FILE_SEQ_NO
+			, APPROVAL_YN
+			, STATISTICS_USE_YN
+			, SATISFY_SHOW_YN
+			, CHARGER_SHOW_YN
+			, SHOW_YN
+			, USE_YN
+			, REG_ID
+			, REG_DT
+			, MOD_ID
+			, MOD_DT
+			, SNS_USE_YN
+			, PAGE_CD
+			, ORG_CHARGE_DEPT_CODE
+			, ORG_TEL
+			, BOONYA_YN
+			, METATAG_CONTENTS
+			, (
+		        SELECT 
+									SUBSTR(SYS_CONNECT_BY_PATH(CD_SUBJECT,'/'), 2)||'|'||CE_NAME||'|'||CE_TEL ||'|'||CD_FAX||'|'||ORG_TEL
+								 FROM 
+								 	EZ_DEPARTMENT A
+		              LEFT JOIN EZ_EMPLOYEE B ON A.CD_IDX = B.CE_CDIDX
+		            WHERE B.CE_IDX = CHARGER_ID
+		            AND B.CE_USE='Y'
+								START WITH CD_UPR_CODE = 'D000000'
+								CONNECT BY PRIOR  CD_CODE = CD_UPR_CODE
+		      )    AS DEPT_INFO
+			, SOCIAL_SHOW_YN
+		FROM 
+			EZ_USER_MENU A
+		WHERE
+				SITE_CD= #{siteCd}
+			AND 
+				USE_YN = 'Y'
+		ORDER BY SORT_ORDER ASC
+	]]>
+	</select>
+	<select id="selectEzUserMenuCreateSub" parameterType="MenuVo" resultMap="MenuMapLayout2">
+	<![CDATA[	
+		SELECT 
+			B.SITE_CD
+			, (SELECT MAX(SITE_NM) FROM EZ_SITE WHERE SITE_CD=B.SITE_CD) as SITE_NM
+			, B.MENU_CODE
+			, B.SORT_ORDER
+			, B.MENU_NM
+			, B.TITLE
+			, B.BASE_PATH
+			, B.MENU_PATH
+			, B.MENU_DEPTH
+			, B.ADMIN_MENU_URL
+			, A.SUB_MENU_URL as USER_MENU_URL
+			, A.SUB_TITLE
+			, (SELECT MAX(FILE_PATH) FROM EZ_LAYOUT WHERE SITE_CD=B.SITE_CD AND LAYOUT_CODE=B.LAYOUT_CODE) as LAYOUT_URL 
+			, B.LAYOUT_CODE
+			, B.PARENT_LAYOUT_USE_YN
+			, B.MENU_TYPE
+			, B.LINK_TYPE
+			, B.CONTENT_TYPE
+			, B.CONTROL_NM
+			, B.METHOD_NM
+			, B.CHARGE_DEPT_CODE
+			, B.CHARGER_ID
+			, B.AUTH_TYPE
+			, B.AUTH_DEPT_CD
+			, B.CONTENT_SEQ_NO
+			, B.HEAD_CONTENTS
+			, (SELECT HEAD_CONTENT END FROM EZ_USER_MENU WHERE SUBSTR(SORT_ORDER,0,7)=SUBSTR(B.SORT_ORDER,0,7) AND ROWNUM<2 AND SITE_CD=B.SITE_CD) as HEAD_CONTENT  
+			, B.FOOT_CONTENTS
+			, B.TITLE_IMG
+			, B.MENU_TITLE_IMG
+			, B.MENU_ON_IMG
+			, B.MENU_OFF_IMG
+			, B.FILE_SEQ_NO
+			, B.APPROVAL_YN
+			, B.STATISTICS_USE_YN
+			, B.SATISFY_SHOW_YN
+			, B.CHARGER_SHOW_YN
+			, B.SHOW_YN
+			, B.USE_YN
+			, B.REG_ID
+			, B.REG_DT
+			, B.MOD_ID
+			, B.MOD_DT
+			, B.SNS_USE_YN
+			, B.PAGE_CD
+			, B.ORG_CHARGE_DEPT_CODE
+			, B.ORG_TEL
+			, (
+		        SELECT 
+									SUBSTR(SYS_CONNECT_BY_PATH(CD_SUBJECT,'/'), 2)||'|'||CE_NAME||'|'||CE_TEL ||'|'||CD_FAX||'|'||ORG_TEL
+								 FROM 
+								 	EZ_DEPARTMENT A
+		              LEFT JOIN EZ_EMPLOYEE B ON A.CD_IDX = B.CE_CDIDX
+		            WHERE B.CE_IDX = CHARGER_ID
+		            AND B.CE_USE='Y'
+								START WITH CD_UPR_CODE = 'D000000'
+								CONNECT BY PRIOR  CD_CODE = CD_UPR_CODE
+		      )    AS DEPT_INFO
+			, B.SOCIAL_SHOW_YN
+			, B.METATAG_CONTENTS
+		FROM 
+			EZ_USER_MENU_SUB_URLS A, EZ_USER_MENU B
+		WHERE 
+				A.SITE_CD = B.SITE_CD 
+			AND 
+				A.MENU_CODE= B.MENU_CODE 
+			AND 
+				A.SITE_CD= #{siteCd}
+	]]>
+	</select>
+	<select id="selectMenu" parameterType="MenuVo" resultMap="MenuSelectMenuMap">
+	<![CDATA[		
+			SELECT
+				MENU_CODE
+				, SORT_ORDER
+				, MENU_NM
+				, MENU_DEPTH
+				, ADMIN_MENU_URL
+				, USER_MENU_URL
+				, MENU_TYPE
+				, ( 
+					SELECT 
+						CASE WHEN COUNT(*) > 0  THEN 'Y'
+						ELSE 'N' END
+					 FROM 
+						EZ_USER_MENU_CONTENTS
+					WHERE
+							MENU_CODE = M.MENU_CODE
+						AND
+							PROGRESS_STATUS = 'publish_req'
+				)     AS PUBLISH_YN
+			FROM 
+				EZ_USER_MENU M 
+			WHERE
+			   SITE_CD= #{siteCd}
+		 ]]>
+	    <if test="roleIdx != null and roleIdx != ''">
+	    <![CDATA[	
+	    	AND MENU_CODE IN(SELECT MA_PKIDX FROM EZ_MGR_AUTHORITY WHERE SITE_CD=#{siteCd} and MA_MLIDX=#{roleIdx})
+	     ]]>
+	    </if>
+		<![CDATA[	
+			ORDER BY SORT_ORDER ASC
+		]]>
+	</select>
+
+	<select id="selectMenuPath" parameterType="MenuVo" resultType="String">
+	<![CDATA[		
+			SELECT 
+			  ( SELECT SITE_NM FROM EZ_SITE WHERE SITE_CD = #{siteCd} )
+			  || CASE WHEN ((ROUND((LENGTH(RTRIM(#{sortOrder},'0'))-1)/2)*2)+1)>=3 THEN 
+				  (SELECT ' > '||MENU_NM FROM EZ_USER_MENU WHERE SITE_CD=#{siteCd} 
+				  AND (SUBSTR(#{sortOrder},0,3)||'0000000000')=SORT_ORDER)
+				 END 
+			  || CASE WHEN ((ROUND((LENGTH(RTRIM(#{sortOrder},'0'))-1)/2)*2)+1)>=5 THEN 
+				  (SELECT ' > '||MENU_NM FROM EZ_USER_MENU WHERE SITE_CD=#{siteCd}
+				  AND (SUBSTR(#{sortOrder},0,5)||'00000000')=SORT_ORDER)
+				 END
+			  || CASE WHEN ((ROUND((LENGTH(RTRIM(#{sortOrder},'0'))-1)/2)*2)+1)>=7 THEN 
+				  (SELECT ' > '||MENU_NM FROM EZ_USER_MENU WHERE SITE_CD=#{siteCd}
+				  AND (SUBSTR(#{sortOrder},0,7)||'000000')=SORT_ORDER)
+				 END
+			  || CASE WHEN ((ROUND((LENGTH(RTRIM(#{sortOrder},'0'))-1)/2)*2)+1)>=9 THEN 
+				  (SELECT ' > '||MENU_NM FROM EZ_USER_MENU WHERE SITE_CD=#{siteCd}
+				  AND (SUBSTR(#{sortOrder},0,9)||'0000')=SORT_ORDER)
+				 END
+			  || CASE WHEN ((ROUND((LENGTH(RTRIM(#{sortOrder},'0'))-1)/2)*2)+1)>=11 THEN 
+				  (SELECT ' > '||MENU_NM FROM EZ_USER_MENU WHERE SITE_CD=#{siteCd}
+				  AND (SUBSTR(#{sortOrder},0,11)||'00')=SORT_ORDER)
+				 END
+			  || CASE WHEN ((ROUND((LENGTH(RTRIM(#{sortOrder},'0'))-1)/2)*2)+1)>=13 THEN 
+				  (SELECT ' > '||MENU_NM FROM EZ_USER_MENU WHERE SITE_CD=#{siteCd}
+				  AND SUBSTR(#{sortOrder},0,13)=SORT_ORDER)
+				 END
+			FROM DUAL
+	]]>		  
+	</select>
+	
+	<select id="menuOrderLevel" parameterType="String" resultType="String">
+	<![CDATA[		
+			SELECT ((ROUND((LENGTH(RTRIM(#{sortOrder},'0'))-1)/2)*2)+1)
+			FROM DUAL 
+	]]>
+	</select>
+	
+	<select id="targetSortOrder" parameterType="MenuVo" resultType="String">
+	<![CDATA[		
+			SELECT
+				CASE WHEN #{moveOrderStep}='0' THEN
+					RPAD(SUBSTR(#{preSortOrder},0,((ROUND((LENGTH(RTRIM(#{preSortOrder},'0'))-1)/2)*2)+1))||'01',13,'0')
+				ELSE 
+					RPAD(SUBSTR(#{moveSortOrder},0,((ROUND((LENGTH(RTRIM(#{moveSortOrder},'0'))-1)/2)*2)+1))+1,13,'0')
+				END
+			FROM DUAL
+	]]>	
+	</select>
+	
+	<update id="updateMenuOrder1" parameterType="MenuVo">
+	<![CDATA[		
+			UPDATE EZ_USER_MENU SET
+				SORT_ORDER = '2'||SUBSTR(sort_order,2)
+				, MOD_DT = SYSDATE
+			WHERE SITE_CD=#{siteCd} 
+			AND SORT_ORDER like SUBSTR(#{nowSortOrder},0,#{nowMenuLevel})||'%'
+	]]>	 
+	</update>
+	
+	<update id="updateMenuOrder2" parameterType="MenuVo">
+	<![CDATA[		
+			UPDATE EZ_USER_MENU SET
+				SORT_ORDER = SORT_ORDER +  
+						POWER(10,((13-2)-length(SUBSTR(#{preSortOrder},0,((ROUND((LENGTH(RTRIM(#{preSortOrder},'0'))-1)/2)*2)+1)))))
+					, MOD_DT = SYSDATE
+			WHERE SITE_CD=#{siteCd} 
+			AND SORT_ORDER >= #{targetSortOrder}
+			AND SORT_ORDER LIKE SUBSTR(#{preSortOrder},0,((ROUND((LENGTH(RTRIM(#{preSortOrder},'0'))-1)/2)*2)+1))||'%'
+	]]>	 
+	</update>
+	
+	<update id="updateMenuOrder3" parameterType="MenuVo">
+	<![CDATA[		
+			UPDATE EZ_USER_MENU SET
+				SORT_ORDER = 
+					SUBSTR(#{targetSortOrder},0,((ROUND((LENGTH(RTRIM(#{targetSortOrder},'0'))-1)/2)*2)+1))
+					||SUBSTR(SORT_ORDER*(POWER(10,(#{nowMenuLevel}-#{moveMenuLevel}))), -1*(13-((ROUND((LENGTH(RTRIM(#{targetSortOrder},'0'))-1)/2)*2)+1)))
+				,MENU_DEPTH=((ROUND((LENGTH(RTRIM(
+				SUBSTR(#{targetSortOrder},0,((ROUND((LENGTH(RTRIM(#{targetSortOrder},'0'))-1)/2)*2)+1))
+					||SUBSTR(SORT_ORDER*(POWER(10,(#{nowMenuLevel}-#{moveMenuLevel}))), -1*(13-((ROUND((LENGTH(RTRIM(#{targetSortOrder},'0'))-1)/2)*2)+1)))
+				,'0'))-1)/2)*2))/2
+				, MOD_DT = SYSDATE
+			WHERE 
+				SITE_CD=#{siteCd} 
+			 AND 
+				SORT_ORDER like SUBSTR(#{nowSortOrder}+1000000000000,0,((ROUND((LENGTH(RTRIM(#{nowSortOrder}+1000000000000,'0'))-1)/2)*2)+1))||'%'
+	]]>	 
+	</update>
+	
+	
+	<update id="updateMenuPath" parameterType="MenuVo">
+	<![CDATA[		
+			UPDATE EZ_USER_MENU A SET 
+				MENU_PATH =
+					( SELECT SITE_NM FROM EZ_SITE WHERE SITE_CD = #{siteCd} )
+					  || CASE WHEN ((ROUND((LENGTH(RTRIM(A.SORT_ORDER,'0'))-1)/2)*2)+1)>=3 THEN 
+						  (SELECT ' > '||MENU_NM FROM EZ_USER_MENU WHERE SITE_CD=#{siteCd} 
+						  AND (SUBSTR(A.SORT_ORDER,0,3)||'0000000000')=SORT_ORDER)
+						 END 
+					  || CASE WHEN ((ROUND((LENGTH(RTRIM(A.SORT_ORDER,'0'))-1)/2)*2)+1)>=5 THEN 
+						  (SELECT ' > '||MENU_NM FROM EZ_USER_MENU WHERE SITE_CD=#{siteCd} 
+						  AND (SUBSTR(A.SORT_ORDER,0,5)||'00000000')=SORT_ORDER)
+						 END
+					  || CASE WHEN ((ROUND((LENGTH(RTRIM(A.SORT_ORDER,'0'))-1)/2)*2)+1)>=7 THEN 
+						  (SELECT ' > '||MENU_NM FROM EZ_USER_MENU WHERE SITE_CD=#{siteCd} 
+						  AND (SUBSTR(A.SORT_ORDER,0,7)||'000000')=SORT_ORDER)
+						 END
+					  || CASE WHEN ((ROUND((LENGTH(RTRIM(A.SORT_ORDER,'0'))-1)/2)*2)+1)>=9 THEN 
+						  (SELECT ' > '||MENU_NM FROM EZ_USER_MENU WHERE SITE_CD=#{siteCd} 
+						  AND (SUBSTR(A.SORT_ORDER,0,9)||'0000')=SORT_ORDER)
+						 END
+					  || CASE WHEN ((ROUND((LENGTH(RTRIM(A.SORT_ORDER,'0'))-1)/2)*2)+1)>=11 THEN 
+						  (SELECT ' > '||MENU_NM FROM EZ_USER_MENU WHERE SITE_CD=#{siteCd} 
+						  AND (SUBSTR(A.SORT_ORDER,0,11)||'00')=SORT_ORDER)
+						 END
+					  || CASE WHEN ((ROUND((LENGTH(RTRIM(A.SORT_ORDER,'0'))-1)/2)*2)+1)>=13 THEN 
+						  (SELECT ' > '||MENU_NM FROM EZ_USER_MENU WHERE SITE_CD=#{siteCd} 
+						  AND SUBSTR(A.SORT_ORDER,0,13)=SORT_ORDER)
+						 END 
+			WHERE 
+				SITE_CD=#{siteCd}  
+			 AND 
+			 	SORT_ORDER LIKE #{targetSortOrder}||'%'   
+	]]>	
+	</update>
+	
+	<select id="selectEzUserMenuAndSubUrls" parameterType="MenuVo" resultMap="MenuMapLayout3">
+	<![CDATA[		
+			SELECT 
+				SITE_CD
+				, (SELECT MAX(SITE_NM) FROM EZ_SITE WHERE SITE_CD = AA.SITE_CD) as SITE_NM
+				, MENU_CODE
+				, SORT_ORDER
+				, MENU_NM
+				, TITLE
+				, BASE_PATH
+				, MENU_PATH
+				, MENU_DEPTH
+				, USER_MENU_URL
+				, LAYOUT_CODE
+				, MENU_TYPE
+				, LINK_TYPE
+				, CHARGE_DEPT_CODE
+				, CHARGER_SHOW_YN
+				, SHOW_YN
+				, ORG_TEL
+				, (SELECT HEAD_CONTENT FROM EZ_USER_MENU WHERE SITE_CD = AA.SITE_CD AND SORT_ORDER = AA.SORT_ORDER AND ROWNUM = 1) AS HEAD_CONTENT
+				, (SELECT MAX(FILE_PATH) FROM EZ_LAYOUT WHERE SITE_CD = #{siteCd} AND LAYOUT_CODE = AA.LAYOUT_CODE) AS LAYOUT_URL
+			FROM (
+				SELECT 
+					SITE_CD
+					, MENU_CODE
+					, SORT_ORDER
+					, MENU_NM
+					, TITLE
+					, BASE_PATH
+					, MENU_PATH
+					, MENU_DEPTH
+					, USER_MENU_URL
+					, LAYOUT_CODE
+					, MENU_TYPE
+					, LINK_TYPE
+					, CHARGE_DEPT_CODE
+					, CHARGER_SHOW_YN
+					, SHOW_YN
+					, ORG_TEL
+				FROM EZ_USER_MENU
+				WHERE USE_YN = 'Y'
+				AND MENU_TYPE IN ('contents', 'program')
+				AND SITE_CD = #{siteCd}
+				AND USER_MENU_URL LIKE #{searchUrl}||'%'
+				UNION 
+				SELECT
+					A.SITE_CD AS SITE_CD
+					, A.MENU_CODE AS MENU_CODE
+					, SORT_ORDER
+					, MENU_NM
+					, CASE WHEN SUB_TITLE IS NOT NULL THEN MENU_NM||'_'||SUB_TITLE ELSE A.TITLE END AS TITLE
+					, BASE_PATH
+					, MENU_PATH
+					, MENU_DEPTH
+					, SUB_MENU_URL AS USER_MENU_URL
+					, LAYOUT_CODE
+					, MENU_TYPE
+					, LINK_TYPE
+					, CHARGE_DEPT_CODE
+					, CHARGER_SHOW_YN
+					, SHOW_YN
+					, ORG_TEL
+				FROM EZ_USER_MENU A, EZ_USER_MENU_SUB_URLS B
+				WHERE A.SITE_CD = B.SITE_CD
+				AND A.MENU_CODE = B.MENU_CODE
+				AND A.USE_YN = 'Y'
+				AND A.MENU_TYPE IN ('contents', 'program')
+				AND A.SITE_CD = #{siteCd}
+				AND SUB_MENU_URL LIKE #{searchUrl}||'%'
+			) AA
+	]]>	
+	</select>
+	
+	<select id="selectListTopMenu" parameterType="MenuVo" resultMap="MenuMapLayout4">
+	<![CDATA[		
+			SELECT 
+				MENU_NM
+				, MENU_DEPTH
+				, USER_MENU_URL
+				, LINK_TYPE
+				, SHOW_YN
+			FROM EZ_USER_MENU
+			WHERE SITE_CD = #{siteCd}
+			AND USE_YN = 'Y'
+			AND MENU_DEPTH IN (1, 2)
+			ORDER BY SORT_ORDER ASC
+	]]>	
+	</select>
+	
+	<select id="selectListLeftMenu" parameterType="MenuVo" resultMap="MenuMapLayout5">
+	<![CDATA[		
+			SELECT 
+				MENU_CODE
+				, SORT_ORDER
+				, MENU_NM
+				, MENU_DEPTH
+				, USER_MENU_URL
+				, LINK_TYPE
+				, SHOW_YN
+				, 0 AS CNT
+			FROM EZ_USER_MENU A
+			WHERE SITE_CD = #{siteCd}
+			AND USE_YN = 'Y'
+			AND (
+				(MENU_DEPTH = 1 AND SORT_ORDER LIKE SUBSTR(#{sortOrder}, 1, 3)||'%')
+				OR (MENU_DEPTH = 2 AND SORT_ORDER LIKE SUBSTR(#{sortOrder}, 1, 3)||'%')
+				OR (MENU_DEPTH = 3 AND SORT_ORDER LIKE SUBSTR(#{sortOrder}, 1, 5)||'%')
+				OR (MENU_DEPTH = 4 AND SORT_ORDER LIKE SUBSTR(#{sortOrder}, 1, 7)||'%')
+				OR (MENU_DEPTH = 5 AND SORT_ORDER LIKE SUBSTR(#{sortOrder}, 1, 9)||'%')
+			)
+			ORDER BY SORT_ORDER ASC
+	]]>	
+	</select>
+	
+</mapper>

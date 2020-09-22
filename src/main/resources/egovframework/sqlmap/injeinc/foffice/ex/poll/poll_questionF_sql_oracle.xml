@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Fri Mar 13 14:31:42 KST 2020-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PollQuestionFDao">
+	<resultMap id="PollQuestionFMap" type="egovframework.injeinc.foffice.ex.poll.vo.PollQuestionFVo">
+		<result property="pqIdx" column="PQ_IDX"/>
+		<result property="pqPlidx" column="PQ_PLIDX"/>
+		<result property="pqSort" column="PQ_SORT"/>
+		<result property="pqTitle" column="PQ_TITLE"/>
+		<result property="pqDetail" column="PQ_DETAIL"/>
+		<result property="pqType" column="PQ_TYPE"/>
+		<result property="pqItemCnt" column="PQ_ITEM_CNT"/>
+		<result property="pqItemList" column="PQ_ITEM_LIST"/>
+		<result property="pqItemDirection" column="PQ_ITEM_DIRECTION"/>
+		<result property="pqCheck" column="PQ_CHECK"/>
+		<result property="pqEtc" column="PQ_ETC"/>
+		<result property="useYn" column="USE_YN"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+	</resultMap>
+	
+	<select id="selectPollQuestionF" parameterType="PollQuestionFVo" resultMap="PollQuestionFMap">
+		<![CDATA[
+			SELECT * FROM EZ_POLL_QUESTION
+			WHERE USE_YN = 'Y'
+			AND PQ_IDX = #{pqIdx}
+		]]>
+	</select>
+	
+	<select id="selectListPollQuestionF" parameterType="PollQuestionFVo" resultMap="PollQuestionFMap">
+		<![CDATA[
+			SELECT * 
+			FROM EZ_POLL_QUESTION
+			WHERE USE_YN = 'Y'
+			AND PQ_PLIDX = #{plIdx}
+			ORDER BY PQ_SORT ASC
+		]]>
+	</select>
+	
+</mapper>

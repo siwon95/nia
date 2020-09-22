@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ReservationMainDao">
+	
+	<resultMap id="ResMainMap" type="egovframework.injeinc.boffice.ex.reservationMain.vo.ReservationMainVo">
+		<result property="rmiIdx" column="RMI_IDX"/>		<!--idx-->
+		<result property="rmiTitle" column="RMI_TITLE"/>		<!--제목-->
+		<result property="rmiPostSdt" column="RMI_POST_SDT"/>		<!--게시시작날짜-->
+		<result property="rmiPostEdt" column="RMI_POST_EDT"/>		<!--게시마감날짜-->
+		<result property="rmiLink" column="RMI_LINK"/>		<!--링크url-->
+		<result property="rmiTarget" column="RMI_TARGET"/>		<!--타겟-->
+		<result property="rmiMainOrgname" column="RMI_MAIN_ORGNAME"/>		<!--메인원본파일명-->
+		<result property="rmiMainRename" column="RMI_MAIN_RENAME"/>		<!--메인저장파일명-->
+		<result property="rmiMainPath" column="RMI_MAIN_PATH"/>		<!--메인저장경로-->
+		<result property="rmiBannerOrgname" column="RMI_BANNER_ORGNAME"/>		<!--베너원본파일명-->
+		<result property="rmiBannerRename" column="RMI_BANNER_RENAME"/>		<!--베너저장파일명-->
+		<result property="rmiBannerPath" column="RMI_BANNER_PATH"/>		<!--베너저장경로-->
+		<result property="rmiContent" column="RMI_CONTENT"/>		<!--이미지설명-->
+		<result property="rmiContent2" column="RMI_CONTENT2"/>		<!--이미지설명-->
+		<result property="rmiPostYn" column="RMI_POST_YN"/>		<!--게시상태-->
+		<result property="regDt" column="REG_DT"/>		<!--등록날짜-->
+		<result property="regId" column="REG_ID"/>		<!--등록자ID-->
+		<result property="modDt" column="MOD_DT"/>		<!--수정날짜-->
+		<result property="modId" column="MOD_ID"/>		<!--수정자ID-->
+	</resultMap>
+	
+	<!-- 리스트 -->
+	<select id="selectListReservationMainImg" parameterType="ReservationMainVo" resultMap="ResMainMap">
+		<![CDATA[ 
+			SELECT * FROM (SELECT ROWNUM AS rn, TB.* FROM (	
+				SELECT
+				    RMI_IDX
+					,RMI_TITLE
+					,RMI_POST_SDT
+					,RMI_POST_EDT
+					,RMI_LINK
+					,RMI_TARGET
+					,RMI_MAIN_ORGNAME
+					,RMI_MAIN_RENAME
+					,RMI_MAIN_PATH
+					,RMI_BANNER_ORGNAME
+					,RMI_BANNER_RENAME
+					,RMI_BANNER_PATH
+					,RMI_CONTENT
+					,RMI_CONTENT2
+					,RMI_POST_YN
+					,REG_DT
+					,REG_ID
+					,MOD_DT
+					,MOD_ID
+				FROM RESERVATION_MAIN_IMG
+				WHERE USE_YN = 'Y'
+		]]>		
+				<if test="searchKeyword != null and searchKeyword != ''">AND
+					<![CDATA[ 
+						RMI_TITLE LIKE '%'||#{searchKeyword}||'%'
+					]]>
+				</if>
+		<![CDATA[ 		
+				ORDER BY RMI_IDX DESC
+				) TB) TBL WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+	<!-- 리스트 총갯수 -->
+	<select id="selectPagReservationMainImg" parameterType="ReservationMainVo" resultType="int">
+		<![CDATA[ 
+			SELECT COUNT(*)
+			FROM RESERVATION_MAIN_IMG
+			WHERE USE_YN = 'Y'
+		]]>
+		<if test="searchKeyword != null and searchKeyword != ''">
+		<![CDATA[ 	
+			AND RMI_TITLE LIKE '%'||#{searchKeyword}||'%'
+		]]>
+		</if>
+		<![CDATA[ 
+			ORDER BY RMI_IDX DESC
+		]]>
+	</select>
+	<!-- 상세 -->
+	<select id="selectReservationMainImg" parameterType="ReservationMainVo" resultMap="ResMainMap">
+		<![CDATA[ 
+			SELECT
+			    RMI_IDX
+				,RMI_TITLE
+				,RMI_POST_SDT
+				,RMI_POST_EDT
+				,RMI_LINK
+				,RMI_TARGET
+				,RMI_MAIN_ORGNAME
+				,RMI_MAIN_RENAME
+				,RMI_MAIN_PATH
+				,RMI_BANNER_ORGNAME
+				,RMI_BANNER_RENAME
+				,RMI_BANNER_PATH
+				,RMI_CONTENT
+				,RMI_CONTENT2
+				,RMI_POST_YN
+				,REG_DT
+				,REG_ID
+				,MOD_DT
+				,MOD_ID
+			FROM RESERVATION_MAIN_IMG
+			WHERE RMI_IDX = #{rmiIdx}
+		]]>
+	</select>
+	<!-- 등록 -->
+	<insert id="insertReservationMainImg" parameterType="ReservationMainVo">
+		<![CDATA[ 
+			INSERT INTO RESERVATION_MAIN_IMG
+			            (
+						    RMI_IDX
+			                ,RMI_TITLE
+			                ,RMI_POST_SDT
+			                ,RMI_POST_EDT
+			                ,RMI_LINK
+			                ,RMI_TARGET
+			                ,RMI_MAIN_ORGNAME
+							,RMI_MAIN_RENAME
+							,RMI_MAIN_PATH
+							,RMI_BANNER_ORGNAME
+							,RMI_BANNER_RENAME
+							,RMI_BANNER_PATH
+			                ,RMI_CONTENT
+			                ,RMI_CONTENT2
+			                ,RMI_POST_YN
+			                ,REG_DT
+			                ,REG_ID
+			                ,USE_YN
+						)
+						VALUES
+						(
+							#{rmiIdx}
+			                ,#{rmiTitle}
+			                ,#{rmiPostSdt}
+			                ,#{rmiPostEdt}
+			                ,#{rmiLink}
+			                ,#{rmiTarget}
+			                ,#{rmiMainOrgname}
+			                ,#{rmiMainRename}
+			                ,#{rmiMainPath}
+			                ,#{rmiBannerOrgname}
+			                ,#{rmiBannerRename}
+			                ,#{rmiBannerPath}
+			                ,#{rmiContent}
+			                ,#{rmiContent2}
+			                ,#{rmiPostYn}
+			                ,TO_CHAR(sysdate, 'yyyymmddhh24miss')
+			                ,#{regId}
+			                ,'Y'
+						)
+		]]>
+	</insert>
+	<!-- 수정 -->
+	<update id="updateReservationMainImg" parameterType="ReservationMainVo">
+		<![CDATA[ 
+			UPDATE RESERVATION_MAIN_IMG
+			SET
+				RMI_TITLE = #{rmiTitle},
+				RMI_POST_SDT = #{rmiPostSdt},
+				RMI_POST_EDT = #{rmiPostEdt},
+				RMI_LINK = #{rmiLink},
+				RMI_TARGET = #{rmiTarget},
+				RMI_MAIN_ORGNAME = #{rmiMainOrgname},
+				RMI_MAIN_RENAME = #{rmiMainRename},
+				RMI_MAIN_PATH = #{rmiMainPath},
+				RMI_BANNER_ORGNAME = #{rmiBannerOrgname},
+				RMI_BANNER_RENAME = #{rmiBannerRename},
+				RMI_BANNER_PATH = #{rmiBannerPath},
+				RMI_CONTENT = #{rmiContent},
+				RMI_CONTENT2 = #{rmiContent2},
+				RMI_POST_YN = #{rmiPostYn},
+				MOD_DT = TO_CHAR(sysdate, 'yyyymmddhh24miss'),
+				MOD_ID = #{modId}
+			WHERE RMI_IDX = #{rmiIdx}
+		]]>
+	</update>
+	<!-- 삭제 -->
+	<delete id="deleteReservationMainImg" parameterType="ReservationMainVo">
+		<![CDATA[ 
+			UPDATE RESERVATION_MAIN_IMG
+			SET
+				USE_YN = 'N',
+				MOD_DT = TO_CHAR(sysdate, 'yyyymmddhh24miss'),
+				MOD_ID = #{modId}
+			WHERE RMI_IDX = #{rmiIdx}
+		]]>
+	</delete>
+	
+	<resultMap id="selectReservationListMap" type="egovMap">
+		<result property="RI_IDX" column="RI_IDX"/>
+		<result property="RI_TYPE" column="RI_TYPE"/>
+		<result property="TITLE" column="TITLE"/>
+		<result property="REGDATE" column="REGDATE"/>
+		<result property="REG_DT" column="REG_DT"/>
+		<result property="LINK" column="LINK"/>
+		<result property="RI_SUPERVISION_ORG" column="RI_SUPERVISION_ORG"/>
+		<result property="RI_SUPERVISION_ORG_NAME" column="RI_SUPERVISION_ORG_NAME"/>
+		<result property="RI_CONFIRM_YN" column="RI_CONFIRM_YN"/>
+		<result property="RI_MANAGE_DEPT" column="RI_MANAGE_DEPT"/>
+		<result property="RI_MANAGE_DEPT_TXT" column="RI_MANAGE_DEPT_TXT"/>
+		<result property="RI_PROGRESS" column="RI_PROGRESS"/>
+		<result property="RI_SDATE" column="RI_SDATE"/>
+		<result property="RI_EDATE" column="RI_EDATE"/>
+		<result property="RI_RESERVATION_SDATE" column="RI_RESERVATION_SDATE"/>
+		<result property="RI_RESERVATION_EDATE" column="RI_RESERVATION_EDATE"/>
+		<result property="RI_RESERVATION_SDT" column="RI_RESERVATION_SDT"/>
+		<result property="RI_RESERVATION_EDT" column="RI_RESERVATION_EDT"/>
+		<result property="RI_IMAGE_FILE_ID" column="RI_IMAGE_FILE_ID"/>
+		<result property="RI_MAIN_FILE_NM" column="RI_MAIN_FILE_NM"/>
+		<result property="RI_READ_CNT" column="RI_READ_CNT"/>
+		<result property="RI_PLACE" column="RI_PLACE"/>
+		<result property="RI_RECRUIT_YN" column="RI_RECRUIT_YN"/>
+		<result property="RI_RECRUIT_CNT" column="RI_RECRUIT_CNT"/>
+		<result property="RI_LOT_USE" column="RI_LOT_USE"/>
+		<result property="RI_OFF_LOT_USE" column="RI_OFF_LOT_USE"/>
+		<result property="RI_PO_YN" column="RI_PO_YN"/>
+		<result property="USERCNT" column="USERCNT"/>
+		<result property="LC_CATEGORY_UPR_NM" column="LC_CATEGORY_UPR_NM"/>
+		<result property="LC_TARGET_NAME" column="LC_TARGET_NAME"/>
+		<result property="RI_MAIN_FILE_NM" column="RI_MAIN_FILE_NM"/>
+		<result property="RI_TERM_TYPE" column="RI_TERM_TYPE"/>
+		<result property="RI_USER_CNT" column="RI_USER_CNT"/>
+		<result property="CLOB_CONT" column="CLOB_CONT" javaType="String" jdbcType="CLOB"/>
+	</resultMap>
+	
+	<select id="selectReservationList" parameterType="hashMap" resultMap="selectReservationListMap">
+	<![CDATA[ 
+		SELECT ROWNUM,
+		       RI_IDX,
+		       RI_TYPE,
+		       TITLE,
+		       REGDATE,
+		       to_char(regdate,'yyyymmddhh24miss') REG_DT,
+		       LINK,
+		       RI_SUPERVISION_ORG,
+		       RI_SUPERVISION_ORG_NAME,
+		       RI_CONFIRM_YN,
+		       RI_MANAGE_DEPT,
+		       RI_MANAGE_DEPT_TXT,
+		       RI_PROGRESS,
+		       to_char(to_date(RI_SDATE,'yyyy-mm-dd'),'yyyy.mm.dd') RI_SDATE,
+       		   to_char(to_date(RI_EDATE,'yyyy-mm-dd'),'yyyy.mm.dd') RI_EDATE,
+		       to_char(to_date(RI_RESERVATION_SDATE,'yyyy-mm-dd/hh24mi'),'yyyy.mm.dd') RI_RESERVATION_SDATE,
+               to_char(to_date(RI_RESERVATION_EDATE,'yyyy-mm-dd/hh24mi'),'yyyy.mm.dd') RI_RESERVATION_EDATE,
+		       RI_RESERVATION_SDT,
+		       RI_RESERVATION_EDT,
+		       RI_IMAGE_FILE_ID,
+		       RI_MAIN_FILE_NM,
+		       RI_READ_CNT,
+		       RI_PLACE,
+		       RI_RECRUIT_YN,
+		       RI_RECRUIT_CNT,
+		       RI_LOT_USE,
+		       RI_OFF_LOT_USE,
+		       RI_PO_YN,
+		       USERCNT,
+		       LC_CATEGORY_UPR_NM,
+		       LC_TARGET_NAME,
+		       RI_MAIN_FILE_NM,
+		       RI_TERM_TYPE,
+		       NVL((select sum(NVL(RU_OBJECT_CNT,1))
+                        from   reservation_user_info
+                        where  ri_idx = T.ri_idx
+                        and    ru_del_yn = 'N'),0) as RI_USER_CNT,
+		       REGEXP_REPLACE(CONTENT, '<[^>]*>|\&([^;])*;') AS CLOB_CONT
+		FROM   (SELECT *
+		        FROM   VW_SEARCH_RESERVATION
+		        WHERE 1=1
+		]]>
+		        <if test="rType != null and rType != ''">
+		        	<![CDATA[ 
+		        		AND  RI_TYPE = #{rType}
+		        	]]>
+		        </if>
+		        <if test="strDomain != null and strDomain != ''">
+		        <![CDATA[ 	AND RI_SUPERVISION_ORG LIKE #{strDomain} || '%' ]]>
+		        </if>
+		        <if test="rMainType != null and rMainType != ''">
+		        	<if test="rMainType == &quot;ING&quot;">
+		        	<![CDATA[ 
+		        		/* 분야별 */
+			        	AND RI_PROGRESS IN ('접수중','예약중')
+			       	]]>
+			        	<if test="rMainValue != null and rMainValue != ''">
+			        	<![CDATA[ 	AND INSTR(RI_OFF_LOT_USE,#{rMainValue}) > 0 ]]>
+			        	</if>
+		        	</if>
+		        	<if test="rMainType == &quot;LOCAL&quot;">
+		        	<![CDATA[ 
+		        		/* 지역별 */
+			        	AND EXISTS (SELECT 1
+				                        FROM EZ_CMM_CODE 
+				                        WHERE CODE_UPR = 'LC_ORG_CODE' 
+				                        AND INSTR(CODE,'lc_dong') > 0
+				                        AND RI_SUPERVISION_ORG LIKE '%' || REPLACE(CODE,'lc_dong_','') 
+				                    )
+				    ]]>
+			        	<if test="rMainValue != null and rMainValue != ''">
+			        		<![CDATA[ AND INSTR(RI_SUPERVISION_ORG,#{rMainValue}) > 0 ]]>
+			        	</if>
+		        	</if>
+		        	<if test="rMainType == &quot;ORG&quot;">
+		        	<![CDATA[ 
+		        		/* 기관별 */
+		        		AND NOT EXISTS (SELECT 1
+				                        FROM EZ_CMM_CODE 
+				                        WHERE CODE_UPR = 'LC_ORG_CODE' 
+				                        AND INSTR(CODE,'lc_dong') > 0
+				                        AND RI_SUPERVISION_ORG LIKE '%' || REPLACE(CODE,'lc_dong_','') 
+				                    )
+				     ]]>
+		        		<if test="rMainValue != null and rMainValue != ''">
+			        		<if test="rMainValue == &quot;libmain&quot;">
+			        			<![CDATA[ AND INSTR(RI_SUPERVISION_ORG,'lib') > 0 ]]>
+			        		</if>
+			        		<![CDATA[ 
+			        			AND INSTR(RI_SUPERVISION_ORG,#{rMainValue}) > 0
+			        		]]>
+			        	</if>
+		        	</if>
+		        	<if test="rMainType == &quot;TARGET&quot;">
+		        		/* 대상별 */
+		        		<if test="rMainValue != null and rMainValue != ''">
+			        		<![CDATA[ AND LC_TARGET = #{rMainValue} ]]>
+			        	</if>
+		        	</if>
+		        </if>
+		        <if test="rollingYn != null and rollingYn != ''">
+		        	<if test="rollingYn == &quot;Y&quot;">
+			        	<![CDATA[ AND RI_IMAGE_FILE_ID IS NOT NULL ]]>
+		        	</if>
+		        </if>
+		        <if test="rOrd != null and rOrd != ''">
+		        	<if test="rOrd == &quot;RECEIVE_EDATE_ASC&quot;">
+		        		<![CDATA[ ORDER BY DECODE(instr(NVL(RI_PROGRESS,'-'),'접수중')+instr(NVL(RI_PROGRESS,'-'),'예약중'),0,1,0) ASC, RI_RESERVATION_EDATE ASC ]]>
+		        	</if>
+		        	<if test="rOrd == &quot;RECEIVE_EDATE_DESC&quot;">
+		        		<![CDATA[ ORDER BY DECODE(instr(NVL(RI_PROGRESS,'-'),'접수중')+instr(NVL(RI_PROGRESS,'-'),'예약중'),0,1,0) ASC, RI_RESERVATION_EDATE DESC ]]>
+		        	</if>
+		        	<if test="rOrd == &quot;HITS_ASC&quot;">
+		        		<![CDATA[ ORDER BY DECODE(instr(NVL(RI_PROGRESS,'-'),'접수중')+instr(NVL(RI_PROGRESS,'-'),'예약중'),0,1,0) ASC, RI_READ_CNT ASC ]]>
+		        	</if>
+		        	<if test="rOrd == &quot;HITS_DESC&quot;">
+		        		<![CDATA[ ORDER BY DECODE(instr(NVL(RI_PROGRESS,'-'),'접수중')+instr(NVL(RI_PROGRESS,'-'),'예약중'),0,1,0) ASC, RI_READ_CNT DESC ]]>
+		        	</if>
+		        	<if test="rOrd == &quot;REGDT_DESC&quot;">
+		        		<![CDATA[ ORDER BY DECODE(instr(NVL(RI_PROGRESS,'-'),'접수중')+instr(NVL(RI_PROGRESS,'-'),'예약중'),0,1,0) ASC, REGDATE DESC ]]>
+		        	</if>
+		        </if>
+		        <if test="rOrd == null or rOrd == ''">
+		        	<![CDATA[  ORDER BY DECODE(instr(NVL(RI_PROGRESS,'-'),'접수중')+instr(NVL(RI_PROGRESS,'-'),'예약중'),0,1,0) ASC, RI_RESERVATION_EDATE ASC ]]>
+		        </if>
+		<![CDATA[ 
+		        ) T
+		WHERE  ROWNUM <= #{listCnt}
+		]]>
+		
+	</select>
+</mapper>

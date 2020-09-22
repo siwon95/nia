@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<!-- <bean id="rssDownloading" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="rssDownloadScheduling" />
+		<property name="targetMethod" value="RssDownload" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="rssDownloadTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="rssDownloading" />  실행할 작업
+		<property name="cronExpression" value="0 0 11 * * ?" />  초 분 시 월 요일 년
+	</bean>
+	<bean id="rssDownloadScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="rssDownloadTrigger" />
+			</list>
+		</property>
+	</bean> -->
+	
+	
+	<!-- Site 웹로그 요약 작업 정의  -->
+	<bean id="siteWebLogSummaryJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="siteWeblogScheduling" />
+		<property name="targetMethod" value="siteWebLogSummaryJob" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="siteWebLogSummaryJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="siteWebLogSummaryJobDetail" />
+		<!-- 매일 새벽 1시에 실행한다 -->
+		<property name="cronExpression">
+			<value>0 50 16 * * ?</value>
+		</property>
+	</bean>
+	<bean id="siteScheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="siteWebLogSummaryJobTrigger" />				
+			</list>
+		</property>
+	</bean>
+	
+ 	<!-- <bean id="departmentUpdate" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="DepartmentUpdate" />
+		<property name="targetMethod" value="departmentUpdate" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="departmentUpdateTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="departmentUpdate" />
+		<property name="cronExpression">
+			<value>2 * * * * ?</value>
+		</property>
+	</bean>
+	<bean id="departmentUpdateScheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="departmentUpdateTrigger" />				
+			</list>
+		</property>
+	</bean>   -->
+	
+	<!-- 최근 SNS 가져오기 -->
+	<!-- <bean id="snsRecentlyCollectRequest" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="SnsRecentlyCollectScheduling" />
+		<property name="targetMethod" value="SnsRecentlyCollectMethod" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="snsRecentlyCollectRequestTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="snsRecentlyCollectRequest" />
+		 property name="cronExpression" value="0 0 8,12,18 * * ?" /
+		<property name="cronExpression" value="0 0 2 * * ?" />
+	</bean>
+	<bean id="snsRecentlyCollectRequestScheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="snsRecentlyCollectRequestTrigger" />				
+			</list>
+		</property>
+	</bean> -->
+	 
+</beans>

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BbsCustomFDao">
+	
+	<resultMap id="BbsCustomFListMap" type="egovframework.injeinc.foffice.ex.bbs.vo.BbsCustomFVo">
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="cateCont" column="CATE_CONT"/>
+		<result property="subCont" column="SUB_CONT"/>
+		<result property="nameCont" column="NAME_CONT"/>
+		<result property="countCont" column="COUNT_CONT"/>
+		<result property="mLinkCont" column="M_LINK_CONT"/>
+		<result property="thumnailCont" column="THUMNAIL_CONT"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="captionCont" column="CAPTION_CONT"/>
+	</resultMap>
+	
+	<resultMap id="BbsCustomFViewMap" type="egovframework.injeinc.foffice.ex.bbs.vo.BbsCustomFVo">
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="cateCont" column="CATE_CONT"/>
+		<result property="subCont" column="SUB_CONT"/>
+		<result property="nameCont" column="NAME_CONT"/>
+		<result property="addrCont" column="ADDR_CONT"/>
+		<result property="emailCont" column="EMAIL_CONT"/>
+		<result property="telCont" column="TEL_CONT"/>
+		<result property="phoneCont" column="PHONE_CONT"/>
+		<result property="clobCont" column="CLOB_CONT"/>
+		<result property="ext1" column="EXT1"/>
+		<result property="ext2" column="EXT2"/>
+		<result property="ext3" column="EXT3"/>
+		<result property="mLinkCont" column="M_LINK_CONT"/>
+		<result property="thumnailCont" column="THUMNAIL_CONT"/>
+		<result property="captionCont" column="CAPTION_CONT"/>
+		<result property="countCont" column="COUNT_CONT"/>
+		<result property="chargeNameCont" column="CHARGE_NAME_CONT"/>
+		<result property="chargeTelCont" column="CHARGE_TEL_CONT"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+	</resultMap>
+	
+	<select id="selectBbsCustomF" parameterType="BbsCustomFVo" resultMap="BbsCustomFViewMap">
+		<![CDATA[
+			SELECT 
+				BC_IDX
+				, CATE_CONT
+				, SUB_CONT
+				, NAME_CONT
+				, ADDR_CONT
+				, EMAIL_CONT
+				, TEL_CONT
+				, PHONE_CONT
+				, CLOB_CONT
+				, EXT1
+				, EXT2
+				, EXT3
+				, M_LINK_CONT
+				, THUMNAIL_CONT
+				, CAPTION_CONT
+				, COUNT_CONT
+				, CHARGE_NAME_CONT
+				, CHARGE_TEL_CONT
+				, REG_DT
+				, REG_ID
+			FROM EZ_BBS_CONTENT
+			WHERE BC_DEL_YN = 'N'
+			AND BC_IDX = #{bcIdx}
+			AND CB_IDX = #{cbIdx}
+		]]>
+	</select>
+	
+	<sql id="searchBbsCustomF">
+		<if test="searchCateCont != null and searchCateCont != ''">
+		<![CDATA[
+			AND	
+				CATE_CONT = #{searchCateCont}
+		]]>	
+		</if>
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 1">
+			<![CDATA[
+				AND
+					SUB_CONT LIKE '%'||#{searchKeyword}||'%'
+			]]>	
+			</if>
+			<if test="searchCondition == 2">
+				<![CDATA[
+					AND NAME_CONT LIKE '%'||#{searchKeyword}||'%'
+				]]>
+			</if>
+		</if>
+	</sql>
+	
+	<select id="selectPagBbsCustomF" parameterType="BbsCustomFVo" resultMap="BbsCustomFListMap">
+		<![CDATA[
+			SELECT * FROM (
+				SELECT A.*, ROWNUM RN FROM (
+					SELECT 
+						BC_IDX
+						, CATE_CONT
+						, SUB_CONT
+						, NAME_CONT
+						, COUNT_CONT
+						, M_LINK_CONT
+						, THUMNAIL_CONT
+						, REG_DT
+						, CAPTION_CONT
+					FROM EZ_BBS_CONTENT
+					WHERE BC_DEL_YN = 'N'
+					AND CB_IDX = #{cbIdx}
+		]]>
+		<include refid="searchBbsCustomF"/>
+		<![CDATA[
+					ORDER BY BC_IDX DESC
+				) A WHERE ROWNUM <= #{lastIndex}
+			) WHERE RN > #{firstIndex}
+		]]>
+	</select>
+	
+	<select id="selectBbsCustomFCnt" parameterType="BbsCustomFVo" resultType="java.lang.Integer">
+		<![CDATA[
+			SELECT COUNT(BC_IDX)
+			FROM EZ_BBS_CONTENT
+			WHERE BC_DEL_YN = 'N'
+			AND CB_IDX = #{cbIdx}
+		]]>
+		<include refid="searchBbsCustomF"/>
+	</select>
+	
+	<select id="selectBbsCustomFPrevNext" parameterType="BbsCustomFVo" resultType="egovMap">
+		<![CDATA[
+			SELECT
+				BC_IDX
+				, PREV_IDX
+				, PREV_SUB
+				, PREV_REGDT
+				, NEXT_IDX
+				, NEXT_SUB
+				, NEXT_REGDT
+			FROM (
+				SELECT
+					BC_IDX
+					, LAG(BC_IDX, 1) OVER(ORDER BY BC_IDX ASC) PREV_IDX
+					, LAG(SUB_CONT, 1) OVER(ORDER BY BC_IDX ASC) PREV_SUB
+					, LAG(REG_DT, 1) OVER(ORDER BY BC_IDX ASC) PREV_REGDT
+					, LEAD(BC_IDX, 1) OVER(ORDER BY BC_IDX ASC) NEXT_IDX
+					, LEAD(SUB_CONT, 1) OVER(ORDER BY BC_IDX ASC) NEXT_SUB
+					, LEAD(REG_DT, 1) OVER(ORDER BY BC_IDX ASC) NEXT_REGDT
+				FROM EZ_BBS_CONTENT
+				WHERE BC_DEL_YN = 'N'
+				AND CB_IDX = #{cbIdx}
+		]]>
+		<include refid="searchBbsCustomF"/>
+		<![CDATA[
+			)
+			WHERE BC_IDX = #{bcIdx}
+		]]>
+	</select>
+	
+	<select id="selectListBbsCustomFLatest" parameterType="BbsCustomFVo" resultMap="BbsCustomFListMap">
+		<![CDATA[
+			SELECT /*+ FIRST_ROWS */ A.*, ROWNUM RN FROM (
+				SELECT 
+					BC_IDX
+					, CATE_CONT
+					, SUB_CONT
+					, NAME_CONT
+					, COUNT_CONT
+					, M_LINK_CONT
+					, THUMNAIL_CONT
+					, REG_DT
+					, CAPTION_CONT
+				FROM EZ_BBS_CONTENT
+				WHERE BC_DEL_YN = 'N'
+				AND CB_IDX = #{cbIdx}
+		]]>
+		<include refid="searchBbsCustomF"/>
+		<![CDATA[
+				ORDER BY BC_IDX DESC
+			) A WHERE ROWNUM <= #{lastIndex}
+		]]>
+	</select>
+	
+	<select id="selectListBbsCustomFLatestOne" parameterType="BbsCustomFVo" resultMap="BbsCustomFListMap">
+		<![CDATA[
+			SELECT A.*, ROWNUM RN FROM (
+				SELECT 
+					BC_IDX
+					, CATE_CONT
+					, SUB_CONT
+					, NAME_CONT
+					, COUNT_CONT
+					, M_LINK_CONT
+					, THUMNAIL_CONT
+					, REG_DT
+					, CAPTION_CONT
+				FROM EZ_BBS_CONTENT
+				WHERE BC_DEL_YN = 'N'
+				AND CB_IDX = #{cbIdx}
+		]]>
+		<include refid="searchBbsCustomF"/>
+		<![CDATA[
+				ORDER BY NOTI_YN DESC, BC_IDX DESC
+			) A WHERE ROWNUM = 1
+		]]>
+	</select>
+
+	<insert id="insertBbsCustomFIdea" parameterType="BbsCustomFVo">
+		<![CDATA[
+			INSERT INTO EZ_BBS_CONTENT
+			(
+				BC_IDX
+				, CB_IDX
+				, PARENT_SEQ
+				, SUB_CONT
+				, NAME_CONT
+				, EMAIL_CONT
+				, TEL_CONT
+				, PHONE_CONT
+				, CLOB_CONT
+				, CLOB_CONT_SEARCH
+				, DUPCODE
+				, REG_DT
+				, REG_ID
+				, REG_IP
+			)
+			VALUES
+			(
+				#{bcIdx}
+				, #{cbIdx}
+				, #{parentSeq}
+				, #{subCont}
+				, #{nameCont}
+				, #{emailCont}
+				, #{telCont}
+				, #{phoneCont}
+				, #{clobCont}
+				, #{clobContSearch}
+				, #{dupcode}
+				, SYSDATE
+				, #{regId}
+				, #{regIp}
+			)
+		]]>
+	</insert>
+	
+	<update id="updateBbsCustomFCount" parameterType="BbsCustomFVo">
+		<![CDATA[
+			UPDATE EZ_BBS_CONTENT
+			SET COUNT_CONT = COUNT_CONT+1
+			WHERE CB_IDX = #{cbIdx}
+			AND BC_IDX = #{bcIdx}  
+		]]>
+	</update>
+	
+</mapper>

@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="HotManageDao">
+	
+	<resultMap id="HotManageMap" type="egovframework.injeinc.boffice.hot.manage.vo.HotManageVo">
+		<result property="hlIdx" column="HL_IDX"/>		<!--서비스키-->
+		<result property="hlTitle" column="HL_TITLE"/>		<!--제목-->
+		<result property="hlLink" column="HL_LINK"/>		<!--링크-->
+		<result property="hlTarget" column="HL_TARGET"/>		<!--타겟-->
+		<result property="hlSort" column="HL_SORT"/>		<!--순번 -->
+		<result property="hlFileName" column="HL_FILE_NAME"/>		<!--저장파일명-->
+		<result property="hlFileOrgName" column="HL_FILE_ORG_NAME"/>		<!--원본파일명-->
+		<result property="hlFilePath" column="HL_FILE_PATH"/>		<!--파일경로-->
+		<result property="useYn" column="USE_YN"/>		<!--사용유무-->
+		<result property="regDt" column="REG_DT"/>		<!--등록일시-->
+		<result property="regId" column="REG_ID"/>		<!--등록자ID-->
+		<result property="modDt" column="MOD_DT"/>		<!--수정일시-->
+		<result property="modId" column="MOD_ID"/>		<!--수정자ID-->
+		<result property="hlMoFileName" column="HL_MO_FILE_NAME"/>		<!--저장파일명(마우스오버시)-->
+		<result property="hlMoFileOrgName" column="HL_MO_FILE_ORG_NAME"/>		<!--원본파일명(마우스오버시)-->
+		<result property="hlMoFilePath" column="HL_MO_FILE_PATH"/>		<!--파일경로(마우스오버시)-->
+	</resultMap>
+	
+	<resultMap id="fileMap" type="egovframework.injeinc.boffice.hot.manage.vo.HotManageVo">
+		<result property="hlFileName" column="HL_FILE_NAME"/>		<!--저장파일명-->
+		<result property="hlFileOrgName" column="HL_FILE_ORG_NAME"/>		<!--원본파일명-->
+		<result property="hlFilePath" column="HL_FILE_PATH"/>		<!--파일경로-->
+	</resultMap>
+	
+	<resultMap id="cortMap" type="egovframework.injeinc.boffice.hot.manage.vo.HotManageVo">
+		<result property="hlIdx" column="HL_IDX"/>		<!--서비스키-->
+		<result property="hlSort" column="HL_SORT"/>		<!--순번-->
+	</resultMap>
+	
+	<!-- 리스트 출력 -->
+	<select id="selectListHotManage" parameterType="HotManageVo" resultMap="HotManageMap">
+		<![CDATA[
+				SELECT HL_IDX
+					,HL_TITLE
+					,HL_LINK
+					,HL_TARGET
+					,HL_SORT
+					,HL_FILE_NAME
+					,HL_FILE_ORG_NAME
+					,HL_FILE_PATH
+					,USE_YN
+					,REG_DT
+					,REG_ID
+					,MOD_DT
+					,MOD_ID
+					,HL_MO_FILE_NAME
+					,HL_MO_FILE_ORG_NAME
+					,HL_MO_FILE_PATH
+				FROM EZ_HOT_LIST
+				ORDER BY USE_YN DESC, HL_SORT 
+		]]>
+	</select>
+	
+	<!--게시물 총 개수 -->
+	<select id="selectPagHotManage" parameterType="HotManageVo" resultType="int">
+	<![CDATA[
+			SELECT COUNT(*)
+			FROM EZ_HOT_LIST
+		    ORDER BY USE_YN DESC, HL_SORT
+	]]>	
+	</select>
+	
+	<!-- 등록 -->
+	<insert id="insertHotManage" parameterType="HotManageVo">
+	<![CDATA[
+	DECLARE 
+				BEGIN
+				
+				UPDATE EZ_HOT_LIST
+				SET HL_SORT = HL_SORT + 1
+				WHERE HL_SORT > 0;
+			
+				INSERT INTO
+				HOT_LIST(
+					HL_IDX
+					,HL_TITLE
+					,HL_LINK
+					,HL_TARGET
+					,HL_SORT
+					,HL_FILE_NAME
+					,HL_FILE_ORG_NAME
+					,HL_FILE_PATH
+					,USE_YN
+					,REG_DT
+					,REG_ID
+					,HL_MO_FILE_NAME
+					,HL_MO_FILE_ORG_NAME
+					,HL_MO_FILE_PATH
+					)VALUES(
+					#{hlIdx}
+					,#{hlTitle}
+					,#{hlLink}
+					,#{hlTarget}
+	]]>			
+					<if test="useYn == &quot;Y&quot;">
+	<![CDATA[			 	
+				 		,1
+	]]>			 	
+					</if>
+					<if test="useYn == &quot;N&quot;">
+	<![CDATA[			 	
+				 		,0
+	]]>			 	
+					</if>	
+	<![CDATA[				
+					,#{hlFileName}
+					,#{hlFileOrgName}
+					,#{hlFilePath}
+					,#{useYn}
+					,DATE_FORMAT(NOW(),'%Y/%m/%d')
+					,#{regId}
+					,#{hlMoFileName}
+					,#{hlMoFileOrgName}
+					,#{hlMoFilePath}
+					);
+					
+			END;
+	]]>
+	</insert>
+	
+	<!-- 수정 -->
+	<update id="updateHotManage" parameterType="HotManageVo">
+	<![CDATA[
+		UPDATE EZ_HOT_LIST
+		SET HL_TITLE = #{hlTitle}
+			,HL_LINK = #{hlLink}
+			,HL_TARGET = #{hlTarget}
+	]]>		
+			<if test="useYn == &quot;Y&quot;">
+				<if test="hlSort == 0">
+	<![CDATA[		 	
+			 		,HL_SORT = (SELECT NVL(MAX(HL_SORT)+1,1) FROM EZ_HOT_LIST)
+	]]>		 	
+			 	</if>
+			</if>
+			<if test="useYn == &quot;N&quot;">
+	<![CDATA[	 	
+		 		,HL_SORT = 0
+	]]>	 	
+			</if>	
+	<![CDATA[		
+			,HL_FILE_NAME = #{hlFileName}
+			,HL_FILE_ORG_NAME = #{hlFileOrgName}
+			,HL_FILE_PATH = #{hlFilePath}
+			,USE_YN = #{useYn}
+			,MOD_DT = DATE_FORMAT(NOW(), %Y-%m-%d)
+			,MOD_ID = #{modId}
+			,HL_MO_FILE_NAME = #{hlMoFileName}
+			,HL_MO_FILE_ORG_NAME = #{hlMoFileOrgName}
+			,HL_MO_FILE_PATH = #{hlMoFilePath}
+		WHERE HL_IDX= #{hlIdx}
+	]]>
+	</update>
+	
+	<!-- 정렬순서 수정 -->
+	<update id="updateHlSort" parameterType="String">
+		<![CDATA[
+			UPDATE EZ_HOT_LIST
+			SET HL_SORT = HL_SORT - 1
+			WHERE HL_SORT > #{hlSort}
+		]]>
+	</update>
+	
+	<!--파일 정보 -->
+	<select id="selectFile" parameterType="HotManageVo" resultMap="fileMap">
+	<![CDATA[
+			SELECT HL_FILE_NAME
+					,HL_FILE_ORG_NAME
+					,HL_FILE_PATH
+			FROM EZ_HOT_LIST
+			WHERE HL_IDX = #{hlIdx}
+	]]>	
+	</select>
+	
+	<!-- 최소상위 step -->
+	<select id="selectMinStep" parameterType="HotManageVo" resultMap="cortMap">
+		<![CDATA[
+		SELECT HL_IDX
+		      ,HL_SORT
+		FROM EZ_HOT_LIST
+		WHERE HL_SORT = 
+						(SELECT NVL(MIN(HL_SORT),#{hlSort})
+						FROM EZ_HOT_LIST
+						WHERE HL_SORT > #{hlSort}
+						AND HL_SORT != 0)
+		]]>
+	</select>
+	
+	<!-- 최대하위 step -->
+	<select id="selectMaxStep" parameterType="HotManageVo" resultMap="cortMap">
+		<![CDATA[
+		SELECT HL_IDX
+			  ,HL_SORT
+		FROM EZ_HOT_LIST
+		WHERE HL_SORT = 
+			(SELECT NVL(MAX(HL_SORT),#{hlSort})
+			FROM EZ_HOT_LIST
+			WHERE HL_SORT < #{hlSort}
+			AND HL_SORT != 0)
+		]]>
+	</select>
+	
+	<!-- 순서 수정  -->
+	<update id="updateStep" parameterType="HotManageVo">
+		<![CDATA[
+		DECLARE 
+				BEGIN
+				
+				UPDATE EZ_HOT_LIST
+				SET HL_SORT = #{hlTempSort}
+				WHERE HL_IDX = #{hlIdx};
+				
+				UPDATE EZ_HOT_LIST
+				SET HL_SORT = #{hlSort}
+				WHERE HL_IDX = #{hlTempIdx};
+				
+		END;
+		]]>
+	</update>
+	 
+	<!-- 삭제 -->
+	<update id="deleteHotManage" parameterType="HotManageVo">
+		<![CDATA[
+		UPDATE EZ_HOT_LIST
+		SET USE_YN = 'N'
+		WHERE HL_IDX = #{hlIdx}
+		]]>
+	</update>
+	
+	<!-- 메인화면 리스트 조회  -->
+	<select id="selectListHotManageMain" resultMap="HotManageMap">
+		<![CDATA[
+			SELECT A.* FROM (
+					SELECT   HL_IDX
+							,HL_TITLE
+							,HL_LINK
+							,HL_TARGET
+							,HL_SORT
+							,HL_FILE_NAME
+							,HL_FILE_ORG_NAME
+							,HL_FILE_PATH
+							,USE_YN
+							,REG_DT
+							,REG_ID
+							,MOD_DT
+							,MOD_ID
+							,HL_MO_FILE_NAME
+							,HL_MO_FILE_ORG_NAME
+							,HL_MO_FILE_PATH 
+							, @ROWNUM:=@ROWNUM+1 RN
+					FROM EZ_HOT_LIST B
+					WHERE (@ROWNUM:=0)=0
+					AND 1 = 1
+				)A 
+				WHERE rn BETWEEN 1 AND 10		
+		]]>
+	</select>
+	
+</mapper>

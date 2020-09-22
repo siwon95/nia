@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PollQuestionDao">
+	<resultMap id="PollQuestionMap" type="egovframework.injeinc.boffice.ex.poll.vo.PollQuestionVo">
+		<result property="pqIdx" column="PQ_IDX"/>
+		<result property="pqPlidx" column="PQ_PLIDX"/>
+		<result property="pqSort" column="PQ_SORT"/>
+		<result property="pqTitle" column="PQ_TITLE"/>
+		<result property="pqDetail" column="PQ_DETAIL"/>
+		<result property="pqType" column="PQ_TYPE"/>
+		<result property="pqItemCnt" column="PQ_ITEM_CNT"/>
+		<result property="pqItemList" column="PQ_ITEM_LIST"/>
+		<result property="pqItemDirection" column="PQ_ITEM_DIRECTION"/>
+		<result property="pqCheck" column="PQ_CHECK"/>
+		<result property="pqEtc" column="PQ_ETC"/>
+		<result property="useYn" column="USE_YN"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+	</resultMap>
+
+	<insert id="insertPollQuestion" parameterType="PollQuestionVo">
+		<![CDATA[	
+			INSERT INTO EZ_POLL_QUESTION
+			(
+				PQ_IDX
+				, PQ_PLIDX
+				, PQ_SORT
+				, PQ_TITLE
+				, PQ_DETAIL
+				, PQ_TYPE
+				, PQ_ITEM_CNT
+				, PQ_ITEM_LIST
+				, PQ_ITEM_DIRECTION
+				, PQ_CHECK
+				, PQ_ETC
+				, REG_ID
+			)
+			VALUES
+			(
+				#{pqIdx}
+				, #{pqPlidx}
+				, #{pqSort}
+				, #{pqTitle}
+				, #{pqDetail}
+				, #{pqType}
+				, #{pqItemCnt}
+				, #{pqItemList}
+				, #{pqItemDirection}
+				, #{pqCheck}
+				, #{pqEtc}
+				, #{regId}
+			)
+		]]>
+	</insert>
+	
+	<update id="updatePollQuestion" parameterType="PollQuestionVo">
+		<![CDATA[	
+			UPDATE EZ_POLL_QUESTION 
+			SET PQ_TITLE = #{pqTitle}
+				, PQ_DETAIL = #{pqDetail}
+				, PQ_TYPE = #{pqType}
+				, PQ_ITEM_CNT = #{pqItemCnt}
+				, PQ_ITEM_LIST = #{pqItemList}
+				, PQ_ITEM_DIRECTION = #{pqItemDirection}
+				, PQ_CHECK = #{pqCheck}
+				, PQ_ETC = #{pqEtc}
+				, MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+			WHERE PQ_IDX = #{pqIdx}
+		]]>
+	</update>
+	
+	<update id="deletePollQuestion" parameterType="PollQuestionVo">
+		<![CDATA[	
+			UPDATE EZ_POLL_QUESTION
+			SET 
+				USE_YN = 'N'
+				, MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+			WHERE PQ_IDX = #{pqIdx}
+		]]>
+	</update>
+	
+	<select id="selectPollQuestion" parameterType="PollQuestionVo" resultMap="PollQuestionMap">
+		<![CDATA[	
+			SELECT * FROM EZ_POLL_QUESTION
+			WHERE USE_YN = 'Y'
+			AND PQ_IDX = #{pqIdx}
+		]]>
+	</select>
+	
+	<select id="selectListPollQuestion" parameterType="PollQuestionVo" resultMap="PollQuestionMap">
+		<![CDATA[	
+			SELECT * 
+			FROM EZ_POLL_QUESTION
+			WHERE USE_YN = 'Y'
+			AND PQ_PLIDX = #{plIdx}
+			ORDER BY PQ_SORT ASC
+		]]>
+	</select>
+	
+	<select id="selectPollQuestionMaxSort" parameterType="PollQuestionVo" resultType="java.lang.Integer">
+		<![CDATA[	
+			SELECT NVL(MAX(PQ_SORT), 0)
+			FROM EZ_POLL_QUESTION
+			WHERE USE_YN = 'Y'
+			AND PQ_PLIDX = #{pqPlidx}
+		]]>
+	</select>
+	
+	<update id="updatePollQuestionPqSort" parameterType="PollQuestionVo">
+		<![CDATA[	
+			UPDATE EZ_POLL_QUESTION 
+			SET PQ_SORT = #{pqSort}
+			WHERE PQ_IDX = #{pqIdx}
+		]]>
+	</update>
+	
+	<update id="updatePollQuestionPqSortChange" parameterType="PollQuestionVo">
+		<![CDATA[	
+			UPDATE EZ_POLL_QUESTION 
+			SET PQ_SORT = #{changeSort}
+			WHERE USE_YN = 'Y'
+			AND PQ_PLIDX = #{pqPlidx}
+			AND PQ_SORT = #{pqSort}
+		]]>
+	</update>
+	
+	<update id="updatePollQuestionPqSortReAlign" parameterType="PollQuestionVo">
+		<![CDATA[	
+			UPDATE EZ_POLL_QUESTION 
+			SET PQ_SORT = PQ_SORT - 1
+			WHERE USE_YN = 'Y'
+			AND PQ_PLIDX = #{pqPlidx}
+			AND PQ_SORT > #{pqSort}
+		]]>
+	</update>
+	
+</mapper>

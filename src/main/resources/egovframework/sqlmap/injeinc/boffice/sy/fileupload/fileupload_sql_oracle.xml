@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FileUploadDao">
+	<resultMap id="FileUploadMap" type="egovframework.injeinc.boffice.sy.fileupload.vo.FileUploadVo">
+		<result property="fuIdx" column="FU_IDX"/>
+		<result property="fuGroup" column="FU_GROUP"/>
+		<result property="fuPkidx" column="FU_PKIDX"/>
+		<result property="fuPath" column="FU_PATH"/>
+		<result property="fuName" column="FU_NAME"/>
+		<result property="fuRename" column="FU_RENAME"/>
+		<result property="fuSize" column="FU_SIZE"/>
+		<result property="fuMime" column="FU_MIME"/>
+		<result property="fuFormat" column="FU_FORMAT"/>
+		<result property="fuDown" column="FU_DOWN"/>
+		<result property="useYn" column="USE_YN"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+	</resultMap>
+	
+	<insert id="insertFileUpload" parameterType="FileUploadVo">
+		<![CDATA[
+			INSERT INTO TEST_FILEUPLOAD
+			(
+				FU_IDX
+				, FU_GROUP
+				, FU_PKIDX
+				, FU_PATH
+				, FU_NAME
+				, FU_RENAME
+				, FU_SIZE
+				, FU_MIME
+				, FU_FORMAT
+				, FU_DOWN
+				, REG_ID
+			)
+			VALUES
+			(
+				#{fuIdx}
+				, #{fuGroup}
+				, #{fuPkidx}
+				, #{fuPath}
+				, #{fuName}
+				, #{fuRename}
+				, #{fuSize}
+				, #{fuMime}
+				, #{fuFormat}
+				, #{fuDown}
+				, #{regId}
+			)
+		]]>
+	</insert>
+	<select id="selectListFileUpload" parameterType="FileUploadVo" resultMap="FileUploadMap">
+		<![CDATA[
+			SELECT *
+			FROM TEST_FILEUPLOAD
+			WHERE USE_YN = 'Y'
+			AND FU_GROUP = #{fuGroup}
+			ORDER BY FU_IDX ASC
+		]]>
+	</select>
+	
+	<select id="selectPagFileUpload" parameterType="FileUploadVo" resultMap="FileUploadMap">
+		<![CDATA[
+			SELECT * FROM (
+				SELECT /*+ FIRST_ROWS */ A.*, ROWNUM RN FROM (
+					SELECT *
+					FROM TEST_FILEUPLOAD
+					WHERE USE_YN = 'Y'
+					AND FU_GROUP = #{fuGroup}
+		]]>
+		<!-- <include refid="searchCmmFiles"/> -->
+		<![CDATA[
+					ORDER BY FU_IDX DESC
+				) A WHERE ROWNUM <= #{lastIndex}
+			) WHERE RN > #{firstIndex}
+		]]>
+	</select>
+	
+	<select id="selectFileUploadCnt" parameterType="FileUploadVo" resultType="java.lang.Integer">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM TEST_FILEUPLOAD
+			WHERE USE_YN = 'Y'
+			AND FU_GROUP = #{fuGroup}
+		]]>
+		<!-- <include refid="searchCmmFiles"/> -->
+	</select>
+	
+		<select id="selectFileUploadByGroupAndRename" parameterType="FileUploadVo" resultMap="FileUploadMap">
+		<![CDATA[
+			SELECT * FROM TEST_FILEUPLOAD
+			WHERE USE_YN = 'Y'
+			AND FU_IDX = #{fuIdx}
+			AND FU_GROUP = #{fuGroup}
+			AND FU_RENAME = #{fuRename}
+		]]>
+	</select>
+	
+		<delete id="deleteFileUpload" parameterType="FileUploadVo">
+		<![CDATA[
+			DELETE FROM TEST_FILEUPLOAD
+				WHERE FU_IDX = #{fuIdx}
+		]]>
+	</delete>
+			
+		<update id="updateFileUploadDown" parameterType="FileUploadVo">
+		<![CDATA[
+			UPDATE TEST_FILEUPLOAD 
+			SET FU_DOWN = FU_DOWN + 1
+			WHERE FU_IDX = #{fuIdx}
+		]]>
+	</update>	
+	
+	
+
+</mapper>

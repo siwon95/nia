@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CmmUse">
+
+	<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+	<typeAlias  alias="ComDefaultCodeVO" type="egovframework.com.cmm.ComDefaultCodeVO"/>
+
+	<resultMap id="CmmCodeDetail" class="egovframework.com.cmm.service.CmmnDetailCode">
+		<result property="codeId"    	column="CODE_ID"   		columnIndex="1"/>
+		<result property="code"  		column="CODE" 			columnIndex="2"/>
+		<result property="codeNm"   	column="CODE_NM"  		columnIndex="3"/>
+		<result property="codeDc"   	column="CODE_DC"  		columnIndex="4"/>
+		<result property="codeAbrvNm"   column="CODE_ABRV_NM"  	columnIndex="5"/>
+		<result property="userDfn1"   	column="USER_DFN1"  	columnIndex="6"/>
+		<result property="userDfn1Dc"   column="USER_DFN1_DC"  	columnIndex="7"/>
+		<result property="userDfn2"   	column="USER_DFN2"  	columnIndex="8"/>
+		<result property="userDfn2Dc"   column="USER_DFN2_DC"  	columnIndex="9"/>
+	</resultMap>
+
+	<resultMap id="OgrnztAndGroup" class="egovframework.com.cmm.service.CmmnDetailCode">
+		<result property="codeId"    	column="CODE_ID"   		columnIndex="1"/>
+		<result property="code"  		column="CODE" 			columnIndex="2"/>
+		<result property="codeNm"   	column="CODE_NM"  		columnIndex="3"/>
+		<result property="codeDc"   	column="CODE_DC"  		columnIndex="4"/>
+	</resultMap>
+	
+	<select id="CmmUseDAO.selectCmmCodeDetail" parameterClass="ComDefaultCodeVO" resultMap="CmmCodeDetail">
+		<![CDATA[ 
+			SELECT 
+			A.CODE_ID, A.CODE, A.CODE_NM, A.CODE_DC, A.CODE_ABRV_NM, A.USER_DFN1, A.USER_DFN1_DC, A.USER_DFN2, A.USER_DFN2_DC
+			FROM 
+			COMTCCMMNDETAILCODE A
+			LEFT OUTER JOIN COMTCCMMNCODE B ON A.CODE_ID = B.CODE_ID
+			LEFT OUTER JOIN COMTCCMMNCLCODE C ON B.CL_CODE = C.CL_CODE
+			WHERE
+			A.USE_AT      = 'Y'
+			AND A.CODE_ID = #codeId#
+			ORDER BY C.SORT_ORDR, B.SORT_ORDR, A.SORT_ORDR
+		]]>
+	</select>
+
+    <select id="CmmUseDAO.selectOgrnztIdDetail" parameterClass="ComDefaultCodeVO" resultMap="OgrnztAndGroup">
+            <![CDATA[ 
+            SELECT 
+                #tableNm#     CODE_ID, 
+                ORGNZT_ID     CODE, 
+                ORGNZT_NM     CODE_NM, 
+                ORGNZT_DC     CODE_DC
+            FROM 
+                COMTNORGNZTINFO
+            WHERE 1=1
+            ]]>
+            <isEqual prepend="AND" property="haveDetailCondition" compareValue="Y">
+                ORGNZT_ID  LIKE  #detailConditionValue#
+            </isEqual>
+            <![CDATA[ 
+			START WITH UPPER_ORGNZT_ID = '0'
+			CONNECT BY PRIOR ORGNZT_ID = UPPER_ORGNZT_ID
+			ORDER SIBLINGS BY ORG_ORDR ASC   
+            ]]>            
+    </select>
+    
+    <select id="CmmUseDAO.selectGroupIdDetail" parameterClass="ComDefaultCodeVO" resultMap="OgrnztAndGroup">
+            <![CDATA[ 
+            SELECT 
+                #tableNm#     CODE_ID, 
+                GROUP_ID     CODE, 
+                GROUP_NM     CODE_NM, 
+                GROUP_DC     CODE_DC
+            FROM 
+                COMTNAUTHORGROUPINFO
+            WHERE 1=1
+            ]]>
+            <isEqual prepend="AND" property="haveDetailCondition" compareValue="Y">
+                GROUP_ID  LIKE  #detailConditionValue#
+            </isEqual>
+    </select>
+    
+
+</sqlMap>            

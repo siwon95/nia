@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Fri Mar 13 16:53:18 KST 2020-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ContentMinwonResultFDao">
+	<resultMap id="ContentMinwonResultFMap" type="egovframework.injeinc.foffice.ex.board.vo.ContentMinwonResultFVo">
+		<result property="mcIdx" column="MC_IDX"/>
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="mcTitle" column="MC_TITLE"/>
+		<result property="mcDeptCd" column="MC_DEPT_CD"/>
+		<result property="mcDeptNo1Cd" column="MC_DEPT_NO1_CD"/>
+		<result property="mcDeptHist" column="MC_DEPT_HIST"/>
+		<result property="mcReplyer" column="MC_REPLYER"/>
+		<result property="mcTel1" column="MC_TEL1"/>
+		<result property="mcTel2" column="MC_TEL2"/>
+		<result property="mcMsg" column="MC_MSG"/>
+		<result property="mcUnitCd" column="MC_UNIT_CD"/>
+		<result property="mcAreaCd" column="MC_AREA_CD"/>
+		<result property="mcFiledCd" column="MC_FILED_CD"/>
+		<result property="mcKdCd" column="MC_KD_CD"/>
+		<result property="mcResult" column="MC_RESULT"/>
+		<result property="mcPointTxt" column="MC_POINT_TXT"/>
+		<result property="mcDelayDay" column="MC_DELAY_DAY"/>
+		<result property="mcDelayRsn" column="MC_DELAY_RSN"/>
+		<result property="mcStatus" column="MC_STATUS"/>
+		<result property="tempYn" column="TEMP_YN"/>
+		<result property="auditYn" column="AUDIT_YN"/>
+		<result property="mcBSender" column="MC_B_SENDER"/>
+		<result property="mcBMth" column="MC_B_MTH"/>
+		<result property="mcBDay" column="MC_B_DAY"/>
+		<result property="mcBTxt" column="MC_B_TXT"/>
+		<result property="mcASender" column="MC_A_SENDER"/>
+		<result property="mcAMth" column="MC_A_MTH"/>
+		<result property="mcADay" column="MC_A_DAY"/>
+		<result property="mcATxt" column="MC_A_TXT"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="contentClob" column="CONTENT_CLOB" javaType="java.lang.String" jdbcType="CLOB"/>
+		<result property="mcSurvey" column="MC_SURVEY"/>
+		<result property="mcSurveyDesc" column="MC_SURVEY_DESC"/>
+		<result property="mcSurveyRegDt" column="MC_SURVEY_REG_DT"/>
+	</resultMap>
+	
+	<select id="selectListContentMinwonResultF" parameterType="ContentMinwonResultFVo" resultMap="ContentMinwonResultFMap">
+		<![CDATA[
+			SELECT *
+			FROM EZ_CONTENT_MINWON_RESULT
+			WHERE MC_STATUS = 'Y'
+			AND AUDIT_YN IS NULL
+			AND CB_IDX = #{cbIdx}
+			AND BC_IDX = #{bcIdx}
+			ORDER BY REG_DT ASC
+		]]>
+	</select>
+	
+	<select id="selectListContentMinwonResultFTotal" parameterType="ContentMinwonResultFVo" resultMap="ContentMinwonResultFMap">
+		<![CDATA[
+			SELECT * FROM (
+				SELECT A.*, ROWNUM RN FROM (
+					SELECT *
+					FROM EZ_CONTENT_MINWON_RESULT
+					WHERE MC_STATUS IS NULL
+					AND TEMP_YN IS NULL
+					AND AUDIT_YN IS NOT NULL
+					AND CB_IDX = #{cbIdx}
+					AND BC_IDX = #{bcIdx}
+					ORDER BY REG_DT DESC
+				) A
+			) WHERE RN = 1
+		]]>
+	</select>
+	
+	<update id="updateContentMinwonResultFSurvey" parameterType="ContentMinwonResultFVo">
+		<![CDATA[
+			UPDATE EZ_CONTENT_MINWON_RESULT
+			SET
+				MC_SURVEY = #{mcSurvey}
+				, MC_SURVEY_DESC = #{mcSurveyDesc}
+				, MC_SURVEY_REG_DT = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+			WHERE CB_IDX = #{cbIdx}
+			AND BC_IDX = #{bcIdx}
+			AND MC_IDX = #{mcIdx}
+		]]>
+	</update>
+	
+	<select id="selectListContentFileMinwon" parameterType="ContentMinwonResultFVo" resultType="egovMap">
+		<![CDATA[
+			SELECT
+				 BC_IDX
+				, CB_IDX
+				, FILE_NO
+				, FILE_STRE_COURS
+				, STRE_FILE_NM
+				, ORIGNL_FILE_NM
+				, FILE_EXTSN
+				, FILE_CN
+				, FILE_SIZE
+				, MC_IDX
+			FROM EZ_CONTENT_FILE
+			WHERE USE_YN = 'Y'
+			AND CB_IDX = #{cbIdx}
+			AND BC_IDX = #{bcIdx}
+			AND MC_IDX = #{mcIdx}
+			ORDER BY FILE_NO ASC
+		]]>
+	</select>
+	
+	<select id="selectContentMinwonResultFDeadLine" parameterType="ContentMinwonResultFVo" resultType="java.lang.String">
+		<![CDATA[
+			SELECT (
+				SELECT 
+					TO_CHAR(MAX(TO_DATE(A.REG_DT,'YYYYMMDDHH24MISS')+RN), 'YYYY.MM.DD')
+				FROM (
+					SELECT LEVEL RN FROM DUAL CONNECT BY LEVEL <= 14 
+				)
+				WHERE
+					TO_CHAR(TO_DATE(A.REG_DT,'YYYYMMDDHH24MISS')+RN,'D') IN (2,3,4,5,6) 
+					AND TO_CHAR(TO_DATE(A.REG_DT,'YYYYMMDDHH24MISS')+RN,'YYYY-MM-DD') <> ALL (SELECT HOL_DATE FROM EZ_HOLIDAY WHERE 1 = 1)
+					AND ROWNUM <= CASE WHEN  A.REG_HH >= '18' THEN 3 ELSE 2 END
+				) AS DEAD_LINE
+			FROM (
+				SELECT
+					REG_DT
+					, TO_CHAR(TO_DATE(REG_DT,'YYYYMMDDHH24MISS'),'HH24') AS REG_HH
+				FROM (
+					SELECT MAX(REG_DT) AS REG_DT
+					FROM EZ_CONTENT_MINWON_RESULT
+					WHERE MC_STATUS = 'Y'
+					AND TEMP_YN IS NULL
+					AND AUDIT_YN IS NULL
+					AND CB_IDX = #{cbIdx}
+					AND BC_IDX = #{bcIdx}
+				)
+			) A
+		]]>
+	</select>
+	
+	<select id="selectContentMinwonResultFDelay" parameterType="ContentMinwonResultFVo" resultMap="ContentMinwonResultFMap">
+		<![CDATA[
+			SELECT * FROM (
+				SELECT A.*, ROWNUM RN FROM (
+					SELECT *
+					FROM EZ_CONTENT_MINWON_RESULT
+					WHERE MC_STATUS = 'Y'
+					AND AUDIT_YN IS NULL
+					AND TEMP_YN IS NULL
+					AND MC_DELAY_DAY IS NOT NULL
+					AND CB_IDX = #{cbIdx}
+					AND BC_IDX = #{bcIdx}
+					ORDER BY MC_DELAY_DAY DESC
+				) A
+			) WHERE RN = 1
+		]]>
+	</select>
+	
+</mapper>

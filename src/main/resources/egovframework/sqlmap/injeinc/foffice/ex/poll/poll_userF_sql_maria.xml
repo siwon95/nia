@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PollUserFDao">
+
+	<resultMap id="PollUserFMap" type="egovframework.injeinc.foffice.ex.poll.vo.PollUserFVo">
+		<result property="puIdx" column="PU_IDX"/>
+		<result property="puPlidx" column="PU_PLIDX"/>
+		<result property="puId" column="PU_ID"/>
+		<result property="puName" column="PU_NAME"/>
+		<result property="puZip" column="PU_ZIP"/>
+		<result property="puAddr1" column="PU_ADDR1"/>
+		<result property="puAddr2" column="PU_ADDR2"/>
+		<result property="puTel" column="PU_TEL"/>
+		<result property="puHp" column="PU_HP"/>
+		<result property="puEmail" column="PU_EMAIL"/>
+		<result property="useYn" column="USE_YN"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="regDi" column="REG_DI"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+	</resultMap>
+
+	<insert id="insertPollUserF" parameterType="PollUserFVo">
+		<![CDATA[
+			INSERT INTO EZ_POLL_USER
+			(
+				PU_IDX
+				, PU_PLIDX
+				, PU_ID
+				, PU_NAME
+				, PU_ZIP
+				, PU_ADDR1
+				, PU_ADDR2
+				, PU_TEL
+				, PU_HP
+				, PU_EMAIL
+				, REG_ID
+				, REG_DI
+			)
+			VALUES
+			(
+				#{puIdx}
+				, #{puPlidx}
+				, #{puId}
+				, #{puName}
+				, #{puZip}
+				, #{puAddr1}
+				, #{puAddr2}
+				, #{puTel}
+				, #{puHp}
+				, #{puEmail}
+				, #{regId}
+				, #{regDi}
+			)
+		]]>
+	</insert>
+	
+	<select id="selectPollUserFCnt" parameterType="PollUserFVo" resultType="java.lang.Integer">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM EZ_POLL_USER
+			WHERE USE_YN = 'Y'
+			AND PU_PLIDX = #{plIdx}
+			AND REG_DI = #{regDi}
+		]]>
+	</select>
+	
+	<select id="selectPollUserFTotCnt" parameterType="PollUserFVo" resultType="java.lang.Integer">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM EZ_POLL_USER
+			WHERE USE_YN = 'Y'
+			AND PU_PLIDX = #{plIdx}
+		]]>
+	</select>
+	
+</mapper>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserLogDao">
+	
+	<resultMap id="UserLoginMap" type="egovframework.injeinc.boffice.sy.userlog.vo.UserLogVo">
+		<result property="ulIdx" column="UL_IDX"/>		<!--로그키-->
+		<result property="cuId" column="CU_ID"/>		<!--회원아이디-->
+		<result property="logKdCd" column="LOG_KD_CD"/>		<!--로그구분코드-->
+		<result property="loginSucYn" column="LOGIN_SUC_YN"/>		<!--로그인성공여부-->
+		<result property="ip" column="IP"/>		<!--아이피-->
+		<result property="regDt" column="REG_DT"/>		<!--등록일시-->
+	</resultMap>
+
+	<sql id="search">
+		<if test="searchCondition == &quot;cuId&quot;">and
+			<![CDATA[
+				CU_ID LIKE CONCAT('%',#{searchKeyword},'%')
+			]]>
+		</if>
+		<if test="searchCondition == &quot;ip&quot;">and
+			<![CDATA[
+				IP LIKE CONCAT('%',#{searchKeyword},'%')
+			]]>			
+		</if>
+		<if test="loginSucYn != null and loginSucYn != ''">
+		<![CDATA[
+				and
+				LOGIN_SUC_YN LIKE CONCAT('%',#{loginSucYn},'%')
+		]]>	
+		</if>	
+	</sql>
+	
+	<select id="selectUserLogListTotCnt" parameterType="UserLogVo" resultType="int">
+		<![CDATA[
+			SELECT 
+				COUNT(*)
+			FROM EZ_USER_LOG
+		]]>
+		<where>
+			<include refid="search"/>
+		</where>
+	</select>
+
+	<select id="selectListUserLog" parameterType="UserLogVo" resultMap="UserLoginMap">
+		<![CDATA[	
+		SELECT * FROM (SELECT @rownum := @rownum + 1 as RN, TB.* FROM(SELECT UL_IDX,
+		    CU_ID,
+		    IP,
+		    DATE_FORMAT(STR_TO_DATE(REG_DT, '%Y%m%d%H%i%s'),'%Y-%m-%d %H:%i:%s') AS REG_DT,
+		    LOG_KD_CD,
+		    LOGIN_SUC_YN
+		FROM
+		    EZ_USER_LOG
+	  	]]>
+		WHERE (@rownum:=0)=0
+		<include refid="search"/>
+		<![CDATA[
+		ORDER BY UL_IDX DESC
+		) TB) TBL
+		WHERE RN BETWEEN #{firstIndex}+1 AND #{firstIndex} + #{recordCountPerPage}
+		]]>
+	  	
+	</select>
+	
+	<delete id="deleteUserLogCheck" parameterType="java.util.HashMap">
+		<![CDATA[ DELETE FROM EZ_USER_LOG WHERE UL_IDX = #{ulIdx} ]]>
+	</delete>
+	
+	<delete id="deleteUserLog" parameterType="int">
+		<![CDATA[ DELETE FROM EZ_USER_LOG WHERE UL_IDX = #{ulIdx} ]]>
+	</delete>
+	
+	<delete id="clearUserLog">
+		<![CDATA[
+			DELETE FROM EZ_USER_LOG WHERE
+				DATE_FORMAT(STR_TO_DATE(REPLACE(REG_DT,'-',''), '%Y%m%d%H%i%s'),'%Y%m%d') 
+				<= 
+				DATE_FORMAT(DATE_SUB(NOW(),INTERVAL 10 DAY),'%Y%m%d')
+		]]>
+	</delete>
+
+</mapper>

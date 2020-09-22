@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EzFileDao">
+	<resultMap id="EzFileMap" type="egovframework.injeinc.boffice.cn.file.vo.EzFileVo">
+		<result property="atchFileId" column="ATCH_FILE_ID"/> <!--첨부파일ID-->
+		<result property="fileSn" column="FILE_SN"/> <!--파일순번-->
+		<result property="fileStreCours" column="FILE_STRE_COURS"/> <!--파일저장경로-->
+		<result property="streFileNm" column="STRE_FILE_NM"/> <!--저장파일명-->
+		<result property="orignlFileNm" column="ORIGNL_FILE_NM"/> <!--원파일명-->
+		<result property="fileExtsn" column="FILE_EXTSN"/> <!--파일확장자-->
+		<result property="fileCn" column="FILE_CN"/> <!--파일내용-->
+		<result property="fileSize" column="FILE_SIZE"/> <!--파일크기-->
+	</resultMap>
+	<insert id="insertEzFile" parameterType="EzFileVo">
+	<![CDATA[
+		INSERT INTO EZ_FILE(
+			ATCH_FILE_ID
+			,REG_DT
+			,USE_YN
+		) VALUES(
+			'FILE_'||LPAD(#{atchFileId},15,'0')
+			,	sysdate
+			,	'Y'
+		)
+	]]>
+	</insert>
+	<insert id="insertEzFileDetail" parameterType="EzFileVo">
+	<![CDATA[
+		INSERT INTO EZ_FILEDETAIL(
+			ATCH_FILE_ID
+			,FILE_SN
+			,FILE_STRE_COURS
+			,STRE_FILE_NM
+			,ORIGNL_FILE_NM
+			,FILE_EXTSN
+			,FILE_CN
+			,FILE_SIZE
+		) VALUES(
+			'FILE_'||LPAD(#{atchFileId},15,'0')
+			,	#{fileSn}
+			,	#{fileStreCours}
+			,	#{streFileNm}
+			,	#{orignlFileNm}
+			,	#{fileExtsn}
+			,	#{fileCn}
+			,	#{fileSize}
+		)
+	]]>
+	</insert>
+	<select id="selectPkEzFileKey" parameterType="EzFileVo" resultType="String">
+	<![CDATA[
+		SELECT
+			nvl(MAX(ATCH_FILE_ID),'FILE_000000000000000') as ATCH_FILE_ID
+		FROM EZ_FILE
+	]]>  
+	</select>
+	<select id="selectPkEzFileDetailSn" parameterType="EzFileVo" resultType="String">
+	<![CDATA[
+		SELECT
+			nvl(MAX(FILE_SN),'-1') as FILE_SN
+		FROM EZ_FILEDETAIL WHERE ATCH_FILE_ID=#{atchFileId}
+	]]>  
+	</select>
+	<select id="selectEzFile" parameterType="EzFileVo" resultMap="EzFileMap">
+	<![CDATA[
+		SELECT
+			ATCH_FILE_ID
+			,FILE_SN
+			,FILE_STRE_COURS
+			,STRE_FILE_NM
+			,ORIGNL_FILE_NM
+			,FILE_EXTSN
+			,FILE_CN
+			,FILE_SIZE
+		FROM EZ_FILEDETAIL
+		WHERE ATCH_FILE_ID=#{atchFileId}
+		ORDER BY FILE_SN ASC
+	  ]]>
+	</select>
+	<select id="selectPkEzFile" parameterType="EzFileVo" resultMap="EzFileMap">
+	<![CDATA[
+		SELECT
+			ATCH_FILE_ID
+			,FILE_SN
+			,FILE_STRE_COURS
+			,STRE_FILE_NM
+			,ORIGNL_FILE_NM
+			,FILE_EXTSN
+			,FILE_CN
+			,FILE_SIZE
+		FROM EZ_FILEDETAIL
+		WHERE
+ 			ATCH_FILE_ID=#{atchFileId}
+			AND FILE_SN = #{fileSn}
+	  ]]>
+	</select>
+	<update id="updateEzFile" parameterType="EzFileVo">
+	<![CDATA[
+		UPDATE EZ_FILE SET
+			ATCH_FILE_ID=#{atchFileId}
+			,FILE_SN=#{fileSn}
+			,FILE_STRE_COURS=#{fileStreCours}
+			,STRE_FILE_NM=#{streFileNm}
+			,ORIGNL_FILE_NM=#{orignlFileNm}
+			,FILE_EXTSN=#{fileExtsn}
+			,FILE_CN=#{fileCn}
+			,FILE_SIZE=#{fileSize}
+		WHERE
+ 			ATCH_FILE_ID=#{atchFileId}
+	 ]]> 
+	</update>
+	<delete id="deleteEzFile" parameterType="EzFileVo">
+	<![CDATA[
+		DELETE FROM EZ_FILEDETAIL 
+		WHERE
+ 			ATCH_FILE_ID=#{atchFileId}
+ 			AND FILE_SN=#{fileSn}
+	  ]]>
+	</delete>
+	<delete id="deleteEzFileSort" parameterType="EzFileVo">
+	<![CDATA[
+		UPDATE EZ_FILEDETAIL SET 
+			FILE_SN=FILE_SN-1
+		WHERE
+ 			ATCH_FILE_ID=#{atchFileId}
+ 			AND FILE_SN&gt;#{fileSn}
+	]]>  
+	</delete>
+</mapper>

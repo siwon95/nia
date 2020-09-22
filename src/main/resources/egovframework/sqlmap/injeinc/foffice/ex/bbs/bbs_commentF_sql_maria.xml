@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BbsCommentFDao">
+	
+	<resultMap id="BbsContentList" type="egovframework.injeinc.foffice.ex.bbs.vo.BbsCommentFVo">
+		<result property="cmIdx" column="CM_IDX"/>
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="cmCont" column="COMMENT_CONT"/>
+		<result property="regName" column="REG_NAME"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="cmDepth" column="CM_DEPTH"/>
+		<result property="cmDelYn" column="CM_DEL_YN"/>
+	</resultMap>
+	<!-- 댓글 입력  -->
+	<insert id="insertBbsComment" parameterType="BbsCommentVo">
+		<![CDATA[
+			INSERT INTO EZ_BBS_COMMENT
+			(
+				CM_IDX
+				, CB_IDX
+				, BC_IDX
+				, UPR_CM_IDX
+				, COMMENT_CONT
+				, REG_NAME
+				, REG_ID
+				, REG_DT
+				, REG_IP
+				, CM_DEPTH
+			)
+			VALUES
+			(
+				(SELECT IFNULL(MAX(CM_IDX),0)+1 FROM EZ_BBS_COMMENT AS EBC)
+				, #{cbIdx}
+				, #{bcIdx}
+				, #{uprCmIdx}
+				, #{cmCont}
+				, #{regName}
+				, #{regId}
+				, NOW()
+				, #{regIp}
+				, #{cmDepth}
+			)
+		 ]]>
+	</insert>
+	<!-- 댓글 삭제  -->
+	<update id="deleteBbsComment" parameterType="BbsCommentVo">
+		<![CDATA[
+			UPDATE EZ_BBS_COMMENT SET
+				CM_DEL_YN='Y'
+			WHERE CM_IDX=#{cmIdx}
+		 ]]>
+	</update>
+	<!-- 댓글 수정  -->
+	<update id="updateBbsComment" parameterType="BbsCommentVo">
+		<![CDATA[
+			UPDATE EZ_BBS_COMMENT SET
+				COMMENT_CONT = #{cmCont}
+				, MOD_ID=#{modId}
+				, MOD_DT=NOW()
+				, MOD_IP=#{modIp}
+			WHERE CM_IDX=#{cmIdx}
+		 ]]>
+	</update>
+	<!-- 리스트 조회 -->
+	<select id="selectListComment" parameterType="BbsCommentVo" resultMap="BbsContentList">
+		<![CDATA[
+			SELECT * FROM (
+				WITH RECURSIVE REC (CM_IDX, UPR_CM_IDX, BC_IDX, COMMENT_CONT, REG_DT, REG_NAME, REG_ID,CM_DEPTH, CM_DEL_YN, ORD_NO) AS
+				( 
+				    SELECT  '' AS CM_IDX
+				         ,  '' AS UPR_CM_IDX
+				         ,  '' AS BC_IDX
+				         ,  '' AS COMMENT_CONT
+				         ,  '' AS REG_DT
+				         ,  '' AS REG_NAME
+				         ,  '' AS REG_ID
+				         ,  '' AS CM_DEPTH
+				         ,  '' AS CM_DEL_YN
+				         ,  CAST('' AS VARCHAR(100)) AS ORD_NO                   
+				    
+				    UNION ALL
+					
+				    SELECT  CM_IDX
+				         ,  UPR_CM_IDX 
+				         ,  BC_IDX 
+				         ,  COMMENT_CONT 
+				         ,  REG_DT 
+				         ,  REG_NAME 
+				         ,  REG_ID 
+				         ,  CM_DEPTH 
+				         ,  CM_DEL_YN 
+				         ,  LPAD(CONCAT(CM_IDX), 4,'0') AS ORD_NO
+				      FROM  EZ_BBS_COMMENT 
+				     WHERE UPR_CM_IDX='0'
+				     ]]>
+					<if test="bcIdx != null and bcIdx != ''">
+					<![CDATA[
+						and BC_IDX = #{bcIdx}
+					]]>
+					</if>
+					<if test="cbIdx != null and cbIdx != ''">
+					<![CDATA[
+						and CB_IDX = #{cbIdx}
+					]]>
+					</if>
+					<![CDATA[
+				     UNION ALL
+				    
+				    SELECT  T.CM_IDX          
+				         ,  T.UPR_CM_IDX         
+				         ,  T.BC_IDX         
+				         ,  T.COMMENT_CONT         
+				         ,  T.REG_DT         
+				         ,  T.REG_NAME    
+				         ,  T.REG_ID    
+				         ,  T.CM_DEPTH    
+				         ,  T.CM_DEL_YN
+				         ,  CONCAT(R.ORD_NO , LPAD(T.CM_IDX,4,'0')) 
+				      FROM  EZ_BBS_COMMENT T INNER JOIN REC R ON T.UPR_CM_IDX = R.CM_IDX 
+				     WHERE  T.UPR_CM_IDX <>'0'       
+				      	]]>
+						<if test="bcIdx != null and bcIdx != ''">
+						<![CDATA[
+							and T.BC_IDX = #{bcIdx}
+						]]>
+						</if>
+						<if test="cbIdx != null and cbIdx != ''">
+						<![CDATA[
+							and T.CB_IDX = #{cbIdx}
+						]]>
+						</if>
+						
+						<![CDATA[
+				)
+				
+				
+				
+					SELECT 
+						@rownum := @rownum + 1 as RN,
+						CM.*
+					FROM (SELECT
+							CM_IDX,
+							BC_IDX, 
+							CASE WHEN  CM_DEL_YN = 'Y' THEN '삭제된 댓글입니다.' ELSE COMMENT_CONT END AS COMMENT_CONT, 
+							DATE_FORMAT(REG_DT, '%Y-%m-%d')    AS REG_DT,
+							REG_NAME, 
+							REG_ID,
+							CM_DEPTH,
+							CM_DEL_YN
+						FROM
+							REC A
+					WHERE CM_IDX != '' AND (@rownum:=0)=0
+					AND (
+					CM_DEL_YN='N' OR 
+					(
+						WITH RECURSIVE REC (CM_IDX, UPR_CM_IDX) AS
+						( 
+							SELECT CM_IDX, UPR_CM_IDX
+							FROM EZ_BBS_COMMENT
+							where CM_DEL_YN='N'
+							AND UPR_CM_IDX = CM_IDX
+							
+							UNION ALL
+							
+							SELECT T.CM_IDX, T.UPR_CM_IDX
+							FROM EZ_BBS_COMMENT T, REC R
+							where T.CM_DEL_YN='N'
+							AND R.CM_IDX = T.UPR_CM_IDX
+						)
+						SELECT COUNT(1) FROM REC  WHERE CM_IDX = A.CM_IDX
+					) > 0)
+			   		 ORDER  BY RPAD(ORD_NO,20,'9') DESC
+			   		 ) CM ) T WHERE RN BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+			  ]]>
+		
+	</select>
+	<!-- 개수 조회 -->
+	<select id="selectAllCbCommentTotCnt" parameterType="BbsCommentVo" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM EZ_BBS_COMMENT A
+			where (
+				CM_DEL_YN='N' OR 
+				(
+					WITH RECURSIVE REC (CM_IDX, UPR_CM_IDX) AS
+					( 
+						SELECT CM_IDX, UPR_CM_IDX
+						FROM EZ_BBS_COMMENT
+						where CM_DEL_YN='N'
+						AND UPR_CM_IDX = CM_IDX
+						
+						UNION ALL
+						
+						SELECT T.CM_IDX, T.UPR_CM_IDX
+						FROM EZ_BBS_COMMENT T, REC R
+						where T.CM_DEL_YN='N'
+						AND R.CM_IDX = T.UPR_CM_IDX
+					)
+					SELECT COUNT(1) FROM REC  WHERE CM_IDX = A.CM_IDX
+				) > 0
+			)
+		]]>
+		<if test="bcIdx != null and bcIdx != ''">
+		<![CDATA[
+			and BC_IDX = #{bcIdx}
+		]]>
+		</if>
+	</select>
+	<!-- 댓글 조회 -->
+	<select id="selectBbsComment" parameterType="BbsCommentFVo" resultMap="BbsContentList">
+		<![CDATA[
+			SELECT
+				CM_IDX,
+				BC_IDX, 
+				COMMENT_CONT, 
+				REG_DT, 
+				REG_NAME, 
+				REG_ID,
+				CM_DEPTH
+			FROM
+				EZ_BBS_COMMENT
+				WHERE CM_DEL_YN='N'
+						AND CM_IDX = #{cmIdx}
+		]]>
+			<if test="regId != null and regId != ''">
+					AND REG_ID=#{regId}
+			</if>
+	</select>
+	
+</mapper>

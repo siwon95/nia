@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="AuthorityDao">
+
+	<resultMap id="AuthorityMenuMap" type="egovframework.cmm.vo.AuthorityVo">
+		<result property="mmCd"			column="MM_CD"			/>
+		<result property="mmUprCd"		column="MM_UPR_CD"		/>
+		<result property="mmName"		column="MM_NAME"		/>
+		<result property="mmUrl"		column="MGR_URL"		/>
+		<result property="mmCnt"		column="MM_CNT"			/>
+		<result property="mmDepth"		column="MM_DEPTH"			/>
+	</resultMap>
+
+	<resultMap id="AuthorityBoardMap" type="egovframework.cmm.vo.AuthorityVo">
+		<result property="cbIdx"		column="CB_IDX"			/>
+		<result property="cbCd"			column="CB_CD"			/>
+		<result property="cbUprCd"		column="CB_UPR_CD"		/>
+		<result property="cbName"		column="CB_NAME"		/>
+		<result property="cbDepth"		column="CB_DEPTH"			/>
+	</resultMap>
+	
+	<select id="selectListAuthorityMenu" parameterType="AuthorityVo" resultMap="AuthorityMenuMap">
+		<![CDATA[
+			SELECT 
+				MM_CD
+				, MM_UPR_CD
+				, MM_NAME
+				, MGR_URL
+				, MM_CNT
+				, MM_DEPTH
+			FROM (
+				SELECT 
+					AA.MM_CD
+					, AA.MM_UPR_CD
+					, AA.MM_NAME
+					, BB.URL            AS MGR_URL
+					, AA.MM_DEPTH
+					, (
+						SELECT COUNT(*)
+						FROM (
+							SELECT
+								MM_CD
+								, MM_UPR_CD
+								, CASE
+									WHEN A.PUBLIC_YN = 'Y' THEN 'Y'
+									ELSE NVL2(B.MA_PKIDX, 'Y', 'N') 
+								  END AS SAVE_CHK
+							FROM EZ_MGR_MENU A , EZ_MGR_AUTHORITY B
+							WHERE A.USE_YN = 'Y'
+							AND A.MM_IDX = B.MA_PKIDX(+)
+							AND B.MA_TYPE(+) = 'menu'
+							AND B.MA_MLIDX(+) = #{mgrIdx}
+						) C
+						WHERE C.SAVE_CHK = 'Y'
+						AND C.MM_UPR_CD = AA.MM_CD
+					) AS MM_CNT
+					, (
+						SELECT COUNT(*)
+						FROM (
+							SELECT
+								MM_CD
+								, MM_UPR_CD
+								, CASE
+									WHEN A.PUBLIC_YN = 'Y' THEN 'Y'
+									ELSE NVL2(B.MA_PKIDX, 'Y', 'N') 
+								  END AS SAVE_CHK
+							FROM EZ_MGR_MENU A , EZ_MGR_AUTHORITY B
+							WHERE A.USE_YN = 'Y'
+							AND A.MM_IDX = B.MA_PKIDX(+)
+							AND B.MA_TYPE(+) = 'menu'
+							AND B.MA_MLIDX(+) = #{mgrIdx}
+						) C
+						WHERE C.SAVE_CHK = 'Y'
+						CONNECT BY NOCYCLE PRIOR C.MM_CD = C.MM_UPR_CD
+						START WITH C.MM_CD =  AA.MM_CD
+					) AS CHK_CNT
+				FROM EZ_MGR_MENU AA
+				 LEFT JOIN EZ_PROGRM_LIST BB ON AA.MGR_URL = BB.PROGRM_FILE_NM
+				WHERE AA.USE_YN = 'Y'
+				START WITH AA.MM_CD = #{mmCd}
+				CONNECT BY NOCYCLE PRIOR AA.MM_CD = AA.MM_UPR_CD
+				ORDER SIBLINGS BY AA.ORD_NO
+			)
+			WHERE CHK_CNT > 0
+		]]>
+	</select>
+	
+	<select id="selectListAuthorityMenuMaster" parameterType="AuthorityVo" resultMap="AuthorityMenuMap">
+		<![CDATA[
+			SELECT
+				MM_CD
+				, MM_UPR_CD
+				, MM_NAME
+				, B.URL         AS  MGR_URL
+				, (SELECT COUNT(*) FROM EZ_MGR_MENU WHERE MM_UPR_CD = A.MM_CD AND USE_YN = 'Y')    AS MM_CNT
+				, MM_DEPTH
+			FROM EZ_MGR_MENU A
+			 LEFT JOIN EZ_PROGRM_LIST B ON A.MGR_URL = B.PROGRM_FILE_NM
+			WHERE A.USE_YN = 'Y'
+			START WITH A.MM_CD = #{mmCd}
+			CONNECT BY NOCYCLE PRIOR A.MM_CD = A.MM_UPR_CD
+			ORDER SIBLINGS BY A.ORD_NO
+		]]>
+	</select>
+	
+	<select id="selectUprCd" parameterType="String" resultType="String">
+		<![CDATA[
+			SELECT MM_UPR_CD
+			FROM EZ_MGR_MENU
+			WHERE USE_YN = 'Y'
+			AND MM_CD = #{code}
+			AND MM_UPR_CD != 'AD000000'
+		]]>
+	</select>
+	
+	<select id="selectListAuthorityBoardGroup" parameterType="AuthorityVo" resultMap="AuthorityBoardMap">
+		<![CDATA[
+			SELECT
+				CB_IDX
+				, CB_CD
+				, CB_UPR_CD
+				, CB_NAME
+				, CB_DEPTH
+			FROM (
+				SELECT AA.*
+					, (
+						SELECT COUNT(*)
+						FROM (
+							SELECT
+								CB_IDX
+								, CB_CD
+								, CB_UPR_CD
+								, CASE
+									WHEN A.PUBLIC_YN = 'Y' THEN 'Y'
+									ELSE NVL2(B.MA_PKIDX, 'Y', 'N') 
+								  END AS SAVE_CHK
+							FROM EZ_CMS_BBS A , EZ_MGR_AUTHORITY B
+							WHERE A.USE_YN = 'Y'
+							AND A.CB_IDX = B.MA_PKIDX(+)
+							AND B.MA_TYPE(+) = 'board'
+							AND B.MA_MLIDX(+) = #{mgrIdx}
+						) C
+						WHERE C.SAVE_CHK = 'Y'
+						AND C.CB_UPR_CD = AA.CB_CD
+					) AS CB_CNT
+				FROM EZ_CMS_BBS AA
+				WHERE AA.USE_YN = 'Y'
+				START WITH AA.CB_UPR_CD = '16000000'
+				CONNECT BY NOCYCLE PRIOR AA.CB_CD = AA.CB_UPR_CD
+				ORDER SIBLINGS BY AA.ORD_NO
+			)
+			WHERE CB_CNT > 0
+		]]>
+	</select>
+	
+	<select id="selectListAuthorityBoardGroupMaster" resultMap="AuthorityBoardMap">
+		<![CDATA[
+			SELECT
+				CB_IDX
+				, CB_CD
+				, CB_UPR_CD
+				, CB_NAME
+				, CB_DEPTH
+			FROM (
+				SELECT AA.*
+				,(SELECT COUNT(*) FROM EZ_CMS_BBS WHERE  CB_UPR_CD = AA.CB_CD AND USE_YN ='Y') AS SUB_CNT
+				FROM EZ_CMS_BBS AA
+				WHERE AA.USE_YN = 'Y' AND GROUP_YN='N'
+				START WITH AA.CB_UPR_CD = '16000000'
+				CONNECT BY NOCYCLE PRIOR AA.CB_CD = AA.CB_UPR_CD
+				ORDER SIBLINGS BY AA.ORD_NO
+			)
+			WHERE SUB_CNT > 0
+		]]>
+	</select>
+	
+	<select id="selectListAuthorityBoard" parameterType="AuthorityVo" resultMap="AuthorityBoardMap">
+		<![CDATA[
+			SELECT
+				CB_IDX
+				, CB_CD
+				, CB_UPR_CD
+				, CB_NAME
+				, CB_DEPTH
+			FROM (
+				SELECT
+					CB_IDX
+					, CB_CD
+					, CB_UPR_CD
+					, CB_NAME
+					, ORD_NO
+					, CB_DEPTH
+					,(SELECT COUNT(*) FROM EZ_CMS_BBS WHERE  CB_UPR_CD = A.CB_CD AND USE_YN='Y') AS SUB_CNT
+					, CASE
+						WHEN A.PUBLIC_YN = 'Y' THEN 'Y'
+						ELSE NVL2(B.MA_PKIDX, 'Y', 'N') 
+					  END AS SAVE_CHK
+				FROM EZ_CMS_BBS A, EZ_MGR_AUTHORITY B
+				WHERE A.USE_YN = 'Y'
+				AND A.CB_IDX = B.MA_PKIDX(+)
+				AND B.MA_TYPE(+) = 'board'
+				AND B.MA_MLIDX(+) = #{mgrIdx}
+				AND A.CB_UPR_CD = #{cbUprCd}
+			) AA
+			WHERE AA.SAVE_CHK = 'Y'
+			AND SUB_CNT=0
+			ORDER BY ORD_NO ASC
+		]]>
+	</select>
+	
+	<select id="selectListAuthorityBoardMaster" parameterType="AuthorityVo" resultMap="AuthorityBoardMap">
+		<![CDATA[
+			SELECT 
+				CB_IDX
+				, CB_CD
+				, CB_UPR_CD
+				, CB_NAME
+				, CB_DEPTH
+			FROM (
+				SELECT 
+					CB_IDX
+					, CB_CD
+					, CB_UPR_CD
+					, CB_NAME
+					, CB_DEPTH
+					,(SELECT COUNT(*) FROM EZ_CMS_BBS WHERE  CB_UPR_CD = A.CB_CD AND USE_YN='Y') AS SUB_CNT
+				FROM EZ_CMS_BBS A
+				WHERE USE_YN = 'Y' AND GROUP_YN='N'
+				AND CB_UPR_CD = #{cbUprCd}
+				ORDER BY ORD_NO ASC
+			) WHERE SUB_CNT=0
+		]]>
+	</select>
+	
+	<select id="selectListAuthorityCbIdx" parameterType="AuthorityVo" resultType="int">
+		<![CDATA[
+			SELECT
+				CB_IDX
+			FROM (
+				SELECT
+					CB_IDX
+					, ORD_NO
+					, CASE
+						WHEN A.PUBLIC_YN = 'Y' THEN 'Y'
+						ELSE NVL2(B.MA_PKIDX, 'Y', 'N') 
+					  END AS SAVE_CHK
+				FROM EZ_CMS_BBS A, EZ_MGR_AUTHORITY B
+				WHERE A.USE_YN = 'Y'
+				AND A.CB_IDX = B.MA_PKIDX(+)
+				AND B.MA_TYPE(+) = 'board'
+				AND B.MA_MLIDX(+) = #{mgrIdx}
+		]]>
+		<if test="cbIdx != null and cbIdx != ''">
+			<![CDATA[
+				AND A.CB_IDX = #{cbIdx}
+			]]>
+		</if>
+		<if test="cbUprCd != null and cbUprCd != ''">
+			<![CDATA[
+				START WITH A.CB_UPR_CD = #{cbUprCd}
+   				 CONNECT BY PRIOR  A.cb_cd = A.CB_UPR_CD
+			]]>
+		</if>
+		<![CDATA[
+			) AA
+			WHERE AA.SAVE_CHK = 'Y'
+			AND AA.CB_IDX <> 414
+			ORDER BY ORD_NO ASC
+		]]>
+	</select>
+	
+	<select id="selectListAuthorityCbIdxMaster" parameterType="AuthorityVo" resultType="int">
+		<![CDATA[
+			SELECT 
+				CB_IDX
+			FROM EZ_CMS_BBS
+			WHERE USE_YN = 'Y'
+			AND CB_IDX <> 414
+		]]>
+		<if test="cbUprCd != null and cbUprCd != ''">
+			<![CDATA[
+			START WITH CB_UPR_CD = #{cbUprCd}
+    		CONNECT BY PRIOR  cb_cd = CB_UPR_CD
+			]]>
+		</if>
+		<![CDATA[
+			ORDER BY ORD_NO ASC
+		]]>
+	</select>
+	
+</mapper>

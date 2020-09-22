@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EzUserFileDao">
+	<resultMap id="EzUserFileMap" type="egovframework.injeinc.boffice.cn.file.vo.EzUserFileVo">
+		<result property="seq" column="SEQ"/> <!--일련번호-->
+		<result property="title" column="TITLE"/> <!--제목-->
+		<result property="atchFileId" column="ATCH_FILE_ID"/> <!--첨부파일ID-->
+		<result property="useYn" column="USE_YN"/> <!--사용여부-->
+		<result property="regDt" column="REG_DT"/> <!--등록일-->
+	</resultMap>
+	<insert id="insertEzUserFile" parameterType="EzUserFileVo">
+	<![CDATA[
+		INSERT INTO EZ_USER_FILE(
+			SEQ
+			,TITLE
+			,ATCH_FILE_ID
+			,USE_YN
+			,REG_DT
+		) VALUES(
+			NVL((SELECT MAX(SEQ) FROM EZ_USER_FILE),0)+1
+			,	#{title}
+			,	#{atchFileId}
+			,	'Y'
+			,	sysdate
+		)
+	]]>
+	</insert>
+	<select id="selectEzUserFile" parameterType="EzUserFileVo" resultMap="EzUserFileMap">
+	<![CDATA[
+	SELECT * FROM (SELECT ROWNUM AS rn, TB.* FROM (
+		SELECT
+			SEQ
+			,TITLE
+			,ATCH_FILE_ID
+			,USE_YN
+			,REG_DT
+		FROM EZ_USER_FILE 
+		WHERE 
+		USE_YN='Y'
+	]]>	
+		<if test="title != null and title != ''">
+			<![CDATA[
+				and TITLE like CONCAT('%', #title ,'%')
+			]]>
+		</if>
+	<![CDATA[	
+		ORDER BY SEQ DESC
+       ) TB) TBL
+       WHERE rn BETWEEN #{firstIndex}+1 AND #{firstIndex} + #{recordCountPerPage}
+	 ]]>
+	</select> 
+	<select id="selectPkEzUserFile" parameterType="EzUserFileVo" resultMap="EzUserFileMap">
+	<![CDATA[
+		SELECT
+			SEQ
+			,TITLE
+			,ATCH_FILE_ID
+			,USE_YN
+			,REG_DT
+		FROM EZ_USER_FILE
+		WHERE
+ 			SEQ=#{seq}
+	  ]]>
+	</select>
+	<select id="selectPkEzUserFileCount" parameterType="EzUserFileVo" resultType="String">
+	<![CDATA[
+		SELECT
+			count(*)
+		FROM EZ_USER_FILE
+		WHERE
+ 			USE_YN='Y'
+ 	]]>	
+		<if test="title != null and title != ''">and
+				TITLE like CONCAT('%', #title ,'%')
+		</if>
+			
+	  
+	</select>
+	<update id="updateEzUserFile" parameterType="EzUserFileVo">
+	<![CDATA[
+		UPDATE EZ_USER_FILE SET
+			TITLE=#{title}
+		WHERE
+ 			SEQ=#{seq}
+	 ]]> 
+	</update>
+	<delete id="deleteEzUserFile" parameterType="EzUserFileVo">
+	<![CDATA[
+		UPDATE EZ_USER_FILE SET USE_YN='N'
+		WHERE
+ 			SEQ=#{seq}
+	]]>  
+	</delete>
+</mapper>

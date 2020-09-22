@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Fri Mar 13 15:59:15 KST 2020-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SnsFDao">
+	<select id="selectListSnsContents" parameterType="SnsContentsFVo" resultType="SnsContentsFVo">
+		SELECT *
+		FROM   (SELECT ROWNUM RN,
+		               T.*
+		        FROM   (SELECT SNS_IDX snsIdx,
+		                       SNS_TYPE snsType,
+		                       SNS_REGDT snsRegdt,
+		                       SNS_DESC snsDesc,
+		                       SNS_LINKURL snsLinkurl,
+		                       SNS_THUMNAIL snsThumnail,
+		                       SNS_REGID snsRegid,
+		                       SNS_REGNM snsRegnm,
+		                       SNS_PROFILEIMG snsProfileimg,
+		                       NVL(SNS_TN_HEIGHT,0) snsTNHeight,
+		                       NVL(SNS_TN_WIDTH,0) snsTNWidth,
+		                       SNS_HASHTAG snsHashtag
+		                FROM   SNS_CONTENTS
+		                WHERE  USE_YN = 'Y'
+		                <if test="searchHashTag != null and searchHashTag != ''">
+		                AND		SNS_HASHTAG LIKE CONCAT('%', #{searchHashTag} ,'%')
+		                </if>
+		                <if test="snsType != null and snsType != ''">
+		                AND		SNS_TYPE = #{snsType}
+		                </if>
+		                <if test="siteDomain != null and siteDomain != ''">
+		                AND		SITE_DOMAIN = #{siteDomain}
+		                </if>
+		                ORDER BY SNS_REGDT DESC ) T )
+		WHERE RN BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	</select>
+	
+	<select id="selectHashtagList" resultType="SnsHashTagFVo">
+		<![CDATA[	
+			SELECT RN,
+			       hsIdx,
+			       hashtag,
+			       SUM_HASH_LENGTH
+			FROM   (SELECT @rownum := @rownum + 1 as RN,
+			               T.*,
+			               SUM(HASH_LENGTH+1) OVER(
+			                ORDER BY @rownum ASC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) SUM_HASH_LENGTH
+			        FROM   (SELECT HS_IDX HSIDX,
+			                       HASHTAG HASHTAG,
+			                       LENGTHB(HASHTAG) HASH_LENGTH
+			                FROM   EZ_SNS_HASHTAG
+			                ORDER BY VIEW_CNT DESC, HS_IDX DESC ) T) SQ
+			WHERE  SUM_HASH_LENGTH <= 60 and (@rownum:=0)=0
+		]]>
+	</select>
+	
+	<update id="updateHashtgForViewCnt" parameterType="String">
+		UPDATE EZ_SNS_HASHTAG
+		SET    VIEW_CNT = IFNULL(VIEW_CNT, 0) + 1
+		WHERE  HASHTAG = #{searchHashTag}
+	</update>
+</mapper>

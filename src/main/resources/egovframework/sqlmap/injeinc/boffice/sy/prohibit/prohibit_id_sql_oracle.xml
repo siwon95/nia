@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ProhibitIdDao">
+	<resultMap id="ProhibitIdMap" type="egovframework.injeinc.boffice.sy.prohibit.vo.ProhibitIdVo">
+		<result property="piIdx" column="PI_IDX"/>
+		<result property="piId" column="PI_ID"/>
+		<result property="useYn" column="USE_YN"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="regIp" column="REG_IP"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+		<result property="modIp" column="MOD_IP"/>
+	</resultMap>
+
+	<insert id="insertProhibitId" parameterType="ProhibitIdVo">
+		<![CDATA[	
+			INSERT INTO EZ_PROHIBIT_ID
+			(
+				PI_IDX
+				, PI_ID
+				, REG_ID
+				, REG_IP
+			)
+			VALUES
+			(
+				#{piIdx}
+				, #{piId}
+				, #{regId}
+				, #{regIp}
+			)
+		]]>
+	</insert>
+	
+	<update id="updateProhibitId" parameterType="ProhibitIdVo">
+		<![CDATA[	
+			UPDATE EZ_PROHIBIT_ID 
+			SET PI_ID = #{piId}
+				, MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+				, MOD_IP = #{modIp}
+			WHERE PI_IDX = #{piIdx}
+		]]>
+	</update>
+	
+	<update id="deleteProhibitId" parameterType="ProhibitIdVo">
+		<![CDATA[	
+			UPDATE EZ_PROHIBIT_ID
+			SET 
+				USE_YN = 'N'
+				, MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+				, MOD_IP = #{modIp}
+			WHERE PI_IDX = #{piIdx}
+		]]>
+	</update>
+	
+	<select id="selectProhibitId" parameterType="ProhibitIdVo" resultMap="ProhibitIdMap">
+		<![CDATA[	
+			SELECT * FROM EZ_PROHIBIT_ID
+			WHERE USE_YN = 'Y'
+			AND PI_IDX = #{piIdx}
+		]]>
+	</select>
+	
+	<select id="selectProhibitIdCnt" parameterType="ProhibitIdVo" resultType="java.lang.Integer">
+		<![CDATA[	
+			SELECT COUNT(*)
+			FROM EZ_PROHIBIT_ID
+			WHERE USE_YN = 'Y'
+			AND PI_ID = #{piId}
+		]]>
+		
+	</select>
+	
+	<select id="selectListProhibitId" parameterType="ProhibitIdVo" resultMap="ProhibitIdMap">
+		<![CDATA[	
+			SELECT *
+			FROM EZ_PROHIBIT_ID
+			WHERE USE_YN = 'Y'
+			ORDER BY PI_IDX DESC
+		]]>
+	</select>
+	
+</mapper>

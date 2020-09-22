@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MyscrapUserDao">
+	<resultMap id="MyscrapUserMap" type="egovframework.injeinc.foffice.ex.myscrap.vo.MyscrapVO">
+		<result property="scrap_seq_n" column="SCRAP_SEQ_N"/>
+		<result property="bbs_cd_n" column="BBS_CD_N"/>
+		<result property="bbs_seq_n" column="BBS_SEQ_N"/>
+		<result property="user_id_v" column="USER_ID_V"/>
+		<result property="scrap_title_v" column="SCRAP_TITLE_V"/>
+		<result property="scrap_loc_v" column="SCRAP_LOC_V"/>
+		<result property="scrap_dt_d" column="SCRAP_DT_D"/>
+	</resultMap>
+
+
+	<insert id="insertMyscrap" parameterType="MyscrapUserVo">
+		<![CDATA[	
+			INSERT INTO TB_BBS_SCRAP (
+				scrap_seq_n
+				, bbs_cd_n
+				, bbs_seq_n
+				, user_id_v
+				, scrap_title_v
+				, scrap_loc_v
+				, scrap_dt_d
+			) VALUES (
+				(SELECT NVL(MAX(scrap_seq_n),0)+1 FROM TB_BBS_SCRAP)	
+				, #{bbs_cd_n}
+				, #{bbs_seq_n}
+				, #{user_id_v}
+				, #{scrap_title_v}
+				, #{scrap_loc_v}				
+				, SYSDATE
+			)
+		]]>
+	</insert>
+	
+	
+	<select id="selectList" parameterType="MyscrapUserVo" resultMap="MyscrapUserMap">
+		<![CDATA[	
+				SELECT * FROM (
+							SELECT /*+ FIRST_ROWS */ A.*, ROWNUM RN FROM (
+								SELECT
+									scrap_seq_n
+									, bbs_cd_n
+									, bbs_seq_n
+									, user_id_v
+									, scrap_title_v
+									, scrap_loc_v
+									, TO_CHAR(scrap_dt_d, 'YYYY-MM-DD') scrap_dt_d									
+						FROM TB_BBS_SCRAP 
+							WHERE user_id_v = #{user_id_v}			
+								ORDER BY scrap_seq_n DESC
+							) A WHERE ROWNUM <= #{lastIndex}
+						) WHERE RN >= #{firstIndex}
+		]]>			
+	</select>	
+	
+	<select id="selectListCnt" parameterType="MyscrapUserVo" resultType="java.lang.Integer">
+		<![CDATA[	
+			SELECT COUNT(*)
+			FROM TB_BBS_SCRAP WHERE user_id_v = #{user_id_v}
+		]]>
+	</select>
+	
+	<select id="selectdupCnt" parameterType="MyscrapUserVo" resultType="java.lang.Integer">
+		<![CDATA[	
+			SELECT COUNT(*)
+			FROM TB_BBS_SCRAP WHERE user_id_v = #{user_id_v}
+			and bbs_cd_n = #{bbs_cd_n}
+			and bbs_seq_n = #{bbs_seq_n}
+			and scrap_loc_v = #{scrap_loc_v} 
+		]]>
+	</select>
+	
+	
+	<!-- 삭제 -->
+	<delete id="deleteMyscrap" parameterType="MyscrapUserVo"> 
+		<![CDATA[	
+		DELETE FROM TB_BBS_SCRAP 
+  		  	WHERE
+		  		scrap_seq_n = #{scrap_seq_n}
+		]]>
+	</delete>
+	
+</mapper>

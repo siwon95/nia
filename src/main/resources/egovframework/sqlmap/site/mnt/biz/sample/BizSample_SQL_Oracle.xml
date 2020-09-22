@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BizSample">
+
+	<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap" />
+	<typeAlias alias="MntVO" type="egovframework.site.mnt.service.MntVO" />
+	
+	<resultMap id="sampleMap" class="egovframework.site.mnt.service.MntVO" >
+		<result property="sampleId" 		column="SAMPLE_ID"     		/><!-- 샘플ID -->
+		
+	</resultMap>
+		
+	<select id="BizSampleDAO.selectSampleList" parameterClass="MntVO" resultMap="sampleMap">
+		<![CDATA[
+		 select '1' as SAMPLE_ID from daul
+		]]>
+		
+	</select>
+	
+	
+					
+</sqlMap>

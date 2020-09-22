@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TitleDao">
+    
+	<resultMap id="eMap" type="egovframework.rte.psl.dataaccess.util.EgovMap">
+		<result property="mmName" column="MM_NAME"/>
+		<result property="menuNavigation" column="MENU_NAVIGATION"/>
+		<result property="menuNavigationCd" column="MENU_NAVIGATION_CD"/>
+		<result property="mmHelpLength" column="MM_HELP_LENGTH"/>
+		<result property="mmHelp" column="MM_HELP" javaType="java.lang.String" jdbcType="CLOB"/>
+	</resultMap>
+	
+	<select id="selectTitle" parameterType="String" resultMap="eMap">
+		<![CDATA[
+			WITH RECURSIVE REC (MM_IDX,MM_CD, MM_NAME, MENU_NAVIGATION_CD, MM_UPR_CD, LV) AS
+			( 
+			    
+			    SELECT  MM_IDX
+			         ,  MM_CD
+			         ,  CONCAT(' > ',MM_NAME)
+			         ,  CAST(CONCAT(' ^ ',MM_CD) AS VARCHAR(100))
+			         ,  MM_UPR_CD
+			         ,  1
+			      FROM  EZ_MGR_MENU
+			     WHERE  MM_CD= 'AD000000' 
+			    
+			     UNION ALL
+			    
+			    SELECT  T.MM_IDX
+			         ,  T.MM_CD
+			         ,  CONCAT(R.MM_NAME, ' > ', T.MM_NAME)
+			         ,  CONCAT(R.MENU_NAVIGATION_CD, ' ^ ', T.MM_CD)
+			         ,  T.MM_UPR_CD
+			         ,  LV + 1
+			      FROM  EZ_MGR_MENU T, REC R
+			     WHERE  T.MM_UPR_CD = R.MM_CD
+			)
+				SELECT  A.MM_NAME AS MM_NAME
+				     ,  SUBSTR(R.MM_NAME,INSTR(SUBSTRING(R.MM_NAME, INSTR(R.MM_NAME, ' > ')+1), ' > ')+INSTR(R.MM_NAME, ' > ')) AS MENU_NAVIGATION
+				     ,  SUBSTR(R.MENU_NAVIGATION_CD,INSTR(SUBSTRING(R.MENU_NAVIGATION_CD, INSTR(R.MENU_NAVIGATION_CD, ' ^ ')+1), ' ^ ')+INSTR(R.MENU_NAVIGATION_CD, ' ^ ')) AS MENU_NAVIGATION_CD
+				     ,  NVL(CHAR_LENGTH(A.MM_HELP),0) AS MM_HELP_LENGTH
+				     ,  MM_HELP   
+			      FROM  REC R
+			      LEFT  JOIN EZ_MGR_MENU A        ON R.MM_IDX = A.MM_IDX
+			     WHERE  A.MM_CD = #{cmmCode}
+			       AND  USE_YN = 'Y'
+		]]>
+	</select>
+	
+</mapper>

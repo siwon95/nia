@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Mon Mar 09 17:56:31 KST 2020-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MgrMainConfigDao">
+
+	<resultMap id="MgrMainConfigMap" type="egovframework.injeinc.boffice.sy.mgr.vo.MgrMainConfigVo">
+		<result property="mgrId" column="MGR_ID"/>
+		<result property="noticeYn" column="NOTICE_YN"/>
+		<result property="minwonYn" column="MINWON_YN"/>
+		<result property="qnaYn" column="QNA_YN"/>
+		<result property="boardYn" column="BOARD_YN"/>
+		<result property="expandYn" column="EXPAND_YN"/>
+		<result property="lectureYn" column="LECTURE_YN"/>
+		<result property="eventYn" column="EVENT_YN"/>		
+	</resultMap>
+
+	<insert id="insertMgrMainConfig" parameterType="MgrMainConfigVo">
+		<![CDATA[
+			INSERT INTO EZ_MGR_MAIN_CONFIG
+			(
+				MGR_IDX
+				, MGR_ID
+	            , NOTICE_YN
+	            , MINWON_YN
+	            , QNA_YN
+	            , BOARD_YN
+	            , EXPAND_YN
+	            , LECTURE_YN
+	            , EVENT_YN
+	            , REG_ID
+	            , REG_DT
+			)
+			VALUES
+			(
+				#{mgrIdx}
+				, #{mgrId}
+				, 'Y'
+	            , 'Y'
+	            , 'Y'
+	            , 'Y'
+	            , 'Y'
+	            , 'Y'
+	            , 'Y'
+	            , #{regId}
+	            , NOW()
+			)
+		]]>
+	</insert>
+	
+	<update id="updateMgrMainConfig" parameterType="MgrMainConfigVo">
+		<![CDATA[
+			UPDATE EZ_MGR_MAIN_CONFIG 
+			SET NOTICE_YN = #{noticeYn}
+				, MINWON_YN = #{minwonYn}
+				, QNA_YN = #{qnaYn}
+				, BOARD_YN = #{boardYn}
+				, EXPAND_YN = #{expandYn}
+				, LECTURE_YN = #{lectureYn}
+				, EVENT_YN = #{eventYn}
+				, MOD_DT = NOW()
+				, MOD_ID = #{modId}
+			WHERE MGR_ID = #{mgrId}
+		]]>
+	</update>
+	
+	<select id="selectMgrMainConfig" parameterType="MgrMainConfigVo" resultMap="MgrMainConfigMap">
+		<![CDATA[
+			SELECT 
+				MGR_ID
+	            , NOTICE_YN
+	            , MINWON_YN
+	            , QNA_YN
+	            , BOARD_YN
+	            , EXPAND_YN
+	            , LECTURE_YN
+	            , EVENT_YN				
+			FROM EZ_MGR_MAIN_CONFIG
+			WHERE MGR_ID = #{mgrId}
+		]]>
+	</select>
+	
+</mapper>

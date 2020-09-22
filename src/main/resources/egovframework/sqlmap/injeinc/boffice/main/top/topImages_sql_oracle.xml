@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Thu Mar 12 10:14:38 KST 2020-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TopImagesDao">
+	<resultMap id="TopImagesMap" type="egovframework.injeinc.boffice.main.top.vo.TopImagesVo">
+		<result property="tiIdx" column="TI_IDX"/>		<!--idx-->
+		<result property="tiTitle" column="TI_TITLE"/>		<!--제목-->
+		<result property="tiLink" column="TI_LINK"/>		<!--링크url-->
+		<result property="tiTarget" column="TI_TARGET"/>		<!--타겟-->
+		<result property="tiFileName" column="TI_FILE_NAME"/>		<!--저장파일명-->
+		<result property="tiFileOrgName" column="TI_FILE_ORG_NAME"/>		<!--부서-->
+		<result property="tiFilePath" column="TI_FILE_PATH"/>		<!--파일경로-->
+		<result property="tiFileEx" column="TI_FILE_EX"/>		<!--이미지설명-->
+		<result property="tiPostSdt" column="TI_POST_SDT"/>		<!--게시시작날짜-->
+		<result property="tiPostEdt" column="TI_POST_EDT"/>		<!--게시마감날짜-->
+		<result property="useYn" column="USE_YN"/>		<!--게시유무-->
+		<result property="regDt" column="REG_DT"/>		<!--등록날짜-->
+		<result property="regId" column="REG_ID"/>		<!--등록자ID-->
+		<result property="modDt" column="MOD_DT"/>		<!--수정날짜-->
+		<result property="modId" column="MOD_ID"/>		<!--수정자ID-->
+		<result property="viewCnt" column="VIEW_CNT"/>		<!-- 조회수-->
+		<result property="division" column="DIVISION"/>		<!-- 구분-->
+		<result property="type" column="TYPE"/>		<!-- 사이트타입-->
+	</resultMap>
+	
+	<!-- 리스트 출력 -->
+	<select id="selectListTopImages" parameterType="TopImagesVo" resultMap="TopImagesMap">
+		<![CDATA[
+			SELECT * FROM (SELECT ROWNUM AS rn, TB.* FROM (	
+				SELECT A.TI_IDX ,
+			          A.TI_TITLE ,
+			          A.TI_LINK ,
+			          A.TI_TARGET ,
+			          A.TI_FILE_NAME ,
+			          A.TI_FILE_ORG_NAME ,
+			          A.TI_FILE_PATH ,
+			          A.TI_FILE_EX ,
+			          TO_CHAR(TO_DATE(A.TI_POST_SDT,'YYYYMMDDHH24MISS'),'YYYY-MM-DD HH24:MI:SS') TI_POST_SDT,
+			          TO_CHAR(TO_DATE(A.TI_POST_EDT,'YYYYMMDDHH24MISS'),'YYYY-MM-DD HH24:MI:SS') TI_POST_EDT,
+			          CASE WHEN TO_DATE(A.TI_POST_EDT,'YYYY/MM/DD HH24:MI:SS') >= SYSDATE
+                            AND TO_DATE(A.TI_POST_SDT,'YYYY/MM/DD HH24:MI:SS') <= SYSDATE
+                            AND A.USE_YN = 'Y'
+                            THEN 'Y'
+                           ELSE 'N'
+                      END AS USE_YN,
+			          A.REG_DT ,
+			          A.REG_ID ,
+			          A.MOD_DT ,
+			          A.MOD_ID ,
+			          A.VIEW_CNT ,
+			          B.CODE_NAME AS DIVISION ,
+					  A.TYPE
+				FROM TOP_IMAGES A, EZ_CMM_CODE B
+				WHERE
+				B.CODE = A.DIVISION
+			]]>	
+				<if test="searchDivision != null and searchDivision != ''">
+					<![CDATA[
+						AND A.DIVISION = #{searchDivision}
+					]]>
+				</if>
+				<if test="searchSite != null and searchSite != ''">
+					<if test="searchSite!=&quot;28010000&quot;">
+					<![CDATA[
+						AND INSTR(A.TYPE, #{searchSite},1) > 0
+					]]>
+					</if>
+					<if test="searchSite == 28010000">
+					<![CDATA[
+						(INSTR(A.TYPE, #{searchSite},1) > 0
+						OR A.DIVISION <> '26010000')
+					]]>
+					</if>
+				</if>
+				<if test="searchKeyword != null and searchKeyword != ''">
+					<![CDATA[
+						AND A.TI_TITLE LIKE '%'||#{searchKeyword}||'%'
+					]]>
+				</if>
+			<![CDATA[
+				) TB 
+				ORDER BY TB.USE_YN DESC, TB.TI_IDX DESC
+			) TBL WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+			]]>
+	</select>
+	
+	<!--게시물 총 개수 -->
+	<select id="selectPagTopImages" parameterType="TopImagesVo" resultType="int">
+	<![CDATA[
+			SELECT COUNT(*)
+			FROM TOP_IMAGES
+			WHERE
+			1=1
+	]]>		
+				<if test="searchDivision != null and searchDivision != ''">
+					<![CDATA[
+						AND DIVISION = #{searchDivision}
+					]]>
+				</if>
+				<if test="searchSite != null and searchSite != ''">
+					<![CDATA[
+						AND INSTR(TYPE, #{searchSite},1) > 0
+					]]>
+					<if test="searchSite == 28010000">
+					<![CDATA[
+						(INSTR(TYPE, #{searchSite},1) > 0
+						OR DIVISION <> '26010000')
+					]]>
+					</if>
+				</if>
+				<if test="searchKeyword != null and searchKeyword != ''">
+					<![CDATA[
+						AND TI_TITLE LIKE '%'||#{searchKeyword}||'%'
+					]]>
+				</if>
+		<![CDATA[	
+		    ORDER BY TI_IDX DESC
+		]]>
+	</select>
+	
+	<!--등록 -->
+	<insert id="insertTopImages" parameterType="TopImagesVo">
+	<![CDATA[	
+		INSERT INTO
+		TOP_IMAGES(
+		TI_IDX
+		,TI_TITLE
+		,TI_LINK
+		,TI_TARGET
+		,TI_FILE_NAME
+		,TI_FILE_ORG_NAME
+		,TI_FILE_PATH
+		,TI_FILE_EX
+		,TI_POST_SDT
+		,TI_POST_EDT
+		,USE_YN
+		,REG_DT
+		,REG_ID
+		,VIEW_CNT
+		,DIVISION
+		,TYPE
+		)VALUES(
+		#{tiIdx}
+		,#{tiTitle}
+		,#{tiLink}
+		,#{tiTarget}
+		,#{tiFileName}
+		,#{tiFileOrgName}
+		,#{tiFilePath}
+		,#{tiFileEx}
+		,#{tiPostSdt}
+		,#{tiPostEdt}
+		,#{useYn}
+		,TO_CHAR(SYSDATE,'YYYY/MM/DD')
+		,#{regId}
+		,0
+		,#{division}
+		,#{type}
+		)
+	]]>
+	</insert>
+	
+	<!-- 상세조회 -->
+	<select id="selectTopImages" parameterType="TopImagesVo" resultMap="TopImagesMap">
+	<![CDATA[	
+		SELECT TI_IDX
+				,TI_TITLE
+				,TI_LINK
+				,TI_TARGET
+				,TI_FILE_NAME
+				,TI_FILE_ORG_NAME
+				,TI_FILE_PATH
+				,TI_FILE_EX
+				,TI_POST_SDT
+				,TI_POST_EDT
+				,USE_YN
+				,REG_DT
+				,REG_ID
+				,MOD_DT
+				,MOD_ID
+				,VIEW_CNT
+				,DIVISION
+				,TYPE
+		FROM TOP_IMAGES
+		WHERE TI_IDX = #{tiIdx}
+	]]>
+	</select>
+	
+	<!-- 파일삭제  -->
+	<update id="deleteTopImagesFile" parameterType="HashMap">
+		<![CDATA[	
+			UPDATE	 TOP_IMAGES
+				SET TI_FILE_NAME = ''
+				,TI_FILE_ORG_NAME = ''
+				,TI_FILE_PATH = ''
+			WHERE TI_IDX = #{tiIdx}
+		]]>
+	</update>
+	
+	<!-- 파일경로 조회  -->
+	<select id="selectFilePath" parameterType="String" resultType="String">
+		<![CDATA[	
+			SELECT TI_FILE_PATH
+			FROM TOP_IMAGES
+			WHERE TI_IDX = #{tiIdx}
+		]]>
+	</select>
+	
+	<!-- 수정  -->
+	<update id="updateTopImages" parameterType="TopImagesVo">
+		<![CDATA[	
+			UPDATE TOP_IMAGES
+			SET TI_TITLE = #{tiTitle}
+				,TI_LINK = #{tiLink}
+				,TI_TARGET = #{tiTarget}
+				,TI_FILE_NAME = #{tiFileName}
+				,TI_FILE_ORG_NAME = #{tiFileOrgName}
+				,TI_FILE_PATH = #{tiFilePath}
+				,TI_FILE_EX = #{tiFileEx}
+				,TI_POST_SDT = #{tiPostSdt}
+				,TI_POST_EDT = #{tiPostEdt}
+				,USE_YN = #{useYn}
+				,MOD_DT = TO_CHAR(SYSDATE,'YYYY/MM/DD')
+				,MOD_ID = #{modId}
+				,DIVISION = #{division}
+				,TYPE = #{type}
+			WHERE TI_IDX = #{tiIdx}
+		]]>
+	</update>
+	
+	<!-- 조회수 증가  -->
+	<update id="updateTopImagesViewCnt" parameterType="String">
+		<![CDATA[	
+			UPDATE TOP_IMAGES
+			SET VIEW_CNT = VIEW_CNT+1
+			WHERE TI_IDX = #{tiIdx}
+		]]>
+	</update>
+	
+	<!-- 삭제  -->
+	<delete id="deleteTopImages" parameterType="TopImagesVo">
+		<![CDATA[	
+			 DELETE FROM TOP_IMAGES
+			 WHERE TI_IDX = #{tiIdx}
+		]]>
+	</delete>
+	
+	<!-- 메인 이미지 리스트 조회  -->
+	<select id="selectListTopImagesMain" resultMap="TopImagesMap">
+		<![CDATA[	
+			SELECT TI_IDX
+					,TI_TITLE
+					,TI_LINK
+					,TI_TARGET
+					,TI_FILE_NAME
+					,TI_FILE_ORG_NAME
+					,TI_FILE_PATH
+					,TI_FILE_EX
+					,TI_POST_SDT
+					,TI_POST_EDT
+					,USE_YN
+					,REG_DT
+					,REG_ID
+					,MOD_DT
+					,MOD_ID
+					,VIEW_CNT
+					,DIVISION
+					,TYPE
+				FROM TOP_IMAGES
+				WHERE USE_YN = 'Y'
+				AND TO_CHAR(SYSDATE,'yyyymmddhh24mi') BETWEEN TI_POST_SDT AND TI_POST_EDT
+				ORDER BY TI_IDX DESC
+		]]>
+	</select>
+	
+</mapper>

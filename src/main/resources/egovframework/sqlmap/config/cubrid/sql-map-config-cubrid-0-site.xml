@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+
+	<!-- 사이트 메뉴네비게이션 -->
+	<sqlMap resource="egovframework/sqlmap/site/cmm/SiteMenuNavigation_SQL_Cubrid.xml"/>
+	
+	<!-- 사이트 웹로그 -->
+	<sqlMap resource="egovframework/sqlmap/site/cmm/SiteWebLog_SQL_Cubrid.xml"/>
+	
+	<!-- 샘플 -->
+	<sqlMap resource="egovframework/sqlmap/site/mnt/biz/sample/BizSample_SQL_Cubrid.xml"/>
+	
+</sqlMapConfig>

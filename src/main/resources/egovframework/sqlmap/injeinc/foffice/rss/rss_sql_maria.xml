@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="RssDao">
+	
+	<select id="selectListEdu" parameterType="int" resultType="RssVo">
+		<![CDATA[
+		SELECT 
+			bcIdx, 
+			cbIdx, 
+			title, 
+			
+			 REGEXP_REPLACE(content, '<[^>]*>|\&([^;])*;','') AS content, 
+			 
+			dept,
+			regDt
+		 FROM (SELECT A.* FROM (	
+              SELECT BC_IDX AS bcIdx, 
+		             CB_IDX AS cbIdx, 
+		             SUB_CONT AS title, 
+		             CLOB_CONT AS content, 
+		             NAME_CONT AS dept,
+		            DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS regDt
+              FROM EZ_BBS_CONTENT
+              WHERE CB_IDX = 60
+              AND BC_DEL_YN = 'N'
+              ORDER BY REG_DT DESC
+		) A) B
+		 ORDER BY regDt DESC
+		 LIMIT #{pLimit} OFFSET 0 
+		]]>
+	</select>
+	
+	<select id="selectListNotice" parameterType="int" resultType="RssVo">
+		<![CDATA[
+		SELECT 
+			bcIdx, 
+			cbIdx, 
+			title, 
+			 
+			 REGEXP_REPLACE(content, '<[^>]*>|\&([^;])*;','') AS content, 
+			 
+			dept,
+			regDt
+		 FROM (SELECT A.* FROM (	
+              SELECT BC_IDX AS bcIdx, 
+                     CB_IDX AS cbIdx, 
+                     SUB_CONT AS title, 
+                     CLOB_CONT AS content, 
+                     NAME_CONT AS dept,
+                     DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS regDt
+              FROM EZ_BBS_CONTENT
+              WHERE CB_IDX = 57
+              AND BC_DEL_YN = 'N'
+              ORDER BY REG_DT DESC
+		) A) B
+		ORDER BY regDt DESC
+		 LIMIT #{pLimit} OFFSET 0 
+		]]>
+	</select>
+	
+	<select id="selectListGonggo" parameterType="int" resultType="RssVo">
+		<![CDATA[
+		SELECT 
+			bcIdx, 
+			cbIdx, 
+			title, 
+			
+			 REGEXP_REPLACE(content, '<[^>]*>|\&([^;])*;','') AS content, 
+			 
+			dept,
+			regDt
+		 FROM (SELECT A.* FROM (	
+              SELECT BC_IDX AS bcIdx, 
+                     CB_IDX AS cbIdx, 
+                     SUB_CONT AS title, 
+                     CLOB_CONT AS content, 
+                     NAME_CONT AS dept,
+                     DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS regDt
+              FROM EZ_BBS_CONTENT
+              WHERE CB_IDX = 58
+              AND BC_DEL_YN = 'N'
+              ORDER BY REG_DT DESC
+		) A) B
+		ORDER BY regDt DESC
+		 LIMIT #{pLimit} OFFSET 0 
+		]]>
+	</select>
+	
+	<select id="selectListEvent" parameterType="int" resultType="RssVo">
+		<![CDATA[
+		SELECT 
+			bcIdx, 
+			cbIdx, 
+			title, 
+			
+			 REGEXP_REPLACE(content, '<[^>]*>|\&([^;])*;','') AS content, 
+			 
+			dept,
+			regDt
+		 FROM (SELECT A.* FROM (	
+              SELECT BC_IDX AS bcIdx, 
+                     CB_IDX AS cbIdx, 
+                     SUB_CONT AS title, 
+                     CLOB_CONT AS content, 
+                     NAME_CONT AS dept,
+                     DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS regDt
+              FROM EZ_BBS_CONTENT
+              WHERE CB_IDX = 59
+              AND BC_DEL_YN = 'N'
+              ORDER BY REG_DT DESC
+		) A) B
+		ORDER BY regDt DESC
+		 LIMIT #{pLimit} OFFSET 0 
+		]]>
+	</select>
+	
+	<select id="selectListGubo" parameterType="int" resultType="RssVo">
+		<![CDATA[
+		SELECT 
+			bcIdx, 
+			cbIdx, 
+			title, 
+			
+			 REGEXP_REPLACE(content, '<[^>]*>|\&([^;])*;','') AS content, 
+			 
+			dept,
+			regDt
+		 FROM (SELECT A.* FROM (	
+              SELECT BC_IDX AS bcIdx, 
+                     CB_IDX AS cbIdx, 
+                     SUB_CONT AS title, 
+                     CLOB_CONT AS content, 
+                     NAME_CONT AS dept,
+                     DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS regDt
+              FROM EZ_BBS_CONTENT
+              WHERE CB_IDX = 56
+              AND BC_DEL_YN = 'N'
+              ORDER BY REG_DT DESC
+		) A) B
+		ORDER BY regDt DESC
+		 LIMIT #{pLimit} OFFSET 0 
+		]]>
+	</select>
+	
+	<select id="selectListDh" parameterType="int" resultType="RssVo">
+		<![CDATA[
+		SELECT 
+			bcIdx, 
+			cbIdx, 
+			title, 
+			
+			 REGEXP_REPLACE(content, '<[^>]*>|\&([^;])*;','') AS content, 
+			 
+			dept,
+			regDt
+		 FROM (SELECT A.* FROM (	
+              SELECT BC_IDX AS bcIdx, 
+                     CB_IDX AS cbIdx, 
+                     SUB_CONT AS title, 
+                     CLOB_CONT AS content, 
+                     NAME_CONT AS dept,
+                     DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS regDt
+              FROM EZ_BBS_CONTENT
+              WHERE CB_IDX = 48
+              AND BC_DEL_YN = 'N'
+              ORDER BY REG_DT DESC
+		) A) B
+		ORDER BY regDt DESC
+		 LIMIT #{pLimit} OFFSET 0 
+		]]>
+	</select>
+	
+	<select id="selectListHealthNotice" parameterType="int" resultType="RssVo">
+		<![CDATA[
+		SELECT 
+			bcIdx, 
+			cbIdx, 
+			title, 
+			
+			 REGEXP_REPLACE(content, '<[^>]*>|\&([^;])*;','') AS content, 
+			 
+			dept,
+			regDt
+		 FROM (SELECT A.* FROM (	
+              SELECT BC_IDX AS bcIdx, 
+                     CB_IDX AS cbIdx, 
+                     SUB_CONT AS title, 
+                     CLOB_CONT AS content, 
+                     NAME_CONT AS dept,
+                     DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS regDt
+              FROM EZ_BBS_CONTENT
+              WHERE CB_IDX = 91
+              AND BC_DEL_YN = 'N'
+              ORDER BY REG_DT DESC
+		) A) B
+		ORDER BY regDt DESC
+		 LIMIT #{pLimit} OFFSET 0 
+		]]>
+	</select>
+	
+	<select id="selectListNews" parameterType="int" resultType="RssVo">
+		<![CDATA[
+		SELECT 
+			bcIdx, 
+			cbIdx, 
+			title, 
+			
+			 REGEXP_REPLACE(content, '<[^>]*>|\&([^;])*;','') AS content, 
+			 
+			dept,
+			regDt
+		 FROM (SELECT A.* FROM (	
+              SELECT BC_IDX AS bcIdx, 
+                     CB_IDX AS cbIdx, 
+                     SUB_CONT AS title, 
+                     CLOB_CONT AS content, 
+                     NAME_CONT AS dept,
+                     DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS regDt
+              FROM EZ_BBS_CONTENT
+              WHERE CB_IDX = 61
+              AND BC_DEL_YN = 'N'
+              ORDER BY REG_DT DESC
+		) A) B
+		ORDER BY regDt DESC
+		 LIMIT #{pLimit} OFFSET 0 
+		]]>
+	</select>
+	
+	
+
+</mapper>

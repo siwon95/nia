@@ -1,0 +1,16 @@
+			model.addAttribute("detailList", detailList);
+			
+			model.addAttribute("deptSetp", request.getParameter("deptSetp"));
+			model.addAttribute("paramVo", tempVo);
+			model.addAttribute("bbsFVo", bbsFVo);
+			model.addAttribute("labelList", labelList);
+			model.addAttribute("contMappList", contMappList);
+			model.addAttribute("contentList", contentList);
+			model.addAttribute("contentCnt", contentCnt);
+			model.addAttribute("paginationInfo", paginationInfo);
+			model.addAttribute("categoryList", categoryList);
+			model.addAttribute("searchList", searchList);
+			model.addAttribute("strDomain", strDomain);
+			//model.addAttribute("fileList", fileList);
+			//model.addAttribute("fileBoardList", fileBoardList);
+			model.addAttribute("departList", groupDeptSvc.retrieveListCmsDepartGroup3());

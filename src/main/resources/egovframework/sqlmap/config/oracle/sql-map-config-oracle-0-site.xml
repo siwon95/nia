@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+	 	<setting name="cacheEnabled" value="false"/>
+	 	<setting name="jdbcTypeForNull" value="NULL"/>
+	 </settings>
+	<typeAliases>
+		<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+		<typeAlias alias="egovFileVO" type="egovframework.cmm.service.FileVO"/>
+		<typeAlias alias="list" type="java.util.List"/>
+		
+		<typeAlias alias="CmmCodeVo" type="egovframework.injeinc.boffice.sy.code.vo.CmmCodeVo"/>
+		<typeAlias  alias="hashMap" type="java.util.HashMap"/>
+		<typeAlias  alias="CodeVo" type="egovframework.injeinc.common.code.vo.CodeVo"/>
+		<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+		<typeAlias alias="weblogVo" type="egovframework.injeinc.common.weblog.vo.WeblogVo" />
+		<typeAlias alias="AuthorityVo" type="egovframework.cmm.vo.AuthorityVo"/>
+		<typeAlias alias="CmmFilesVo" type="egovframework.injeinc.common.files.vo.CmmFilesVo"/>
+		<typeAlias alias="PgVo" type="egovframework.injeinc.common.pg.vo.PgVo" />
+		<typeAlias alias="SmsVo" type="egovframework.injeinc.common.schedule.vo.SmsVo" />
+		<typeAlias alias="SocialVo" type="egovframework.injeinc.common.social.vo.SocialVo"/>	
+		<typeAlias alias="PushVo" type="egovframework.injeinc.common.social.vo.PushVo"/>
+		<typeAlias alias="MailVo" type="egovframework.injeinc.boffice.ex.mail.vo.MailVo"/>
+		<typeAlias alias="HolidayVo" type="egovframework.injeinc.boffice.ex.holiday.vo.HolidayVo" />
+		<typeAlias alias="UmsLogVo" type="egovframework.injeinc.boffice.ex.umsLog.vo.UmsLogVo"/>
+		<typeAlias alias="SnsLogVo" type="egovframework.injeinc.boffice.ex.snsLog.vo.SnsLogVo"/>
+		<typeAlias alias="SnsCollectVo" type="egovframework.injeinc.boffice.ex.sns.vo.SnsCollectVo"/>
+		<typeAlias alias="SnsContentsVo" type="egovframework.injeinc.boffice.ex.sns.vo.SnsContentsVo"/>
+		<typeAlias alias="SnsHashtagVo" type="egovframework.injeinc.boffice.ex.sns.vo.SnsHashtagVo"/>
+		<typeAlias alias="SnsProhibitWordVo" type="egovframework.injeinc.boffice.ex.sns.vo.SnsProhibitWordVo"/>
+		<typeAlias alias="SnsSearchKeywordVo" type="egovframework.injeinc.boffice.ex.sns.vo.SnsSearchKeywordVo"/>
+		<typeAlias alias="ReservationIndexVo" type="egovframework.injeinc.boffice.ex.reservation.vo.ReservationIndexVo"/>
+		<typeAlias alias="ReservationAddItemVo" type="egovframework.injeinc.boffice.ex.reservation.vo.ReservationAddItemVo"/>
+		<typeAlias alias="ReservationItemVo" type="egovframework.injeinc.boffice.ex.reservation.vo.ReservationItemVo"/>
+		<typeAlias alias="ReservationUserInfoVo" type="egovframework.injeinc.boffice.ex.reservation.vo.ReservationUserInfoVo"/>
+		<typeAlias alias="ReservationUserAnswerVo" type="egovframework.injeinc.boffice.ex.reservation.vo.ReservationUserAnswerVo"/>
+		<typeAlias alias="ReservationFacVo" type="egovframework.injeinc.boffice.ex.reservationFac.vo.ReservationFacVo"/>
+		<typeAlias alias="ReservationUserFileVo" type="egovframework.injeinc.boffice.ex.reservation.vo.ReservationUserFileVo"/>
+		<typeAlias alias="ReservationFacTimeVo" type="egovframework.injeinc.boffice.ex.reservationFac.vo.ReservationFacTimeVo"/>
+		<typeAlias alias="ReservationFacTeamVo" type="egovframework.injeinc.boffice.ex.reservationFac.vo.ReservationFacTeamVo"/>
+		<typeAlias alias="ReservationIndexHealthVo" type="egovframework.injeinc.boffice.ex.reservationHealth.vo.ReservationIndexHealthVo"/>
+		<typeAlias alias="ReservationAddHealthVo" type="egovframework.injeinc.boffice.ex.reservationHealth.vo.ReservationAddHealthVo"/>
+		<typeAlias alias="ReservationItemHealthVo" type="egovframework.injeinc.boffice.ex.reservationHealth.vo.ReservationItemHealthVo"/>
+		<typeAlias alias="ReservationUserInfoHealthVo" type="egovframework.injeinc.boffice.ex.reservationHealth.vo.ReservationUserInfoHealthVo"/>
+		<typeAlias alias="ReservationAddNodateVo" type="egovframework.injeinc.boffice.ex.reservationHealth.vo.ReservationAddNodateVo"/>
+		<typeAlias alias="ReservationHealthDayVo" type="egovframework.injeinc.boffice.ex.reservationHealth.vo.ReservationHealthDayVo"/>
+		<typeAlias alias="ReservationHealthUserAnswerVo" type="egovframework.injeinc.boffice.ex.reservationHealth.vo.ReservationHealthUserAnswerVo"/>
+		<typeAlias alias="ReservationMainVo" type="egovframework.injeinc.boffice.ex.reservationMain.vo.ReservationMainVo" />
+		<typeAlias alias="ReservationRentVo" type="egovframework.injeinc.boffice.ex.reservationRent.vo.ReservationRentVo"/>
+		<typeAlias alias="comDefaultVO" type="egovframework.cmm.ComDefaultVO"/>
+		<typeAlias alias="progrmVo" type="egovframework.injeinc.boffice.sy.progrm.vo.ProgrmVo"/>
+		<typeAlias alias="MgrMenuVo" type="egovframework.injeinc.boffice.sy.menu.vo.MgrMenuVo" />
+		<typeAlias alias="LoginVo" type="egovframework.injeinc.boffice.login.vo.LoginVo" />
+		<typeAlias alias="UserMenuContentsVo" type="egovframework.injeinc.boffice.cn.menu.vo.UserMenuContentsVo" />
+		<typeAlias alias="MenuVo" type="egovframework.injeinc.boffice.cn.menu.vo.MenuVo" />
+		<typeAlias alias="UserMenuSatisfactionVo" type="egovframework.injeinc.boffice.cn.menu.vo.UserMenuSatisfactionVo" />
+		<typeAlias alias="LoginVo" type="egovframework.injeinc.boffice.login.vo.LoginVo" />
+		<typeAlias alias="MgrAuthorityVo" type="egovframework.injeinc.boffice.sy.mgr.vo.MgrAuthorityVo" />
+		<typeAlias alias="MgrListVo" type="egovframework.injeinc.boffice.sy.mgr.vo.MgrListVo"/>
+		<typeAlias alias="MgrVo" type="egovframework.injeinc.boffice.sy.mgr.vo.MgrVo"/>
+		<typeAlias alias="MgrMainConfigVo" type="egovframework.injeinc.boffice.sy.mgr.vo.MgrMainConfigVo"/>
+		<typeAlias alias="MgrMainVo" type="egovframework.injeinc.boffice.sy.mgr.vo.MgrMainVo"/>
+		<typeAlias alias="RoleVo" type="egovframework.injeinc.boffice.sy.mgr.vo.RoleVo"/>
+		<typeAlias alias="BbsContentVo" type="egovframework.injeinc.boffice.ex.board.vo.BbsContentVo"/>
+		<typeAlias alias="ContentFileVo" type="egovframework.injeinc.boffice.ex.board.vo.ContentFileVo"/>
+		<typeAlias alias="EmpVo" type="egovframework.injeinc.boffice.group.emp.vo.EmpVo" />
+		<typeAlias alias="EmpTempVo" type="egovframework.injeinc.boffice.group.emp.vo.EmpTempVo" />
+		<typeAlias alias="GroupDeptVo" type="egovframework.injeinc.boffice.group.dept.vo.GroupDeptVo" />
+		<typeAlias alias="SiteVo" type="egovframework.injeinc.boffice.cn.site.vo.SiteVo" />
+		<typeAlias alias="ProhibitIdVo" type="egovframework.injeinc.boffice.sy.prohibit.vo.ProhibitIdVo"/>
+		<typeAlias alias="MgrAuthorityVo" type="egovframework.injeinc.boffice.sy.mgr.vo.MgrAuthorityVo" />
+		<typeAlias alias="SyCodeVo" type="egovframework.injeinc.boffice.sy.code.vo.SyCodeVo" />
+		<typeAlias alias="AccessIpVo" type="egovframework.injeinc.boffice.sy.accessip.vo.AccessIpVo"/>
+		<typeAlias alias="LayoutVo" type="egovframework.injeinc.boffice.cn.layout.vo.LayoutVo" />
+		<typeAlias alias="BoardVo" type="egovframework.injeinc.boffice.sy.board.vo.BoardVo" />
+		<typeAlias alias="ConfigPropertyVo" type="egovframework.injeinc.boffice.sy.board.vo.ConfigPropertyVo" />
+		<typeAlias alias="CmsBbsVo" type="egovframework.injeinc.boffice.sy.board.vo.CmsBbsVo" />
+		<typeAlias alias="EzBbsTempletVo" type="egovframework.injeinc.boffice.sy.board.vo.EzBbsTempletVo" />
+		<typeAlias alias="FileVo" type="egovframework.injeinc.boffice.sy.file.vo.FileVo" />
+		<typeAlias alias="GroupConfigVo" type="egovframework.injeinc.boffice.sy.group.vo.GroupConfigVo" />
+		<typeAlias alias="UserGroupVo"   type="egovframework.injeinc.boffice.sy.group.vo.UserGroupVo" />
+		<typeAlias alias="UserVo" type="egovframework.injeinc.boffice.sy.user.vo.UserVo" />
+		<typeAlias alias="UserLogVo" type="egovframework.injeinc.boffice.sy.userlog.vo.UserLogVo" />
+		<typeAlias alias="MainLayerPopupVo" type="egovframework.injeinc.boffice.main.layerPopup.vo.MainLayerPopupVo"/>
+		<typeAlias alias="MainPopupZoneVo" type="egovframework.injeinc.boffice.main.popupZone.vo.MainPopupZoneVo"/>
+		<typeAlias alias="TopImagesVo" type="egovframework.injeinc.boffice.main.top.vo.TopImagesVo" />
+		<typeAlias alias="PollUserVo" type="egovframework.injeinc.boffice.ex.poll.vo.PollUserVo"/>
+		<typeAlias alias="PollAnswerVo" type="egovframework.injeinc.boffice.ex.poll.vo.PollAnswerVo"/>
+		<typeAlias alias="PollAnswerViewVo" type="egovframework.injeinc.boffice.ex.poll.vo.PollAnswerViewVo"/>
+		<typeAlias alias="PollListVo" type="egovframework.injeinc.boffice.ex.poll.vo.PollListVo"/>
+		<typeAlias alias="PollQuestionVo" type="egovframework.injeinc.boffice.ex.poll.vo.PollQuestionVo"/>
+		<typeAlias alias="UserStatisticsVo" type="egovframework.injeinc.boffice.sy.userstatistics.vo.UserStatisticsVo" />
+		<typeAlias alias="ContentVo" type="egovframework.injeinc.boffice.cn.content.vo.ContentVo" />
+		
+		<typeAlias alias="BbsFVo" type="egovframework.injeinc.foffice.ex.bbs.vo.BbsFVo" />
+		<typeAlias alias="BbsCustomFVo" type="egovframework.injeinc.foffice.ex.bbs.vo.BbsCustomFVo" />
+		<typeAlias alias="GBoardAdminVo" type="egovframework.injeinc.boffice.ex.bbs.gBoardAdmin.vo.GBoardAdminVo" />
+		<typeAlias alias="BoardAdminVo" type="egovframework.injeinc.boffice.ex.bbs.boardAdmin.vo.BoardAdminVo" />
+		<typeAlias alias="ReservationVo" type="egovframework.injeinc.boffice.sy.reservation.vo.ReservationVo" />
+		<typeAlias  alias="MainImage" type="egovframework.injeinc.boffice.ex.mainImage.vo.MainImage"/>
+   		<typeAlias  alias="MainImageVO" type="egovframework.injeinc.boffice.ex.mainImage.vo.MainImageVO"/>
+   		<typeAlias alias="WorkflowVo" type="egovframework.injeinc.boffice.sy.workflow.vo.WorkflowVo" />
+		<typeAlias alias="WorkflowStepVo" type="egovframework.injeinc.boffice.sy.workflow.vo.WorkflowStepVo" />
+		<typeAlias alias="WorkflowReqVo" type="egovframework.injeinc.boffice.sy.workflow.vo.WorkflowReqVo" />
+		<typeAlias alias="FileUploadVo" type="egovframework.injeinc.boffice.sy.fileupload.vo.FileUploadVo"/>
+		<typeAlias alias="EzUserFileVo" type="egovframework.injeinc.boffice.cn.file.vo.EzUserFileVo" />
+		<typeAlias alias="EzFileVo" type="egovframework.injeinc.boffice.cn.file.vo.EzFileVo" />
+		<typeAlias alias="SearchthemeVo" type="egovframework.injeinc.boffice.searchtheme.vo.SearchthemeVo" />
+		<typeAlias alias="QuickVo" type="egovframework.injeinc.boffice.quick.vo.QuickVo" />
+		<typeAlias alias="HotManageVo" type="egovframework.injeinc.boffice.hot.manage.vo.HotManageVo" />
+		<typeAlias alias="HotStatVo" type="egovframework.injeinc.boffice.hot.stat.vo.HotStatVo" />
+		<typeAlias alias="PollAnswerFVo" type="egovframework.injeinc.foffice.ex.poll.vo.PollAnswerFVo"/>
+		<typeAlias alias="PollAnswerFViewVo" type="egovframework.injeinc.foffice.ex.poll.vo.PollAnswerFViewVo"/>
+		<typeAlias alias="PollListFVo" type="egovframework.injeinc.foffice.ex.poll.vo.PollListFVo"/>
+		<typeAlias alias="PollQuestionFVo" type="egovframework.injeinc.foffice.ex.poll.vo.PollQuestionFVo"/>
+		<typeAlias alias="PollUserFVo" type="egovframework.injeinc.foffice.ex.poll.vo.PollUserFVo"/>
+		<typeAlias alias="SiteMapVo" type="egovframework.injeinc.foffice.ex.siteMap.vo.SiteMapVo" />
+		<typeAlias alias="ReservationMainUserVo" type="egovframework.injeinc.foffice.ex.reservationMain.vo.ReservationMainUserVo" />
+		<typeAlias alias="ReservationUserInfoVo" type="egovframework.injeinc.boffice.ex.reservation.vo.ReservationUserInfoVo" />
+		<typeAlias alias="SnsContentsFVo" type="egovframework.injeinc.foffice.ex.sns.vo.SnsContentsFVo"/>
+		<typeAlias alias="SnsHashTagFVo" type="egovframework.injeinc.foffice.ex.sns.vo.SnsHashTagFVo"/>
+		<typeAlias alias="MyscrapUserVo" type="egovframework.injeinc.foffice.ex.myscrap.vo.MyscrapVO"/>
+		<typeAlias alias="BbsContentFVo" type="egovframework.injeinc.foffice.ex.board.vo.BbsContentFVo"/>
+		<typeAlias alias="ContentMinwonResultFVo" type="egovframework.injeinc.foffice.ex.board.vo.ContentMinwonResultFVo"/>
+		<typeAlias alias="RssVo" type="egovframework.injeinc.foffice.rss.vo.RssVo" />
+		<typeAlias alias="UserFVo" type="egovframework.injeinc.foffice.user.vo.UserFVo" />
+		<typeAlias alias="LoginFVo" type="egovframework.injeinc.foffice.login.vo.LoginFVo" />
+		<typeAlias alias="BbsCommentVo" type="egovframework.injeinc.boffice.ex.board.vo.BbsCommentVo" />
+		<typeAlias alias="BbsCommentFVo" type="egovframework.injeinc.foffice.ex.bbs.vo.BbsCommentFVo" />
+		<typeAlias alias="PledgeVo" type="egovframework.injeinc.boffice.pledge.vo.PledgeVo" />
+		<typeAlias alias="PledgeFileVo" type="egovframework.injeinc.boffice.pledge.vo.PledgeFileVo" />
+		<typeAlias alias="PledgeFVo" type="egovframework.injeinc.foffice.pledge.vo.PledgeFVo" />
+	</typeAliases>
+	<mappers>
+		<mapper resource="egovframework/sqlmap/com/cmm/fms/EgovFile_SQL_Oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/common/code/cmm_code_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/common/code/code_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/common/weblog/weblog_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/common/authority/authority_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/common/files/cmm_files_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/common/pg/pg_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/common/sms/sms_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/common/social/social_sql_oracle.xml"/>
+		
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/ex/mail/mail_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/ex/umsLog/ums_log_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/ex/snsLog/sns_log_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/ex/sns/sns_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/ex/holiday/holiday_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/ex/reservation/reservation_event_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/ex/reservationEtc/reservation_etc_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/ex/reservationFac/reservation_fac_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/ex/reservationRent/reservation_rent_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/ex/reservationHealth/reservation_health_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/ex/reservationMain/reservationMain_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/ex/poll/poll_answer_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/ex/poll/poll_list_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/ex/poll/poll_question_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/ex/poll/poll_user_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/ex/board/bbs_content_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/ex/board/content_file_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/ex/bbs/boardAdmin/boardAdmin_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/ex/bbs/gBoardAdmin/gBoardAdmin_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/ex/mainImage/main_image_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/sy/menu/mgr_menu_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/sy/mgr/mgr_authority_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/sy/mgr/mgr_list_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/sy/mgr/mgr_main_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/sy/mgr/mgr_main_config_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/sy/mgr/mgr_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/sy/code/code_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/sy/reservation/reservation_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/sy/accessip/access_ip_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/sy/user/cms_user_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/sy/group/groupConfig_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/sy/userlog/user_log_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/sy/userstatistics/userstatistics_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/sy/board/board_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/sy/board/cms_bbs_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/sy/file/file_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/sy/prohibit/prohibit_id_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/sy/fileupload/fileupload_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/sy/board/ezBbsTemplet_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/sy/progrm/progrm_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/sy/workflow/workflow_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/cn/file/ez_file_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/cn/file/ez_user_file_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/cn/content/content_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/cn/site/site_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/cn/layout/layout_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/cn/menu/menu_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/cn/menu/user_menu_contents_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/cn/menu/user_menu_satisfaction_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/login/login_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/group/dept/groupDept_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/group/emp/emp_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/searchtheme/searchtheme_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/quick/quick_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/title/title_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/hot/manage/hotManage_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/hot/stat/hotStat_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/main/top/topImages_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/main/layerPopup/main_layer_popup_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/main/popupZone/main_popup_zone_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/pledge/pledge_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/pledge/pledge_file_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/foffice/pledge/pledgeF_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/foffice/ex/poll/poll_answerF_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/foffice/ex/poll/poll_listF_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/foffice/ex/poll/poll_questionF_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/foffice/ex/poll/poll_userF_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/foffice/ex/siteMap/siteMap_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/foffice/ex/bbs/bbsF_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/foffice/ex/bbs/bbsCustomF_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/foffice/ex/reservationMain/reservationMainUser_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/foffice/ex/sns/snsF_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/foffice/ex/myscrap/myScrapUser_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/foffice/ex/board/bbs_contentF_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/foffice/ex/board/content_minwon_resultF_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/foffice/ex/emp/empF_sql_oracle.xml" />
+		<mapper resource="egovframework/sqlmap/injeinc/foffice/ex/dept/deptF_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/foffice/rss/rss_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/foffice/user/userF_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/foffice/login/loginF_sql_oracle.xml"/>
+		<mapper resource="egovframework/sqlmap/injeinc/boffice/ex/board/bbs_comment_sql_oracle.xml"/>
+		
+		<mapper resource="egovframework/sqlmap/injeinc/foffice/ex/bbs/bbs_commentF_sql_oracle.xml"/>
+				
+	</mappers>
+</configuration>

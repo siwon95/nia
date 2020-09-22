@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PollAnswerFDao">
+	<resultMap id="PollAnswerFViewMap" type="egovframework.injeinc.foffice.ex.poll.vo.PollAnswerFViewVo">
+		<result property="plIdx" column="PL_IDX"/>
+		<result property="puIdx" column="PU_IDX"/>
+		<result property="puName" column="PU_NAME"/>
+		<result property="puId" column="PU_ID"/>
+		<result property="pqIdx" column="PQ_IDX"/>
+		<result property="pqSort" column="PQ_SORT"/>
+		<result property="pqTitle" column="PQ_TITLE"/>
+		<result property="pqType" column="PQ_TYPE"/>
+		<result property="pqItemCnt" column="PQ_ITEM_CNT"/>
+		<result property="pqItemList" column="PQ_ITEM_LIST"/>
+		<result property="pqEtc" column="PQ_ETC"/>
+		<result property="paAnswer" column="PA_ANSWER"/>
+		<result property="paText" column="PA_TEXT"/>
+	</resultMap>
+
+	<insert id="insertPollAnswerF" parameterType="PollAnswerFVo">
+		<![CDATA[	
+			INSERT INTO EZ_POLL_ANSWER
+			(
+				PA_PUIDX
+				, PA_PQIDX
+				, PA_ANSWER
+				, PA_TEXT
+			)
+			VALUES
+			(
+				#{paPuidx}
+				, #{paPqidx}
+				, #{paAnswer}
+				, #{paText}
+			)
+		]]>
+	</insert>
+	
+	<select id="selectListPollAnswerF" parameterType="PollAnswerFViewVo" resultMap="PollAnswerFViewMap">
+		<![CDATA[	
+			SELECT *
+			FROM EZ_POLL_ANSWER_VIEW
+			WHERE PQ_IDX = #{pqIdx}
+			AND PA_TEXT IS NOT NULL
+			ORDER BY PU_IDX DESC
+		]]>
+	</select>
+	
+</mapper>

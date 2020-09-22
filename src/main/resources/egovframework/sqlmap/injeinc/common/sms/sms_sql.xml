@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SmsDao">
+	
+	<resultMap id="SmsMap" type="egovframework.injeinc.common.schedule.vo.SmsVo">
+		<result property="itemName" column="ITEM_NAME"/>
+		<result property="itemHp" column="ITEM_HP"/>
+		<result property="startDate" column="ROOM_DT"/>
+		<result property="endDate" column="ROOM_END_DT"/>
+	</resultMap>
+	
+	<resultMap id="LectureSmsMap" type="egovframework.injeinc.common.schedule.vo.SmsVo">
+		<result property="lmIdx" column="LM_IDX"/>
+		<result property="clName" column="CL_NAME"/>
+		<result property="lcPlaceName" column="LC_PLACE_NAME"/>
+		<result property="stDate" column="ST_DATE"/>
+		<result property="lmName" column="LM_NAME"/>
+		<result property="hpNum" column="HP_NUM"/>
+		<result property="lmState" column="LM_STATE"/>
+	</resultMap>
+	<resultMap id="LectureSmsMap2" type="egovframework.injeinc.common.schedule.vo.SmsVo">
+		<result property="lmIdx" column="LM_IDX"/>
+		<result property="clName" column="CL_NAME"/>
+		<result property="lcPlaceName" column="LC_PLACE_NAME"/>
+		<result property="stDate" column="ST_DATE"/>
+		<result property="lmName" column="LM_NAME"/>
+		<result property="hpNum" column="HP_NUM"/>
+		<result property="lmState" column="LM_STATE"/>
+		<result property="rk" column="RK"/>
+	</resultMap>
+	
+	<select id="selectListSms" parameterType="SmsVo" resultMap="SmsMap">
+		<if test="siteUse == &quot;ta&quot;">
+		<![CDATA[
+			SELECT
+				 ITEM_NAME
+				,ITEM_HP
+				,to_char(ROOM_DT,'mm')||'월'||to_char(ROOM_DT,'dd')||'일' as ROOM_DT
+				,to_char(ROOM_END_DT,'mm')||'월'||to_char(ROOM_END_DT,'dd')||'일' as ROOM_END_DT
+				FROM ROOM_ITEM
+				WHERE AREA_USE = 'ta'
+				AND ROOM_DT = TO_DATE(#{strDate})
+				AND ITEM_STATE = '14000001'
+				AND ITEM_DEL_USE = 'N'
+		]]>
+		</if>
+		<if test="siteUse == &quot;hs&quot;">
+		<![CDATA[
+			SELECT
+				 ITEM_NAME
+				,ITEM_HP
+				,to_char(ROOM_DT,'mm')||'월'||to_char(ROOM_DT,'dd')||'일' as ROOM_DT
+				,to_char(ROOM_END_DT,'mm')||'월'||to_char(ROOM_END_DT,'dd')||'일' as ROOM_END_DT
+				FROM ROOM_ITEM
+				WHERE AREA_USE = 'hs'
+				AND ROOM_DT = TO_DATE(#{strDate})
+				AND ITEM_STATE = '14000001'
+				AND ITEM_DEL_USE = 'N'
+		]]>
+		</if>
+	</select>
+	
+	<!-- 교육전안내문자 수강생리스트 -->
+	<select id="selectLectureEduListSms" resultMap="LectureSmsMap">
+		<![CDATA[
+			SELECT 
+				lm.LM_IDX,
+			    cl.CL_NAME,
+			    lc.LC_PLACE_NAME,
+			    TO_CHAR(TO_DATE(lc.LC_ST_DATE, 'yyyy-mm-dd/hh24mi'), 'YYYY-MM-DD hh24:mi') AS ST_DATE,
+			    lm.LM_NAME, 
+			    REPLACE(lm.HP_NUM,'-','') as HP_NUM,
+			    lm.LM_STATE
+			FROM LECTURE cl, LECTURE_CONFIG lc, LECTURE_MEMBER lm
+			WHERE cl.CL_IDX = lc.CL_IDX
+			AND cl.CL_IDX = lm.CL_IDX
+			AND TO_CHAR(to_date(lc.LC_ST_DATE, 'yyyy-mm-dd/hh24mi'),'yyyy-mm-dd') = TO_CHAR(sysdate+4,'yyyy-mm-dd')
+			AND lc.LC_GB = 'GUM'
+			AND cl.USE_YN = 'Y'
+			AND lm.LM_STATE = 'A'
+			AND lc.LC_APPROVAL_YN = 'Y'
+			AND cl.CL_STS_CODE = 'RCOPN'
+		]]>
+	</select>
+	<!-- 승인,미승인문자 신청자리스트 -->
+	<select id="selectLectureStateListSms" parameterType="SmsVo" resultMap="LectureSmsMap2">
+		<![CDATA[
+			           SELECT
+                A.LM_IDX,
+                CL_IDX,
+                CL_NAME AS CL_NAME,
+			    LC_PLACE_NAME AS LC_PLACE_NAME,
+			    TO_CHAR(TO_DATE(LC_ST_DATE, 'yyyy-mm-dd/hh24mi'), 'YYYY-MM-DD hh24:mi') AS ST_DATE,
+			    LM_NAME, 
+			    REPLACE(HP_NUM,'-','') as HP_NUM,
+			    LM_STATE,
+			    LC_LIMIT_NUMBER,
+                ROWNUM RK
+            FROM(
+            SELECT * FROM(SELECT
+            LM.CL_IDX
+            ,LM.LM_IDX
+            ,LM.REQ_CLASS
+            ,LM_STATE
+            ,LC_LIMIT_NUMBER
+            ,LM_NAME
+            ,HP_NUM
+            ,lc.LC_ST_DATE
+            ,LC_PLACE_NAME
+            ,cl.CL_NAME
+            ,CASE WHEN (SELECT 
+                            COUNT(*)  
+                            FROM LECTURE_MEMBER A, LECTURE_CONFIG B, LECTURE C
+                            WHERE A.CL_IDX = B.CL_IDX
+                            AND A.CL_IDX = C.CL_IDX
+                            AND C.USE_YN = 'Y'
+                            AND B.LC_ST_DATE < LC.LC_ST_DATE
+                            AND B.LC_ST_DATE > TO_CHAR(TO_DATE(LC.LC_ST_DATE, 'yyyy-mm-dd/hh24mi')-365,'yyyy-mm-dd') 
+                            AND A.LM_STATE = 'A' 
+                            AND LC_COURSE_BUNRYU_CODE = LC.LC_COURSE_BUNRYU_CODE
+                            AND C.CL_STS_CODE NOT IN ('31020000', 'RCCSL') 
+                            AND A.LM_USER_ID = LM.LM_USER_ID
+                            AND A.CL_IDX NOT IN (LM.CL_IDX)) > 0 THEN 1
+		              ELSE 0 END COUNT2
+				,0 AS COUNT1
+				,to_char(sysdate, 'yyyy')-LM.LM_BIRTHDAY+1 AGE
+				,CASE WHEN ((to_char(sysdate, 'yyyy')-LM.LM_BIRTHDAY+1) > '55') THEN 'Y' 
+					  WHEN ((to_char(sysdate, 'yyyy')-LM.LM_BIRTHDAY+1) <= '55') THEN 'N' END AGE_YN
+            FROM LECTURE_MEMBER LM, LECTURE CL, LECTURE_CONFIG LC
+			WHERE LM.CL_IDX = CL.CL_IDX
+			AND LM.CL_IDX = LC.CL_IDX
+            AND LM.CL_IDX = #{clIdx}
+            AND LM_STATE in ('Y','A')
+            AND LM.REQ_CLASS = '0'
+            ORDER BY REQ_CLASS ASC, AGE_YN DESC, COUNT2 ASC, COUNT1 ASC, LM_IDX ASC)
+            
+            UNION ALL
+            
+            SELECT * FROM(SELECT
+            LM.CL_IDX
+            ,LM.LM_IDX
+            ,LM.REQ_CLASS
+            ,LM_STATE
+            ,LC_LIMIT_NUMBER
+            ,LM_NAME
+            ,HP_NUM
+            ,lc.LC_ST_DATE
+            ,LC_PLACE_NAME
+            ,cl.CL_NAME
+            ,CASE WHEN (SELECT 
+                            COUNT(*)  
+                            FROM LECTURE_MEMBER A, LECTURE_CONFIG B, LECTURE C
+                            WHERE A.CL_IDX = B.CL_IDX
+                            AND A.CL_IDX = C.CL_IDX
+                            AND C.USE_YN = 'Y'
+                            AND B.LC_ST_DATE < LC.LC_ST_DATE
+                            AND B.LC_ST_DATE > TO_CHAR(TO_DATE(LC.LC_ST_DATE, 'yyyy-mm-dd/hh24mi')-365,'yyyy-mm-dd') 
+                            AND A.LM_STATE = 'A' 
+                            AND LC_COURSE_BUNRYU_CODE = LC.LC_COURSE_BUNRYU_CODE
+                            AND C.CL_STS_CODE NOT IN ('31020000', 'RCCSL') 
+                            AND A.LM_USER_ID = LM.LM_USER_ID
+                            AND A.CL_IDX NOT IN (LM.CL_IDX)) > 0 THEN 1
+		              ELSE 0 END COUNT2
+				,0 AS COUNT1
+				,to_char(sysdate, 'yyyy')-LM.LM_BIRTHDAY+1 AGE
+				,CASE WHEN ((to_char(sysdate, 'yyyy')-LM.LM_BIRTHDAY+1) > '55') THEN 'Y' 
+					  WHEN ((to_char(sysdate, 'yyyy')-LM.LM_BIRTHDAY+1) <= '55') THEN 'N' END AGE_YN
+            FROM LECTURE_MEMBER LM, LECTURE CL, LECTURE_CONFIG LC
+			WHERE LM.CL_IDX = CL.CL_IDX
+			AND LM.CL_IDX = LC.CL_IDX
+            AND LM.CL_IDX = #{clIdx}
+            AND LM_STATE in ('Y','A')
+            AND LM.REQ_CLASS = '1'
+            ORDER BY LM_IDX ASC))A
+		]]>
+	</select>
+	<!-- 승인,미승인문자 보낼 id값 조회리스트 -->
+	<select id="selectLectureStateList" resultType="SmsVo">
+		<![CDATA[
+			SELECT 
+				A.CL_IDX AS clIdx
+			FROM LECTURE_CONFIG A, LECTURE B, LECTURE_MEMBER C
+            WHERE A.CL_IDX = B.CL_IDX
+            AND A.CL_IDX = C.CL_IDX
+            AND A.LC_GB = 'GUM'
+            AND A.USE_YN = 'Y'
+            AND A.LC_APPROVAL_YN = 'Y'
+            AND C.LM_STATE IN ('A','Y')
+            AND TO_CHAR(to_date(A.LC_ST_DATE, 'yyyy-mm-dd/hh24mi'),'yyyy-mm-dd') = TO_CHAR(sysdate+7,'yyyy-mm-dd')
+            AND B.CL_STS_CODE = 'RCOPN'
+            GROUP BY A.CL_IDX
+		]]>
+	</select>
+	
+	<select id="selectListSmsTean" resultMap="SmsMap">
+		<![CDATA[
+			SELECT
+				TA_NAME AS ITEM_NAME
+				, TA_HP AS ITEM_HP
+				, TA_START_DT AS ROOM_DT
+				, TA_END_DT as ROOM_END_DT
+			FROM TEAN
+			WHERE TA_START_DT = TO_CHAR(SYSDATE + 7, 'YYYY-MM-DD')
+			AND TA_STATE = '14000001'
+		]]>
+	</select>
+	
+	<select id="selectListSmsHoengSeong" resultMap="SmsMap">
+		<![CDATA[
+			SELECT
+				HS_NAME AS ITEM_NAME
+				, HS_HP AS ITEM_HP
+				, HS_START_DT AS ROOM_DT
+				, HS_END_DT as ROOM_END_DT
+			FROM HOENGSEONG
+			WHERE HS_START_DT = TO_CHAR(SYSDATE + 7, 'YYYY-MM-DD')
+			AND HS_STATE = '14000001'
+		]]>
+	</select>
+
+</mapper>

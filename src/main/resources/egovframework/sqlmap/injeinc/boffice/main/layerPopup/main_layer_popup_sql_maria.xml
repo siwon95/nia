@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MainLayerPopupDao">
+	<resultMap id="MainLayerPopupMap" type="egovframework.injeinc.boffice.main.layerPopup.vo.MainLayerPopupVo">
+		<result property="mlIdx" column="ML_IDX"/>
+		<result property="mlSitecd" column="ML_SITECD"/>
+		<result property="mlTitle" column="ML_TITLE"/>
+		<result property="mlStartDate" column="ML_START_DATE"/>
+		<result property="mlEndDate" column="ML_END_DATE"/>
+		<result property="mlAlt" column="ML_ALT"/>
+		<result property="mlTarget" column="ML_TARGET"/>
+		<result property="mlLink" column="ML_LINK"/>
+		<result property="mlUsemap" column="ML_USEMAP"/>
+		<result property="mlStyle" column="ML_STYLE"/>
+		<result property="mlFilename" column="ML_FILENAME"/>
+		<result property="mlUse" column="ML_USE"/>
+		<result property="useYn" column="USE_YN"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+	</resultMap>
+
+	<insert id="insertMainLayerPopup" parameterType="MainLayerPopupVo">
+		<![CDATA[
+			INSERT INTO EZ_MAIN_LAYER_POPUP
+			(
+				  ML_IDX
+				, ML_SITECD
+				, ML_TITLE
+				, ML_START_DATE
+				, ML_END_DATE
+				, ML_ALT
+				, ML_TARGET
+				, ML_LINK
+				, ML_USEMAP
+				, ML_STYLE
+				, ML_FILENAME
+				, REG_ID
+			)
+			VALUES
+			(
+				  #{mlIdx}
+				, #{mlSitecd}
+				, #{mlTitle}
+				, #{mlStartDate}
+				, #{mlEndDate}
+				, #{mlAlt}
+				, #{mlTarget}
+				, #{mlLink}
+				, #{mlUsemap}
+				, #{mlStyle}
+				, #{mlFilename}
+				, #{regId}
+			)
+		]]>
+	</insert>
+	
+	<update id="updateMainLayerPopup" parameterType="MainLayerPopupVo">
+		<![CDATA[
+			UPDATE EZ_MAIN_LAYER_POPUP 
+			SET ML_TITLE = #{mlTitle}
+				, ML_SITECD = #{mlSitecd}
+				, ML_START_DATE = #{mlStartDate}
+				, ML_END_DATE = #{mlEndDate}
+				, ML_ALT = #{mlAlt}
+				, ML_TARGET = #{mlTarget}
+				, ML_LINK = #{mlLink}
+				, ML_USEMAP = #{mlUsemap}
+				, ML_STYLE = #{mlStyle}
+				, ML_FILENAME = #{mlFilename}
+				, ML_USE = #{mlUse}
+				, MOD_DT = NOW()
+				, MOD_ID = #{modId}
+			WHERE ML_IDX = #{mlIdx}
+		]]>
+	</update>
+	
+	<update id="updateMainLayerPopupMlUse" parameterType="MainLayerPopupVo">
+		<![CDATA[
+			UPDATE EZ_MAIN_LAYER_POPUP 
+			SET   ML_USE = #{mlUse}
+				, MOD_DT = NOW()
+				, MOD_ID = #{modId}
+			WHERE ML_IDX = #{mlIdx}
+		]]>
+	</update>
+	
+	<update id="deleteMainLayerPopup" parameterType="MainLayerPopupVo">
+		<![CDATA[
+			UPDATE EZ_MAIN_LAYER_POPUP
+			SET 
+				  USE_YN = 'N'
+				, MOD_DT = NOW()
+				, MOD_ID = #{modId}
+			WHERE ML_IDX = #{mlIdx}
+		]]>
+	</update>
+	
+	<select id="selectMainLayerPopup" parameterType="MainLayerPopupVo" resultMap="MainLayerPopupMap">
+		<![CDATA[
+			SELECT * 
+			FROM EZ_MAIN_LAYER_POPUP
+			WHERE USE_YN = 'Y'
+			AND ML_IDX = #{mlIdx}
+		]]>
+	</select>
+	
+	<sql id="searchMainLayerPopup">
+		<if test="searchSiteCd != null and searchSiteCd != ''">
+		<![CDATA[
+			AND
+				ML_SITECD = #{searchSiteCd}
+		]]>	
+		</if>
+		<if test="searchUse != null and searchUse != ''">
+		<![CDATA[
+			AND
+				ML_USE = #{searchUse}
+		]]>	
+		</if>
+		<if test="searchKeyword != null and searchKeyword != ''">
+		<![CDATA[
+			AND
+				ML_TITLE LIKE CONCAT( '%',#{searchKeyword},'%' )
+		]]>	
+		</if>
+	</sql>
+	
+	<select id="selectPagMainLayerPopup" parameterType="MainLayerPopupVo" resultMap="MainLayerPopupMap">
+		<![CDATA[
+			SELECT A.* FROM(		
+					   SELECT  B.* 
+					   		 , @ROWNUM:=@ROWNUM+1 ROWNUM
+						FROM EZ_MAIN_LAYER_POPUP B
+						WHERE (@ROWNUM:=0)=0
+						AND 1 = 1
+						AND USE_YN = 'Y'
+		]]>
+		<include refid="searchMainLayerPopup"/>
+		<![CDATA[
+						ORDER BY ML_USE DESC, ML_IDX DESC
+					) A WHERE ROWNUM BETWEEN #{firstIndex} AND #{lastIndex}
+
+		]]>
+	</select>
+	
+	<select id="selectMainLayerPopupCnt" parameterType="MainLayerPopupVo" resultType="java.lang.Integer">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM EZ_MAIN_LAYER_POPUP
+			WHERE USE_YN = 'Y'
+		]]>
+		<include refid="searchMainLayerPopup"/>
+	</select>
+	
+	<select id="selectMainLayerPopupOne" parameterType="MainLayerPopupVo" resultMap="MainLayerPopupMap">
+		<![CDATA[
+			SELECT A.* FROM(	
+				SELECT  B.* 
+					  , @ROWNUM:=@ROWNUM+1 ROWNUM
+				FROM EZ_MAIN_LAYER_POPUP B
+				WHERE (@ROWNUM:=0)=0
+				AND USE_YN = 'Y'
+				AND ML_USE = 'Y'
+				AND ML_SITECD = #{searchSiteCd}
+				AND 1 = 1
+				AND ML_START_DATE <= DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')
+				AND DATE_FORMAT(NOW(),'%Y%m%d%H%i%s') <= ML_END_DATE
+				ORDER BY ML_IDX DESC
+			
+			) A 
+			 WHERE ROWNUM = 1;
+		]]>
+	</select>
+	
+</mapper>

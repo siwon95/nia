@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SiteMenuNavigation">
+
+	<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap" />
+	<typeAlias alias="siteMenuNavigationVO" type="site.cmm.service.SiteMenuNavigationVO" />
+
+	<select id="SiteMenuNavigationDAO.selectSiteMenuNavigation" parameterClass="map" resultClass="siteMenuNavigationVO">
+		<![CDATA[
+			/* 사이트 메뉴네비게이션 조회 SiteMenuNavigationDAO.selectSiteMenuNavigation */
+			SELECT A.MENU_NO AS menuNo
+				, A.MENU_ORDR AS menuOrdr
+				, A.MENU_NM AS menuNm
+				, A.UPPER_MENU_NO AS upperMenuId
+				, A.MENU_DC AS menuDc
+				, A.RELATE_IMAGE_PATH AS relateImagePath
+				, A.RELATE_IMAGE_NM AS relateImageNm
+				, B.PROGRM_FILE_NM AS progrmFileNm        
+ 				, LEVEL-1 AS menuLevel
+        		, SUBSTR(SYS_CONNECT_BY_PATH(A.MENU_NM,' > '), INSTR(SYS_CONNECT_BY_PATH(A.MENU_NM,' > '), ' > ', '2')) AS menuNavigation
+        		, SUBSTR(SYS_CONNECT_BY_PATH(A.MENU_NO,'^'), INSTR(SYS_CONNECT_BY_PATH(A.MENU_NO,'^'), '^', '2')) || '^' AS menuNoList
+			FROM (SELECT A.* FROM COMTNMENUINFO A, COMTNMENUCREATDTLS B WHERE A.MENU_NO = B.MENU_NO AND B.AUTHOR_CODE = #siteAuthorCode#) A
+      		LEFT OUTER JOIN COMTNPROGRMLIST B ON B.PROGRM_FILE_NM != 'dir' AND INSTR(B.URL, 'http') = 0 AND (A.PROGRM_FILE_NM = B.PROGRM_FILE_NM OR A.PROGRM_FILE_NM = B.PROGRM_GRP_NM)
+			WHERE B.PROGRM_FILE_NM IS NOT NULL
+			AND B.PROGRM_FILE_NM = (
+		        /* URL이 등록된 형태를 찾은 후, 널일경우 URL에 파라메터가 붙은 형태를 찾아서 매핑한다 */
+		        SELECT NVL((
+		            SELECT PROGRM_FILE_NM
+		            FROM COMTNPROGRMLIST
+		            WHERE URL LIKE '%' || #siteUri# || '%'
+		            AND PROGRM_FILE_NM != 'dir'
+		            AND INSTR(URL, 'http') = 0
+		            AND ROWNUM = 1
+		          ),
+		          (
+		            SELECT PROGRM_FILE_NM
+		            FROM COMTNPROGRMLIST
+		            WHERE INSTR(#siteUri#, URL ) > 0
+		            AND PROGRM_FILE_NM != 'dir'
+		            AND INSTR(URL, 'http') = 0
+		            AND ROWNUM = 1
+		          )
+		        ) FROM DUAL WHERE ROWNUM = 1      
+			)
+      		START WITH A.UPPER_MENU_NO = '0' AND A.MENU_NO = #siteUpperMenuNo#
+			CONNECT BY PRIOR A.MENU_NO = A.UPPER_MENU_NO
+			ORDER SIBLINGS BY A.MENU_ORDR ASC
+		]]>
+	</select>
+		
+	<select id="SiteMenuNavigationDAO.selectSiteTopMenuList" parameterClass="map" resultClass="siteMenuNavigationVO">
+		<![CDATA[
+			/* Top메뉴리스트 조회 SiteMenuNavigationDAO.selectSiteTopMenuList */
+			SELECT A.MENU_NO AS menuNo
+				, A.MENU_ORDR AS menuOrdr
+				, A.MENU_NM AS menuNm
+				, A.UPPER_MENU_NO AS upperMenuId
+				, A.MENU_DC AS menuDc
+				, A.RELATE_IMAGE_PATH AS relateImagePath
+				, A.RELATE_IMAGE_NM AS relateImageNm
+				, A.PROGRM_FILE_NM AS progrmFileNm        
+ 				, LEVEL AS menuLevel
+        		, B.URL AS menuUrl
+			FROM (SELECT A.* FROM COMTNMENUINFO A, COMTNMENUCREATDTLS B WHERE A.MENU_NO = B.MENU_NO AND B.AUTHOR_CODE = #siteAuthorCode#) A
+			LEFT OUTER JOIN COMTNPROGRMLIST B ON A.PROGRM_FILE_NM = B.PROGRM_FILE_NM
+		  	WHERE LEVEL <= 1
+		  	START WITH UPPER_MENU_NO = #siteUpperMenuNo#
+			CONNECT BY PRIOR MENU_NO = UPPER_MENU_NO
+			ORDER SIBLINGS BY MENU_ORDR ASC
+		]]> 
+	</select>
+
+	<select id="SiteMenuNavigationDAO.selectSiteLeftMenuList" parameterClass="map" resultClass="siteMenuNavigationVO">
+		<![CDATA[
+			/* Left메뉴리스트 조회 SiteMenuNavigationDAO.selectSiteLeftMenuList */
+			SELECT A.MENU_NO AS menuNo
+				, A.MENU_ORDR AS menuOrdr
+				, A.MENU_NM AS menuNm
+				, A.UPPER_MENU_NO AS upperMenuId
+				, A.MENU_DC AS menuDc
+				, A.RELATE_IMAGE_PATH AS relateImagePath
+				, A.RELATE_IMAGE_NM AS relateImageNm
+				, A.PROGRM_FILE_NM AS progrmFileNm        
+ 				, LEVEL AS menuLevel
+        		, B.URL AS menuUrl
+			FROM (SELECT A.* FROM COMTNMENUINFO A, COMTNMENUCREATDTLS B WHERE A.MENU_NO = B.MENU_NO AND B.AUTHOR_CODE = #siteAuthorCode#) A
+			LEFT OUTER JOIN COMTNPROGRMLIST B ON A.PROGRM_FILE_NM = B.PROGRM_FILE_NM
+		  	START WITH UPPER_MENU_NO = RPAD(SUBSTR(#siteMenuNo#, 0, 4), 7, '0')	  	
+			CONNECT BY PRIOR MENU_NO = UPPER_MENU_NO
+			ORDER SIBLINGS BY MENU_ORDR ASC
+		]]>
+	</select>
+
+	<select id="SiteMenuNavigationDAO.selectSiteLinkUrl" parameterClass="map" resultClass="String">
+		<![CDATA[
+			/* 상위메뉴용 LinkUrl 조회 SiteMenuNavigationDAO.selectSiteLinkUrl */
+			SELECT URL FROM (
+				SELECT B.URL
+				FROM (SELECT A.* FROM COMTNMENUINFO A, COMTNMENUCREATDTLS B WHERE A.MENU_NO = B.MENU_NO AND B.AUTHOR_CODE = #siteAuthorCode#) A	
+				LEFT OUTER JOIN COMTNPROGRMLIST B ON A.PROGRM_FILE_NM = B.PROGRM_FILE_NM
+				WHERE A.PROGRM_FILE_NM != 'dir'
+					AND INSTR(B.URL, 'http') = 0
+				START WITH A.UPPER_MENU_NO = #menuNo#			
+				CONNECT BY PRIOR A.MENU_NO = A.UPPER_MENU_NO
+				ORDER SIBLINGS BY A.MENU_ORDR ASC
+			) WHERE ROWNUM = 1
+		]]> 
+	</select>
+					
+</sqlMap>

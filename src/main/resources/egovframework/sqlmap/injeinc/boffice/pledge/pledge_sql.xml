@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PledgeDao">
+
+	<resultMap id="PledgeMap" type="egovframework.injeinc.boffice.pledge.vo.PledgeVo">
+		<result property="plIdx" column="PL_IDX"/>
+		<result property="plWiwid1" column="PL_WIWID1"/>
+		<result property="plWiwid2" column="PL_WIWID2"/>
+		<result property="plWiwTxt1" column="PL_WIW_TXT1"/>
+		<result property="plWiwTxt2" column="PL_WIW_TXT2"/>
+		<result property="cateCont" column="CATE_CONT"/>
+		<result property="cateContTxt" column="CATE_CONT_TXT"/>
+		<result property="subCont" column="SUB_CONT"/>
+		<result property="telCont" column="TEL_CONT"/>
+		<result property="emailCont" column="EMAIL_CONT"/>
+		<result property="clobCont" column="CLOB_CONT"/>
+		<result property="regType" column="REG_TYPE"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="regIp" column="REG_IP"/>
+		<result property="regName" column="REG_NAME"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="fileCnt" column="FILE_CNT"/>
+		<result property="countCont" column="COUNT_CONT"/>
+		<result property="recommendCont" column="RECOMMEND_CONT"/>
+	</resultMap>
+	<resultMap id="WiwidMap" type="egovframework.injeinc.boffice.pledge.vo.PledgeVo">
+		<result property="wiwId" column="WIWID"/>
+		<result property="wiwName" column="WIWNAME"/>
+		<result property="wiwParent" column="WIWPARENT"/>
+	</resultMap>
+	
+	<select id="selectListWiwid" parameterType="PledgeVo" resultMap="WiwidMap">
+		<![CDATA[
+			SELECT
+				WIWID,
+				WIWNAME,
+				WIWPARENT
+			FROM
+				EZ_KCM_WIWON_MST
+			WHERE
+				WIWPARENT = #{wiwParent}
+			ORDER BY WIWTYPECODE, WIWSIDOCODE,WIWORDER ASC
+		]]>
+	</select>
+	
+	<insert id="insertPledge" parameterType="PledgeVo">
+		<![CDATA[
+			INSERT INTO EZ_KCM_PLEDGE_BANK
+			(
+				PL_IDX,
+				PL_WIWID1,
+				PL_WIWID2,
+				CATE_CONT,
+				SUB_CONT,
+				TEL_CONT,
+				EMAIL_CONT,
+				CLOB_CONT,
+				REG_TYPE,
+				REG_ID,
+				REG_IP,
+				REG_NAME,
+				REG_DT
+			)
+			VALUES
+			(
+				#{plIdx},
+				#{plWiwId1},
+				#{plWiwId2},
+				#{cateCont},
+				#{subCont},
+				#{telCont},
+				#{emailCont},
+				#{clobCont},
+				'admin',
+				#{regId},
+				#{regIp},
+				#{regName},
+				SYSDATE
+			)
+
+		]]>
+	</insert>
+	
+	<update id="updatePledge" parameterType="PledgeVo">
+		<![CDATA[
+			UPDATE
+				EZ_KCM_PLEDGE_BANK
+			SET
+				PL_WIWID1=#{plWiwId1},
+				PL_WIWID2=#{plWiwId2},
+				CATE_CONT=#{cateCont},
+				SUB_CONT=#{subCont},
+				TEL_CONT=#{telCont},
+				EMAIL_CONT=#{emailCont},
+				CLOB_CONT=#{clobCont},
+				MOD_ID=#{modId},
+				MOD_IP=#{modIp},
+				MOD_NAME=#{modName},
+				MOD_DT=SYSDATE
+			WHERE
+				PL_IDX=#{plIdx}
+
+		]]>
+	</update>
+	
+	<update id="deletePledge" parameterType="pledgeVo">
+		<![CDATA[	
+			UPDATE EZ_KCM_PLEDGE_BANK
+			SET 
+				PL_DEL_YN = 'Y'
+				, MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+				, MOD_IP = #{modIp}
+			WHERE PL_IDX=#{plIdx}
+		]]>
+	</update>
+	
+	<select id="selectPledge" parameterType="PledgeVo" resultMap="PledgeMap">
+		<![CDATA[
+			SELECT 
+				PL_IDX
+				, SUB_CONT
+				, TEL_CONT
+				, EMAIL_CONT
+				, CLOB_CONT
+				, REG_ID
+				, REG_NAME
+				, TO_CHAR(REG_DT, 'YYYY-MM-DD')    AS REG_DT
+				, COUNT_CONT
+				, RECOMMEND_CONT
+				, CASE REG_TYPE
+					WHEN 'admin' THEN '관리자 등록'
+					WHEN 'naver' THEN '비회원(네이버)'
+					WHEN 'kakao' THEN '비회원(카카오)'
+					WHEN 'phone' THEN '비회원(휴대폰)'
+					WHEN 'ipin' THEN '비회원(아이핀)'
+					WHEN 'member' THEN '회원'
+				END
+					AS REG_TYPE
+				, CATE_CONT
+				, PL_WIWID1
+				, PL_WIWID2
+				, (SELECT CODE_NAME FROM EZ_CMM_CODE WHERE CODE=CATE_CONT) AS CATE_CONT_TXT
+				, (SELECT WIWNAME FROM EZ_KCM_WIWON_MST WHERE WIWID=PL_WIWID1) AS PL_WIW_TXT1
+				, CASE PL_WIWID2 WHEN 0 THEN '' ELSE (SELECT WIWNAME FROM EZ_KCM_WIWON_MST WHERE WIWID=PL_WIWID2) END AS PL_WIW_TXT2
+				, (SELECT COUNT(*) FROM EZ_KCM_PLEDGE_BANK_FILE WHERE PL_IDX=A.PL_IDX AND USE_YN='Y') AS FILE_CNT
+			FROM EZ_KCM_PLEDGE_BANK A
+			WHERE
+				PL_IDX=#{plIdx}
+		]]>
+	</select>
+	<select id="selectPagePledge" parameterType="PledgeVo" resultMap="PledgeMap">
+		<![CDATA[
+			SELECT 
+				PL_IDX
+				, SUB_CONT
+				, TEL_CONT
+				, EMAIL_CONT
+				, REG_TYPE
+				, REG_ID
+				, REG_NAME
+				, TO_CHAR(REG_DT, 'YYYY-MM-DD')    AS REG_DT
+				, COUNT_CONT
+				, RECOMMEND_CONT
+				, CATE_CONT_TXT
+				, PL_WIW_TXT1
+				, PL_WIW_TXT2
+				, FILE_CNT
+			FROM (
+				SELECT A.*, ROWNUM RN FROM (
+					SELECT 
+						PL_IDX
+						, SUB_CONT
+						, TEL_CONT
+						, EMAIL_CONT
+						, REG_TYPE
+						, REG_ID
+						, REG_NAME
+						, REG_DT
+						, COUNT_CONT
+						, RECOMMEND_CONT
+						, (SELECT CODE_NAME FROM EZ_CMM_CODE WHERE CODE=A.CATE_CONT) AS CATE_CONT_TXT
+						, (SELECT WIWNAME FROM EZ_KCM_WIWON_MST WHERE WIWID=A.PL_WIWID1) AS PL_WIW_TXT1
+						, CASE WHEN A.PL_WIWID2!=0 THEN (SELECT WIWNAME FROM EZ_KCM_WIWON_MST WHERE WIWID=A.PL_WIWID2) ELSE '-' END AS PL_WIW_TXT2
+						, (SELECT COUNT(*) FROM EZ_KCM_PLEDGE_BANK_FILE WHERE PL_IDX=A.PL_IDX AND USE_YN='Y') AS FILE_CNT
+					FROM EZ_KCM_PLEDGE_BANK A
+					WHERE PL_DEL_YN='N'
+		]]>
+		<include refid="searchPledge"/>
+		<if test="orderBy == 1">
+			ORDER BY REG_DT DESC	
+		</if>
+		<if test="orderBy == 2">
+			ORDER BY RECOMMEND_CONT DESC	
+		</if>
+		<if test="orderBy == 3">
+			ORDER BY COUNT_CONT DESC	
+		</if>
+		<![CDATA[
+				) A WHERE ROWNUM <= #{lastIndex}
+			) B WHERE RN > #{firstIndex}
+		]]>
+	</select>
+	
+	<select id="selectListPledge" parameterType="PledgeVo" resultMap="PledgeMap">
+		<![CDATA[
+		SELECT 
+				PL_IDX
+				, SUB_CONT
+				, TEL_CONT
+				, EMAIL_CONT
+				, REG_TYPE
+				, REG_ID
+				, REG_NAME
+				, TO_CHAR(REG_DT, 'YYYY-MM-DD')    AS REG_DT
+				, COUNT_CONT
+				, RECOMMEND_CONT
+				, CATE_CONT_TXT
+				, PL_WIW_TXT1
+				, PL_WIW_TXT2
+				, FILE_CNT
+			FROM (
+				SELECT 
+					PL_IDX
+					, SUB_CONT
+					, TEL_CONT
+					, EMAIL_CONT
+					, REG_TYPE
+					, REG_ID
+					, REG_NAME
+					, REG_DT
+					, COUNT_CONT
+					, RECOMMEND_CONT
+					, (SELECT CODE_NAME FROM EZ_CMM_CODE WHERE CODE=A.CATE_CONT) AS CATE_CONT_TXT
+					, (SELECT WIWNAME FROM EZ_KCM_WIWON_MST WHERE WIWID=A.PL_WIWID1) AS PL_WIW_TXT1
+					, CASE WHEN A.PL_WIWID2!=0 THEN (SELECT WIWNAME FROM EZ_KCM_WIWON_MST WHERE WIWID=A.PL_WIWID2) ELSE '-' END AS PL_WIW_TXT2
+					, (SELECT COUNT(*) FROM EZ_KCM_PLEDGE_BANK_FILE WHERE PL_IDX=A.PL_IDX AND USE_YN='Y') AS FILE_CNT
+				FROM EZ_KCM_PLEDGE_BANK A
+				WHERE PL_DEL_YN='N'
+		]]>
+		<include refid="searchPledge"/>
+		<if test="orderBy == 1">
+			ORDER BY REG_DT DESC	
+		</if>
+		<if test="orderBy == 2">
+			ORDER BY RECOMMEND_CONT DESC	
+		</if>
+		<if test="orderBy == 3">
+			ORDER BY COUNT_CONT DESC	
+		</if>
+		<![CDATA[ ) ]]>
+	</select>
+	
+	<select id="selectTotalCntPledge" parameterType="PledgeVo" resultType="java.lang.Integer">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM EZ_KCM_PLEDGE_BANK
+			WHERE PL_DEL_YN='N'
+		]]>
+		<include refid="searchPledge"/>
+	</select>
+	<sql id="searchPledge">
+		<if test="searchStartDate != null and searchStartDate != ''">
+			<if test="searchEndDate != null and searchEndDate != ''">
+			<![CDATA[	
+				AND REG_DT BETWEEN TO_DATE(#{searchStartDate}, 'YYYY-MM-DD')
+									AND TO_DATE(#{searchEndDate}, 'YYYY-MM-DD') + 1
+			]]>
+			</if>
+		</if>
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 1">
+				<![CDATA[	AND SUB_CONT LIKE '%'||#{searchKeyword}||'%' ]]>
+			</if>
+			<if test="searchCondition == 2">
+				<![CDATA[	AND CLOB_CONT LIKE '%'||#{searchKeyword}||'%' ]]>
+				
+			</if>
+			<if test="searchCondition == 3">
+				<![CDATA[	AND (SUB_CONT LIKE '%'||#{searchKeyword}||'%' OR CLOB_CONT LIKE '%'||#{searchKeyword}||'%') ]]>
+			</if>
+			<if test="searchCondition == 4">
+				<![CDATA[	AND REG_NAME LIKE '%'||#{searchKeyword}||'%' ]]>
+			</if>
+		</if>
+		<if test="searchPlWiwid1 != null and searchPlWiwid1 != ''">
+			<![CDATA[	AND PL_WIWID1 = #{searchPlWiwid1} ]]>
+		</if>
+		<if test="searchPlWiwid2 != null and searchPlWiwid2 != ''">
+			<![CDATA[	AND PL_WIWID2 = #{searchPlWiwid2} ]]>
+		</if>
+		<if test="searchCateCont != null and searchCateCont != ''">
+			<![CDATA[	AND CATE_CONT = #{searchCateCont} ]]>
+		</if>
+	</sql>
+</mapper>

@@ -1,0 +1,10 @@
+{
+  "realm": "bim",
+  "auth-server-url": "http://192.168.50.68:8180/auth/",
+  "ssl-required": "external",
+  "resource": "portal",
+  "credentials": {
+    "secret": "49674941-796b-42a2-95d0-acd79552a98e"
+  },
+  "confidential-port": 0
+}

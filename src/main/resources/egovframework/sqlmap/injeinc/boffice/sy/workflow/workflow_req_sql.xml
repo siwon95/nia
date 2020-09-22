@@ -1,0 +1,1025 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="WorkflowReq">
+	<resultMap id="workflowReqVO-result" type="inje.portal.ptlmng.workflow.model.WorkflowReqVO" >
+		<result property="workflowReqId" column="WORKFLOW_REQ_ID" javaType="java.lang.String" /> <!-- 워크플로우요청D -->
+		<result property="workflowId" column="WORKFLOW_ID" javaType="java.lang.String" /> <!-- 워크플로우ID -->
+		<result property="curStatusCode" column="CUR_STATUS_CODE" javaType="java.lang.String" /> <!-- 현재상태코드 -->
+		<result property="curStatusNm" column="CUR_STATUS_NM" javaType="java.lang.String" /> <!-- 현재상태코드명 -->
+		<result property="curStatusOrder" column="CUR_STATUS_ORDER" javaType="java.lang.String" /> <!-- 현재상태순서 -->
+		<result property="insttId" column="INSTT_ID" javaType="java.lang.String" /> <!-- 기관ID -->
+		<result property="reqDate" column="REQ_YMD" javaType="java.lang.String" /> <!-- 요청일자 -->
+		<result property="reqUserId" column="REQ_USER_ID" javaType="java.lang.String" /> <!-- 요청자ID -->
+		<result property="projectNm" column="PROJECT_NM" javaType="java.lang.String" /> <!-- 요청자ID -->
+		<result property="useYn" column="USE_YN" javaType="java.lang.String" /> <!-- 사용여부 -->
+		<result property="createId" column="CREATE_ID" javaType="java.lang.String" /> <!-- 생성자ID -->
+		<result property="createDate" column="CREATE_DATE" javaType="java.lang.String" /> <!-- 생성일시 -->
+		<result property="updateId" column="UPDATE_ID" javaType="java.lang.String" /> <!-- 수정자ID -->
+		<result property="updateDate" column="UPDATE_DATE" javaType="java.lang.String" /> <!-- 수정일시 -->
+		<result property="updateCount" column="UPDATE_COUNT" javaType="integer" /> <!-- 수정카운트 -->
+	</resultMap>
+	
+	<resultMap id="workflowReqDetailVO-result" type="inje.portal.ptlmng.workflow.model.WorkflowReqDetailVO" >
+		<result property="workflowReqDetailId" column="WORKFLOW_REQ_DETAIL_ID" javaType="java.lang.String" />
+		<result property="workflowReqId" column="WORKFLOW_REQ_ID" javaType="java.lang.String" />
+		<result property="fieldId" column="FIELD_ID" javaType="java.lang.String" />
+		<result property="fieldNm" column="FIELD_NM" javaType="java.lang.String" />
+		<result property="fieldValueType" column="FIELD_VALUE_TYPE_CODE" javaType="java.lang.String" />
+		<result property="registSno" column="REGIST_SNO" javaType="java.lang.String" />
+		<result property="reqContents" column="REQ_CONTENTS" javaType="java.lang.String" />
+		<result property="useYn" column="USE_YN" javaType="java.lang.String" />
+		<result property="createId" column="CREATE_ID" javaType="java.lang.String" />
+		<result property="createDate" column="CREATE_DATE" javaType="java.lang.String" />
+		<result property="updateId" column="UPDATE_ID" javaType="java.lang.String" />
+		<result property="updateDate" column="UPDATE_DATE" javaType="java.lang.String" />
+	</resultMap>
+	
+	<resultMap id="workflowReqProgressVO-result" type="inje.portal.ptlmng.workflow.model.WorkflowReqProgressVO" >
+		<result property="workflowReqId" column="WORKFLOW_REQ_ID" javaType="java.lang.String" />
+		<result property="registSno" column="REGIST_SNO" javaType="java.lang.String" />
+		<result property="statusCode" column="STATUS_CODE" javaType="java.lang.String" />
+		<result property="statusCodeNm" column="STATUS_CODE_NM" javaType="java.lang.String" />
+		<result property="charger" column="CHARGER" javaType="java.lang.String" />
+		<result property="reqContents" column="REQ_CONTENTS" javaType="java.lang.String" />
+		<result property="useYn" column="USE_YN" javaType="java.lang.String" />
+		<result property="createId" column="CREATE_ID" javaType="java.lang.String" />
+		<result property="createNm" column="CREATE_NM" javaType="java.lang.String" />
+		<result property="createDate" column="CREATE_DATE" javaType="java.lang.String" />
+		<result property="updateId" column="UPDATE_ID" javaType="java.lang.String" />
+		<result property="updateDate" column="UPDATE_DATE" javaType="java.lang.String" />
+		
+		
+		<result property="chargerDeptNm" column="CHARGER_DEPT_NM" javaType="java.lang.String" />
+		<result property="chargerName" column="CHARGER_NAME" javaType="java.lang.String" />
+		<result property="chargerOfficeNo" column="CHARGER_OFFICE_NO" javaType="java.lang.String" />
+		<result property="chargerEmail2" column="CHARGER_EMAIL2" javaType="java.lang.String" />
+		<result property="statusYmd" column="STATUS_YMD" javaType="java.lang.String" />
+	</resultMap>
+	
+	<!-- 워크 플로우 요청 현재 상태 업데이트 (CONE 포탈) -->
+	<update id="updateWorkflowReqCurStatusCode" parameterType="inje.portal.ptlmng.workflow.model.WorkflowReqVO">
+		UPDATE /*updateWorkflowReqCurStatusCode*/ PTL_WORKFLOW_REQ
+		   SET CUR_STATUS_CODE = #{curStatusCode}
+		   <if test="updateIp != null and updateIp != ''" >
+		   , UPDATE_IP = #{updateIp}
+		   </if>
+		   <if test="updateId != null and updateId != ''" >
+		   , UPDATE_ID = #{updateId}
+		   </if>
+		   , UPDATE_DATE = now()
+		 WHERE WORKFLOW_REQ_ID = #{workflowReqId}
+	</update>
+	
+	
+	
+    <!-- 대시보드용 워크 플로우 요청 리스트 조회 -->
+<!-- 
+    <select id="selectDashboardWorkflowReqList" parameterType="java.util.HashMap" resultType="Map">
+        <![CDATA[
+        SELECT /*selectDashboardWorkflowReqList*/ WF.WORKFLOW_NM AS workflowNm
+             , REQ.CUR_STATUS_CODE AS curStatusCode
+             , STEP.WORKFLOW_STEP AS workflowStep
+             , (SELECT REQ_CONTENTS 
+                FROM PTL_WORKFLOW_REQ_DETAIL DETAIL, (SELECT @ROWNUM := 0) B
+               WHERE REQ.WORKFLOW_REQ_ID = DETAIL.WORKFLOW_REQ_ID 
+                    AND DETAIL.FIELD_ID IN ( 'catalogName' , 'reqSummary','title') AND (@ROWNUM := @ROWNUM + 1) = 1) AS reqContents
+             , DATE_FORMAT(REQ.CREATE_DATE, '%Y-%m-%d') AS createDate
+             , REQ.WORKFLOW_ID AS workflowId
+             , REQ.WORKFLOW_REQ_ID AS workflowReqId
+          FROM PTL_WORKFLOW_REQ REQ
+             , PTL_WORKFLOW WF
+             , PTL_WORKFLOW_STEP STEP
+             , (SELECT MAX(WORKFLOW_STEP_ORDER) AS WORKFLOW_STEP_ORDER
+                  FROM PTL_WORKFLOW_STEP
+                 WHERE WORKFLOW_ID = REQ.WORKFLOW_ID) MAX_STEP
+             , (SELECT WORKFLOW_STEP
+                     , CHARGER_ROLE_ID
+                  FROM PTL_WORKFLOW_STEP
+                 WHERE WORKFLOW_ID = REQ.WORKFLOW_ID
+                   AND WORKFLOW_STEP = STEP.NEXT_WORKFLOW_STEP) NEXT_STEP
+         WHERE REQ.WORKFLOW_ID = STEP.WORKFLOW_ID
+           AND WF.WORKFLOW_ID = STEP.WORKFLOW_ID
+           AND REQ.CUR_STATUS_CODE = STEP.WORKFLOW_STEP
+           AND STEP.WORKFLOW_STEP_ORDER > 1
+           AND STEP.WORKFLOW_STEP_ORDER < MAX_STEP.WORKFLOW_STEP_ORDER
+           AND NEXT_STEP.CHARGER_ROLE_ID IN 
+        ]]>
+        <foreach collection="roles" item="role" open="(" separator="," close=")">
+            #{role}
+        </foreach>
+        <![CDATA[
+         ORDER BY REQ.CREATE_DATE DESC
+         LIMIT 0, 5
+        ]]>
+    </select>
+-->
+    <!-- 대시보드용 워크 플로우 요청 리스트 조회 (PaaS 포탈) -->
+    <select id="selectDashboardWorkflowReqList" parameterType="inje.portal.ptlmng.workflow.model.WorkflowReqVO" resultType="Map">
+        <![CDATA[
+            SELECT 
+                    /*selectDashboardWorkflowReqList*/ 
+                    workflowNm
+                    , curStatusCode
+                    , workflowStep
+                    , reqContents
+                    , createDate
+                    , workflowId
+                    , workflowReqId
+              FROM
+                    (
+                        SELECT
+                                WF.WORKFLOW_NM          AS workflowNm
+                                , REQ.CUR_STATUS_CODE   AS curStatusCode
+                                , STEP.WORKFLOW_STEP    AS workflowStep
+                                , (
+                                        SELECT
+                                                REQ_CONTENTS
+                                          FROM
+                                                PTL_WORKFLOW_REQ_DETAIL DETAIL
+                                         WHERE
+                                                REQ.WORKFLOW_REQ_ID     = DETAIL.WORKFLOW_REQ_ID
+                                           AND
+                                                DETAIL.FIELD_ID         IN ('catalogName', 'reqSummary', 'title')
+                                )     AS reqContents
+                                , DATE_FORMAT(REQ.CREATE_DATE, '%Y-%m-%d')      AS createDate
+                                , REQ.WORKFLOW_ID                               AS workflowId
+                                , REQ.WORKFLOW_REQ_ID                           AS workflowReqId
+                                , STEP.NEXT_WORKFLOW_STEP                       AS nextWorkflowStep
+                          FROM
+                                PTL_WORKFLOW_REQ REQ
+                                LEFT JOIN PTL_WORKFLOW_REQ_DETAIL DETAIL2 ON (REQ.WORKFLOW_REQ_ID = DETAIL2.WORKFLOW_REQ_ID AND DETAIL2.FIELD_ID = 'projectId')
+                                , PTL_WORKFLOW WF
+                                , PTL_WORKFLOW_STEP STEP
+                                , (
+                                        SELECT
+                                                MAX(WORKFLOW_STEP_ORDER)    AS WORKFLOW_STEP_ORDER
+                                                , WORKFLOW_ID               AS WORKFLOW_ID
+                                          FROM
+                                                PTL_WORKFLOW_STEP
+                                        GROUP BY
+                                                WORKFLOW_ID
+                                ) MAX_STEP
+                         WHERE
+                                REQ.WORKFLOW_ID     = STEP.WORKFLOW_ID
+                           AND
+                                WF.WORKFLOW_ID      = STEP.WORKFLOW_ID
+						   AND
+                                REQ.CUR_STATUS_CODE = STEP.WORKFLOW_STEP
+                           AND
+                                STEP.WORKFLOW_STEP_ORDER    > 1
+                           AND
+                                STEP.WORKFLOW_STEP_ORDER    < MAX_STEP.WORKFLOW_STEP_ORDER
+                           AND
+                                REQ.WORKFLOW_ID             = MAX_STEP.WORKFLOW_ID
+						   AND (
+								REQ.WORKFLOW_ID NOT IN
+								('WF_PAD_ROLE_REQ_TENANT_ADMIN', 'WF_PAD_ROLE_REQ_PROJECT_ADMIN')
+								OR (
+										(
+											REQ.WORKFLOW_ID = 'WF_PAD_ROLE_REQ_TENANT_ADMIN'
+											AND (
+												DETAIL2.req_contents IS NULL
+												OR DETAIL2.REQ_CONTENTS IN (
+													SELECT project_id
+													FROM ptl_user_project_map
+													WHERE user_id = 'ptlkim'
+														AND use_yn = 'Y'
+												)
+											)
+										)
+
+									OR (
+										REQ.WORKFLOW_ID = 'WF_PAD_ROLE_REQ_PROJECT_ADMIN'
+										AND DETAIL2.REQ_CONTENTS IN (
+											SELECT project_id
+											FROM ptl_user_project_map
+											WHERE user_id = 'ptlkim'
+											AND use_yn = 'Y'
+										)
+									)
+								)
+							)
+            ]]>
+                <if test="(insttId != null and insttId != '') and (insttId != null and insttId != '')">
+                    <![CDATA[
+                           AND 
+                                REQ.INSTT_ID        = #{insttId}
+                    ]]>
+                </if>
+            <![CDATA[
+                    ) MST
+                    , PTL_WORKFLOW_STEP NEXT_STEP
+             WHERE
+                    MST.WORKFLOWID          = NEXT_STEP.WORKFLOW_ID
+               AND
+                    MST.NEXTWORKFLOWSTEP    = NEXT_STEP.WORKFLOW_STEP
+               AND
+                    NEXT_STEP.CHARGER_ROLE_ID IN
+        ]]>
+        <foreach collection="roleIdList" item="item" index="i" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <![CDATA[
+            ORDER BY 
+                    CAST(MST.workflowReqId AS INTEGER) DESC
+            LIMIT 
+                    0, 5
+        ]]>
+    </select>
+
+
+	<!-- 워크 플로우 요청 리스트 조회 -->
+	<select id="selectWorkflowReqList" parameterType="inje.portal.ptlmng.workflow.model.WorkflowReqVO" resultMap="workflowReqVO-result">
+        <![CDATA[
+		/* selectWorkflowReqList */ 
+		SELECT V.* FROM
+			(SELECT
+				@ROWNUM := @ROWNUM + 1 AS sno  
+				, REQ.WORKFLOW_REQ_ID
+				, REQ.WORKFLOW_ID
+				, REQ.REQ_YMD
+				, REQ.INSTT_ID
+				, REQ.REQ_USER_ID
+				, REQ.CUR_STATUS_CODE
+				, (SELECT CODE_NM
+					 FROM PTL_SYSTEM_CODE A
+					WHERE CODE_GROUP_ID = 'WF_STATUS_CODE'
+						AND CODE_ID = REQ.CUR_STATUS_CODE) AS CUR_STATUS_NM
+				, (SELECT STEP.WORKFLOW_STEP_ORDER 
+					 FROM   PTL_WORKFLOW_STEP STEP 
+					WHERE  STEP.WORKFLOW_ID = REQ.WORKFLOW_ID 
+						AND STEP.WORKFLOW_STEP = REQ.CUR_STATUS_CODE 
+						AND STEP.USE_YN = 'Y')             AS CUR_STATUS_ORDER
+				, REQ.CREATE_IP
+				, REQ.CREATE_ID
+				, DATE_FORMAT(REQ.CREATE_DATE, '%Y-%m-%d %H:%i:%s') AS CREATE_DATE
+				, REQ.UPDATE_IP
+				, REQ.UPDATE_ID
+				, REQ.UPDATE_DATE
+				, (
+					SELECT 
+						COUNT(HIST_IDX) 
+					 FROM 
+						PTL_RESOURCE_ITEM_HIST A
+					WHERE 
+							RESOURCE_REQ_ID = DETAIL2.REQ_CONTENTS
+						AND 
+							AUTH_FLAG != REQ.CUR_STATUS_CODE
+						AND 
+							NOT EXISTS (
+										SELECT 1 
+										 FROM 
+										 	PTL_RESOURCE_ITEM_HIST B 
+										WHERE 
+												A.RESOURCE_REQ_ID = B.RESOURCE_REQ_ID 
+											AND 
+												A.STD_SVC_CHARGE_ID = B.STD_SVC_CHARGE_ID 
+											AND 
+												A.AUTH_FLAG != B.AUTH_FLAG 
+											AND 
+												A.RESOURCE_ITEM_VALUE = B.RESOURCE_ITEM_VALUE
+									)
+				)        AS UPDATE_COUNT
+		 FROM PTL_WORKFLOW_REQ REQ
+			LEFT OUTER JOIN PTL_WORKFLOW_REQ_DETAIL DETAIL ON (DETAIL.WORKFLOW_REQ_ID = REQ.WORKFLOW_REQ_ID AND DETAIL.FIELD_ID = 'projectId')
+			LEFT OUTER JOIN PTL_WORKFLOW_REQ_DETAIL DETAIL2 ON (DETAIL2.WORKFLOW_REQ_ID = REQ.WORKFLOW_REQ_ID AND DETAIL2.FIELD_ID = 'PTL_RESOURCE_REQ_ID')
+		]]>
+		<if test="roleIdList.contains('ROLE_PLATFORM_OPERATOR')">
+			INNER JOIN PTL_WORKFLOW_REQ_DETAIL DETAIL3 ON (DETAIL3.WORKFLOW_REQ_ID = REQ.WORKFLOW_REQ_ID AND DETAIL3.FIELD_ID = 'opertorId' and DETAIL3.REQ_CONTENTS = #{sessionUserId})
+		</if>
+		<![CDATA[
+			, (SELECT @ROWNUM := 0) B
+		]]>
+		<choose>
+			<when test="workflowIdList != null and workflowIdList.contains('WF_PAD_ROLE_REQ')">
+				<where>
+					(
+					WORKFLOW_ID IN
+					<foreach collection="workflowIdList" item="item" index="i" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+					<!-- 
+					<if test="roleIdList.contains('ROLE_PLATFORM_ADMIN_CONE')">
+						REQ.WORKFLOW_ID = 'WF_PAD_ROLE_REQ'
+					</if>
+					<if test="roleIdList.contains('ROLE_TENANT_ADMIN')">
+						<if test="roleIdList.contains('ROLE_PLATFORM_ADMIN_CONE')">
+						OR
+						</if>					
+						(
+							REQ.WORKFLOW_ID = 'WF_PAD_ROLE_REQ_TENANT_ADMIN'
+							AND (
+								DETAIL.req_contents IS NULL
+								<if test="userProjectList != null and userProjectList.size() > 0">
+									OR DETAIL.REQ_CONTENTS IN 
+						        <foreach collection="userProjectList" item="item" open="(" close=")" separator=",">
+						       		#{item}
+						       	</foreach> 
+								</if>
+							)
+						)
+					</if>
+					<if test="roleIdList.contains('ROLE_PROJECT_ADMIN')">
+						<if test="roleIdList.contains('ROLE_PLATFORM_ADMIN_CONE') or roleIdList.contains('ROLE_TENANT_ADMIN')">
+						OR
+						</if>
+						(
+							REQ.WORKFLOW_ID = 'WF_PAD_ROLE_REQ_PROJECT_ADMIN'
+							AND DETAIL.REQ_CONTENTS IN (
+								SELECT project_id
+								FROM ptl_user_project_map
+								WHERE user_id = #{sessionUserId}
+								AND use_yn = 'Y'
+							)
+						)
+					</if>
+					 -->
+					)
+				</where>
+			</when>
+			<otherwise>
+         		WHERE REQ.WORKFLOW_ID = #{workflowId}
+			</otherwise>
+		</choose>
+		<if test="(apprvCmpnyUserId != null and apprvCmpnyUserId != '')">
+		   AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+											 FROM PTL_WORKFLOW_REQ_DETAIL
+						 					WHERE FIELD_ID = 'apprvCmpnyUserId'
+						 						AND REQ_CONTENTS = #{apprvCmpnyUserId})
+		</if>
+		<if test="(insttId != null and insttId != '') and (insttId != null and insttId != '')">
+			AND REQ.INSTT_ID = #{insttId}
+		</if>
+		<if test=" (workflowId != 'WF_QNA_REQ')  and (reqUserId != null and reqUserId != '') and (reqUserId != null and reqUserId != '')">
+			AND REQ.REQ_USER_ID = #{reqUserId}
+		</if>
+		<if test="(sReqDateFrom != null and sReqDateFrom != '') and (sReqDateTo != null and sReqDateTo != '')">
+			AND REQ.REQ_YMD BETWEEN STR_TO_DATE(#{sReqDateFrom}, '%Y-%m-%d %H%i%s') AND STR_TO_DATE(#{sReqDateTo}, '%Y-%m-%d %H%i%s')
+		</if>
+		<if test="(curStatusCode != null and curStatusCode != '') and (curStatusCode != null and curStatusCode != '')">
+			AND REQ.CUR_STATUS_CODE = #{curStatusCode}
+		</if>
+		<if test="(searchFieldId1 != null and searchFieldId1 != '') and (searchFieldValue1 != null and searchFieldValue1 != '')">
+			AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+ 														 FROM PTL_WORKFLOW_REQ_DETAIL
+ 														WHERE FIELD_ID = #{searchFieldId1}
+															AND REQ_CONTENTS LIKE CONCAT('%' , #{searchFieldValue1} , '%'))
+		</if>
+		<if test="(searchFieldId2 != null and searchFieldId2 != '') and (searchFieldValue2 != null and searchFieldValue2 != '')">
+			AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+														 FROM PTL_WORKFLOW_REQ_DETAIL
+														WHERE FIELD_ID = #{searchFieldId2}
+															AND REQ_CONTENTS LIKE CONCAT('%' , #{searchFieldValue2} , '%'))
+		</if>
+		<if test="(searchFieldId3 != null and searchFieldId3 != '') and (searchFieldValue3 != null and searchFieldValue3 != '')">
+			AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+														 FROM PTL_WORKFLOW_REQ_DETAIL
+														WHERE FIELD_ID = #{searchFieldId3}
+															AND REQ_CONTENTS LIKE CONCAT('%' , #{searchFieldValue3} , '%'))
+		</if>
+		<if test="(searchFieldId4 != null and searchFieldId4 != '') and (searchFieldValue4 != null and searchFieldValue4 != '')">
+			AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+														 FROM PTL_WORKFLOW_REQ_DETAIL
+														WHERE FIELD_ID = #{searchFieldId4}
+															AND REQ_CONTENTS LIKE CONCAT('%' , #{searchFieldValue4} , '%'))
+		</if>
+		<if test="(workflowId == 'WF_QNA_REQ') ">		  
+			AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+														 FROM PTL_WORKFLOW_REQ_DETAIL
+														WHERE FIELD_ID =  'openYn' /**P*/
+															AND ( REQ_CONTENTS  ='Y'
+										<if test=" (reqUserId != null and reqUserId != '') ">		  
+												  OR CREATE_ID = #{reqUserId} 
+										</if>
+										<if test="roleIdList != null"> /*관리자 답변을 위한 권한 체크 */
+												 OR (REQ_CONTENTS = 'N' 
+												 				AND  (SELECT COUNT(*) 
+																		 FROM 
+																				( SELECT charger_role_id
+																				  FROM PTL_WORKFLOW_STEP
+																				 WHERE workflow_id = 'WF_QNA_REQ' AND use_yn = 'Y'
+																				 ORDER BY workflow_step_order 
+																				 LIMIT 1, 10 ) AA
+																		WHERE charger_role_id IN 
+																				<foreach collection="roleIdList" item="item" index="i" open="(" separator="," close=")">
+																					#{item}
+																				</foreach>
+																		) > 0 
+													)
+										</if>
+										))
+		</if>
+		<if test="searchRoleIds != null and searchRoleIds.size() > 0">
+	    	AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+										FROM PTL_WORKFLOW_REQ_DETAIL
+										WHERE FIELD_ID = 'insttRoleId'
+		    	<foreach collection="searchRoleIds" item="roleId" separator="OR" open="AND (" close=")">
+				<![CDATA[		
+					REQ_CONTENTS LIKE CONCAT('%' , #{roleId} , '%')		
+				]]>	
+				</foreach>
+			)
+	    </if>
+		<![CDATA[
+		 ORDER BY REQ.CREATE_DATE, REQ.WORKFLOW_REQ_ID DESC
+			 )V
+     			ORDER BY V.SNO DESC
+		]]>
+		 LIMIT #{curItem}, #{itemPerPage}
+	</select>
+	
+	<!-- 워크 플로우 요청 리스트 조회 -->
+	<select id="selectWorkflowReqList2" parameterType="inje.portal.ptlmng.workflow.model.WorkflowReqVO" resultMap="workflowReqVO-result">
+           SELECT /*selectWorkflowReqList2*/ *
+             FROM (
+				SELECT A.*
+					, @ROWNUM := @ROWNUM + 1 AS sno
+					(SELECT COUNT(*) 
+						FROM PTL_WORKFLOW_REQ
+						WHERE WORKFLOW_ID = #{workflowId}
+					<if test="(insttId != null and insttId != '') and (insttId != null and insttId != '')">
+						AND INSTT_ID = #{insttId}
+					</if>
+					<if test="(reqUserId != null and reqUserId != '') and (reqUserId != null and reqUserId != '')">
+						AND REQ_USER_ID = #{reqUserId}
+					</if>
+					<if test="(sReqDateFrom != null and sReqDateFrom != '') and (sReqDateTo != null and sReqDateTo != '')">
+						AND REQ.REQ_YMD BETWEEN STR_TO_DATE(#{sReqDateFrom}, '%Y-%m-%d %H%i%s') AND STR_TO_DATE(#{sReqDateTo}, '%Y-%m-%d %H%i%s')
+					</if>
+					<if test="(curStatusCode != null and curStatusCode != '') and (curStatusCode != null and curStatusCode != '')">
+						AND REQ.CUR_STATUS_CODE = #{curStatusCode}
+					</if>
+					<if test="(searchFieldId1 != null and searchFieldId1 != '') and (searchFieldValue1 != null and searchFieldValue1 != '')">
+						AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+														FROM PTL_WORKFLOW_REQ_DETAIL
+													   WHERE FIELD_ID = #{searchFieldId1}
+														 AND REQ_CONTENTS LIKE CONCAT('%' , #{searchFieldValue1} , '%'))
+					</if>
+					<if test="(searchFieldId2 != null and searchFieldId2 != '') and (searchFieldValue2 != null and searchFieldValue2 != '')">
+						AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+														FROM PTL_WORKFLOW_REQ_DETAIL
+													   WHERE FIELD_ID = #{searchFieldId2}
+														 AND REQ_CONTENTS LIKE CONCAT('%' , #{searchFieldValue2} , '%'))
+					</if>
+					<if test="(searchFieldId3 != null and searchFieldId3 != '') and (searchFieldValue3 != null and searchFieldValue3 != '')">
+						  AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+														FROM PTL_WORKFLOW_REQ_DETAIL
+													   WHERE FIELD_ID = #{searchFieldId3}
+														 AND REQ_CONTENTS LIKE CONCAT('%' , #{searchFieldValue3} , '%'))
+					</if>
+					<if test="(searchFieldId4 != null and searchFieldId4 != '') and (searchFieldValue4 != null and searchFieldValue4 != '')">
+						AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+														FROM PTL_WORKFLOW_REQ_DETAIL
+													WHERE FIELD_ID = #{searchFieldId4}
+														AND REQ_CONTENTS LIKE CONCAT('%' , #{searchFieldValue4} , '%'))
+					</if>
+					) AS totCnt
+				 FROM (SELECT B.*
+						 FROM (SELECT WORKFLOW_REQ_ID
+									, WORKFLOW_ID
+									, REQ_YMD
+									, INSTT_ID
+									, REQ_USER_ID
+									, CUR_STATUS_CODE
+									, (SELECT CODE_NM
+										 FROM PTL_SYSTEM_CODE
+										WHERE CODE_GROUP_ID = 'WF_STATUS_CODE'
+										  AND CODE_ID = REQ.CUR_STATUS_CODE) AS CUR_STATUS_NM
+									,(SELECT STEP.WORKFLOW_STEP_ORDER 
+							         FROM   PTL_WORKFLOW_STEP STEP 
+							         WHERE  STEP.WORKFLOW_ID = REQ.WORKFLOW_ID 
+							                AND STEP.WORKFLOW_STEP = REQ.CUR_STATUS_CODE 
+							                AND STEP.USE_YN = 'Y')             AS CUR_STATUS_ORDER 
+									, CREATE_IP
+									, CREATE_ID
+									, CREATE_DATE
+									, UPDATE_IP
+									, UPDATE_ID
+									, UPDATE_DATE
+								 FROM PTL_WORKFLOW_REQ REQ A, (SELECT @ROWNUM := 0) BBB
+								WHERE WORKFLOW_ID = #{workflowId}
+								<if test="(insttId != null and insttId != '') and (insttId != null and insttId != '')">
+									AND INSTT_ID = #{insttId}
+								</if>
+								<if test="(reqUserId != null and reqUserId != '') and (reqUserId != null and reqUserId != '')">
+									AND REQ_USER_ID = #{reqUserId}
+								</if>
+								<if test="(sReqDateFrom != null and sReqDateFrom != '') and (sReqDateTo != null and sReqDateTo != '')">
+									AND REQ.REQ_YMD BETWEEN STR_TO_DATE(#{sReqDateFrom}, '%Y-%m-%d %H%i%s') AND STR_TO_DATE(#{sReqDateTo}, '%Y-%m-%d %H%i%s')
+								</if>
+								<if test="(curStatusCode != null and curStatusCode != '') and (curStatusCode != null and curStatusCode != '')">
+									AND REQ.CUR_STATUS_CODE = #{curStatusCode}
+								</if>
+								<if test="(searchFieldId1 != null and searchFieldId1 != '') and (searchFieldValue1 != null and searchFieldValue1 != '')">
+									AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+									 							    FROM PTL_WORKFLOW_REQ_DETAIL
+ 									 							   WHERE FIELD_ID = #{searchFieldId1}
+ 									 								 AND REQ_CONTENTS LIKE CONCAT('%' , #{searchFieldValue1} , '%'))
+								</if>                         
+								<if test="(searchFieldId2 != null and searchFieldId2 != '') and (searchFieldValue2 != null and searchFieldValue2 != '')">
+		                            AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+																    FROM PTL_WORKFLOW_REQ_DETAIL
+ 																   WHERE FIELD_ID = #{searchFieldId2}
+ 																	 AND REQ_CONTENTS LIKE CONCAT('%' , #{searchFieldValue2} , '%'))
+								</if>
+								<if test="(searchFieldId3 != null and searchFieldId3 != '') and (searchFieldValue3 != null and searchFieldValue3 != '')">
+		                              AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+																    FROM PTL_WORKFLOW_REQ_DETAIL
+ 																   WHERE FIELD_ID = #{searchFieldId3}
+																	 AND REQ_CONTENTS LIKE CONCAT('%' , #{searchFieldValue3} , '%'))
+								</if>
+								<if test="(searchFieldId4 != null and searchFieldId4 != '') and (searchFieldValue4 != null and searchFieldValue4 != '')">
+									  AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+																	FROM PTL_WORKFLOW_REQ_DETAIL
+																   WHERE FIELD_ID = #{searchFieldId4}
+																	 AND REQ_CONTENTS LIKE CONCAT('%' , #{searchFieldValue4} , '%'))
+								</if>
+		<![CDATA[
+                                    ORDER BY CREATE_DATE DESC
+									) B
+                            WHERE 1 = 1
+							) A 
+						)
+			WHERE sno BETWEEN ( CAST(#{curPage} AS INTEGER) - 1 ) * CAST(#{itemPerPage} AS INTEGER) + 1 AND CAST(#{curPage} AS INTEGER) * CAST(#{itemPerPage} AS INTEGER)
+        ]]>
+	</select>
+	
+	<!-- 워크 플로우 요청 개수 조회 -->
+	<select id="selectWorkflowReqListCnt" parameterType="inje.portal.ptlmng.workflow.model.WorkflowReqVO" resultType="int">
+		<![CDATA[
+		SELECT /*selectWorkflowReqListCnt*/ COUNT(*)
+		  FROM PTL_WORKFLOW_REQ REQ
+		  	LEFT OUTER JOIN PTL_WORKFLOW_REQ_DETAIL DETAIL ON (DETAIL.WORKFLOW_REQ_ID = REQ.WORKFLOW_REQ_ID AND DETAIL.FIELD_ID = 'projectId')
+		]]>
+		<if test="roleIdList.contains('ROLE_PLATFORM_OPERATOR')">
+			LEFT OUTER JOIN PTL_WORKFLOW_REQ_DETAIL DETAIL2 ON (DETAIL2.WORKFLOW_REQ_ID = REQ.WORKFLOW_REQ_ID AND DETAIL2.FIELD_ID = 'PTL_RESOURCE_REQ_ID')
+			INNER JOIN PTL_WORKFLOW_REQ_DETAIL DETAIL3 ON (DETAIL3.WORKFLOW_REQ_ID = REQ.WORKFLOW_REQ_ID AND DETAIL3.FIELD_ID = 'opertorId' and DETAIL3.REQ_CONTENTS = #{sessionUserId})
+		</if>
+		<choose>
+			<when test="workflowIdList != null and workflowIdList.contains('WF_PAD_ROLE_REQ')">
+				<where>
+					WORKFLOW_ID IN
+         			<foreach collection="workflowIdList" item="item" index="i" open="(" separator="," close=")">
+					 	#{item}
+					</foreach>
+					<!-- 
+					(
+					<if test="roleIdList.contains('ROLE_PLATFORM_ADMIN_CONE')">
+						REQ.WORKFLOW_ID = 'WF_PAD_ROLE_REQ'
+					</if>
+					<if test="roleIdList.contains('ROLE_TENANT_ADMIN')">
+						<if test="roleIdList.contains('ROLE_PLATFORM_ADMIN_CONE')">
+						OR
+						</if>					
+						(
+							REQ.WORKFLOW_ID = 'WF_PAD_ROLE_REQ_TENANT_ADMIN'
+							AND (
+								DETAIL.req_contents IS NULL
+								<if test="userProjectList != null and userProjectList.size() > 0">
+									OR DETAIL.REQ_CONTENTS IN 
+						        <foreach collection="userProjectList" item="item" open="(" close=")" separator=",">
+						       		#{item}
+						       	</foreach> 
+								</if>
+							)
+						)
+					</if>
+					<if test="roleIdList.contains('ROLE_PROJECT_ADMIN')">
+						<if test="roleIdList.contains('ROLE_PLATFORM_ADMIN_CONE') or roleIdList.contains('ROLE_TENANT_ADMIN')">
+						OR
+						</if>
+						(
+							REQ.WORKFLOW_ID = 'WF_PAD_ROLE_REQ_PROJECT_ADMIN'
+							AND DETAIL.REQ_CONTENTS IN (
+								SELECT project_id
+								FROM ptl_user_project_map
+								WHERE user_id = #{sessionUserId}
+								AND use_yn = 'Y'
+							)
+						)
+					</if>
+					)
+					 -->
+				</where>
+			</when>
+			<otherwise>
+         		WHERE REQ.WORKFLOW_ID = #{workflowId}
+			</otherwise>
+		</choose>
+		<if test="(insttId != null and insttId != '') and (insttId != null and insttId != '')">
+		   AND INSTT_ID = #{insttId}
+		</if>
+		<if test="(apprvCmpnyUserId != null and apprvCmpnyUserId != '')">
+		   AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+								         FROM PTL_WORKFLOW_REQ_DETAIL
+						 					WHERE FIELD_ID = 'apprvCmpnyUserId'
+						 					  AND REQ_CONTENTS = #{apprvCmpnyUserId})
+		</if>
+		<if test=" (workflowId != 'WF_QNA_REQ')  and (reqUserId != null and reqUserId != '') and (reqUserId != null and reqUserId != '')">
+                           AND REQ_USER_ID = #{reqUserId}
+		</if>
+		<if test="(sReqDateFrom != null and sReqDateFrom != '') and (sReqDateTo != null and sReqDateTo != '')">
+						   AND REQ.REQ_YMD BETWEEN STR_TO_DATE(#{sReqDateFrom}, '%Y-%m-%d %H%i%s') AND STR_TO_DATE(#{sReqDateTo}, '%Y-%m-%d %H%i%s')
+		</if>
+		<if test="(curStatusCode != null and curStatusCode != '') and (curStatusCode != null and curStatusCode != '')">
+						   AND REQ.CUR_STATUS_CODE = #{curStatusCode}
+		</if>
+		<if test="(searchFieldId1 != null and searchFieldId1 != '') and (searchFieldValue1 != null and searchFieldValue1 != '')">
+		                   AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+												         FROM PTL_WORKFLOW_REQ_DETAIL
+ 									 					WHERE FIELD_ID = #{searchFieldId1}
+ 									 					  AND REQ_CONTENTS LIKE CONCAT('%' , #{searchFieldValue1} , '%'))
+		</if>                         
+		<if test="(searchFieldId2 != null and searchFieldId2 != '') and (searchFieldValue2 != null and searchFieldValue2 != '')">
+		                   AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+														 FROM PTL_WORKFLOW_REQ_DETAIL
+ 														WHERE FIELD_ID = #{searchFieldId2}
+ 														  AND REQ_CONTENTS LIKE CONCAT('%' , #{searchFieldValue2} , '%'))
+		</if>
+		<if test="(searchFieldId3 != null and searchFieldId3 != '') and (searchFieldValue3 != null and searchFieldValue3 != '')">
+		                   AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+														 FROM PTL_WORKFLOW_REQ_DETAIL
+ 														WHERE FIELD_ID = #{searchFieldId3}
+														  AND REQ_CONTENTS LIKE CONCAT('%' , #{searchFieldValue3} , '%'))
+		</if>
+		<if test="(searchFieldId4 != null and searchFieldId4 != '') and (searchFieldValue4 != null and searchFieldValue4 != '')">
+		                   AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+														 FROM PTL_WORKFLOW_REQ_DETAIL
+ 														WHERE FIELD_ID = #{searchFieldId4}
+														  AND REQ_CONTENTS LIKE CONCAT('%' , #{searchFieldValue4} , '%'))
+		</if>
+		<if test="(workflowId == 'WF_QNA_REQ') ">		  
+			   AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+ 										 FROM PTL_WORKFLOW_REQ_DETAIL
+ 								        WHERE FIELD_ID =  'openYn' /**P*/
+										  AND ( REQ_CONTENTS  ='Y'
+										  <if test=" (reqUserId != null and reqUserId != '') ">		  
+										   		  OR CREATE_ID = #{reqUserId}
+										  </if>
+										  ))
+		                  
+		</if>
+		<if test="searchRoleIds != null and searchRoleIds.size() > 0">
+	    	AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+										FROM PTL_WORKFLOW_REQ_DETAIL
+										WHERE FIELD_ID = 'insttRoleId'
+		    	<foreach collection="searchRoleIds" item="roleId" separator="OR" open="AND (" close=")">
+				<![CDATA[		
+					REQ_CONTENTS LIKE CONCAT('%' , #{roleId} , '%')		
+				]]>	
+				</foreach>
+			)
+	    </if>   
+	</select>
+	
+	<!-- 워크 플로우 요청 조회 -->
+	<select id="selectWorkflowReq" parameterType="inje.portal.ptlmng.workflow.model.WorkflowReqVO" resultMap="workflowReqVO-result">
+		<![CDATA[
+		/* selectWorkflowReq */ 
+		SELECT WORKFLOW_REQ_ID 
+		       ,WORKFLOW_ID 
+		       ,REQ_YMD 
+		       ,INSTT_ID 
+		       ,REQ_USER_ID 
+		       ,CUR_STATUS_CODE 
+		       ,(SELECT CODE_NM 
+		         FROM   PTL_SYSTEM_CODE 
+		         WHERE  CODE_GROUP_ID = 'WF_STATUS_CODE' 
+		                AND CODE_ID = REQ.CUR_STATUS_CODE) AS CUR_STATUS_NM 
+		       ,(SELECT STEP.WORKFLOW_STEP_ORDER 
+		         FROM   PTL_WORKFLOW_STEP STEP 
+		         WHERE  STEP.WORKFLOW_ID = REQ.WORKFLOW_ID 
+		                AND STEP.WORKFLOW_STEP = REQ.CUR_STATUS_CODE 
+		                AND STEP.USE_YN = 'Y')             AS CUR_STATUS_ORDER 
+		       ,USE_YN 
+		       ,CREATE_IP 
+		       ,CREATE_ID 
+		       ,CREATE_DATE 
+		       ,UPDATE_IP 
+		       ,UPDATE_ID 
+		       ,UPDATE_DATE 
+		FROM   PTL_WORKFLOW_REQ REQ 
+		]]>
+		<if test="workflowReqId != null and workflowReqId != ''">
+         WHERE WORKFLOW_REQ_ID = #{workflowReqId}
+        </if>
+        <if test="workflowReqId == null or workflowReqId == ''">
+         ORDER BY CREATE_DATE DESC
+        </if>
+        limit 1
+	</select>
+	
+	<!-- 최근 워크 플로우 요청 조회 -->
+	<select id="selectLatestWorkflowReq" parameterType="inje.portal.ptlmng.workflow.model.WorkflowReqVO" resultMap="workflowReqVO-result">
+		<![CDATA[
+		SELECT /*selectLatestWorkflowReq*/ REQ.WORKFLOW_REQ_ID
+             , REQ.WORKFLOW_ID
+             , REQ.REQ_YMD
+             , REQ.INSTT_ID
+             , REQ.REQ_USER_ID
+             , REQ.CUR_STATUS_CODE
+             , (SELECT CODE_NM
+                  FROM PTL_SYSTEM_CODE
+                 WHERE CODE_GROUP_ID = 'WF_STATUS_CODE'
+                   AND CODE_ID = REQ.CUR_STATUS_CODE) AS CUR_STATUS_NM
+             ,(SELECT STEP.WORKFLOW_STEP_ORDER 
+		         FROM   PTL_WORKFLOW_STEP STEP 
+		         WHERE  STEP.WORKFLOW_ID = REQ.WORKFLOW_ID 
+		                AND STEP.WORKFLOW_STEP = REQ.CUR_STATUS_CODE 
+		                AND STEP.USE_YN = 'Y')             AS CUR_STATUS_ORDER 
+             , REQ.USE_YN
+             , REQ.CREATE_IP
+             , REQ.CREATE_ID
+             , REQ.CREATE_DATE
+             , REQ.UPDATE_IP
+             , REQ.UPDATE_ID
+             , REQ.UPDATE_DATE
+             , DETAIL.REQ_CONTENTS PROJECT_NM
+          FROM PTL_WORKFLOW_REQ REQ
+          LEFT JOIN PTL_WORKFLOW_REQ_DETAIL DETAIL ON (REQ.WORKFLOW_REQ_ID = DETAIL.WORKFLOW_REQ_ID AND DETAIL.FIELD_ID = 'projectNm')
+		]]>
+
+		<choose>
+			<when test="workflowId == 'WF_PAD_ROLE_REQ'">
+				WHERE REQ.WORKFLOW_ID IN ('WF_PAD_ROLE_REQ', 'WF_PAD_ROLE_REQ_PROJECT_ADMIN', 'WF_PAD_ROLE_REQ_TENANT_ADMIN')
+			</when>
+			<otherwise>
+				WHERE REQ.WORKFLOW_ID = #{workflowId}
+			</otherwise>
+		</choose>
+           AND REQ_USER_ID = #{reqUserId}
+         ORDER BY CREATE_DATE DESC
+         limit 1
+	</select>
+	
+	<!-- 워크 플로우 요청 상세 조회 -->
+	<select id="selectWorkflowReqDetail" parameterType="inje.portal.ptlmng.workflow.model.WorkflowReqVO" resultMap="workflowReqDetailVO-result">
+		<![CDATA[
+		SELECT /*selectWorkflowReqDetail*/ WORKFLOW_REQ_ID
+             , WORKFLOW_REQ_DETAIL_ID
+             , FIELD_ID
+             , FIELD_NM
+             , FIELD_VALUE_TYPE_CODE
+             , REGIST_SNO
+             , REQ_CONTENTS
+             , USE_YN
+             , CREATE_IP
+             , CREATE_ID
+             , CREATE_DATE
+             , UPDATE_IP
+             , UPDATE_ID
+             , UPDATE_DATE
+          FROM PTL_WORKFLOW_REQ_DETAIL
+         WHERE WORKFLOW_REQ_ID = #{workflowReqId}
+         ORDER BY WORKFLOW_REQ_DETAIL_ID, REGIST_SNO ASC
+		]]>
+	</select>
+	
+	<!-- 워크 플로우 요청 상태 조회 : 관리자 기능에서의 charger 는 요청자임. -->
+	<select id="selectWorkflowReqProgress" parameterType="inje.portal.ptlmng.workflow.model.WorkflowReqVO" resultMap="workflowReqProgressVO-result">
+		<![CDATA[
+         SELECT /*selectWorkflowReqProgress*/ REQ.WORKFLOW_REQ_ID
+             , REGIST_SNO
+             , STATUS_CODE
+             , (SELECT CODE_NM
+                  FROM PTL_SYSTEM_CODE
+                 WHERE CODE_GROUP_ID = 'WF_STATUS_CODE'
+                   AND CODE_ID = PRG.STATUS_CODE) AS STATUS_CODE_NM
+             , CHARGER
+             , USR.DEPT_NM AS CHARGER_DEPT_NM
+             , IFNULL(USR.USER_NM, QNA_REQ_D.reqName) AS CHARGER_NAME
+             , IFNULL(USR.OFFICE_NUMBER,QNA_REQ_D.reqContact) AS CHARGER_OFFICE_NO
+             , IFNULL(USR.email,QNA_REQ_D.reqEmail) AS CHARGER_EMAIL2
+             , REQ_CONTENTS
+             , DATE_FORMAT(PRG.CREATE_DATE, '%Y-%m-%d')STATUS_YMD
+             , PRG.USE_YN
+             , PRG.CREATE_ID
+             , ( SELECT USER_NM FROM PTL_IDM_USER WHERE USER_ID = PRG.CREATE_ID AND USE_YN = 'Y' ) CREATE_NM
+             , PRG.CREATE_DATE
+             , PRG.UPDATE_ID
+             , PRG.UPDATE_DATE
+          FROM PTL_WORKFLOW_REQ_PROGRESS PRG
+				INNER JOIN PTL_WORKFLOW_REQ REQ ON REQ.WORKFLOW_REQ_ID = PRG.WORKFLOW_REQ_ID
+			  	LEFT OUTER JOIN PTL_IDM_USER USR ON USR.UNITY_ID = REQ.REQ_USER_ID AND USR.CONFM_TYPE_CODE = 'Y'
+			  	LEFT OUTER JOIN (SELECT t2.workflow_req_id,  #QnA Anonymous 일경우 요청자 연락처 정보 표기
+							 max(CASE WHEN field_id = 'reqName' THEN req_contents end) AS reqName , 
+							 max(CASE WHEN field_id = 'contact' THEN req_contents end) AS reqContact , 
+							 max(CASE WHEN field_id = 'email' THEN req_contents end) AS reqEmail 
+							 FROM PTL_WORKFLOW_REQ_DETAIL t1 , PTL_WORKFLOW_REQ t2
+							 WHERE t1.workflow_req_id = t2.workflow_req_id
+							    AND t2.workflow_id = 'WF_QNA_REQ'
+							    AND t2.workflow_req_id = #{workflowReqId} AND field_id IN ( 'reqName', 'contact', 'email')
+							    AND t1.use_yn = 'Y'
+							 GROUP BY t2.workflow_req_id) QNA_REQ_D ON QNA_REQ_D.WORKFLOW_REQ_ID = REQ.WORKFLOW_REQ_ID
+         WHERE REQ.WORKFLOW_REQ_ID = #{workflowReqId}
+           AND PRG.USE_YN = 'Y'
+         ORDER BY REGIST_SNO DESC
+		]]>
+	</select>
+	
+	
+	<!-- 워크 플로우 요청 상태 조회 : 관리자 기능에서의 charger 는 요청자임. -->
+	<select id="selectWorkflowReqProgressWithAnswerer" parameterType="inje.portal.ptlmng.workflow.model.WorkflowReqVO" resultMap="workflowReqProgressVO-result">
+		<![CDATA[
+		SELECT /*selectWorkflowReqProgressWithAnswerer*/ WORKFLOW_REQ_ID
+             , REGIST_SNO
+             , STATUS_CODE
+             , (SELECT CODE_NM
+                  FROM PTL_SYSTEM_CODE
+                 WHERE CODE_GROUP_ID = 'WF_STATUS_CODE'
+                   AND CODE_ID = PRG.STATUS_CODE) AS STATUS_CODE_NM
+             , CHARGER
+             , USR.DEPT_NM AS CHARGER_DEPT_NM
+             , USR.USER_NM AS CHARGER_NAME
+             , USR.OFFICE_NUMBER AS CHARGER_OFFICE_NO
+             , REQ_CONTENTS
+             , DATE_FORMAT(PRG.CREATE_DATE, '%Y-%m-%d')STATUS_YMD
+             , PRG.USE_YN
+             , PRG.CREATE_ID
+             , ( SELECT USER_NM FROM PTL_IDM_USER WHERE USER_ID = PRG.CREATE_ID AND USE_YN = 'Y' ) CREATE_NM
+             , PRG.CREATE_DATE
+             , PRG.UPDATE_ID
+             , PRG.UPDATE_DATE
+          FROM PTL_WORKFLOW_REQ_PROGRESS PRG, PTL_IDM_USER USR
+         WHERE WORKFLOW_REQ_ID = #{workflowReqId}
+           AND PRG.USE_YN = 'Y'
+           AND USR.UNITY_ID = PRG.CHARGER
+           AND USR.CONFM_TYPE_CODE = 'Y'
+         ORDER BY REGIST_SNO DESC
+		]]>
+	</select>
+	
+	<!-- 워크 플로우 요청 등록 -->
+	<insert id="insertWorkFlowReq" parameterType="inje.portal.ptlmng.workflow.model.WorkflowReqVO">
+		<selectKey resultType="string" keyProperty="workflowReqId" order="BEFORE">
+			SELECT IFNULL(MAX(CAST(WORKFLOW_REQ_ID AS INTEGER)), 0) + 1 FROM PTL_WORKFLOW_REQ
+		</selectKey>
+		<![CDATA[
+		/*insertWorkFlowReq*/ INSERT INTO PTL_WORKFLOW_REQ (
+		    WORKFLOW_REQ_ID
+		  , WORKFLOW_ID
+		  , REQ_YMD
+		  , INSTT_ID
+		  , REQ_USER_ID
+		  , CUR_STATUS_CODE
+		  , CREATE_ID
+		  , CREATE_DATE
+		) VALUES (
+		    #{workflowReqId}
+		  , #{workflowId}
+		  , now()
+		  , #{insttId}
+		  , #{reqUserId}
+		  , #{curStatusCode}
+		  , #{reqUserId}
+		  , now()
+		)
+		]]>
+	</insert>
+
+
+    <!-- 워크 플로우 요청 상세 등록 -->
+    <insert id="insertWorkFlowReqDetail" parameterType="inje.portal.ptlmng.workflow.model.WorkflowReqDetailVO">
+        <![CDATA[
+            INSERT INTO
+                    /*insertWorkFlowReqDetail*/ 
+                    PTL_WORKFLOW_REQ_DETAIL 
+                    (
+                            WORKFLOW_REQ_ID
+                            , WORKFLOW_REQ_DETAIL_ID
+                            , FIELD_ID
+                            , FIELD_NM
+                            , FIELD_VALUE_TYPE_CODE
+                            , REGIST_SNO
+                            , REQ_CONTENTS
+                            , CREATE_ID
+                            , CREATE_DATE
+                    ) 
+                    VALUES 
+                    (
+                            #{workflowReqId}
+                            , (
+									SELECT
+										CAST(
+											IFNULL(
+												(
+													SELECT MAX(CAST(IFNULL(WORKFLOW_REQ_DETAIL_ID, '0') AS INTEGER) )
+													FROM PTL_WORKFLOW_REQ_DETAIL A
+												), '0') AS INTEGER
+										) +1
+									FROM DUAL
+                            )
+                            , #{fieldId}
+                            , #{fieldNm}
+                            , #{fieldValueType}
+                            , #{registSno}
+                            , #{reqContents}
+                            , #{createId}
+                            , now()
+                    )
+        ]]>
+    </insert>
+    
+    <!-- 워크 플로우 요청 상세 수정 -->
+    <update id="updateWorkFlowReqDetail" parameterType="inje.portal.ptlmng.workflow.model.WorkflowReqDetailVO">
+        <![CDATA[
+            /*updateWorkFlowReqDetail*/ 
+            UPDATE
+                    PTL_WORKFLOW_REQ_DETAIL
+             SET
+                REQ_CONTENTS = #{reqContents}
+                , UPDATE_ID = #{updateId}
+                , UPDATE_DATE = now()
+            WHERE
+                    WORKFLOW_REQ_ID = #{workflowReqId}
+                AND
+                    FIELD_ID = #{fieldId}
+        ]]>
+    </update>
+
+
+	<!-- 워크 플로우 요청 진행상황 등록 (CONE 포탈) -->
+	<insert id="insertWorkFlowReqProgress" parameterType="inje.portal.ptlmng.workflow.model.WorkflowReqProgressVO">
+		/*insertWorkFlowReqProgress*/ INSERT INTO PTL_WORKFLOW_REQ_PROGRESS (
+		    WORKFLOW_REQ_ID
+		  , REGIST_SNO
+		  , STATUS_CODE
+		  , CHARGER
+		  , REQ_CONTENTS
+		  , USE_YN
+		  , CREATE_ID
+		  <if test="createIp != null and createIp != ''" >
+		  , CREATE_IP
+		  </if>
+		  , CREATE_DATE
+		) VALUES (
+		    #{workflowReqId}
+		  , (SELECT IFNULL(MAX(REGIST_SNO), 0) + 1
+               FROM PTL_WORKFLOW_REQ_PROGRESS A
+              WHERE workflow_req_id = #{workflowReqId})
+		  , #{statusCode}
+		  , #{charger}
+		  , #{reqContents}
+		  , #{useYn}
+		  , #{createId}
+		  <if test="createIp != null and createIp != ''" >
+		  , #{createIp}
+		  </if>
+		  , now()
+		)
+	</insert>
+	
+	
+	
+	<!-- 로그인 화면 회원가입 요청 상태 조회 -->
+	<select id="selectReqResult" parameterType="inje.portal.userptl.user.model.UserVO" resultMap="workflowReqProgressVO-result">
+		<![CDATA[
+		SELECT /*selectReqResult*/
+			WORKFLOW_REQ_ID
+            , STATUS_CODE
+            , REQ_CONTENTS
+            , (SELECT CODE_NM
+                 	FROM PTL_SYSTEM_CODE
+                 	WHERE CODE_GROUP_ID = 'WF_STATUS_CODE'
+                   		AND CODE_ID = REQ.STATUS_CODE) AS STATUS_CODE_NM
+        FROM PTL_WORKFLOW_REQ_PROGRESS REQ
+        WHERE 1 = 1
+        ]]>
+       <if test="userNm != null and userNm != ''" >
+         		AND REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+ 										 FROM PTL_WORKFLOW_REQ_DETAIL
+ 								        WHERE FIELD_ID = 'user_name'
+										  AND REQ_CONTENTS  = #{userNm}  ) 
+		</if>		
+		<if test="userId != null and userId != ''" >								  
+		 		AND  REQ.WORKFLOW_REQ_ID IN (SELECT WORKFLOW_REQ_ID
+ 										 FROM PTL_WORKFLOW_REQ_DETAIL
+ 								        WHERE FIELD_ID = 'user_id'
+										  AND REQ_CONTENTS  = #{userId}  ) 								  
+		</if>
+		
+		ORDER BY REGIST_SNO DESC				  											  							  
+		LIMIT 1		
+	</select>
+	
+	<!-- 요청자 정보  reqUserId으로 ACCOUNT_ID 조회 -->
+	<select id="selectReqUserInfo" parameterType="String" resultType="String">
+		SELECT /*selectReqUserInfo*/ ACCOUNT_ID
+		FROM PTL_IDM_USER
+		WHERE unity_id = #{reqUserId}
+		AND confm_type_code = 'Y'
+	</select>
+	
+	<!-- 최신 워크 플로우 요청 아이디 조회 -->
+	<select id="selectMaxWorkflowReqIdByReqUserId" parameterType="hashMap" resultType="String" >
+        <![CDATA[
+			/* selectMaxWorkflowReqIdByReqUserId */ 
+			SELECT MAX(WORKFLOW_REQ_ID) AS WORKFLOW_REQ_ID
+			FROM PTL_WORKFLOW_REQ
+			WHERE REQ_USER_ID = #{reqUserId}
+			AND WORKFLOW_ID = #{workflowId}
+			AND USE_YN = 'Y'
+		]]>
+	</select>
+</mapper>

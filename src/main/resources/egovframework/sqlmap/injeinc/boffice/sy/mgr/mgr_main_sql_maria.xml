@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Mon Mar 09 17:56:31 KST 2020-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MgrMainDao">
+
+	<resultMap id="MgrMainMinwonMap" type="egovframework.injeinc.boffice.sy.mgr.vo.MgrMainVo">
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="subCont" column="SUB_CONT"/>
+		<result property="nameCont" column="NAME_CONT"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="mwStatusCont" column="MW_STATUS_CONT"/>
+	</resultMap>
+	
+	<resultMap id="MgrMainBoardMap" type="egovframework.injeinc.boffice.sy.mgr.vo.MgrMainVo">
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="bcIdx" column="BC_IDX"/>
+		<result property="cbName" column="CB_NAME"/>
+		<result property="subCont" column="SUB_CONT"/>
+		<result property="nameCont" column="NAME_CONT"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="countCont" column="COUNT_CONT"/>
+	</resultMap>
+	
+	<resultMap id="MgrMainCommExpandMap" type="egovframework.injeinc.boffice.sy.mgr.vo.MgrMainVo">
+		<result property="riIdx" column="RI_IDX"/>
+		<result property="riTitle" column="RI_TITLE"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="riConfirmYn" column="RI_CONFIRM_YN"/>
+	</resultMap>
+	
+	<resultMap id="MgrMainCommLectureMap" type="egovframework.injeinc.boffice.sy.mgr.vo.MgrMainVo">
+		<result property="clIdx" column="CL_IDX"/>
+		<result property="clName" column="CL_NAME"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="lcApprovalYn" column="LC_APPROVAL_YN"/>
+		<result property="lcGb" column="LC_GB"/>
+	</resultMap>
+	
+	<!-- 민원 목록 -->
+	<select id="selectMgrMainMinwonList" parameterType="MgrMainVo" resultMap="MgrMainMinwonMap">
+		<![CDATA[	
+			SELECT
+				 A.CB_IDX
+				 , A.BC_IDX 
+				 , A.SUB_CONT
+			     , A.NAME_CONT
+			     , DATE_FORMAT(A.REG_DT, '%Y.%m.%d') AS REG_DT
+			     , CASE WHEN ANS_YN_CONT = '22000200' THEN '답변없음' 
+						              WHEN 0 < (
+						                  SELECT COUNT(MC_IDX) 
+						                    FROM EZ_CONTENT_MINWON_RESULT CMR
+						                   WHERE CMR.CB_IDX = A.CB_IDX
+						                     AND CMR.BC_IDX = A.BC_IDX
+						                     AND CMR.AUDIT_YN IN ('27000100','27000200','27000300')
+						                ) THEN '답변완료'					
+						      WHEN 1 = (
+						                  SELECT COUNT(MC_IDX) 
+						                    FROM EZ_CONTENT_MINWON_RESULT CMR
+						                   WHERE CMR.CB_IDX = A.CB_IDX
+						                     AND CMR.BC_IDX = A.BC_IDX
+						                )
+						       AND 
+						       		1 = (
+						                  SELECT COUNT(MC_IDX) 
+						                    FROM EZ_CONTENT_MINWON_RESULT CMR
+						                   WHERE CMR.CB_IDX = A.CB_IDX
+						                     AND CMR.BC_IDX = A.BC_IDX
+						                     AND CMR.TEMP_YN = 'Y'
+						                ) THEN '답변완료'					
+						
+						      WHEN 0 < (
+						                  SELECT COUNT(MC_IDX) 
+						                    FROM EZ_CONTENT_MINWON_RESULT CMR
+						                   WHERE CMR.CB_IDX = A.CB_IDX
+						                     AND CMR.BC_IDX = A.BC_IDX
+						                ) 
+						      AND
+						            	(
+						                  SELECT COUNT(MC_IDX) 
+						                    FROM EZ_CONTENT_MINWON_RESULT CMR
+						                   WHERE CMR.CB_IDX = A.CB_IDX
+						                     AND CMR.BC_IDX = A.BC_IDX
+						                ) = (
+						                  SELECT COUNT(MC_IDX) 
+						                    FROM EZ_CONTENT_MINWON_RESULT CMR
+						                   WHERE CMR.CB_IDX = A.CB_IDX
+						                     AND CMR.BC_IDX = A.BC_IDX
+						                     AND (CMR.TEMP_YN = 'Y')
+						                ) THEN '부서답변'					
+						      WHEN 0 < (
+						                  SELECT COUNT(MC_IDX) 
+						                    FROM EZ_CONTENT_MINWON_RESULT CMR
+						                   WHERE CMR.CB_IDX = A.CB_IDX
+						                     AND CMR.BC_IDX = A.BC_IDX
+						                     AND CMR.TEMP_YN = 'N'
+						                ) THEN '중간답변'					
+						       WHEN 0 < (
+						                  SELECT COUNT(MC_IDX) 
+						                    FROM EZ_CONTENT_MINWON_RESULT CMR
+						                   WHERE CMR.CB_IDX = A.CB_IDX
+						                     AND CMR.BC_IDX = A.BC_IDX
+										) THEN '처리중'					
+							  WHEN 0 >= (
+						                  SELECT COUNT(MC_IDX) 
+						                    FROM EZ_CONTENT_MINWON_RESULT CMR
+						                   WHERE CMR.CB_IDX = A.CB_IDX
+						                     AND CMR.BC_IDX = A.BC_IDX
+										) THEN '접수중'					 
+						  END AS MW_STATUS_CONT
+		
+			  FROM
+			      (
+			      	SELECT *
+			          FROM EZ_BBS_CONTENT A
+			         WHERE CB_IDX = '414'
+			           AND BC_DEL_YN = 'N' 
+			           AND EXISTS
+	                                  (
+	                                      SELECT 'X'
+	                                        FROM EZ_CONTENT_MINWON_RESULT CMR
+	                                       WHERE CMR.CB_IDX = A.CB_IDX
+	                                         AND CMR.BC_IDX = A.BC_IDX
+	                                         ]]>
+	                                         <if test="mcDeptCd != null and mcDeptCd != ''">
+	                                         	<![CDATA[	 AND CMR.MC_DEPT_CD = #{mcDeptCd} ]]>
+	                                         </if>
+	                                         <![CDATA[	
+	                                  )
+			        ]]>
+					<if test="scRegDtSt != null and scRegDtSt != ''">
+							<![CDATA[	AND REG_DT BETWEEN TO_DATE(#{scRegDtSt}, 'YYYY-MM-DD') AND TO_DATE(#{scRegDtEd}, 'YYYY-MM-DD') + 1 ]]>
+					</if>
+			<![CDATA[	
+			         ORDER BY REG_DT DESC  
+			      ) A
+			 LIMIT 0,5
+		]]>
+	</select>
+	<!-- 민원 목록 총갯수 -->
+	<select id="selectMgrMainMinwonCount" parameterType="MgrMainVo" resultType="int">
+		<![CDATA[	
+      	SELECT COUNT(*)
+        FROM EZ_BBS_CONTENT A
+        WHERE CB_IDX = '414'
+        AND BC_DEL_YN = 'N'
+         AND EXISTS
+	                                  (
+	                                      SELECT 'X'
+	                                        FROM EZ_CONTENT_MINWON_RESULT CMR
+	                                       WHERE CMR.CB_IDX = A.CB_IDX
+	                                         AND CMR.BC_IDX = A.BC_IDX
+	    ]]>
+	                                         <if test="mcDeptCd != null and mcDeptCd != ''">
+	                                         	AND CMR.MC_DEPT_CD = #{mcDeptCd}
+	                                         </if>
+		<![CDATA[	
+	                                  )
+        ]]>
+		<if test="scRegDtSt != null and scRegDtSt != ''">
+			<![CDATA[	
+				AND REG_DT BETWEEN TO_DATE(#{scRegDtSt}, 'YYYY-MM-DD') AND TO_DATE(#{scRegDtEd}, 'YYYY-MM-DD') + 1
+			]]>
+		</if>
+	</select>
+	
+	<!-- 게시판 목록 -->
+	<select id="selectMgrMainBoardList" parameterType="MgrMainVo" resultMap="MgrMainBoardMap">
+		<![CDATA[	
+		SELECT *
+		  FROM
+	  		 (
+				SELECT A.CB_IDX
+				     , A.BC_IDX
+				     , B.CB_NAME
+				     , A.SUB_CONT
+				     , A.NAME_CONT
+				     , DATE_FORMAT(A.REG_DT, '%Y.%m.%d') AS REG_DT
+				     , A.COUNT_CONT 
+				  FROM EZ_BBS_CONTENT A
+				     , EZ_CMS_BBS B
+				     , EZ_BBS_CONFIG C
+				 WHERE A.CB_IDX = B.CB_IDX
+				   AND B.CB_IDX = C.CB_IDX
+				   AND A.BC_DEL_YN = 'N'
+				   AND C.BBS_TEMPLET_GBN IN('16050100','16050200','16050300','16050400','16050500','16050600')
+				   AND B.USE_YN = 'Y'
+				]]>
+				<if test="scRegDtSt != null and scRegDtSt != ''">
+					<![CDATA[	
+						AND A.REG_DT BETWEEN DATE_FORMAT(#{scRegDtSt}, '%Y-%m-%d') AND DATE_ADD(DATE_FORMAT(#{scRegDtEd}, '%Y-%m-%d'),INTERVAL 1 DAY)
+					]]>
+				</if>
+				<![CDATA[	
+		         ORDER BY REG_DT DESC
+        		LIMIT 0,5
+	         )A
+         ]]>
+	</select>
+	<!-- 게시판 목록 총갯수 -->
+	<select id="selectMgrMainBoardCount" parameterType="MgrMainVo" resultType="int">
+		<![CDATA[	
+		SELECT COUNT(*)
+		  FROM EZ_BBS_CONTENT A
+		     , EZ_CMS_BBS B
+		     , EZ_BBS_CONFIG C
+		 WHERE A.CB_IDX = B.CB_IDX
+		   AND B.CB_IDX = C.CB_IDX
+		   AND A.BC_DEL_YN = 'N'
+		   AND C.BBS_TEMPLET_GBN IN('16050100','16050200','16050300','16050400','16050500','16050600')
+		   AND B.USE_YN = 'Y'
+		]]>
+		<if test="scRegDtSt != null and scRegDtSt != ''">
+			<![CDATA[	
+				AND A.REG_DT BETWEEN STR_TO_DATE(#{scRegDtSt}, '%Y-%m-%d') AND DATE_ADD(DATE_FORMAT(#{scRegDtEd}, '%Y-%m-%d'),INTERVAL 1 DAY)
+			]]>
+		</if>
+	</select>
+	
+	<!-- 통합예약 홍보 요청 > 시설홍보 -->
+	<select id="selectMgrMainCommExpandList" parameterType="MgrMainVo" resultMap="MgrMainCommExpandMap">
+	<![CDATA[		
+		SELECT *
+		  FROM
+	  		 (
+	  		SELECT RI_IDX
+			     , RI_TITLE
+			     , (SELECT CU_NAME FROM EZ_CMS_USER WHERE CU_ID = A.REG_ID) AS REG_ID 
+			     , DATE_FORMAT(REG_DT, '%Y.%m.%d') AS REG_DT
+			     , RI_CONFIRM_YN
+			FROM EZ_RESERVATION_INDEX A
+			WHERE RI_TYPE = 'F'
+			  AND USE_YN = 'Y'
+			  AND USER_REG = 'Y'
+		  	]]>
+			<if test="scRegDtSt != null and scRegDtSt != ''">
+				<![CDATA[	
+					AND REG_DT BETWEEN STR_TO_DATE(#{scRegDtSt}, '%Y-%m-%d') AND STR_TO_DATE(CONCAT(#{scRegDtEd},'235900'), '%Y-%m-%D%H%i%s')
+				]]>
+			</if>
+			<![CDATA[	
+			ORDER BY REG_DT DESC
+			LIMIT 0,5
+	  		 )A
+	  	 ]]>
+	</select>
+	
+	<!-- 통합예약 홍보 요청 > 행사홍보 -->
+	<select id="selectMgrMainCommEventList" parameterType="MgrMainVo" resultMap="MgrMainCommExpandMap">
+		<![CDATA[	
+		SELECT *
+		  FROM
+	  		 (
+		  		SELECT RI_IDX
+				     , RI_TITLE
+				     , (SELECT CU_NAME FROM EZ_CMS_USER  WHERE CU_ID = A.REG_ID) AS REG_ID
+				     , DATE_FORMAT(REG_DT, '%Y.%m.%d') AS REG_DT
+				     , RI_CONFIRM_YN
+				FROM EZ_RESERVATION_INDEX A
+				WHERE RI_TYPE = 'E'
+				  AND USE_YN = 'Y'
+				  AND USER_REG = 'Y'
+			]]>
+			<if test="scRegDtSt != null and scRegDtSt != ''">
+				<![CDATA[	
+					AND REG_DT BETWEEN STR_TO_DATE(#{scRegDtSt}, '%Y-%m-%d') AND STR_TO_DATE(CONCAT(#{scRegDtEd},'235900'), '%Y-%m-%D%H%i%s')
+				]]>
+			</if>
+			<![CDATA[	
+				ORDER BY REG_DT DESC
+				LIMIT 0,5
+	  		 )A
+	  	 ]]>
+	</select>
+	
+	<select id="selectMgrMainCommCount" parameterType="MgrMainVo" resultType="int">
+		<![CDATA[
+		/* "selectMgrMainCommCount */
+			
+		SELECT SUM(NUM) 
+		FROM(
+	  		SELECT COUNT(*) AS NUM
+			FROM EZ_RESERVATION_INDEX A
+			WHERE RI_TYPE = 'F'
+			  AND USE_YN = 'Y'
+	  	]]>
+			  <!-- AND USER_REG = 'Y' -->
+		<if test="scRegDtSt != null and scRegDtSt != ''">
+			<![CDATA[
+				AND REG_DT BETWEEN STR_TO_DATE(#{scRegDtSt}, '%Y-%m-%d') AND STR_TO_DATE(CONCAT(#{scRegDtEd},'235900'), '%Y-%m-%D%H%i%s')
+			]]>
+		</if>
+		<![CDATA[
+		UNION ALL
+	  		SELECT COUNT(*) AS NUM
+			FROM EZ_RESERVATION_INDEX A
+			WHERE RI_TYPE = 'E'
+			  AND USE_YN = 'Y'
+		]]>
+			  <!-- AND USER_REG = 'Y' -->
+		<if test="scRegDtSt != null and scRegDtSt != ''">
+			<![CDATA[
+				AND REG_DT BETWEEN STR_TO_DATE(#{scRegDtSt}, '%Y-%m-%d') AND STR_TO_DATE(CONCAT(#{scRegDtEd},'235900'), '%Y-%m-%D%H%i%s')
+			]]>
+		</if>
+		<![CDATA[
+		) A
+		]]>
+	</select>
+	
+</mapper>

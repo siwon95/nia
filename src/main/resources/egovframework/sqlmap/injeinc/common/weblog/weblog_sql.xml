@@ -1,0 +1,984 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="WeblogDao">
+	
+	<resultMap id="weblogMap" type="egovframework.injeinc.common.weblog.vo.WeblogVo">
+		<result property="rootMenuNo" column="ROOT_MENU_NO"/>
+		<result property="occrrncDe" column="OCCRRNC_DE"/>
+		<result property="rdcnt" column="RDCNT"/>
+		<result property="rdcntTime00" column="RDCNT_TIME_00"/>
+		<result property="rdcntTime01" column="RDCNT_TIME_01"/>
+		<result property="rdcntTime02" column="RDCNT_TIME_02"/>
+		<result property="rdcntTime03" column="RDCNT_TIME_03"/>
+		<result property="rdcntTime04" column="RDCNT_TIME_04"/>
+		<result property="rdcntTime05" column="RDCNT_TIME_05"/>
+		<result property="rdcntTime06" column="RDCNT_TIME_06"/>
+		<result property="rdcntTime07" column="RDCNT_TIME_07"/>
+		<result property="rdcntTime08" column="RDCNT_TIME_08"/>
+		<result property="rdcntTime09" column="RDCNT_TIME_09"/>
+		<result property="rdcntTime10" column="RDCNT_TIME_10"/>
+		<result property="rdcntTime11" column="RDCNT_TIME_11"/>
+		<result property="rdcntTime12" column="RDCNT_TIME_12"/>
+		<result property="rdcntTime13" column="RDCNT_TIME_13"/>
+		<result property="rdcntTime14" column="RDCNT_TIME_14"/>
+		<result property="rdcntTime15" column="RDCNT_TIME_15"/>
+		<result property="rdcntTime16" column="RDCNT_TIME_16"/>
+		<result property="rdcntTime17" column="RDCNT_TIME_17"/>
+		<result property="rdcntTime18" column="RDCNT_TIME_18"/>
+		<result property="rdcntTime19" column="RDCNT_TIME_19"/>
+		<result property="rdcntTime20" column="RDCNT_TIME_20"/>
+		<result property="rdcntTime21" column="RDCNT_TIME_21"/>
+		<result property="rdcntTime22" column="RDCNT_TIME_22"/>
+		<result property="rdcntTime23" column="RDCNT_TIME_23"/>
+	</resultMap>
+	
+	<resultMap id="weblogMenuMap" type="egovframework.injeinc.common.weblog.vo.WeblogVo">
+		<result property="menuCode" column="MENU_CODE"/>
+		<result property="siteCd" column="SITE_CD"/>
+		<result property="menuPath" column="MENU_PATH"/>
+		<result property="sortOrder" column="SORT_ORDER"/>
+		<result property="menuDepth" column="MENU_DEPTH"/>
+		<result property="occrrncDe" column="OCCRRNC_DE"/>
+		<result property="rdcnt" column="RDCNT"/>
+		<result property="rdcntTime00" column="RDCNT_TIME_00"/>
+		<result property="rdcntTime01" column="RDCNT_TIME_01"/>
+		<result property="rdcntTime02" column="RDCNT_TIME_02"/>
+		<result property="rdcntTime03" column="RDCNT_TIME_03"/>
+		<result property="rdcntTime04" column="RDCNT_TIME_04"/>
+		<result property="rdcntTime05" column="RDCNT_TIME_05"/>
+		<result property="rdcntTime06" column="RDCNT_TIME_06"/>
+		<result property="rdcntTime07" column="RDCNT_TIME_07"/>
+		<result property="rdcntTime08" column="RDCNT_TIME_08"/>
+		<result property="rdcntTime09" column="RDCNT_TIME_09"/>
+		<result property="rdcntTime10" column="RDCNT_TIME_10"/>
+		<result property="rdcntTime11" column="RDCNT_TIME_11"/>
+		<result property="rdcntTime12" column="RDCNT_TIME_12"/>
+		<result property="rdcntTime13" column="RDCNT_TIME_13"/>
+		<result property="rdcntTime14" column="RDCNT_TIME_14"/>
+		<result property="rdcntTime15" column="RDCNT_TIME_15"/>
+		<result property="rdcntTime16" column="RDCNT_TIME_16"/>
+		<result property="rdcntTime17" column="RDCNT_TIME_17"/>
+		<result property="rdcntTime18" column="RDCNT_TIME_18"/>
+		<result property="rdcntTime19" column="RDCNT_TIME_19"/>
+		<result property="rdcntTime20" column="RDCNT_TIME_20"/>
+		<result property="rdcntTime21" column="RDCNT_TIME_21"/>
+		<result property="rdcntTime22" column="RDCNT_TIME_22"/>
+		<result property="rdcntTime23" column="RDCNT_TIME_23"/>
+	</resultMap>
+	
+	<resultMap id="weblogPeriodMap" type="egovframework.injeinc.common.weblog.vo.WeblogVo">
+		<result property="rootMenuNo" column="ROOT_MENU_NO"/>
+		<result property="occrrncDe" column="OCCRRNC_DE"/>
+		<result property="rdcnt" column="RDCNT"/>		
+	</resultMap>
+	
+	<insert id="insertWebLog" parameterType="map">
+		<![CDATA[
+			/* Site 웹로그 등록 */
+			INSERT INTO EZ_WEB_LOG (
+				WEB_LOG_NO
+				, ROOT_MENU_NO
+				, MENU_NO
+				, OCCRRNC_DE
+				, RQESTER_ID
+				, RQESTER_IP
+				, SESSION_ID
+			) VALUES (		
+				(SELECT NVL(MAX(WEB_LOG_NO), 0) + 1 FROM EZ_WEB_LOG)
+				, #{siteUpperMenuNo}
+				, #{siteMenuNo}
+				, SYSDATE
+				, #{rqesterId}
+				, #{rqesterIp}
+				, #{sessionId}
+			)				
+		]]>
+	</insert>
+	
+	<delete id="deleteWebLog">
+		<![CDATA[
+			/* Site 웹로그 삭제 : 현재일 포함 3일치 로그만 남기고 모두 삭제 */
+			DELETE FROM EZ_WEB_LOG 
+			WHERE TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') <= TO_CHAR(SYSDATE - 3, 'YYYY-MM-DD')
+		]]>
+	</delete>
+
+	<insert id="insertVisitrCoSummary">
+		<![CDATA[
+			/* Site 방문자수 요약 등록 */
+			INSERT INTO EZ_VISITR_CO_SUMMARY
+			(
+				ROOT_MENU_NO				
+				, OCCRRNC_DE
+				, RDCNT
+			)
+			SELECT DISTINCT ROOT_MENU_NO, TO_DATE(OCCRRNC_DE, 'YYYY-MM-DD'), COUNT(*) OVER(PARTITION BY ROOT_MENU_NO, OCCRRNC_DE) AS RDCNT 
+            FROM (  
+              SELECT
+                  ROOT_MENU_NO                  
+                  , TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') AS OCCRRNC_DE                  				
+              FROM EZ_WEB_LOG A
+              WHERE TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') < TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+                  AND NOT EXISTS
+                  ( 
+                      SELECT 1
+                      FROM EZ_VISITR_CO_SUMMARY B
+                      WHERE TO_CHAR(B.OCCRRNC_DE, 'YYYY-MM-DD') = TO_CHAR(A.OCCRRNC_DE, 'YYYY-MM-DD')
+                   )
+              GROUP BY ROOT_MENU_NO, TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD'), RQESTER_IP    				
+			)
+		]]>
+	</insert>
+	
+	<insert id="insertSessionVisitrCoSummary">
+		<![CDATA[
+			/* Site 방문수 요약 등록 */
+			INSERT INTO EZ_SESSION_VISITR_CO_SUMMARY
+			(
+			    ROOT_MENU_NO
+			    , OCCRRNC_DE
+			    , RDCNT				
+			)
+			SELECT DISTINCT ROOT_MENU_NO, TO_DATE(OCCRRNC_DE, 'YYYY-MM-DD'), COUNT(*) OVER(PARTITION BY ROOT_MENU_NO, OCCRRNC_DE) AS RDCNT 
+            FROM (  
+              SELECT
+                  ROOT_MENU_NO
+                  , TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') AS OCCRRNC_DE                  				
+              FROM EZ_WEB_LOG A
+              WHERE TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') < TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+                  AND NOT EXISTS
+                  ( 
+                      SELECT 1
+                      FROM EZ_SESSION_VISITR_CO_SUMMARY B
+                      WHERE TO_CHAR(B.OCCRRNC_DE, 'YYYY-MM-DD') = TO_CHAR(A.OCCRRNC_DE, 'YYYY-MM-DD')
+                   )
+              GROUP BY ROOT_MENU_NO, TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD'), SESSION_ID    				
+			)
+		]]>
+	</insert>
+	
+	<insert id="insertPageviewSummary">
+		<![CDATA[
+			/* Site 페이지뷰 요약 등록 */
+			INSERT INTO EZ_PAGEVIEW_SUMMARY
+			(
+				ROOT_MENU_NO				
+				, OCCRRNC_DE
+				, RDCNT
+				, RDCNT_TIME_00
+				, RDCNT_TIME_01
+				, RDCNT_TIME_02
+				, RDCNT_TIME_03
+				, RDCNT_TIME_04
+				, RDCNT_TIME_05
+				, RDCNT_TIME_06
+				, RDCNT_TIME_07
+				, RDCNT_TIME_08
+				, RDCNT_TIME_09
+				, RDCNT_TIME_10
+				, RDCNT_TIME_11
+				, RDCNT_TIME_12
+				, RDCNT_TIME_13
+				, RDCNT_TIME_14
+				, RDCNT_TIME_15
+				, RDCNT_TIME_16
+				, RDCNT_TIME_17
+				, RDCNT_TIME_18
+				, RDCNT_TIME_19
+				, RDCNT_TIME_20
+				, RDCNT_TIME_21
+				, RDCNT_TIME_22
+				, RDCNT_TIME_23
+			)
+			SELECT 
+				ROOT_MENU_NO
+				, TO_DATE(TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD'), 'yyyy-mm-dd') AS OCCRRNC_DE
+				, COUNT(*) AS RDCNT
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '00', 1, 0)) AS RDCNT_TIME_00
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '01', 1, 0)) AS RDCNT_TIME_01
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '02', 1, 0)) AS RDCNT_TIME_02
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '03', 1, 0)) AS RDCNT_TIME_03
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '04', 1, 0)) AS RDCNT_TIME_04
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '05', 1, 0)) AS RDCNT_TIME_05
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '06', 1, 0)) AS RDCNT_TIME_06
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '07', 1, 0)) AS RDCNT_TIME_07
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '08', 1, 0)) AS RDCNT_TIME_08
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '09', 1, 0)) AS RDCNT_TIME_09
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '10', 1, 0)) AS RDCNT_TIME_10
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '11', 1, 0)) AS RDCNT_TIME_11
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '12', 1, 0)) AS RDCNT_TIME_12
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '13', 1, 0)) AS RDCNT_TIME_13
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '14', 1, 0)) AS RDCNT_TIME_14
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '15', 1, 0)) AS RDCNT_TIME_15
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '16', 1, 0)) AS RDCNT_TIME_16
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '17', 1, 0)) AS RDCNT_TIME_17
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '18', 1, 0)) AS RDCNT_TIME_18
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '19', 1, 0)) AS RDCNT_TIME_19
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '20', 1, 0)) AS RDCNT_TIME_20
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '21', 1, 0)) AS RDCNT_TIME_21
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '22', 1, 0)) AS RDCNT_TIME_22
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '23', 1, 0)) AS RDCNT_TIME_23			
+			FROM EZ_WEB_LOG A
+			WHERE TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') < TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+				AND NOT EXISTS
+				( 
+					SELECT 1
+					FROM EZ_PAGEVIEW_SUMMARY B
+					WHERE TO_CHAR(B.OCCRRNC_DE, 'YYYY-MM-DD') = TO_CHAR(A.OCCRRNC_DE, 'YYYY-MM-DD')
+				 )    		
+			GROUP BY ROOT_MENU_NO, TO_DATE(TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD'), 'yyyy-mm-dd')
+		]]>
+	</insert>
+		
+	<insert id="insertMenuPageviewSummary">
+		<![CDATA[
+			/* Site 메뉴페이지뷰 요약 등록 */
+			INSERT INTO EZ_MENU_PAGEVIEW_SUMMARY
+			(
+				ROOT_MENU_NO
+				, MENU_NO
+				, OCCRRNC_DE
+				, RDCNT
+				, RDCNT_TIME_00
+				, RDCNT_TIME_01
+				, RDCNT_TIME_02
+				, RDCNT_TIME_03
+				, RDCNT_TIME_04
+				, RDCNT_TIME_05
+				, RDCNT_TIME_06
+				, RDCNT_TIME_07
+				, RDCNT_TIME_08
+				, RDCNT_TIME_09
+				, RDCNT_TIME_10
+				, RDCNT_TIME_11
+				, RDCNT_TIME_12
+				, RDCNT_TIME_13
+				, RDCNT_TIME_14
+				, RDCNT_TIME_15
+				, RDCNT_TIME_16
+				, RDCNT_TIME_17
+				, RDCNT_TIME_18
+				, RDCNT_TIME_19
+				, RDCNT_TIME_20
+				, RDCNT_TIME_21
+				, RDCNT_TIME_22
+				, RDCNT_TIME_23
+			)
+			SELECT 
+				ROOT_MENU_NO
+				, MENU_NO
+				, TO_DATE(TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD'), 'yyyy-mm-dd') AS OCCRRNC_DE
+				, COUNT(*) AS RDCNT
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '00', 1, 0)) AS RDCNT_TIME_00
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '01', 1, 0)) AS RDCNT_TIME_01
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '02', 1, 0)) AS RDCNT_TIME_02
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '03', 1, 0)) AS RDCNT_TIME_03
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '04', 1, 0)) AS RDCNT_TIME_04
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '05', 1, 0)) AS RDCNT_TIME_05
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '06', 1, 0)) AS RDCNT_TIME_06
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '07', 1, 0)) AS RDCNT_TIME_07
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '08', 1, 0)) AS RDCNT_TIME_08
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '09', 1, 0)) AS RDCNT_TIME_09
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '10', 1, 0)) AS RDCNT_TIME_10
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '11', 1, 0)) AS RDCNT_TIME_11
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '12', 1, 0)) AS RDCNT_TIME_12
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '13', 1, 0)) AS RDCNT_TIME_13
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '14', 1, 0)) AS RDCNT_TIME_14
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '15', 1, 0)) AS RDCNT_TIME_15
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '16', 1, 0)) AS RDCNT_TIME_16
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '17', 1, 0)) AS RDCNT_TIME_17
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '18', 1, 0)) AS RDCNT_TIME_18
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '19', 1, 0)) AS RDCNT_TIME_19
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '20', 1, 0)) AS RDCNT_TIME_20
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '21', 1, 0)) AS RDCNT_TIME_21
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '22', 1, 0)) AS RDCNT_TIME_22
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '23', 1, 0)) AS RDCNT_TIME_23			
+			FROM EZ_WEB_LOG A
+			WHERE TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') < TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+				AND NOT EXISTS
+				( 
+					SELECT 1
+					FROM EZ_MENU_PAGEVIEW_SUMMARY B
+					WHERE TO_CHAR(B.OCCRRNC_DE, 'YYYY-MM-DD') = TO_CHAR(A.OCCRRNC_DE, 'YYYY-MM-DD')
+				 )    		
+			GROUP BY ROOT_MENU_NO, MENU_NO, TO_DATE(TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD'), 'yyyy-mm-dd')
+		]]>
+	</insert>
+	
+	<select id="selectVisitrCoTodayList" parameterType="weblogVo" resultType="egovMap">
+		<![CDATA[	
+			/* Site 오늘 방문자수(IP단위) */
+			SELECT DISTINCT
+				ROOT_MENU_NO		
+				, TO_CHAR(OCCRRNC_DE, 'yyyy-mm-dd')	AS OCCRRNC_DE		
+				, COUNT(*) OVER(PARTITION BY ROOT_MENU_NO) AS RDCNT
+			FROM EZ_WEB_LOG A
+			WHERE TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+			 AND  ROOT_MENU_NO = #{searchSiteNo} 
+			GROUP BY ROOT_MENU_NO, TO_CHAR(OCCRRNC_DE, 'yyyy-mm-dd'), RQESTER_IP	
+		]]>		
+	</select>
+	
+	<select id="selectSessionVisitrCoTodayList" parameterType="weblogVo" resultType="egovMap">
+		<![CDATA[
+			/* Site 오늘 방문수 */
+			SELECT DISTINCT
+				ROOT_MENU_NO
+				, TO_CHAR(OCCRRNC_DE, 'yyyy-mm-dd')	AS OCCRRNC_DE				
+				, COUNT(*) OVER(PARTITION BY ROOT_MENU_NO) AS RDCNT
+			FROM EZ_WEB_LOG A
+			WHERE TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+			 AND  ROOT_MENU_NO = #{searchSiteNo}
+			GROUP BY ROOT_MENU_NO, TO_CHAR(OCCRRNC_DE, 'yyyy-mm-dd'), SESSION_ID
+		]]>		
+	</select>
+	
+	<select id="selectPageviewTodayList" parameterType="weblogVo" resultType="egovMap">
+		<![CDATA[		
+			/* Site 오늘 전체 페이지뷰 */
+			SELECT 
+				ROOT_MENU_NO
+				/* , (SELECT MENU_NM FROM EZ_USER_MENU WHERE SITE_CD = A.ROOT_MENU_NO AND MENU_CODE = MENU_NO) AS ROOT_MENU_NM */
+				, TO_CHAR(OCCRRNC_DE, 'yyyy-mm-dd')	AS OCCRRNC_DE
+				, COUNT(*) AS RDCNT
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '00', 1, 0)) AS RDCNT_TIME_00
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '01', 1, 0)) AS RDCNT_TIME_01
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '02', 1, 0)) AS RDCNT_TIME_02
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '03', 1, 0)) AS RDCNT_TIME_03
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '04', 1, 0)) AS RDCNT_TIME_04
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '05', 1, 0)) AS RDCNT_TIME_05
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '06', 1, 0)) AS RDCNT_TIME_06
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '07', 1, 0)) AS RDCNT_TIME_07
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '08', 1, 0)) AS RDCNT_TIME_08
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '09', 1, 0)) AS RDCNT_TIME_09
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '10', 1, 0)) AS RDCNT_TIME_10
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '11', 1, 0)) AS RDCNT_TIME_11
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '12', 1, 0)) AS RDCNT_TIME_12
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '13', 1, 0)) AS RDCNT_TIME_13
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '14', 1, 0)) AS RDCNT_TIME_14
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '15', 1, 0)) AS RDCNT_TIME_15
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '16', 1, 0)) AS RDCNT_TIME_16
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '17', 1, 0)) AS RDCNT_TIME_17
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '18', 1, 0)) AS RDCNT_TIME_18
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '19', 1, 0)) AS RDCNT_TIME_19
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '20', 1, 0)) AS RDCNT_TIME_20
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '21', 1, 0)) AS RDCNT_TIME_21
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '22', 1, 0)) AS RDCNT_TIME_22
+				, SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '23', 1, 0)) AS RDCNT_TIME_23			
+			FROM EZ_WEB_LOG A
+			WHERE TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+			 AND  ROOT_MENU_NO = #{searchSiteNo}
+			GROUP BY ROOT_MENU_NO, TO_CHAR(OCCRRNC_DE, 'yyyy-mm-dd')
+			/*, MENU_NO*/	
+		]]>			
+	</select>
+	
+	<select id="selectMenuPageviewTodayList" parameterType="weblogVo" resultType="egovMap">
+		<![CDATA[		
+			/* Site 오늘 메뉴별 페이지뷰 */
+			SELECT
+			    A.MENU_code
+			    , A.SITE_CD
+			    , A.MENU_NM				
+			    , A.SORT_ORDER	
+			    , a.MENU_DEPTH			
+			    , B.RDCNT
+			    , B.RDCNT_TIME_00
+			    , B.RDCNT_TIME_01
+			    , B.RDCNT_TIME_02
+			    , B.RDCNT_TIME_03
+			    , B.RDCNT_TIME_04
+			    , B.RDCNT_TIME_05
+			    , B.RDCNT_TIME_06
+			    , B.RDCNT_TIME_07
+			    , B.RDCNT_TIME_08
+			    , B.RDCNT_TIME_09
+			    , B.RDCNT_TIME_10
+			    , B.RDCNT_TIME_11
+			    , B.RDCNT_TIME_12
+			    , B.RDCNT_TIME_13
+			    , B.RDCNT_TIME_14
+			    , B.RDCNT_TIME_15
+			    , B.RDCNT_TIME_16
+			    , B.RDCNT_TIME_17
+			    , B.RDCNT_TIME_18
+			    , B.RDCNT_TIME_19
+			    , B.RDCNT_TIME_20
+			    , B.RDCNT_TIME_21
+			    , B.RDCNT_TIME_22
+			    , B.RDCNT_TIME_23
+			FROM EZ_USER_MENU A LEFT OUTER JOIN (
+			    SELECT 
+			        ROOT_MENU_NO
+			        , MENU_NO
+			        , COUNT(*) AS RDCNT
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '00', 1, 0)) AS RDCNT_TIME_00
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '01', 1, 0)) AS RDCNT_TIME_01
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '02', 1, 0)) AS RDCNT_TIME_02
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '03', 1, 0)) AS RDCNT_TIME_03
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '04', 1, 0)) AS RDCNT_TIME_04
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '05', 1, 0)) AS RDCNT_TIME_05
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '06', 1, 0)) AS RDCNT_TIME_06
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '07', 1, 0)) AS RDCNT_TIME_07
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '08', 1, 0)) AS RDCNT_TIME_08
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '09', 1, 0)) AS RDCNT_TIME_09
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '10', 1, 0)) AS RDCNT_TIME_10
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '11', 1, 0)) AS RDCNT_TIME_11
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '12', 1, 0)) AS RDCNT_TIME_12
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '13', 1, 0)) AS RDCNT_TIME_13
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '14', 1, 0)) AS RDCNT_TIME_14
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '15', 1, 0)) AS RDCNT_TIME_15
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '16', 1, 0)) AS RDCNT_TIME_16
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '17', 1, 0)) AS RDCNT_TIME_17
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '18', 1, 0)) AS RDCNT_TIME_18
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '19', 1, 0)) AS RDCNT_TIME_19
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '20', 1, 0)) AS RDCNT_TIME_20
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '21', 1, 0)) AS RDCNT_TIME_21
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '22', 1, 0)) AS RDCNT_TIME_22
+			        , SUM(DECODE(TO_CHAR(OCCRRNC_DE, 'HH24'), '23', 1, 0)) AS RDCNT_TIME_23			
+			    FROM EZ_WEB_LOG
+			    WHERE TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') = TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+			    GROUP BY ROOT_MENU_NO, MENU_NO
+			) B ON A.MENU_code = B.MENU_NO AND a.SITE_CD = b.ROOT_MENU_NO	
+			WHERE 1=1
+			AND SITE_CD = #{searchSiteNo}
+			AND USE_YN = 'Y'		
+			ORDER BY SORT_ORDER
+		]]>			
+	</select>
+	
+	<select id="selectVisitrCoSummaryList" parameterType="weblogVo" resultType="egovMap">
+		<![CDATA[		
+			/* Site 요약 접속 IP수 */
+			SELECT
+				ROOT_MENU_NO
+		]]>							
+			<if test="searchCondition == 0">
+			<![CDATA[	, #{searchDe} AS OCCRRNC_DE ]]>
+										
+			</if>
+			<if test="searchCondition == 1">
+			<![CDATA[	, #{searchStartDe} || ' ~ ' || #{searchEndDe} AS OCCRRNC_DE ]]>			
+			</if>	
+			<![CDATA[		
+				, SUM(RDCNT) AS RDCNT
+			FROM EZ_VISITR_CO_SUMMARY A
+			WHERE ROOT_MENU_NO = #{searchSiteNo}
+			]]>							
+			<if test="searchCondition == 0">
+			<![CDATA[		
+			AND		
+				TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') = #{searchDe}
+			]]>						
+			</if>
+			<if test="searchCondition == 1">
+			<![CDATA[		
+			AND						
+				TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') BETWEEN #{searchStartDe} AND #{searchEndDe}
+			]]>					
+			</if>
+		<![CDATA[				
+			GROUP BY ROOT_MENU_NO
+		]]>			
+	</select>
+	
+	<select id="selectSessionVisitrCoSummaryList" parameterType="weblogVo" resultType="egovMap">
+		<![CDATA[		
+			/* Site 요약 방문자수 */
+			SELECT
+				ROOT_MENU_NO
+		]]>								
+			<if test="searchCondition == 0">
+				<![CDATA[					
+				, #{searchDe} AS OCCRRNC_DE
+				]]>					
+			</if>
+			<if test="searchCondition == 1">
+				<![CDATA[					
+				, #{searchStartDe} || ' ~ ' || #{searchEndDe} AS OCCRRNC_DE
+				]]>				
+			</if>	
+			<![CDATA[
+				, SUM(RDCNT) AS RDCNT
+			FROM EZ_SESSION_VISITR_CO_SUMMARY A
+			WHERE ROOT_MENU_NO = #{searchSiteNo}
+			]]>						
+			<if test="searchCondition == 0">
+				<![CDATA[					
+				AND TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') = #{searchDe}
+				]]>					
+			</if>
+			<if test="searchCondition == 1">
+				<![CDATA[					
+				AND TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') BETWEEN #{searchStartDe} AND #{searchEndDe}
+				]]>			
+			</if>
+		<![CDATA[		
+			GROUP BY ROOT_MENU_NO
+		]]>		
+	</select>
+	
+	<select id="selectPageviewSummaryList" parameterType="weblogVo" resultType="egovMap">
+		<![CDATA[		
+			/* Site 요약 전체 페이지뷰 */
+			SELECT 
+				ROOT_MENU_NO				
+		]]>							
+			<if test="searchCondition == 0">
+				<![CDATA[					
+				, #{searchDe} AS OCCRRNC_DE
+				]]>						
+			</if>
+			<if test="searchCondition == 1">
+				<![CDATA[				
+				, #{searchStartDe} || ' ~ ' || #{searchEndDe} AS OCCRRNC_DE
+				]]>				
+			</if>	
+			<![CDATA[
+				, SUM(RDCNT) AS RDCNT
+				, SUM(RDCNT_TIME_00) AS RDCNT_TIME_00
+				, SUM(RDCNT_TIME_01) AS RDCNT_TIME_01
+				, SUM(RDCNT_TIME_02) AS RDCNT_TIME_02
+				, SUM(RDCNT_TIME_03) AS RDCNT_TIME_03
+				, SUM(RDCNT_TIME_04) AS RDCNT_TIME_04
+				, SUM(RDCNT_TIME_05) AS RDCNT_TIME_05
+				, SUM(RDCNT_TIME_06) AS RDCNT_TIME_06
+				, SUM(RDCNT_TIME_07) AS RDCNT_TIME_07
+				, SUM(RDCNT_TIME_08) AS RDCNT_TIME_08
+				, SUM(RDCNT_TIME_09) AS RDCNT_TIME_09
+				, SUM(RDCNT_TIME_10) AS RDCNT_TIME_10
+				, SUM(RDCNT_TIME_11) AS RDCNT_TIME_11
+				, SUM(RDCNT_TIME_12) AS RDCNT_TIME_12
+				, SUM(RDCNT_TIME_13) AS RDCNT_TIME_13
+				, SUM(RDCNT_TIME_14) AS RDCNT_TIME_14
+				, SUM(RDCNT_TIME_15) AS RDCNT_TIME_15
+				, SUM(RDCNT_TIME_16) AS RDCNT_TIME_16
+				, SUM(RDCNT_TIME_17) AS RDCNT_TIME_17
+				, SUM(RDCNT_TIME_18) AS RDCNT_TIME_18
+				, SUM(RDCNT_TIME_19) AS RDCNT_TIME_19
+				, SUM(RDCNT_TIME_20) AS RDCNT_TIME_20
+				, SUM(RDCNT_TIME_21) AS RDCNT_TIME_21
+				, SUM(RDCNT_TIME_22) AS RDCNT_TIME_22
+				, SUM(RDCNT_TIME_23) AS RDCNT_TIME_23
+			FROM EZ_PAGEVIEW_SUMMARY A
+			WHERE ROOT_MENU_NO = #{searchSiteNo}	
+			]]>			
+			<if test="searchCondition == 0">
+				<![CDATA[				
+				AND TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') = #{searchDe}
+				]]>
+			</if>
+			<if test="searchCondition == 1">
+				<![CDATA[	
+				AND TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') BETWEEN #{searchStartDe} AND #{searchEndDe}
+				]]>		
+			</if>
+			<![CDATA[		
+			GROUP BY ROOT_MENU_NO
+			]]>		
+	</select>
+	
+	<select id="selectMenuPageviewSummaryList" parameterType="weblogVo" resultType="egovMap">
+			<![CDATA[
+			/* Site 요약 메뉴별 페이지뷰 */
+			SELECT
+			    A.MENU_CODE
+			    , A.SITE_CD
+			    , A.MENU_NM				
+			    , A.SORT_ORDER
+			    , A.MENU_DEPTH				
+			    , B.RDCNT
+			    , B.RDCNT_TIME_00
+			    , B.RDCNT_TIME_01
+			    , B.RDCNT_TIME_02
+			    , B.RDCNT_TIME_03
+			    , B.RDCNT_TIME_04
+			    , B.RDCNT_TIME_05
+			    , B.RDCNT_TIME_06
+			    , B.RDCNT_TIME_07
+			    , B.RDCNT_TIME_08
+			    , B.RDCNT_TIME_09
+			    , B.RDCNT_TIME_10
+			    , B.RDCNT_TIME_11
+			    , B.RDCNT_TIME_12
+			    , B.RDCNT_TIME_13
+			    , B.RDCNT_TIME_14
+			    , B.RDCNT_TIME_15
+			    , B.RDCNT_TIME_16
+			    , B.RDCNT_TIME_17
+			    , B.RDCNT_TIME_18
+			    , B.RDCNT_TIME_19
+			    , B.RDCNT_TIME_20
+			    , B.RDCNT_TIME_21
+			    , B.RDCNT_TIME_22
+			    , B.RDCNT_TIME_23
+			FROM EZ_USER_MENU A LEFT OUTER JOIN (
+			    SELECT
+			        ROOT_MENU_NO 
+			        , MENU_NO
+			        , OCCRRNC_DE
+			        , SUM(RDCNT) AS RDCNT
+			        , SUM(RDCNT_TIME_00) AS RDCNT_TIME_00
+			        , SUM(RDCNT_TIME_01) AS RDCNT_TIME_01
+			        , SUM(RDCNT_TIME_02) AS RDCNT_TIME_02
+			        , SUM(RDCNT_TIME_03) AS RDCNT_TIME_03
+			        , SUM(RDCNT_TIME_04) AS RDCNT_TIME_04
+			        , SUM(RDCNT_TIME_05) AS RDCNT_TIME_05
+			        , SUM(RDCNT_TIME_06) AS RDCNT_TIME_06
+			        , SUM(RDCNT_TIME_07) AS RDCNT_TIME_07
+			        , SUM(RDCNT_TIME_08) AS RDCNT_TIME_08
+			        , SUM(RDCNT_TIME_09) AS RDCNT_TIME_09
+			        , SUM(RDCNT_TIME_10) AS RDCNT_TIME_10
+			        , SUM(RDCNT_TIME_11) AS RDCNT_TIME_11
+			        , SUM(RDCNT_TIME_12) AS RDCNT_TIME_12
+			        , SUM(RDCNT_TIME_13) AS RDCNT_TIME_13
+			        , SUM(RDCNT_TIME_14) AS RDCNT_TIME_14
+			        , SUM(RDCNT_TIME_15) AS RDCNT_TIME_15
+			        , SUM(RDCNT_TIME_16) AS RDCNT_TIME_16
+			        , SUM(RDCNT_TIME_17) AS RDCNT_TIME_17
+			        , SUM(RDCNT_TIME_18) AS RDCNT_TIME_18
+			        , SUM(RDCNT_TIME_19) AS RDCNT_TIME_19
+			        , SUM(RDCNT_TIME_20) AS RDCNT_TIME_20
+			        , SUM(RDCNT_TIME_21) AS RDCNT_TIME_21
+			        , SUM(RDCNT_TIME_22) AS RDCNT_TIME_22
+			        , SUM(RDCNT_TIME_23) AS RDCNT_TIME_23
+			    FROM EZ_MENU_PAGEVIEW_SUMMARY
+			    WHERE 1=1									
+			    GROUP BY ROOT_MENU_NO, MENU_NO, OCCRRNC_DE
+			) B ON A.SITE_CD = B.ROOT_MENU_NO AND A.MENU_CODE = B.MENU_NO
+			]]>					
+				<if test="searchCondition == 0">
+					<![CDATA[			
+					AND TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') = #{searchDe}
+					]]>
+				</if>
+				<if test="searchCondition == 1">
+					<![CDATA[	
+					AND TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') BETWEEN #{searchStartDe} AND #{searchEndDe}
+					]]>
+				</if>		
+		<![CDATA[
+			WHERE 1=1
+			AND A.SITE_CD = #{searchSiteNo}			
+			ORDER BY SORT_ORDER			
+		]]>			
+	</select>	
+	
+	<select id="selectVisitrCoPeriodList" parameterType="weblogVo" resultMap="weblogPeriodMap">
+			<![CDATA[	
+			/* Site 기간별  접속 IP수 */
+			SELECT
+				ROOT_MENU_NO
+			]]>				
+			<if test="searchCondition == &quot;day&quot;">
+				<![CDATA[				
+				, TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') AS OCCRRNC_DE
+				]]>					
+			</if>
+			<if test="searchCondition == &quot;month&quot;">
+				<![CDATA[				
+				, TO_CHAR(OCCRRNC_DE, 'YYYY-MM') AS OCCRRNC_DE
+				]]>					
+			</if>
+			<if test="searchCondition == &quot;year&quot;">
+				<![CDATA[				
+				, TO_CHAR(OCCRRNC_DE, 'YYYY') AS OCCRRNC_DE
+				]]>			
+			</if>		
+			<![CDATA[					
+				, SUM(RDCNT) AS RDCNT				
+			FROM EZ_VISITR_CO_SUMMARY A
+			WHERE ROOT_MENU_NO = #{searchSiteNo}
+			]]>					
+			<if test="searchCondition == &quot;day&quot;">
+			<![CDATA[		
+				AND			
+				TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') BETWEEN TO_CHAR(TO_DATE(#{searchStartDe}, 'YYYY-MM-DD'), 'YYYY-MM-DD') AND TO_CHAR(TO_DATE(#{searchEndDe}, 'YYYY-MM-DD'), 'YYYY-MM-DD')
+			]]>						
+			</if>
+			<if test="searchCondition == &quot;month&quot;">
+			<![CDATA[
+				AND					
+				TO_CHAR(OCCRRNC_DE, 'YYYY-MM') BETWEEN TO_CHAR(TO_DATE(#{searchStartDe}, 'YYYY-MM-DD'), 'YYYY-MM') AND TO_CHAR(TO_DATE(#{searchEndDe}, 'YYYY-MM-DD'), 'YYYY-MM')
+			]]>					
+			</if>
+			<if test="searchCondition == &quot;year&quot;">
+				<![CDATA[		
+				AND		
+				TO_CHAR(OCCRRNC_DE, 'YYYY') BETWEEN TO_CHAR(TO_DATE(#{searchStartDe}, 'YYYY-MM-DD'), 'YYYY') AND TO_CHAR(TO_DATE(#{searchEndDe}, 'YYYY-MM-DD'), 'YYYY')
+				]]>					
+			</if>
+			<![CDATA[				
+			GROUP BY ROOT_MENU_NO
+			]]>	
+			<if test="searchCondition == &quot;day&quot;">
+				<![CDATA[							
+				, TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD')
+				]]>					
+			</if>
+			<if test="searchCondition == &quot;month&quot;">
+				<![CDATA[					
+				, TO_CHAR(OCCRRNC_DE, 'YYYY-MM')
+				]]>
+									
+			</if>
+			<if test="searchCondition == &quot;year&quot;">
+				<![CDATA[						
+				, TO_CHAR(OCCRRNC_DE, 'YYYY')
+				]]>
+									
+			</if>	
+			<![CDATA[		
+			ORDER BY OCCRRNC_DE
+			]]>
+	</select>
+
+	<select id="selectSessionVisitrCoPeriodList" parameterType="weblogVo" resultMap="weblogPeriodMap">
+			<![CDATA[			
+			/* Site 기간별  방문수 */
+			SELECT
+				ROOT_MENU_NO
+			]]>				
+			<if test="searchCondition == &quot;day&quot;">
+				<![CDATA[		, TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') AS OCCRRNC_DE ]]>
+										
+			</if>
+			<if test="searchCondition == &quot;month&quot;">
+				<![CDATA[	, TO_CHAR(OCCRRNC_DE, 'YYYY-MM') AS OCCRRNC_DE ]]>					
+			</if>
+			<if test="searchCondition == &quot;year&quot;">
+				<![CDATA[	,TO_CHAR(OCCRRNC_DE, 'YYYY') AS OCCRRNC_DE ]]>						
+			</if>		
+			<![CDATA[						
+				, SUM(RDCNT) AS RDCNT				
+			FROM EZ_SESSION_VISITR_CO_SUMMARY A
+			WHERE ROOT_MENU_NO = #{searchSiteNo}
+			]]>						
+			<if test="searchCondition == &quot;day&quot;">
+			<![CDATA[	
+			AND	
+				TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') BETWEEN TO_CHAR(TO_DATE(#{searchStartDe}, 'YYYY-MM-DD'), 'YYYY-MM-DD') AND TO_CHAR(TO_DATE(#{searchEndDe}, 'YYYY-MM-DD'), 'YYYY-MM-DD')
+			]]>							
+			</if>
+			<if test="searchCondition == &quot;month&quot;">
+			<![CDATA[	
+			AND				
+				TO_CHAR(OCCRRNC_DE, 'YYYY-MM') BETWEEN TO_CHAR(TO_DATE(#{searchStartDe}, 'YYYY-MM-DD'), 'YYYY-MM') AND TO_CHAR(TO_DATE(#{searchEndDe}, 'YYYY-MM-DD'), 'YYYY-MM')
+			]]>						
+			</if>
+			<if test="searchCondition == &quot;year&quot;">
+			<![CDATA[	
+			AND			
+				TO_CHAR(OCCRRNC_DE, 'YYYY') BETWEEN TO_CHAR(TO_DATE(#{searchStartDe}, 'YYYY-MM-DD'), 'YYYY') AND TO_CHAR(TO_DATE(#{searchEndDe}, 'YYYY-MM-DD'), 'YYYY')
+			]]>						
+			</if>
+			<![CDATA[				
+			GROUP BY ROOT_MENU_NO
+			]]>	
+			<if test="searchCondition == &quot;day&quot;">
+			<![CDATA[							
+				, TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD')
+			]]>						
+			</if>
+			<if test="searchCondition == &quot;month&quot;">
+			<![CDATA[							
+				, TO_CHAR(OCCRRNC_DE, 'YYYY-MM')
+			]]>						
+			</if>
+			<if test="searchCondition == &quot;year&quot;">
+			<![CDATA[							
+				, TO_CHAR(OCCRRNC_DE, 'YYYY')
+			]]>						
+			</if>		
+		<![CDATA[	
+			ORDER BY OCCRRNC_DE
+		]]>
+	</select>
+		
+	<select id="selectPageviewPeriodList" parameterType="weblogVo" resultMap="weblogMap">
+			<![CDATA[			
+			/* Site 기간별 전체 페이지뷰 */
+			SELECT 
+				ROOT_MENU_NO
+			]]>				
+			<if test="searchCondition == &quot;day&quot;">
+			<![CDATA[							
+				, TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') AS OCCRRNC_DE
+			]]>							
+			</if>
+			<if test="searchCondition == &quot;month&quot;">
+			<![CDATA[							
+				, TO_CHAR(OCCRRNC_DE, 'YYYY-MM') AS OCCRRNC_DE
+			]]>					
+			</if>
+			<if test="searchCondition == &quot;year&quot;">
+			<![CDATA[						
+				, TO_CHAR(OCCRRNC_DE, 'YYYY') AS OCCRRNC_DE
+			]]>						
+			</if>		
+			<![CDATA[								
+				, SUM(RDCNT) AS RDCNT
+				, SUM(RDCNT_TIME_00) AS RDCNT_TIME_00
+				, SUM(RDCNT_TIME_01) AS RDCNT_TIME_01
+				, SUM(RDCNT_TIME_02) AS RDCNT_TIME_02
+				, SUM(RDCNT_TIME_03) AS RDCNT_TIME_03
+				, SUM(RDCNT_TIME_04) AS RDCNT_TIME_04
+				, SUM(RDCNT_TIME_05) AS RDCNT_TIME_05
+				, SUM(RDCNT_TIME_06) AS RDCNT_TIME_06
+				, SUM(RDCNT_TIME_07) AS RDCNT_TIME_07
+				, SUM(RDCNT_TIME_08) AS RDCNT_TIME_08
+				, SUM(RDCNT_TIME_09) AS RDCNT_TIME_09
+				, SUM(RDCNT_TIME_10) AS RDCNT_TIME_10
+				, SUM(RDCNT_TIME_11) AS RDCNT_TIME_11
+				, SUM(RDCNT_TIME_12) AS RDCNT_TIME_12
+				, SUM(RDCNT_TIME_13) AS RDCNT_TIME_13
+				, SUM(RDCNT_TIME_14) AS RDCNT_TIME_14
+				, SUM(RDCNT_TIME_15) AS RDCNT_TIME_15
+				, SUM(RDCNT_TIME_16) AS RDCNT_TIME_16
+				, SUM(RDCNT_TIME_17) AS RDCNT_TIME_17
+				, SUM(RDCNT_TIME_18) AS RDCNT_TIME_18
+				, SUM(RDCNT_TIME_19) AS RDCNT_TIME_19
+				, SUM(RDCNT_TIME_20) AS RDCNT_TIME_20
+				, SUM(RDCNT_TIME_21) AS RDCNT_TIME_21
+				, SUM(RDCNT_TIME_22) AS RDCNT_TIME_22
+				, SUM(RDCNT_TIME_23) AS RDCNT_TIME_23				
+			FROM EZ_PAGEVIEW_SUMMARY A
+			WHERE ROOT_MENU_NO = #{searchSiteNo}
+			]]>			
+			<if test="searchCondition == &quot;day&quot;">
+			<![CDATA[	
+			AND						
+				TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') BETWEEN TO_CHAR(TO_DATE(#{searchStartDe}, 'YYYY-MM-DD'), 'YYYY-MM-DD') AND TO_CHAR(TO_DATE(#{searchEndDe}, 'YYYY-MM-DD'), 'YYYY-MM-DD')
+			]]>							
+			</if>
+			<if test="searchCondition == &quot;month&quot;">
+			<![CDATA[	
+			AND						
+				TO_CHAR(OCCRRNC_DE, 'YYYY-MM') BETWEEN TO_CHAR(TO_DATE(#{searchStartDe}, 'YYYY-MM-DD'), 'YYYY-MM') AND TO_CHAR(TO_DATE(#{searchEndDe}, 'YYYY-MM-DD'), 'YYYY-MM')
+			]]>						
+			</if>
+			<if test="searchCondition == &quot;year&quot;">
+			<![CDATA[	
+			AND				
+				TO_CHAR(OCCRRNC_DE, 'YYYY') BETWEEN TO_CHAR(TO_DATE(#{searchStartDe}, 'YYYY-MM-DD'), 'YYYY') AND TO_CHAR(TO_DATE(#{searchEndDe}, 'YYYY-MM-DD'), 'YYYY')
+			]]>						
+			</if>
+			<![CDATA[				
+			GROUP BY ROOT_MENU_NO
+			]]>
+			<if test="searchCondition == &quot;day&quot;">
+			<![CDATA[							
+				, TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD')
+			]]>							
+			</if>
+			<if test="searchCondition == &quot;month&quot;">
+			<![CDATA[							
+				, TO_CHAR(OCCRRNC_DE, 'YYYY-MM')
+			]]>						
+			</if>
+			<if test="searchCondition == &quot;year&quot;">
+			<![CDATA[							
+				, TO_CHAR(OCCRRNC_DE, 'YYYY')
+			]]>						
+			</if>		
+			
+			ORDER BY OCCRRNC_DE
+		
+	</select>
+	
+	<select id="selectMenuPageviewPeriodList" parameterType="weblogVo" resultMap="weblogMenuMap">
+			<![CDATA[		
+			/* Site 요약 메뉴별 페이지뷰 */
+			SELECT
+			    A.MENU_CODE
+			    , A.SITE_CD
+			    , A.MENU_PATH			
+			    , A.SORT_ORDER
+			    , A.MENU_DEPTH		
+			    , B.OCCRRNC_DE		
+			    , NVL(B.RDCNT, 0) RDCNT 
+		        , NVL(B.RDCNT_TIME_00, 0) RDCNT_TIME_00 
+		        , NVL(B.RDCNT_TIME_01, 0) RDCNT_TIME_01 
+		        , NVL(B.RDCNT_TIME_02, 0) RDCNT_TIME_02 
+		        , NVL(B.RDCNT_TIME_03, 0) RDCNT_TIME_03 
+		        , NVL(B.RDCNT_TIME_04, 0) RDCNT_TIME_04 
+		        , NVL(B.RDCNT_TIME_05, 0) RDCNT_TIME_05 
+		        , NVL(B.RDCNT_TIME_06, 0) RDCNT_TIME_06 
+		        , NVL(B.RDCNT_TIME_07, 0) RDCNT_TIME_07 
+		        , NVL(B.RDCNT_TIME_08, 0) RDCNT_TIME_08 
+		        , NVL(B.RDCNT_TIME_09, 0) RDCNT_TIME_09 
+		        , NVL(B.RDCNT_TIME_10, 0) RDCNT_TIME_10 
+		        , NVL(B.RDCNT_TIME_11, 0) RDCNT_TIME_11 
+		        , NVL(B.RDCNT_TIME_12, 0) RDCNT_TIME_12 
+		        , NVL(B.RDCNT_TIME_13, 0) RDCNT_TIME_13 
+		        , NVL(B.RDCNT_TIME_14, 0) RDCNT_TIME_14 
+		        , NVL(B.RDCNT_TIME_15, 0) RDCNT_TIME_15 
+		        , NVL(B.RDCNT_TIME_16, 0) RDCNT_TIME_16 
+		        , NVL(B.RDCNT_TIME_17, 0) RDCNT_TIME_17 
+		        , NVL(B.RDCNT_TIME_18, 0) RDCNT_TIME_18 
+		        , NVL(B.RDCNT_TIME_19, 0) RDCNT_TIME_19 
+		        , NVL(B.RDCNT_TIME_20, 0) RDCNT_TIME_20 
+		        , NVL(B.RDCNT_TIME_21, 0) RDCNT_TIME_21 
+		        , NVL(B.RDCNT_TIME_22, 0) RDCNT_TIME_22 
+		        , NVL(B.RDCNT_TIME_23, 0) RDCNT_TIME_23
+			FROM EZ_USER_MENU A LEFT OUTER JOIN (
+			    SELECT
+			        ROOT_MENU_NO 
+			        , MENU_NO
+			        , #{searchStartDe} || '~' || #{searchEndDe} AS OCCRRNC_DE
+			        , SUM(RDCNT) AS RDCNT
+			        , SUM(RDCNT_TIME_00) AS RDCNT_TIME_00
+			        , SUM(RDCNT_TIME_01) AS RDCNT_TIME_01
+			        , SUM(RDCNT_TIME_02) AS RDCNT_TIME_02
+			        , SUM(RDCNT_TIME_03) AS RDCNT_TIME_03
+			        , SUM(RDCNT_TIME_04) AS RDCNT_TIME_04
+			        , SUM(RDCNT_TIME_05) AS RDCNT_TIME_05
+			        , SUM(RDCNT_TIME_06) AS RDCNT_TIME_06
+			        , SUM(RDCNT_TIME_07) AS RDCNT_TIME_07
+			        , SUM(RDCNT_TIME_08) AS RDCNT_TIME_08
+			        , SUM(RDCNT_TIME_09) AS RDCNT_TIME_09
+			        , SUM(RDCNT_TIME_10) AS RDCNT_TIME_10
+			        , SUM(RDCNT_TIME_11) AS RDCNT_TIME_11
+			        , SUM(RDCNT_TIME_12) AS RDCNT_TIME_12
+			        , SUM(RDCNT_TIME_13) AS RDCNT_TIME_13
+			        , SUM(RDCNT_TIME_14) AS RDCNT_TIME_14
+			        , SUM(RDCNT_TIME_15) AS RDCNT_TIME_15
+			        , SUM(RDCNT_TIME_16) AS RDCNT_TIME_16
+			        , SUM(RDCNT_TIME_17) AS RDCNT_TIME_17
+			        , SUM(RDCNT_TIME_18) AS RDCNT_TIME_18
+			        , SUM(RDCNT_TIME_19) AS RDCNT_TIME_19
+			        , SUM(RDCNT_TIME_20) AS RDCNT_TIME_20
+			        , SUM(RDCNT_TIME_21) AS RDCNT_TIME_21
+			        , SUM(RDCNT_TIME_22) AS RDCNT_TIME_22
+			        , SUM(RDCNT_TIME_23) AS RDCNT_TIME_23
+			    FROM EZ_MENU_PAGEVIEW_SUMMARY
+			    WHERE 1=1									
+			]]>			
+			<if test="searchCondition == &quot;day&quot;">
+			<![CDATA[
+			AND TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') BETWEEN TO_CHAR(TO_DATE(#{searchStartDe}, 'YYYY-MM-DD'), 'YYYY-MM-DD') AND TO_CHAR(TO_DATE(#{searchEndDe}, 'YYYY-MM-DD'), 'YYYY-MM-DD')
+			]]>						
+			</if>
+			<if test="searchCondition == &quot;month&quot;">
+			<![CDATA[	
+			AND
+				TO_CHAR(OCCRRNC_DE, 'YYYY-MM') BETWEEN TO_CHAR(TO_DATE(#{searchStartDe}, 'YYYY-MM-DD'), 'YYYY-MM') AND TO_CHAR(TO_DATE(#{searchEndDe}, 'YYYY-MM-DD'), 'YYYY-MM')
+			]]>						
+			</if>
+			<if test="searchCondition == &quot;year&quot;">
+			<![CDATA[	
+			AND						
+				TO_CHAR(OCCRRNC_DE, 'YYYY') BETWEEN TO_CHAR(TO_DATE(#{searchStartDe}, 'YYYY-MM-DD'), 'YYYY') AND TO_CHAR(TO_DATE(#{searchEndDe}, 'YYYY-MM-DD'), 'YYYY')
+			]]>						
+			</if>
+			<![CDATA[	
+			    GROUP BY ROOT_MENU_NO, MENU_NO
+			) B ON A.SITE_CD = B.ROOT_MENU_NO AND A.MENU_CODE = B.MENU_NO			
+			WHERE 1=1
+			AND A.SITE_CD = #{searchSiteNo}			
+			ORDER BY SORT_ORDER			
+			]]>			
+	</select>
+						
+</mapper>

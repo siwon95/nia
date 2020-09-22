@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MailDao">
+	
+	<resultMap id="MailMap" type="egovframework.injeinc.boffice.ex.mail.vo.MailVo">
+		<result property="key" column="ML_KEY"/>
+		<result property="clientKey" column="ML_CLIENT_KEY"/>
+		<result property="from" column="ML_FROM"/>
+		<result property="subject" column="ML_SUBJECT"/>
+		<result property="to" column="ML_TO"/>
+		<result property="receipt" column="ML_RECEIPT"/>
+		<result property="regDt" column="REG_DT"/>
+	</resultMap>
+
+	<insert id="insertMail" parameterType="MailVo">
+		<![CDATA[
+			INSERT INTO EZ_MAIL_LOG
+			(
+				ML_KEY
+				, ML_CLIENT_KEY
+				, ML_FROM
+				, ML_SUBJECT
+				, ML_TO
+				, ML_RECEIPT
+			)
+			VALUES
+			(
+				#{key}
+				, #{clientKey}
+				, #{from}
+				, #{subject}
+				, #{to}
+				, #{receipt}
+			)
+		]]>
+	</insert>
+	
+	<sql id="searchMail">
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 1">
+			<![CDATA[
+				AND
+					ML_SUBJECT LIKE '%'||#{searchKeyword}||'%'
+			]]>
+			</if>
+			<if test="searchCondition == 2">
+			<![CDATA[
+				AND
+					ML_TO LIKE '%'||#{searchKeyword}||'%'
+			]]>	
+			</if>
+			<if test="searchCondition == 3">
+			<![CDATA[
+				AND
+					ML_RECEIPT LIKE '%'||#{searchKeyword}||'%'
+			]]>	
+			</if>
+		</if>
+	</sql>
+	
+	<select id="selectPagMail" parameterType="MailVo" resultMap="MailMap">
+		<![CDATA[
+			SELECT * FROM (
+				SELECT /*+ FIRST_ROWS */ A.*, ROWNUM RN FROM (
+					SELECT * FROM EZ_MAIL_LOG
+					WHERE 1 = 1
+		]]>
+		<include refid="searchMail"/>
+		<![CDATA[
+					ORDER BY REG_DT DESC
+				) A WHERE ROWNUM <= #{lastIndex}
+			) WHERE RN > #{firstIndex}
+		]]>
+	</select>
+	
+	<select id="selectMailCnt" parameterType="MailVo" resultType="java.lang.Integer">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM EZ_MAIL_LOG
+			WHERE 1 = 1
+		]]>
+		<include refid="searchMail"/>
+	</select>
+	
+	<select id="selectListMail" parameterType="MailVo" resultMap="MailMap">
+		<![CDATA[
+			SELECT * FROM EZ_MAIL_LOG
+			WHERE 1 = 1
+			ORDER BY REG_DT DESC
+		]]>
+	</select>
+	
+</mapper>

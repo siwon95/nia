@@ -1,0 +1,236 @@
+#-----------------------------------------------------------------------
+#
+#   globals.properties : \uc2dc\uc2a4\ud15c
+#
+#-----------------------------------------------------------------------
+#   1.  key = value \uad6c\uc870\uc785\ub2c8\ub2e4.
+#   2.  key\uac12\uc740 \uacf5\ubc31\ubb38\uc790\ub97c \ud3ec\ud568\ubd88\uac00, value\uac12\uc740 \uacf5\ubc31\ubb38\uc790\ub97c \uac00\ub2a5
+#   3.  key\uac12\uc73c\ub85c \ud55c\uae00\uc744 \uc0ac\uc6a9\ubd88\uac00,   value\uac12\uc740 \ud55c\uae00\uc0ac\uc6a9\uc774 \uac00\ub2a5
+#   4.  \uc904\uc744 \ubc14\uafc0 \ud544\uc694\uac00 \uc788\uc73c\uba74 '\'\ub97c \ub77c\uc778\uc758 \ub05d\uc5d0 \ucd94\uac00(\ub9cc\uc57d  '\'\ubb38\uc790\ub97c \uc0ac\uc6a9\ud574\uc57c \ud558\ub294 \uacbd\uc6b0\ub294 '\\'\ub97c \uc0ac\uc6a9)
+#   5.  Windows\uc5d0\uc11c\uc758 \ub514\ub809\ud1a0\ub9ac \ud45c\uc2dc : '\\' or '/'  ('\' \uc0ac\uc6a9\ud558\uba74 \uc548\ub428)
+#   6.  Unix\uc5d0\uc11c\uc758 \ub514\ub809\ud1a0\ub9ac \ud45c\uc2dc : '/'
+#   7.  \uc8fc\uc11d\ubb38 \ucc98\ub9ac\ub294  #\uc0ac\uc6a9
+#   8.  value\uac12 \ub4a4\uc5d0 \uc2a4\ud398\uc774\uc2a4\uac00 \uc874\uc7ac\ud558\ub294 \uacbd\uc6b0 \uc11c\ube14\ub9bf\uc5d0\uc11c \ucc38\uc870\ud560\ub54c\ub294 \uc5d0\ub7ec\ubc1c\uc0dd\ud560 \uc218 \uc788\uc73c\ubbc0\ub85c trim()\ud558\uac70\ub098 \ub9c8\uc9c0\ub9c9 \uacf5\ubc31\uc5c6\uc774 properties \uac12\uc744 \uc124\uc815\ud560\uac83
+#-----------------------------------------------------------------------
+
+# \uc6b4\uc601\uc11c\ubc84 \ud0c0\uc785(WINDOWS, UNIX)
+Globals.OsType =WINDOWS
+#\uc2e4\uc11c\ubc84\uc6a9
+#Globals.OsType =UNIX
+
+# DB\uc11c\ubc84 \ud0c0\uc785(ORACLE, MYSQL) - datasource \ubc0f sqlMap \ud30c\uc77c \uc9c0\uc815\uc5d0 \uc0ac\uc6a9\ub428
+#Globals.DbType =oracle
+Globals.DbType =oracle
+
+# \uc704\uc800\ub4dc \uc0ac\uc6a9\uc2dc \ub370\uc774\ud130\ubca0\uc774\uc2a4 \uad00\ub828 \uc124\uc815\uc744 \ubd88\ub7ec\uc634
+#mysql
+#Globals.DriverClassName=com.mysql.jdbc.Driver
+#Globals.Url=jdbc:mysql://127.0.0.1:3306/egovfrm
+
+#oracle 
+Globals.DriverClassName=oracle.jdbc.driver.OracleDriver
+#Globals.Url=jdbc:oracle:thin:@1.214.216.98:7579:inje
+#Globals.Url=jdbc:oracle:thin:@172.21.82.51:1521:testdb
+Globals.Url=jdbc:oracle:thin:@192.168.2.22:1521:testdb
+#Globals.Url=jdbc:oracle:thin:@(DESCRIPTION=(FAIL_OVER=ON)(LOAD_BALANCE=OFF)(ADDRESS_LIST=(ADDRESS = (PROTOCOL = TCP) (HOST = 106.251.236.2) (PORT = 1521))(ADDRESS = (PROTOCOL = TCP) (HOST = 192.168.2.22) (PORT = 1521)))(CONNECT_DATA =(SERVICE_NAME = TESTDB)(FAILOVER_MODE=(TYPE=SELECT)(METHOD=BASIC)(RETRY=180)(DELAY=5))))
+
+#Globals.Url=jdbc:oracle:thin:@200.4.10.73:1521:orcl
+#Globals.Url=jdbc:oracle:thin:@98.15.14.174:1521:orcl
+#\uc2e4\uc11c\ubc84\uc6a9
+#Globals.Url=jdbc:oracle:thin:@211.241.36.95:1521:orahome
+
+#Altibase
+#Globals.DriverClassName=Altibase.jdbc.driver.AltibaseDriver
+#Globals.Url=jdbc:Altibase://127.0.0.1:1721/egovfrm?encoding=UTF-8
+
+#Tibero
+#Globals.DriverClassName=com.tmax.tibero.jdbc.TbDriver
+#Globals.Url=jdbc:tibero:thin:@127.0.0.1:8629:tibero
+
+#cubrid
+#Globals.DriverClassName=cubrid.jdbc.driver.CUBRIDDriver
+#Globals.Url=jdbc:cubrid:192.168.0.109:33000:ngds:::?charset=utf-8
+
+#DB\uacc4\uc815 ID/PW\uc124\uc815
+#Globals.UserName =schome3
+#Globals.Password =schome3
+#Globals.UserName =ezframe
+#Globals.Password =ezframe
+Globals.UserName =cms
+Globals.Password =ijinc123
+#Globals.UserName =ijinc
+#Globals.Password =ijinc1234
+#\uc2e4\uc11c\ubc84\uc6a9
+#Globals.UserName =schome2
+#Globals.Password =sctm8520
+
+# MainPage Setting
+Globals.MainPage  =/mnt/main.do
+#\ud1b5\ud569\uba54\uc778\uba54\ub274
+#Globals.MainPage = /sym/mnu/mpm/EgovMainMenuHome.do
+
+# G4C \uc5f0\uacb0\uc6a9 IP (localhost)
+#Globals.LocalIp = 127.0.0.2
+
+# \ud658\uacbd\ud30c\uc77c \uc704\uce58
+Globals.ShellFilePath     =globals.properties
+Globals.ServerConfPath    =conf/server.properties
+Globals.ClientConfPath    =conf/client.properties
+Globals.FileFormatPath    =conf/format.properties
+Globals.GPKIConfPath      =conf/gpki.properties
+Globals.ConfPath          =conf
+Globals.MailRequestPath   =mail/request/
+Globals.MailRResponsePath =mail/response/
+Globals.SMEConfigPath     =conf/SMEConfig.properties
+
+# \ud658\uacbd\ud30c\uc77c \uc704\uce58 (jeus)
+#Globals.ShellFilePath     = globals.properties
+#Globals.ServerConfPath    = conf/server.properties
+#Globals.ClientConfPath    = conf/client.properties
+#Globals.FileFormatPath    = conf/format.properties
+#Globals.GPKIConfPath      = conf/gpki.properties
+#Globals.ConfPath          = conf
+#Globals.fileStorePath     =
+#Globals.MailRequestPath   = mail/request/
+#Globals.MailRResponsePath = mail/response/
+#Globals.SMEConfigPath     = conf/SMEConfig.properties
+#Globals.SynchrnServerPath = tmp/upload/
+
+# WINDOWS\uc6a9 \uc258\ud30c\uc77c \uc815\ubcf4
+SHELL.WINDOWS.getHostName      =prg/sh_001.bat
+SHELL.WINDOWS.getDrctryByOwner =prg/getDrctryByOwner.bat
+SHELL.WINDOWS.getDrctryOwner   =prg/getDrctryOwner.bat
+SHELL.WINDOWS.moveDrctry       =prg/moveDrctry.bat
+SHELL.WINDOWS.compileSchema    =prg/compileSchema.bat
+SHELL.WINDOWS.getDiskAttrb     =prg/getDiskAttrb.bat
+SHELL.WINDOWS.getDiskCpcty     =prg/getDiskCpcty.bat
+SHELL.WINDOWS.getDiskExst      =prg/getDiskExst.bat
+
+# UNIX\uc6a9 \uc258\ud30c\uc77c \uc815\ubcf4 - \uac1c\ubc1cwas jeus\uc5d0\uc11c \uc0ac\uc6a9\ud560\ub54c \uae30\uc900
+SHELL.UNIX.getHostName      =prg/sh_001.sh
+SHELL.UNIX.getDrctryByOwner =prg/getDrctryByOwner.sh
+SHELL.UNIX.getDrctryOwner   =prg/getDrctryOwner.sh
+SHELL.UNIX.getDrctryAccess  =prg/getDrctryAccess.sh
+SHELL.UNIX.getMountLc       =prg/getMountLc.sh
+SHELL.UNIX.getDiskName      =prg/getNetWorkInfo.sh
+SHELL.UNIX.moveDrctry       =prg/moveDrctry.sh
+SHELL.UNIX.compileSchema    =prg/compileSchema.sh
+SHELL.UNIX.getDiskAttrb     =prg/getDiskAttrb.sh
+SHELL.UNIX.getDiskCpcty     =prg/getDiskCpcty.sh
+SHELL.UNIX.getDiskExst      =prg/getDiskExst.sh
+SHELL.UNIX.getProcInfo      =prg/getProcInfo.sh
+
+# LINUX\uc6a9 \uc258\ud30c\uc77c \uc815\ubcf4
+
+# \uc5f0\uacc4
+# \uae30\uad00\ucf54\ub4dc\uc218\uc2e0\uc6a9(\uacbd\ub85c \uc124\uc815\uc740 \ubc18\ub4dc\uc2dc \uc808\ub300\uacbd\ub85c\ub97c \uc0ac\uc6a9\ud574\uc57c\ud568.)
+CNTC.INSTTCODE.DIR.rcv       =D:/tmp/test/rcv/
+CNTC.INSTTCODE.DIR.rcvold    =D:/tmp/test/rcvold/
+CNTC.INSTTCODE.DIR.bin       =D:/tmp/test/bin/
+
+CNTC.INSTTCODE.CMD.edircv    =gcc_edircv.bat
+CNTC.INSTTCODE.CMD.edircvmsg =gcc_edircvmsg.bat
+
+CNTC.INSTTCODE.INFO.userid   =USERID
+CNTC.INSTTCODE.INFO.userpw   =******
+
+# \ud30c\uc77c \uc5c5\ub85c\ub4dc \uacbd\ub85c(\uacbd\ub85c \uc124\uc815\uc740 \ubc18\ub4dc\uc2dc \uc808\ub300\uacbd\ub85c\ub97c \uc0ac\uc6a9\ud574\uc57c\ud568, \uacbd\ub85c \ub4a4\uc5d0 /\ub97c \ubd99\uc5ec \uc8fc\uc5b4\uc57c\ud568.)
+Globals.fileStorePath =D:/upload/
+
+# \ud30c\uc77c \ub3d9\uae30\ud654 \ucef4\ud3ec\ub10c\ud2b8\uc5d0\uc11c \uc0ac\uc6a9\ud560 \ud30c\uc77c \uc5c5\ub85c\ub4dc \uacbd\ub85c(\uacbd\ub85c \uc124\uc815\uc740 \ubc18\ub4dc\uc2dc \uc808\ub300\uacbd\ub85c\ub97c \uc0ac\uc6a9\ud574\uc57c\ud568, \uacbd\ub85c \ub4a4\uc5d0 /\ub97c \ubd99\uc5ec \uc8fc\uc5b4\uc57c\ud568.)
+Globals.SynchrnServerPath =D:/GDS_2015/upload/Synch/
+
+# for JFile properties
+system.uploadpath =D:/GDS_2015/upload/
+no.image.url =/resources/jfile/swfupload/images/no_img.gif
+ftp.server.ip =127.0.0.1
+ftp.user.id =test
+ftp.user.password =test
+
+# Ums \uad00\ub828 \uc815\ubcf4
+Ums.driverClassName =jdbc:sqlserver://211.241.36.17:1433;databaseName=seocho
+Ums.userName =seochooutside
+Ums.password =seochooutside2007
+
+# Ums2015 \uad00\ub828 \uc815\ubcf4
+Ums2015.driverClassName =jdbc:oracle:thin:@211.241.36.16:1521:UMS
+Ums2015.userName =seochomidoutside
+Ums2015.password =seochomidoutside12qw
+
+# Minwon \uad00\ub828 \uc815\ubcf4
+Minwon.driverClassName =jdbc:oracle:thin:@211.241.36.95:1521:orahome
+Minwon.userName =schome2
+Minwon.password =sctm8520
+
+## ftp\uc811\uc18d\uc815\ubcf4
+WebServer.FTP_SERVER = 211.241.36.93
+WebServer.FTP_USER = tmax
+WebServer.FTP_PASS = sctm8520
+WebServer.FTP_PORT = 21
+WebServer.ROOT_PATH = /web/schome
+
+## ftp\uc811\uc18d\uc815\ubcf4
+
+#WasServer.ROOT_PATH = D:/schome3.5/SCGHOME/src/main/webapp
+Tomcat.ROOT_PATH = D:/schome3.5/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/YANGCHEON
+WasServer.ROOT_PATH = C:/workspace/EASYFRAME_3_6/src/main/webapp
+editor = ckeditor
+#WasServer.ROOT_PATH = /was/schome
+
+## twww.seocho.go.kr
+#naver.map.api.key = 7e22f4a2f34b1b3679ef0d97057910c5
+## www.seocho.go.kr
+#naver.map.api.key = f8ef0ec0eb07d4b0568a16636952f023
+## localhost:8080
+naver.map.api.key = bfb1e09d8e8754648ac04a3c0c3e3710
+
+## local \uc778\uc9c0 \uc2e4\uc11c\ubc84 \uc778\uc9c0 \uad6c\ubd84(test:\ud14c\uc2a4\ud2b8, service:\uc11c\ube44\uc2a4)
+Globals.PLATFORM  = test
+
+#\uc0bc\ubc14\uc11c\ubc84 \uc815\ubcf4
+Globals.SmbIp = 98.15.11.87
+Globals.SmbUserId = \uc591\ucc9c\uad6c\uccad
+Globals.SmbUserPasswd = hongbo3157
+Globals.Nas = D:/nas
+
+#Facebook \uc591\ucc9c\uad6c
+facebook.app.id=820846631348992
+facebook.app.secret=16429ef01f33ebb84bc5d2ac2a458df1
+facebook.app.token=820846631348992|lU60aIK2mtMGBE4RnteJV3jgwPw
+facebook.page.id=yangcheongu
+facebook.rediretc.url=http://cms.yangcheon.go.kr/common/social/facebook/callback.do
+
+#Facebook \uc5f4\ub9b0\uad6c\uccad\uc7a5\uc2e4
+facebook.mayor.app.id=1239641566092218
+facebook.mayor.app.secret=51f534abfa52b9630418ac72c1f9f87e
+facebook.mayor.app.token=1239641566092218|4mJVl3zcd0pA4Jp5sjjxwiXVN8E
+facebook.mayor.page.id=yangcheongu
+facebook.mayor.rediretc.url=http://cms.yangcheon.go.kr/common/social/facebook/callback.do
+
+#Twitter
+twitter.consumer.key=iUTyvMFMdsyHKFwbFrkCVA
+twitter.consumer.secret=pM5oNQ4I1QEEGTNs0JyfvROjFlQfbC9HNmbNEfZl0
+twitter.rediretc.url=http://cms.yangcheon.go.kr/common/social/twitter/callback.do
+
+#Naver
+naver.client.id=IuxqGdZjdPdKdLF2yP6v
+naver.client.secret=h8oXKVUnfn
+naver.rediretc.url=http://cms.yangcheon.go.kr/common/social/naver/callback.do
+
+#KaKao
+kakao.restapi.key=cc1817279a67c3a351125ee6fb39144f
+kakao.admin.key=fddfa84c3fa89447f733af9f15ea9d9c
+kakao.redirect.uri=http://cms.yangcheon.go.kr/common/social/kakao/callback.do
+
+#Youtube
+youtube.server.api.key=AIzaSyBOpE07Wn40DZnB-N0Sg3cDUSIPPz0wCwo
+youtube.project.id=yangcheon-140704
+
+#instagram
+instagram.client.id=c5f8d0e0f7d841ce842ccde858157f4a
+instagram.client.secret=1d05a0e9b68d4040acc35386875fb6c2 
+instagram.redirect.uri=http://cms.yangcheon.go.kr/common/social/kakao/callback.do
+
+# \uacb0\uc81c(LG\uc720\ud50c\ub7ec\uc2a4 \uacb0\uc81c\uc11c\ube44\uc2a4 \uc120\ud0dd(test:\ud14c\uc2a4\ud2b8, service:\uc11c\ube44\uc2a4))
+lgdacom.configPath=D:/lgdacom
+lgdacom.platform=test

@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MgrListDao">
+
+	<resultMap id="MgrListMap" type="egovframework.injeinc.boffice.sy.mgr.vo.MgrListVo">
+		<result property="mgrIdx" column="MGR_IDX"/>
+		<result property="mgrId" column="MGR_ID"/>
+		<result property="mgrPw" column="MGR_PW"/>
+		<result property="mgrName" column="MGR_NAME"/>
+		<result property="mgrEmail" column="MGR_EMAIL"/>
+		<result property="permCd" column="PERM_CD"/>
+		<result property="permNm" column="PERM_NM"/>
+		<result property="deptCd" column="DEPT_CD"/>
+		<result property="deptNm" column="DEPT_NM"/>
+		<result property="basicYn" column="BASIC_YN"/>
+		<result property="mgrUse" column="MGR_USE"/>
+		<result property="useYn" column="USE_YN"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+		<result property="roleIdx" column="ROLE_IDX"/>
+		<result property="mgrSiteCd" column="MGR_SITE_CD"/>
+	</resultMap>
+	
+	<resultMap id="RoleMap" type="egovframework.injeinc.boffice.sy.mgr.vo.RoleVo">
+		<result property="roleIdx" column="ROLE_IDX"/>
+		<result property="roleName" column="ROLE_NAME"/>
+		<result property="useYn" column="USE_YN"/>
+		<result property="publishAuthYn" column="PUBLISH_AUTH_YN"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="regId" column="REG_ID"/>
+		<result property="modDt" column="MOD_DT"/>
+		<result property="modId" column="MOD_ID"/>
+		<result property="permCd" column="PERM_CD"/>
+		<result property="mgrSiteCd" column="MGR_SITE_CD"/>
+	</resultMap>
+
+	<insert id="insertMgrList" parameterType="MgrListVo">
+		<![CDATA[	
+			INSERT INTO EZ_MGR_LIST
+			(
+				MGR_IDX
+				, MGR_ID
+				, MGR_PW
+				, MGR_NAME
+				, MGR_EMAIL
+				, PERM_CD
+				, DEPT_CD
+				, REG_ID
+				, BASIC_YN
+				, MGR_USE
+				, MGR_SITE_CD
+			)
+			VALUES
+			(
+				#{mgrIdx}
+				, #{mgrId}
+				, #{mgrPw}
+				, #{mgrName}
+				, #{mgrEmail}
+				, #{permCd}
+				, #{deptCd}
+				, #{regId}
+				, #{basicYn}
+				, #{mgrUse}
+				, #{mgrSiteCd}
+			)
+		]]>
+	</insert>
+	
+	<insert id="insertRole" parameterType="RoleVo">
+		<![CDATA[	
+			INSERT INTO EZ_ROLE
+			(
+				ROLE_IDX
+				,ROLE_NAME
+				,REG_DT
+				,REG_ID
+				,USE_YN
+				,PUBLISH_AUTH_YN
+				,PERM_CD
+			)
+			VALUES
+			(
+				#{roleIdx}
+				, #{roleName}
+				, TO_CHAR(SYSDATE,'yyyymmddhh24miss')
+				, #{regId}
+				, #{useYn}
+				, #{publishAuthYn}
+				, #{permCd}
+			)
+		]]>
+	</insert>
+	
+	<update id="updateMgrList" parameterType="MgrListVo">
+		<![CDATA[	
+			UPDATE 
+				EZ_MGR_LIST 
+			SET 
+				MGR_PW = #{mgrPw}
+				, MGR_NAME = #{mgrName}
+				, MGR_EMAIL = #{mgrEmail}
+				, PERM_CD = #{permCd}
+				, DEPT_CD = #{deptCd}
+				, BASIC_YN = #{basicYn}
+				, MGR_USE = #{mgrUse}
+				, MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+				, MGR_SITE_CD = #{mgrSiteCd}
+			WHERE 
+					MGR_IDX = #{mgrIdx}
+		]]>
+	</update>
+	
+	
+	<update id="updateRole" parameterType="RoleVo">
+		<![CDATA[	
+			UPDATE 
+				EZ_ROLE 
+			SET 
+				ROLE_NAME=#{roleName}
+				, MOD_DT=TO_CHAR(SYSDATE,'yyyymmddhh24miss')
+				, MOD_ID=#{modId}
+				, USE_YN=#{useYn}
+				, PUBLISH_AUTH_YN=#{publishAuthYn}
+				, PERM_CD=#{permCd}
+			WHERE 
+					ROLE_IDX = #{roleIdx}
+		]]>
+	</update>
+	
+	<update id="updateRoleMgrSiteCd" parameterType="RoleVo">
+		<![CDATA[	
+			UPDATE 
+				EZ_ROLE 
+			SET 
+				MGR_SITE_CD=#{mgrSiteCd}
+				, MOD_DT=TO_CHAR(SYSDATE,'yyyymmddhh24miss')
+				, MOD_ID=#{modId}
+			WHERE 
+					ROLE_IDX = #{roleIdx}
+		]]>
+	</update>
+	
+	<update id="updateMgrRoleUseYn" parameterType="RoleVo">
+		<![CDATA[	
+			UPDATE 
+				EZ_ROLE 
+			SET 
+				USE_YN=#{useYn}
+				, MOD_DT=TO_CHAR(SYSDATE,'yyyymmddhh24miss')
+				, MOD_ID=#{modId}
+			WHERE 
+					ROLE_IDX = #{roleIdx}
+		]]>
+	</update>
+	
+	<update id="updateMgrRolePublishAuthYn" parameterType="RoleVo">
+		<![CDATA[	
+			UPDATE 
+				EZ_ROLE 
+			SET 
+				PUBLISH_AUTH_YN=#{publishAuthYn}
+				, MOD_DT=TO_CHAR(SYSDATE,'yyyymmddhh24miss')
+				, MOD_ID=#{modId}
+			WHERE 
+					ROLE_IDX = #{roleIdx}
+		]]>
+	</update>
+	
+	<update id="deleteMgrList" parameterType="MgrListVo">
+		<![CDATA[	
+			UPDATE 
+				EZ_MGR_LIST
+			SET 
+				USE_YN = 'N'
+				, MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+			WHERE 
+					MGR_IDX = #{mgrIdx}
+		]]>
+	</update>
+	
+	<update id="deleteRole" parameterType="RoleVo">
+		<![CDATA[	
+			DELETE 
+				EZ_ROLE
+			WHERE 
+					ROLE_IDX = #{roleIdx}
+		]]>
+	</update>
+		
+	<select id="selectMgrList" parameterType="MgrListVo" resultMap="MgrListMap">
+		<![CDATA[	
+			SELECT 
+				MGR_IDX
+				, MGR_ID
+				, MGR_PW
+				, MGR_NAME
+				, MGR_EMAIL
+				, PERM_CD
+				, (
+					SELECT 
+						CODE_NAME 
+					 FROM 
+					 	EZ_CMM_CODE 
+					 WHERE 
+					 		CODE = PERM_CD
+				  ) AS PERM_NM
+				, DEPT_CD
+				, (
+					SELECT 
+						CD_SUBJECT 
+					 FROM 
+					 	EZ_DEPARTMENT A 
+					 WHERE 
+					 		A.CD_IDX = DEPT_CD
+				  ) AS DEPT_NM
+				, BASIC_YN
+				, MGR_USE
+				, USE_YN
+				, REG_DT
+				, REG_ID
+				, MOD_DT
+				, MOD_ID
+				, ROLE_IDX
+				, MGR_SITE_CD
+			FROM 
+				EZ_MGR_LIST
+			WHERE 
+					MGR_IDX = #{mgrIdx}
+		]]>
+	</select>
+	
+	<select id="selectRoleList" parameterType="RoleVo" resultMap="RoleMap">
+		<![CDATA[	
+			SELECT 
+				ROLE_IDX
+				, ROLE_NAME
+				, REG_DT
+				, REG_ID
+				, MOD_DT
+				, MOD_ID
+				, USE_YN
+				, PUBLISH_AUTH_YN
+				, PERM_CD
+				, MGR_SITE_CD
+			FROM 
+				EZ_ROLE
+			WHERE 
+					ROLE_IDX = #{roleIdx}
+		]]>
+	</select>
+	
+	<select id="selectRoleMap" parameterType="RoleVo" resultMap="RoleMap">
+		<![CDATA[	
+			SELECT 
+				ROLE_IDX
+				, ROLE_NAME
+				, REG_DT
+				, REG_ID
+				, MOD_DT
+				, MOD_ID
+				, USE_YN
+				, PUBLISH_AUTH_YN
+				, PERM_CD
+				, MGR_SITE_CD
+			FROM 
+				EZ_ROLE
+			WHERE 
+					USE_YN = 'Y'
+			ORDER BY 
+				ROLE_IDX DESC
+		]]>
+	</select>
+	<sql id="searchDeptMgrList">
+		<choose>
+		    <when test="searchDeptCd != null and searchDeptCd != ''">
+				START WITH CD_CODE = #{searchDeptCd}
+		    </when>
+		    <otherwise>
+		    	 START WITH CD_UPR_CODE='D000000'
+		    </otherwise>
+		</choose>
+	</sql>
+	<sql id="searchMgrList">
+		<if test="searchPermCd != null and searchPermCd != ''">
+		<![CDATA[	
+			AND	
+				PERM_CD = #{searchPermCd}
+		]]>	
+		</if>
+		<if test="searchBasic != null and searchBasic != ''">
+		<![CDATA[	
+			AND
+				BASIC_YN = #{searchBasic}
+		]]>	
+		</if>
+		<if test="searchUse != null and searchUse != ''">
+		<![CDATA[	
+			AND
+				MGR_USE = #{searchUse}
+		]]>	
+		</if>
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 1">
+			<![CDATA[	
+				AND
+					MGR_ID LIKE '%'||#{searchKeyword}||'%'
+			]]>	
+			</if>
+			<if test="searchCondition == 2">
+			<![CDATA[	
+				AND	
+					MGR_NAME LIKE '%'||#{searchKeyword}||'%'
+			]]>
+			</if>
+			<if test="searchCondition == 3">
+			<![CDATA[	
+				AND	
+					MGR_EMAIL LIKE '%'||#{searchKeyword}||'%'
+			]]>	
+			</if>
+		</if>
+	</sql>
+	
+	<sql id="searchRole">
+		<if test="searchPermCd != null and searchPermCd != ''">
+			AND
+				PERM_CD = #{searchPermCd}
+			
+		</if>
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 2">
+			<![CDATA[	
+				AND
+					ROLE_NAME LIKE '%'||#{searchKeyword}||'%'
+			]]>	
+			</if>
+		</if>
+	</sql>
+	
+	<select id="selectPagMgrList" parameterType="MgrListVo" resultMap="MgrListMap">
+		<![CDATA[	
+			SELECT * FROM (
+				SELECT /*+ FIRST_ROWS */ A.*, ROWNUM RN FROM (
+					SELECT 
+						MGR_IDX
+						, MGR_ID
+						, MGR_PW
+						, MGR_NAME
+						, MGR_EMAIL
+						, PERM_CD
+						, (
+							SELECT 
+								CODE_NAME 
+							 FROM 
+							 	EZ_CMM_CODE 
+							 WHERE 
+							 		CODE = PERM_CD
+						  ) AS PERM_NM
+						, DEPT_CD
+						, (
+							SELECT 
+								CD_SUBJECT 
+							 FROM 
+							 	EZ_DEPARTMENT A 
+							 WHERE 
+							 		A.CD_IDX = DEPT_CD
+						  ) AS DEPT_NM
+						, BASIC_YN
+						, MGR_USE
+						, USE_YN
+						, REG_DT
+						, REG_ID
+						, MOD_DT
+						, MOD_ID
+						, ROLE_IDX
+						, MGR_SITE_CD
+					FROM 
+						EZ_MGR_LIST A
+					 INNER JOIN (
+					 		SELECT * 
+							 FROM 
+							 	EZ_DEPARTMENT
+							]]>
+							<include refid="searchDeptMgrList"/>
+							<![CDATA[	
+							CONNECT BY PRIOR  CD_CODE = CD_UPR_CODE
+						) B ON A.DEPT_CD = B.CD_IDX
+					WHERE 
+							USE_YN = 'Y'
+		]]>
+		<include refid="searchMgrList"/>
+		<![CDATA[	
+					ORDER BY MGR_IDX DESC
+				) A WHERE ROWNUM <= #{lastIndex}
+			) WHERE RN > #{firstIndex}
+		]]>
+	</select>
+	
+	<select id="selectPagRole" parameterType="RoleVo" resultMap="RoleMap">
+		<![CDATA[	
+			SELECT * FROM (
+				SELECT /*+ FIRST_ROWS */ A.*, ROWNUM RN FROM (
+					SELECT 
+						 ROLE_IDX
+						, ROLE_NAME
+						, REG_DT
+						, REG_ID
+						, MOD_DT
+						, MOD_ID
+						, USE_YN
+						, PUBLISH_AUTH_YN
+						, PERM_CD
+						, MGR_SITE_CD
+					FROM 
+						EZ_ROLE
+					WHERE 
+			]]>				1=1
+		
+		<include refid="searchRole"/>
+		<![CDATA[	
+					ORDER BY 
+						ROLE_IDX DESC
+				) A WHERE ROWNUM <= #{lastIndex}
+			) WHERE RN > #{firstIndex}
+		]]>
+	</select>
+	
+	<select id="selectMgrListCnt" parameterType="MgrListVo" resultType="java.lang.Integer">
+		<![CDATA[	
+			SELECT 
+				COUNT(*)
+			 FROM 
+				EZ_MGR_LIST A
+			  INNER JOIN (
+					 		SELECT * 
+							 FROM 
+							 	EZ_DEPARTMENT
+		]]>				
+							<include refid="searchDeptMgrList"/>
+		<![CDATA[						
+							CONNECT BY PRIOR  CD_CODE = CD_UPR_CODE
+						) B ON A.DEPT_CD = B.CD_IDX
+			WHERE 
+					USE_YN = 'Y'
+		]]>
+		<include refid="searchMgrList"/>
+	</select>
+	
+	<select id="selectRoleCnt" parameterType="RoleVo" resultType="java.lang.Integer">
+		<![CDATA[	
+			SELECT 
+				COUNT(*)
+			 FROM 
+				EZ_ROLE
+			WHERE 
+					1=1
+		]]>
+		<include refid="searchRole"/>
+	</select>
+	
+	<select id="selectListMgrList" parameterType="MgrListVo" resultMap="MgrListMap">
+		<![CDATA[	
+			SELECT 
+				MGR_IDX
+				, MGR_ID
+				, MGR_PW
+				, MGR_NAME
+				, MGR_EMAIL
+				, PERM_CD
+				, DEPT_CD
+				, BASIC_YN
+				, MGR_USE
+				, USE_YN
+				, REG_DT
+				, REG_ID
+				, MOD_DT
+				, MOD_ID
+				, ROLE_IDX
+				, MGR_SITE_CD
+			FROM 
+				EZ_MGR_LIST A
+			 INNER JOIN (
+					 		SELECT * 
+							 FROM 
+							 	EZ_DEPARTMENT
+						]]>	
+							<include refid="searchDeptMgrList"/>
+						<![CDATA[		
+							CONNECT BY PRIOR  CD_CODE = CD_UPR_CODE
+						) B ON A.DEPT_CD = B.CD_IDX
+			WHERE 
+					1=1
+		]]>
+		<include refid="searchMgrList"/>
+		<![CDATA[	
+			ORDER BY MGR_IDX DESC
+		]]>
+	</select>
+	
+	<update id="updateMgrListEtcInfo" parameterType="MgrListVo">
+	<![CDATA[		
+			UPDATE 
+				EZ_MGR_LIST 
+			SET 
+				MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+		]]>
+		<if test="basicYn != null and basicYn != ''">
+		<![CDATA[	
+			,	
+				BASIC_YN = #{basicYn}
+		]]>
+		</if>
+		<if test="mgrUse != null and mgrUse != ''">
+		<![CDATA[	
+			, MGR_USE = #{mgrUse}
+		]]>
+		</if>
+		<if test="roleIdx != null and roleIdx != ''">
+		<![CDATA[	
+			,
+				ROLE_IDX = #{roleIdx}
+		]]>
+		</if>
+		<![CDATA[	
+			WHERE 
+					MGR_IDX = #{mgrIdx}
+		]]>
+	</update>
+	
+	<insert id="insertMgrListHistory" parameterType="MgrListVo">
+		<![CDATA[	
+			INSERT INTO 
+			 EZ_MGR_LIST_HIS
+				SELECT 
+					(
+						SELECT 
+							NVL(MAX(SEQ),0)+1 
+						FROM 
+							EZ_MGR_LIST_HIS
+					)
+					,  A.*
+				FROM 
+					EZ_MGR_LIST A
+				WHERE 
+						MGR_IDX = #{mgrIdx}
+		]]>
+	</insert>
+	
+	<select id="selectMgrListCntCheckId" parameterType="MgrListVo" resultType="java.lang.Integer">
+		<![CDATA[	
+			SELECT 
+				COUNT(*)
+			 FROM 
+			 	EZ_MGR_LIST
+			WHERE
+				USE_YN = 'Y'
+			 AND
+				MGR_ID = #{mgrId}
+		]]>
+	</select>
+	
+	
+	<update id="updateMgrListMyInfo" parameterType="MgrListVo">
+		<![CDATA[	
+			UPDATE 
+				EZ_MGR_LIST 
+			SET 
+				MGR_PW = #{mgrPw}
+				, MGR_EMAIL = #{mgrEmail}
+				, MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+			WHERE 
+					MGR_IDX = #{mgrIdx}
+		]]>
+	</update>
+	
+	<select id="selectMgrListByName" parameterType="java.lang.String" resultMap="MgrListMap">
+		<![CDATA[	
+			SELECT 
+				MGR_IDX
+				, MGR_ID
+				, MGR_PW
+				, MGR_NAME
+				, MGR_EMAIL
+				, PERM_CD
+				, (
+					SELECT 
+						CODE_NAME 
+					 FROM 
+					 	EZ_CMM_CODE 
+					 WHERE 
+					 		CODE = PERM_CD
+				  ) AS PERM_NM
+				, DEPT_CD
+				, (
+					SELECT 
+						CD_SUBJECT 
+					 FROM 
+					 	EZ_DEPARTMENT A 
+					 WHERE 
+					 		A.CD_IDX = DEPT_CD
+				  ) AS DEPT_NM
+				, BASIC_YN
+				, MGR_USE
+				, USE_YN
+				, REG_DT
+				, REG_ID
+				, MOD_DT
+				, MOD_ID
+				, ROLE_IDX
+				, MGR_SITE_CD
+			FROM (
+				SELECT 
+					A.*
+					, ROWNUM    AS RN 
+				 FROM (
+					SELECT 
+						*
+					 FROM 
+					 	EZ_MGR_LIST
+					WHERE 
+							USE_YN = 'Y'
+						AND 
+							BASIC_YN = 'Y'
+						AND 
+							MGR_NAME = #{mgrName}
+					ORDER BY 
+						MGR_IDX ASC
+				) A
+			) WHERE RN = 1
+		]]>
+	</select>
+	
+	<insert id="insertRoleHistory" parameterType="RoleVo">
+		<![CDATA[	
+			INSERT INTO 
+			 EZ_ROLE_HIS
+				SELECT 
+					(
+						SELECT 
+							NVL(MAX(SEQ),0)+1  
+						 FROM 
+						 	EZ_ROLE_HIS
+					) 
+					, A.*
+				 FROM 
+				 	EZ_ROLE A
+				WHERE 
+						ROLE_IDX = #{roleIdx}
+		]]>
+	</insert>
+	
+	<select id="selectMatchMgrMenu" parameterType="MgrVo" resultType="int">
+		<![CDATA[	
+			SELECT
+			  COUNT(*)
+			 FROM 
+			    EZ_MGR_MENU A
+			    	INNER JOIN 
+				    		EZ_MGR_AUTHORITY B 
+				    	ON 
+				    		A.MM_IDX = B.MA_PKIDX 
+				    	AND 
+				    		MA_TYPE = 'menu'
+			    	INNER JOIN 
+			    			EZ_MGR_LIST C 
+			    		ON 
+			    			B.MA_MLIDX = C.ROLE_IDX
+			    		AND
+			    			C.MGR_ID = #{searchId}
+			WHERE
+			      A.MM_CD = #{mgrMenu}
+		]]>
+	</select>	
+	
+</mapper>

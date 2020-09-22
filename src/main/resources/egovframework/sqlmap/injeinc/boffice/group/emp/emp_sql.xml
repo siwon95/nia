@@ -1,0 +1,1389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EmpDao">
+	
+	<resultMap id="SelectEmpMap" type="egovframework.injeinc.boffice.group.emp.vo.EmpVo">
+		<result property="cdIdx" column="CD_IDX"/>		<!--idx-->
+		<result property="cdSubject" column="CD_SUBJECT"/>		<!--이름-->
+		<result property="cdDepstep1" column="CD_DEPSTEP1"/>		<!--국코드-->
+		<result property="cdDepstep2" column="CD_DEPSTEP2"/>		<!--과코드-->
+		<result property="cdDepstep3" column="CD_DEPSTEP3"/>		<!--팀코드-->
+		<result property="empCnt" column="EMP_CNT"/>		<!--해당부서 인원수-->
+		<result property="level" column="LEVEL"/>		<!--레벨-->
+	</resultMap>
+	
+	<!-- 셀렉트박스 리스트 출력 -->
+	<select id="selectListSbEmp" parameterType="EmpVo" resultMap="SelectEmpMap">
+		<![CDATA[
+			SELECT 
+				A.CD_IDX            AS CD_IDX
+				, A.CD_SUBJECT    AS CD_SUBJECT
+				, A.CD_DEPSTEP1   AS CD_DEPSTEP1
+				, A.CD_DEPSTEP2   AS CD_DEPSTEP2
+				, A.CD_DEPSTEP3   AS CD_DEPSTEP3
+				, (
+					SELECT 
+						COUNT(CE_IDX) 
+					 FROM 
+					 	EZ_EMPLOYEE 
+					WHERE 
+							CE_CDIDX=A.CD_IDX
+						AND 
+							CE_CDIDX != 'd99999999'
+						AND 
+							CE_USE !='D'
+				) AS EMP_CNT
+				, LEVEL
+			 FROM EZ_DEPARTMENT A 
+			 ]]>
+			<if test="mode == &quot;department_admin&quot;">
+				<![CDATA[
+					START WITH CD_CODE = (SELECT CD_CODE FROM EZ_DEPARTMENT WHERE CD_IDX = #{cdIdx}) 
+     				CONNECT BY PRIOR CD_UPR_CODE = CD_CODE
+					ORDER SIBLINGS BY CD_CODE ASC
+				 ]]>
+			</if>
+			<if test="mode != &quot;department_admin&quot;">
+			<![CDATA[
+				
+					START WITH CD_UPR_CODE = 'D000000' 
+     				CONNECT BY PRIOR CD_CODE = CD_UPR_CODE
+					ORDER SIBLINGS BY CD_CODE ASC
+			]]>	 
+			</if>
+	</select>
+	
+	<resultMap id="Emp" type="egovframework.injeinc.boffice.group.emp.vo.EmpVo">
+		<result property="ceIdx" column="CE_IDX"/>		<!--idx-->
+		<result property="ceDate" column="CE_DATE"/>		<!--등록일-->
+		<result property="ceUpdate" column="CE_UPDATE"/>		<!--수정일-->
+		<result property="ceSort" column="CE_SORT"/>		<!--순위-->
+		<result property="ceName" column="CE_NAME"/>		<!--이름-->
+		<result property="ceMailid" column="CE_MAILID"/>		<!--이메일-->
+		<result property="ceTel" column="CE_TEL"/>		<!--전화번호-->
+		<result property="ceHp" column="CE_HP"/>		<!--핸드폰번호-->
+		<result property="ceUse" column="CE_USE"/>		<!--사용유무-->
+		<result property="ceUserId" column="CE_USER_ID"/>		<!--직원아이디-->
+		<result property="cePhoto" column="CE_PHOTO"/>		<!--사진 파일-->
+		<result property="ceDepstep1" column="CE_DEPSTEP1"/>		<!--국명-->
+		<result property="ceDepstep2" column="CE_DEPSTEP2"/>		<!--과명-->
+		<result property="ceDepstep3" column="CE_DEPSTEP3"/>		<!--팀명-->
+		<result property="ceDepstep4" column="CE_DEPSTEP4"/>		<!--직위-->
+		<result property="ceWorks" column="CE_WORKS"/>		<!--업무-->
+		<result property="ceCdIdx" column="CE_CDIDX"/>		<!--EZ_DEPARTMENT fk-->
+		<result property="ceMeet" column="CE_MEET"/>		<!--방문예약 사용여부-->
+		<result property="ceDuty" column="CE_DUTY"/>		<!--EZ_EMPLOYEE_TEMP fk-->
+		<result property="cdDepstep1" column="CD_DEPSTEP1"/>		<!--국 코드-->
+		<result property="cdDepstep2" column="CD_DEPSTEP2"/>		<!--과 코드-->
+		<result property="cdDepstep3" column="CD_DEPSTEP3"/>		<!--팀 코드-->
+		<result property="siteViewYn" column="SITE_VIEW_YN"/>		<!--조직도 표시여부-->
+		<result property="cdIdx" column="CD_IDX"/>		<!--부서 일련번호-->
+		<result property="cdFax" column="CD_FAX"/>		<!--부서 일련번호-->
+	</resultMap>
+	
+	<resultMap id="EmpList" type="egovframework.injeinc.boffice.group.emp.vo.EmpVo">
+		<result property="ceIdx" column="CE_IDX"/>		<!--idx-->
+		<result property="ceDate" column="CE_DATE"/>		<!--등록일-->
+		<result property="ceUpdate" column="CE_UPDATE"/>		<!--수정일-->
+		<result property="ceSort" column="CE_SORT"/>		<!--순위-->
+		<result property="ceName" column="CE_NAME"/>		<!--이름-->
+		<result property="ceMailid" column="CE_MAILID"/>		<!--이메일-->
+		<result property="ceTel" column="CE_TEL"/>		<!--전화번호-->
+		<result property="ceHp" column="CE_HP"/>		<!--핸드폰번호-->
+		<result property="ceUse" column="CE_USE"/>		<!--사용유무-->
+		<result property="ceUserId" column="CE_USER_ID"/>		<!--직원아이디-->
+		<result property="cePhoto" column="CE_PHOTO"/>		<!--사진 파일-->
+		<result property="ceDepstep1" column="CE_DEPSTEP1"/>		<!--국명-->
+		<result property="ceDepstep4" column="CE_DEPSTEP4"/>		<!--직위-->
+		<result property="ceWorks" column="CE_WORKS"/>		<!--업무-->
+		<result property="ceCdIdx" column="CE_CDIDX"/>		<!--EZ_DEPARTMENT fk-->
+		<result property="ceMeet" column="CE_MEET"/>		<!--방문예약 사용여부-->
+		<result property="ceDuty" column="CE_DUTY"/>		<!--EZ_EMPLOYEE_TEMP fk-->
+		<result property="cdDepstep1" column="CD_DEPSTEP1"/>		<!--국 코드-->
+		<result property="cdDepstep2" column="CD_DEPSTEP2"/>		<!--과 코드-->
+		<result property="cdDepstep3" column="CD_DEPSTEP3"/>		<!--팀 코드-->
+		<result property="siteViewYn" column="SITE_VIEW_YN"/>		<!--조직도 표시여부-->
+		<result property="cdIdx" column="CD_IDX"/>		<!--부서 일련번호-->
+		<result property="cdFax" column="CD_FAX"/>		<!--부서 일련번호-->
+	</resultMap>
+	
+	<!-- 리스트 조회 -->
+	<select id="selectListEmp" parameterType="EmpVo" resultMap="EmpList">
+		<![CDATA[
+			SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+				SELECT 
+					A.CE_IDX
+					, A.CE_DATE
+					, A.CE_UPDATE
+					, A.CE_SORT
+					, A.CE_NAME
+					, A.CE_MAILID
+					, A.CE_TEL
+					, A.CE_HP
+					, A.CE_USE
+					, A.CE_USER_ID
+					, A.CE_PHOTO
+					, (
+				    	SELECT 
+							SUBSTR(SYS_CONNECT_BY_PATH(CD_SUBJECT,' > '), INSTR(SYS_CONNECT_BY_PATH(CD_SUBJECT,' > '), ' ', '2'))
+						 FROM 
+						 	EZ_DEPARTMENT
+				    	WHERE 
+				    			CD_CODE = B.CD_CODE
+						START WITH CD_UPR_CODE = 'D000000'
+						CONNECT BY PRIOR  CD_CODE = CD_UPR_CODE
+					)  AS CE_DEPSTEP1
+					, A.CE_DEPSTEP4
+					, A.CE_WORKS
+					, A.CE_CDIDX
+					, A.CE_MEET
+					, A.CE_DUTY
+					, B.CD_DEPSTEP1
+					, B.CD_DEPSTEP2
+					, B.CD_DEPSTEP3
+					, B.CD_IDX
+					, B.CD_FAX 
+					, A.SITE_VIEW_YN
+				 FROM  (
+				 		SELECT * 
+						 FROM 
+						 	EZ_EMPLOYEE 
+						WHERE 
+								CE_CDIDX IN (
+										SELECT 
+											CD_IDX 
+										 FROM 
+										 	EZ_DEPARTMENT
+										START WITH 
+											CD_CODE = (SELECT CD_CODE FROM EZ_DEPARTMENT WHERE CD_IDX = #{selBox})
+		              					CONNECT BY PRIOR CD_CODE = CD_UPR_CODE
+								)
+						) A, EZ_DEPARTMENT B 
+				WHERE 
+						A.CE_CDIDX = B.CD_IDX 
+					AND 
+						A.CE_USE != 'D'
+			]]>
+			<if test="ceName != null and ceName != ''">
+				<![CDATA[
+					AND 
+						A.CE_NAME LIKE '%' || #{ceName} || '%'
+				]]>
+			</if>
+			<![CDATA[
+				ORDER BY B.CD_DEPSTEP1, B.CD_DEPSTEP2, B.CD_DEPSTEP3, A.CE_SORT
+			) TB ) Z WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+	
+	<select id="selectEmpListTotCnt" parameterType="EmpVo" resultType="int">
+		<![CDATA[
+			SELECT 
+				COUNT(*)
+			 FROM  (
+			 		SELECT * 
+					 FROM 
+					 	EZ_EMPLOYEE 
+					WHERE 
+							CE_CDIDX IN (
+									SELECT 
+										CD_IDX 
+									 FROM 
+									 	EZ_DEPARTMENT
+									START WITH 
+										CD_CODE = (SELECT CD_CODE FROM EZ_DEPARTMENT WHERE CD_IDX = #{selBox})
+	              					CONNECT BY PRIOR CD_CODE = CD_UPR_CODE
+							)
+					) A, EZ_DEPARTMENT B 
+			WHERE 
+					A.CE_CDIDX = B.CD_IDX 
+				AND 
+					A.CE_USE != 'D'
+		]]>
+		<if test="ceName != null and ceName != ''">
+			<![CDATA[
+				AND 
+					A.CE_NAME LIKE '%' || #{ceName} || '%'
+			]]>
+		</if>
+	</select>
+	
+	<!-- 미등록, 전체 리스트 조회 -->
+	<select id="selectListAllNoEmp" parameterType="EmpVo" resultMap="EmpList">
+		<![CDATA[
+			SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+				SELECT 
+					A.CE_IDX
+					, A.CE_DATE
+					, A.CE_UPDATE
+					, A.CE_SORT
+					, A.CE_NAME
+					, A.CE_MAILID
+					, A.CE_TEL
+					, A.CE_HP
+					, A.CE_USE
+					, A.CE_USER_ID
+					, A.CE_PHOTO
+					, (
+				    	SELECT 
+							SUBSTR(SYS_CONNECT_BY_PATH(CD_SUBJECT,' > '), INSTR(SYS_CONNECT_BY_PATH(CD_SUBJECT,' > '), ' ', '2'))
+						 FROM 
+						 	EZ_DEPARTMENT
+				    	WHERE 
+				    			CD_CODE = B.CD_CODE
+						START WITH CD_UPR_CODE = 'D000000'
+						CONNECT BY PRIOR  CD_CODE = CD_UPR_CODE
+					)  AS CE_DEPSTEP1
+					, A.CE_DEPSTEP4
+					, A.CE_WORKS
+					, A.CE_CDIDX
+					, A.CE_MEET
+					, A.CE_DUTY
+					, B.CD_DEPSTEP1
+					, B.CD_DEPSTEP2
+					, B.CD_DEPSTEP3 
+					, A.SITE_VIEW_YN
+					, B.CD_IDX
+					, B.CD_FAX
+				FROM  
+					EZ_EMPLOYEE A, EZ_DEPARTMENT B
+				WHERE
+						A.CE_CDIDX = B.CD_IDX(+)
+					AND 
+						A.CE_USE !='D'
+			]]>
+			<if test="selBox == &quot;d999999&quot;">
+				<![CDATA[
+					AND 
+						A.CE_CDIDX = 'd99999999'
+				]]>
+			</if>
+			<if test="srchAll == &quot;Y&quot;">
+			<![CDATA[	
+					AND 
+						A.CE_CDIDX != 'd99999999'
+			]]>	
+			</if>
+			<if test="ceName != null and ceName != ''">
+			<![CDATA[	
+					AND 
+						A.CE_NAME LIKE '%' || #{ceName} || '%'
+			]]>	
+			</if>
+		<![CDATA[	
+				ORDER BY B.CD_DEPSTEP1, B.CD_DEPSTEP2, B.CD_DEPSTEP3, A.CE_SORT
+			) TB ) Z WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+	
+	<select id="selectAllEmpListTotCnt" parameterType="EmpVo" resultType="int">
+		<![CDATA[
+			SELECT 
+				COUNT(*)
+			FROM  
+				EZ_EMPLOYEE A, EZ_DEPARTMENT B
+			WHERE
+					A.CE_CDIDX = B.CD_IDX(+)
+				AND 
+					A.CE_USE !='D'
+		]]>
+		<if test="selBox == &quot;d999999&quot;">
+		<![CDATA[	
+				AND 
+					A.CE_CDIDX = 'd99999999'
+		]]>	
+		</if>
+		<if test="srchAll == &quot;Y&quot;">
+		<![CDATA[	
+				AND 
+					A.CE_CDIDX != 'd99999999'
+		]]>	
+		</if>
+		<if test="ceName != null and ceName != ''">
+		<![CDATA[	
+				AND 
+					A.CE_NAME LIKE '%' || #{ceName} || '%'
+		]]>	
+		</if>
+	</select>
+	
+	<!-- 상세 수정 -->
+	<update id="updateUseCheck" parameterType="EmpVo">
+		<![CDATA[
+			UPDATE EZ_EMPLOYEE 
+			SET CE_USE = #{ceUse}
+			,SITE_VIEW_YN = #{siteViewYn}
+		]]>
+			<if test="ceUse == &quot;Y&quot;">
+			<![CDATA[	
+					,CE_SORT = #{ceSort}
+			]]>	
+			</if>
+			<if test="ceUse == &quot;N&quot;">
+			<![CDATA[	
+					,CE_SORT = '99'
+			]]>	
+			</if>
+			<![CDATA[
+			WHERE  CE_IDX = #{ceIdx}
+			]]>
+	</update>
+	
+	<resultMap id="depstepMap" type="egovframework.injeinc.boffice.group.emp.vo.EmpVo">
+		<result property="cdSubject" column="CD_SUBJECT"/>		<!--이름-->
+		<result property="cdDepstep1" column="CD_DEPSTEP1"/>		<!--국코드-->
+		<result property="cdDepstep2" column="CD_DEPSTEP2"/>		<!--과코드-->
+		<result property="cdDepstep3" column="CD_DEPSTEP3"/>		<!--팀코드-->
+	</resultMap>
+	
+	<!-- 첫번째 셀렉트박스 조회  -->
+	<select id="selectListDepstep1" resultMap="depstepMap">
+		<![CDATA[
+			SELECT CD_SUBJECT
+						, CD_DEPSTEP1
+						, CD_DEPSTEP2
+						, CD_DEPSTEP3 
+			FROM EZ_DEPARTMENT
+			WHERE CD_DEPSTEP2 = '00' 
+			AND CD_DEPSTEP3 = '00'
+			AND CD_USE = 'Y'
+			ORDER BY CD_DEPSTEP1
+		]]>
+	</select>
+	
+	<!-- 두번째 셀렉트박스 조회  -->
+	<select id="selectListDepstep2" parameterType="HashMap" resultMap="depstepMap">
+		<![CDATA[
+			SELECT CD_SUBJECT
+							, CD_DEPSTEP1
+							, CD_DEPSTEP2
+							, CD_DEPSTEP3 
+			FROM EZ_DEPARTMENT
+			WHERE CD_DEPSTEP1 = #{cdDepstep1}
+			AND CD_DEPSTEP2 != '00' 
+			AND CD_DEPSTEP3 = '00'
+			AND CD_USE = 'Y'
+			ORDER BY CD_DEPSTEP2
+		]]>
+	</select>
+	
+	<!-- 세번째 셀렉트박스 조회  -->
+	<select id="selectListDepstep3" parameterType="HashMap" resultMap="depstepMap">
+		<![CDATA[
+			SELECT CD_SUBJECT
+							, CD_DEPSTEP1
+							, CD_DEPSTEP2
+							, CD_DEPSTEP3 
+			FROM EZ_DEPARTMENT
+			WHERE CD_DEPSTEP1 = #{cdDepstep1} 
+			AND CD_DEPSTEP2 = #{cdDepstep2} 
+			AND CD_DEPSTEP3 != '00'
+			AND CD_USE = 'Y'
+			ORDER BY CD_DEPSTEP3
+		]]>
+	</select>
+	
+	<!-- 등록  -->
+	<insert id="insertEmp" parameterType="EmpVo">
+		<![CDATA[
+			INSERT INTO EZ_EMPLOYEE(
+				CE_IDX
+				, CE_DATE
+				, CE_UPDATE
+				, CE_SORT
+				, CE_NAME
+				, CE_MAILID
+				, CE_TEL
+				, CE_HP
+				, CE_USE
+				, CE_PHOTO
+				, CE_DEPSTEP1
+				, CE_DEPSTEP2
+				, CE_DEPSTEP3
+				, CE_DEPSTEP4
+				, CE_WORKS
+				, CE_CDIDX
+				, CE_MEET
+				, CE_DUTY
+			)VALUES(
+				#{ceIdx}
+				, TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')
+				, TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')
+				, #{ceSort}
+				, #{ceName}
+				, #{ceMailid}
+				, #{ceTel}
+				, #{ceHp}
+				, 'Y'
+				, #{cePhoto}
+				, #{ceDepstep1}
+				, #{ceDepstep2}
+				, #{ceDepstep3}
+				, #{ceDepstep4}
+				, #{ceWorks}
+				, #{ceCdIdx}
+				, #{ceMeet}
+				, #{ceDuty}
+			)
+		]]>
+	</insert>
+	
+	<!-- 등록  -->
+	<insert id="insertEmp2" parameterType="EmpTempVo">
+		<![CDATA[
+			INSERT INTO EZ_EMPLOYEE(
+			CE_IDX
+			,CE_DATE
+			,CE_UPDATE
+			,CE_SORT
+			,CE_NAME
+			,CE_MAILID
+			,CE_TEL
+			,CE_HP
+			,CE_USE
+			,CE_DEPSTEP1
+			,CE_DEPSTEP2
+			,CE_DEPSTEP3
+			,CE_DEPSTEP4
+			,CE_WORKS
+			,CE_CDIDX
+			)VALUES(
+			#{userIdx}
+			,TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')
+			,TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')
+			,#{odr}
+			,#{userName}
+			,#{mail}
+			,#{tel}
+			,#{mobile}
+			,#{useYn}
+			,#{dvDepstep1}
+			,#{deptName}
+			,#{sectionName}
+			,#{rankName}
+			,#{workDivisionContents}
+			,#{dvIdxdepth3})
+		]]>
+	</insert>
+	
+	<!-- ceIdx 최대값 조회   -->
+	<select id="selectMaxCeIdx" resultType="String">
+		<![CDATA[
+			SELECT nvl(MAX(CE_IDX),'e000000000')
+			FROM EZ_EMPLOYEE 
+			WHERE CE_IDX LIKE 'e%'
+		]]>
+	</select>
+	
+	<!-- cdIdx 조회  -->
+	<select id="selectCdIdx" parameterType="EmpVo" resultType="String">
+		<![CDATA[
+			SELECT CD_IDX
+			FROM EZ_DEPARTMENT 
+			WHERE CD_DEPSTEP1 = #{cdDepstep1}
+			AND CD_DEPSTEP2 = #{cdDepstep2}
+			AND CD_DEPSTEP3 = #{cdDepstep3}
+		]]>
+	</select>
+	
+	<!-- ceSort 최대값 조회  -->
+	<select id="selectMaxCeSort" parameterType="EmpVo" resultType="String">
+		<![CDATA[
+			SELECT MAX(CE_SORT)+1
+			FROM EZ_EMPLOYEE 
+			WHERE 
+				CE_CDIDX = #{ceCdIdx}
+			 AND 
+			 	CE_SORT != '99'
+		]]>
+	</select>
+	
+	<!-- 사용자 정보 조회  -->
+	<select id="selectEmp" parameterType="EmpVo" resultMap="Emp">
+		<![CDATA[
+			SELECT 
+				CE_IDX
+				, CE_DATE
+				, CE_UPDATE
+				, CE_SORT
+				, CE_NAME
+				, CE_MAILID
+				, CE_TEL
+				, CE_HP
+				, CE_USE
+				, CE_USER_ID
+				, CE_PHOTO
+				, (
+        			SELECT 
+						SUBSTR(SYS_CONNECT_BY_PATH(CD_SUBJECT,' > '), INSTR(SYS_CONNECT_BY_PATH(CD_SUBJECT,' > '), ' ', '2'))
+					 FROM 
+					 	EZ_DEPARTMENT
+			    	WHERE 
+		    			CD_CODE = B.CD_CODE
+					START WITH CD_UPR_CODE = 'D000000'
+					CONNECT BY PRIOR  CD_CODE = CD_UPR_CODE
+				)     AS CE_DEPSTEP1
+				, CE_DEPSTEP2
+				, CE_DEPSTEP3
+				, CE_DEPSTEP4
+				, CE_WORKS
+				, CE_CDIDX
+				, CE_MEET
+				, CE_DUTY
+				, CD_DEPSTEP1
+				, CD_DEPSTEP2
+				, CD_DEPSTEP3 
+				, A.SITE_VIEW_YN
+				, B.CD_IDX
+				, B.CD_FAX
+			FROM EZ_EMPLOYEE A
+			 LEFT JOIN EZ_DEPARTMENT B ON A.CE_CDIDX = B.CD_IDX 
+			WHERE 1 = 1
+		]]>
+		<if test="ceIdx != null and ceIdx != ''">AND
+			<![CDATA[
+				CE_IDX = #{ceIdx}
+			]]>
+		</if>
+		<if test="ceUse != null and ceUse != ''">AND
+			<![CDATA[
+				CE_USE = #{ceUse}
+			]]>
+		</if>
+		<if test="ceUserId != null and ceUserId != ''">AND
+			<![CDATA[
+				CE_USER_ID = #{ceUserId}
+				AND ROWNUM<2
+			]]>
+		</if>
+	</select>
+	
+	<!-- 사용자 삭제(업데이트)  -->
+	<update id="updateEmp" parameterType="EmpVo">
+		<![CDATA[
+		UPDATE EZ_EMPLOYEE
+		SET CE_USE = 'D'
+		WHERE CE_IDX = #{ceIdx}
+		]]>
+	</update>
+	
+	<!-- 사용자 수정  -->
+	<update id="updateEmpDetail" parameterType="EmpVo">
+		<![CDATA[
+	 		UPDATE EZ_EMPLOYEE
+            	SET CE_UPDATE = TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')            	
+	            ,CE_NAME = #{ceName}
+	            ,CE_MAILID = #{ceMailid}
+	            ,CE_TEL = #{ceTel}
+	            ,CE_HP = #{ceHp}
+	            ,CE_PHOTO = #{cePhoto}
+	            ,CE_DEPSTEP1 = #{ceDepstep1}
+	            ,CE_DEPSTEP2 = #{ceDepstep2}
+	            ,CE_DEPSTEP3 = #{ceDepstep3}
+	            ,CE_DEPSTEP4 = #{ceDepstep4}
+	            ,CE_WORKS = #{ceWorks}
+	            ,CE_CDIDX = #{ceCdIdx}
+	            ,CE_MEET = #{ceMeet}
+	            ,CE_DUTY = #{ceDuty}
+            WHERE CE_IDX = #{ceIdx}
+       	]]>
+    </update>
+	
+	<!-- 사용자 수정  -->
+	<update id="updateEmpDetail2" parameterType="EmpTempVo">
+		<![CDATA[
+	 		UPDATE EZ_EMPLOYEE
+            	SET CE_UPDATE = TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')
+	            ,CE_NAME = #{userName}
+	     ]]>       
+	            	<if test="odr == 99">
+	            		<![CDATA[
+	            			,CE_SORT = '99'
+	            		]]>
+	            	</if>
+	     <![CDATA[       
+	            ,CE_MAILID = #{mail}
+	            ,CE_TEL = #{tel}
+	            ,CE_HP = #{mobile}
+	            ,CE_DEPSTEP4 = #{rankName}
+	            ,CE_WORKS = #{workDivisionContents}
+	            ,CE_USE = #{useYn}
+            WHERE CE_IDX = #{userId}
+       	]]>
+    </update>
+	
+    <!-- 최소상위 ceSort 조회  -->
+    <select id="selectMinUpCeSort" parameterType="EmpVo" resultType="String">
+		<![CDATA[
+			SELECT 
+				MAX(CE_SORT) 
+			FROM 
+				EZ_EMPLOYEE 
+			WHERE 
+				CE_SORT < #{ceSort} 
+			 AND 
+			 	CE_CDIDX = #{ceCdIdx} 
+			 AND 
+			 	CE_USE != 'D'
+		 ]]>
+	</select>
+	
+	<!-- 최대하위 ceSort의 조회  -->
+    <select id="selectMaxDownCeSort" parameterType="EmpVo" resultType="String">
+		<![CDATA[
+			SELECT 
+				MIN(CE_SORT) 
+			 FROM 
+				EZ_EMPLOYEE 
+			WHERE 
+				CE_SORT > #{ceSort} 
+			 AND 
+				CE_USE != 'D'
+			 AND 
+			 	CE_CDIDX   IN
+						(
+							SELECT 
+          						CD_IDX 
+         					 FROM 
+          						EZ_DEPARTMENT
+        					START WITH 
+          						CD_CODE = (
+          											SELECT 
+          												CD_CODE 
+          											 FROM 
+          											 	EZ_DEPARTMENT 
+          											 WHERE 
+          											 	CD_IDX = #{ceCdIdx}
+          										)
+                			CONNECT BY PRIOR CD_CODE = CD_UPR_CODE
+                		)
+		]]>	 
+	</select>
+	
+	<!-- 임의숫자로 수정  -->
+	<update id="updateTempCeSort" parameterType="EmpVo">
+		<![CDATA[
+			UPDATE EZ_EMPLOYEE
+				SET CE_SORT = '999'
+			WHERE 
+		]]>
+			<if test="step == &quot;up&quot;">
+				<![CDATA[
+					CE_SORT = #{minUpCeSort}
+				]]>
+			</if>
+			 <if test="step == &quot;down&quot;">
+				<![CDATA[
+					CE_SORT = #{maxDownCeSort}
+				]]>
+			</if>
+		<![CDATA[	
+				AND CE_CDIDX = #{ceCdIdx} 
+		]]>	 
+	</update>
+	
+	<!-- 아래 → 위 수정  -->
+	<update id="updateUpCeSort" parameterType="EmpVo">
+		<![CDATA[
+			UPDATE EZ_EMPLOYEE
+		]]>	
+			<if test="step == &quot;up&quot;">
+				<![CDATA[
+					SET CE_SORT = #{minUpCeSort}
+					WHERE CE_SORT = #{ceSort} 
+				]]>
+			</if>
+			<if test="step == &quot;down&quot;">
+				<![CDATA[
+					SET CE_SORT = #{tempCeSort}
+					WHERE CE_SORT = '999'
+				]]>
+			</if>
+		<![CDATA[	
+				AND CE_CDIDX = #{ceCdIdx} 
+		]]>	 
+	</update>
+	
+	<!-- 위 → 아래 수정  -->
+	<update id="updateDownCeSort" parameterType="EmpVo">
+		<![CDATA[
+			UPDATE EZ_EMPLOYEE
+		]]>	
+			<if test="step == &quot;up&quot;">
+				<![CDATA[
+					SET CE_SORT = #{tempCeSort}
+					WHERE CE_SORT = '999' 
+				]]>
+			</if>
+			<if test="step == &quot;down&quot;">
+				<![CDATA[
+					SET CE_SORT = #{maxDownCeSort}
+					WHERE CE_SORT = #{ceSort} 
+				]]>
+			</if>
+		<![CDATA[	
+				AND CE_CDIDX = #{ceCdIdx} 
+		]]> 
+	</update>
+	
+	<!-- 미사용자 미등록으로 수정  -->
+	<update id="updateNoEmp" parameterType="String">
+		<![CDATA[
+			UPDATE EZ_EMPLOYEE
+			SET 
+				CE_CDIDX = 'd99999999'
+				,CE_MEET = 'N'
+			WHERE CE_IDX = #{ceIdx}
+		]]>
+	</update>
+    
+    <!-- 최대 userIdx 조회  -->
+    <select id="selectMaxUserIdx" resultType="int">
+		<![CDATA[
+			SELECT MAX(USER_IDX) 
+			FROM EZ_EMPLOYEE_TEMP
+		]]>
+	</select>
+	
+	<!-- 임시테이블 등록 -->
+	<insert id="insertEmpTemp">
+		<![CDATA[
+			INSERT INTO EZ_EMPLOYEE_TEMP(
+			   	USER_IDX
+			    , USER_ID
+			    , USER_NAME
+			    , SECTION_ID
+			    , SECTION_NAME
+			    , DEPT_ID
+			    , DEPT_NAME
+			    , RANK_NAME
+			    , TEL
+			    , MOBILE
+			    , MAIL
+			    , WORK_DIVISION_CONTENTS
+			    , ODR
+			    , USE_YN
+			    , MARK_YN
+			    , USER_STATUS
+			    , USER_STATUS_NAME
+			    , INSERT_DATE
+			)VALUES(
+			    #{userIdx}
+			    , #{userId}
+			    , #{userName}
+			    , #{sectionId}
+			    , #{sectionName}
+			    , #{deptId}
+			    , #{deptName}
+			    , #{rankName}
+			    , #{tel}
+			    , #{mobile}
+			    , #{mail}
+			    , #{workDivisionContents}
+			    , #{odr}
+			    , #{useYn}
+			    , #{markYn}
+			    , #{userStatus}
+			    , #{userStatusName}
+			    , TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+			)
+	    ]]>
+    </insert>
+    
+    <!-- 사용자 조회 -->
+    <select id="selectCeIdx" parameterType="EmpTempVo" resultType="int">
+    	<![CDATA[
+    		SELECT COUNT(CE_IDX)
+    		FROM EZ_EMPLOYEE
+    		WHERE CE_IDX = #{userId}
+    	]]>
+    </select>
+    
+    <resultMap id="EmpView" type="egovframework.injeinc.boffice.group.emp.vo.EmpTempVo">
+		<result property="dvDepth1" column="DV_DEPTH1"/>		<!--국명-->
+		<result property="dvDepth2" column="DV_DEPTH2"/>		<!--과명-->
+		<result property="dvDepth3" column="DV_DEPTH3"/>		<!--팀명-->
+		<result property="dvIdxdepth1" column="DV_IDXDEPTH1"/>		<!--국cdIdx-->
+		<result property="dvIdxdepth2" column="DV_IDXDEPTH2"/>		<!--과cdIdx-->
+		<result property="dvIdxdepth3" column="DV_IDXDEPTH3"/>		<!--팀cdIdx-->
+		<result property="dvDepstep1" column="DV_DEPSTEP1"/>		<!--국코드-->
+		<result property="dvDepstep2" column="DV_DEPSTEP2"/>		<!--과코드-->
+		<result property="dvDepstep3" column="DV_DEPSTEP3"/>		<!--팀코드-->
+	</resultMap>
+	
+	<!-- 뷰 테이블 조회 -->
+    <select id="selectEmpView" parameterType="EmpVo" resultMap="EmpView">
+	    <![CDATA[
+		    SELECT DV_DEPTH1
+					    ,DV_DEPTH2
+					    ,DV_DEPTH3
+					    ,DV_IDXDEPTH1
+					    ,DV_IDXDEPTH2
+					    ,DV_IDXDEPTH3
+					    ,DV_DEPSTEP1
+					    ,DV_DEPSTEP2
+					    ,DV_DEPSTEP3
+		     FROM DEPARTMENT_VIEW 
+		     WHERE DV_DEPTH2 = #{ceDepstep2} 
+		     AND DV_DEPTH3 = #{ceDepstep3}
+		]]>
+    </select>
+    
+    <resultMap id="EmpTempMap" type="egovframework.injeinc.boffice.group.emp.vo.EmpTempVo">
+		<result property="userIdx" column="USER_IDX"/>		<!-- idx -->
+		<result property="userId" column="USER_ID"/>		<!-- 아이디 -->
+		<result property="userName" column="USER_NAME"/>		<!-- 이름 -->
+		<result property="sectionId" column="SECTION_ID"/>		<!-- 팀아이디 -->
+		<result property="sectionName" column="SECTION_NAME"/>		<!-- 팀명 -->
+		<result property="deptId" column="DEPT_ID"/>		<!-- 과아이디 -->
+		<result property="deptName" column="DEPT_NAME"/>		<!-- 과이름 -->
+		<result property="dvDepth1" column="DV_DEPTH1"/>		<!-- 국이름 -->
+		<result property="dvIdxdepth3" column="DV_IDXDEPTH3"/>		<!-- 부서코드 -->
+		<result property="rankName" column="RANK_NAME"/>		<!-- 직위 -->
+		<result property="tel" column="TEL"/>		<!-- 전화번호 -->
+		<result property="mobile" column="MOBILE"/>		<!-- 핸드폰번호 -->
+		<result property="mail" column="MAIL"/>		<!-- 이메일 -->
+		<result property="workDivisionContents" column="WORK_DIVISION_CONTENTS"/>		<!-- 업무내용 -->
+		<result property="odr" column="ODR"/>		<!-- 순번 -->
+		<result property="useYn" column="USE_YN"/>		<!-- 사용 -->
+		<result property="markYn" column="MARK_YN"/>		<!-- 표기 -->
+		<result property="userStatus" column="USER_STATUS"/>		<!-- 상태코드 -->
+		<result property="userStatusName" column="USER_STATUS_NAME"/>		<!-- 상태명 -->
+		<result property="insertDate" column="INSERT_DATE"/>		<!-- 등록날짜 -->
+		<result property="insertYn" column="INSERT_YN"/>		<!-- 입력여부 -->
+	</resultMap>
+	
+    <!-- 조직도연동 리스트 조회 -->
+    <select id="selectListEmpTemp" parameterType="EmpTempVo" resultMap="EmpTempMap">
+	    <![CDATA[
+	    SELECT * FROM (SELECT ROWNUM AS rn, TB.* FROM (
+	    	SELECT USER_IDX ,
+					  USER_ID ,
+					  USER_NAME ,
+					  SECTION_ID ,
+					  DEPT_ID ,
+					  SECTION_NAME ,
+					  DEPT_NAME ,
+					  DV_DEPTH1 ,
+					  DV_IDXDEPTH3 ,
+					  RANK_NAME ,
+					  TEL ,
+					  MOBILE ,
+					  MAIL ,
+					  WORK_DIVISION_CONTENTS ,
+					  ODR ,
+					  USE_YN ,
+					  MARK_YN ,
+					  USER_STATUS ,
+					  USER_STATUS_NAME ,
+					  INSERT_DATE ,
+					  INSERT_YN
+			FROM EZ_EMPLOYEE_TEMP A, DEPARTMENT_VIEW B
+			WHERE NVL(A.SECTION_NAME,A.DEPT_NAME) = B.DV_DEPTH3(+)
+			AND A.DEPT_NAME = B.DV_DEPTH2(+)
+			AND SUBSTR(INSERT_DATE,0,4) = #{year}
+			AND USE_YN = '1'
+			]]>
+			<if test="insertYn != null and insertYn != ''">AND
+				<![CDATA[
+					INSERT_YN = #{insertYn}
+				]]>
+			</if>
+			<if test="month != null and month != ''">AND
+				<![CDATA[
+					SUBSTR(INSERT_DATE,6,2) = #{month}
+				]]>
+			</if>
+			<if test="day != null and day != ''">AND
+				<![CDATA[
+					SUBSTR(INSERT_DATE,9,2) = #{day}
+				]]>
+			</if>
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<if test="searchCondition == &quot;name&quot;">AND
+					<![CDATA[
+						USER_NAME LIKE '%' || #{searchKeyword} || '%'
+					]]>		
+				</if>
+				<if test="searchCondition == &quot;deptName&quot;">AND
+					<![CDATA[
+						DEPT_NAME LIKE '%' || #{searchKeyword} || '%'
+					]]>		
+				</if>
+			</if>
+			<![CDATA[
+			ORDER BY USER_IDX DESC
+			) TB) TBL WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	    	]]>
+	</select>
+	
+	<!-- 조직도연동 페이징 -->
+    <select id="selectPagEmpTemp" parameterType="EmpTempVo" resultType="int">
+	    <![CDATA[
+	    	SELECT COUNT(USER_IDX)
+			FROM EZ_EMPLOYEE_TEMP A, DEPARTMENT_VIEW B
+			WHERE A.SECTION_NAME = B.DV_DEPTH3(+)
+			AND A.DEPT_NAME = B.DV_DEPTH2(+)
+			AND SUBSTR(INSERT_DATE,0,4) = #{year}
+		]]>	
+			<if test="insertYn != null and insertYn != ''">AND
+				<![CDATA[
+					INSERT_YN = #{insertYn}
+				]]>
+			</if>
+			<if test="month != null and month != ''">AND
+				<![CDATA[
+					SUBSTR(INSERT_DATE,6,2) = #{month}
+				]]>
+			</if>
+			<if test="day != null and day != ''">AND
+				<![CDATA[
+					SUBSTR(INSERT_DATE,9,2) = #{day}
+				]]>
+			</if>
+			<if test="searchKeyword != null and searchKeyword != ''">
+				<if test="searchCondition == &quot;name&quot;">AND
+					<![CDATA[
+						USER_NAME LIKE '%' || #{searchKeyword} || '%'
+					]]>		
+				</if>
+				<if test="searchCondition == &quot;deptName&quot;">AND
+					<![CDATA[
+						DEPT_NAME LIKE '%' || #{searchKeyword} || '%'
+					]]>		
+				</if>
+			</if>
+	</select>
+    
+    <!-- empTemp 조회 -->
+	<select id="selectEmpTemp" parameterType="EmpTempVo" resultMap="EmpTempMap">
+		<![CDATA[
+			SELECT USER_IDX ,
+					  USER_ID ,
+					  USER_NAME ,
+					  SECTION_ID ,
+					  DEPT_ID ,
+					  SECTION_NAME ,
+					  DEPT_NAME ,
+					  DV_DEPTH1 ,
+					  DV_IDXDEPTH3 ,
+					  RANK_NAME ,
+					  TEL ,
+					  MOBILE ,
+					  MAIL ,
+					  WORK_DIVISION_CONTENTS ,
+					  ODR ,
+					  USE_YN ,
+					  MARK_YN ,
+					  USER_STATUS ,
+					  USER_STATUS_NAME ,
+					  INSERT_DATE ,
+					  INSERT_YN
+			FROM EZ_EMPLOYEE_TEMP A, DEPARTMENT_VIEW B
+			WHERE 
+			CASE
+			    WHEN NVL(A.SECTION_NAME, A.DEPT_NAME) = '오-케이민원센터' THEN 'OK민원센터'
+			    ELSE NVL(A.SECTION_NAME, A.DEPT_NAME)
+			  END = B.DV_DEPTH3
+			  AND
+			  CASE
+			    WHEN A.DEPT_NAME = '오-케이민원센터' THEN 'OK민원센터'
+			    ELSE A.DEPT_NAME
+			END = B.DV_DEPTH2
+			AND USER_IDX = #{userIdx}
+		]]>
+	</select>
+	
+	<!-- 해당 부서 사용자 조회  -->
+	<select id="selectDeptEmp" parameterType="EmpTempVo" resultMap="Emp">
+		<![CDATA[
+			SELECT CE_IDX
+					,CE_DATE
+					,CE_UPDATE
+					,CE_SORT
+					,CE_NAME
+					,CE_MAILID
+					,CE_TEL
+					,CE_HP
+					,CE_USE
+					,CE_USER_ID
+					,CE_PHOTO
+					,CE_DEPSTEP1
+					,CE_DEPSTEP2
+					,CE_DEPSTEP3
+					,CE_DEPSTEP4
+					,CE_WORKS
+					,CE_CDIDX
+					,CE_MEET
+					,CE_DUTY
+					,CD_DEPSTEP1
+					,CD_DEPSTEP2
+					,CD_DEPSTEP3 
+					,A.SITE_VIEW_YN
+					,B.CD_IDX
+					,B.CD_FAX
+			FROM  EZ_EMPLOYEE A, EZ_DEPARTMENT B
+			WHERE CE_IDX = #{userId}
+		 	AND A.CE_CDIDX = B.CD_IDX
+		 	AND CE_DEPSTEP1 = #{dvDepth1}
+		 	AND CE_DEPSTEP2 = #{deptName}
+		 	AND CE_DEPSTEP3 = #{sectionName}
+		]]>
+	</select>
+	
+	<!-- 직원정보 수정 -->
+	<update id="updateEmpUser" parameterType="hashMap">
+	<![CDATA[
+		UPDATE EZ_EMPLOYEE
+		SET CE_UPDATE = TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')
+           	,CE_SORT = #{ceSort}
+            ,CE_NAME = #{ceName}
+            ,CE_MAILID = #{ceMailid}
+            ,CE_TEL = #{ceTel}
+            ,CE_HP = #{ceHp}
+            ,CE_USE = #{ceUse}
+            ,CE_PHOTO = #{cePhoto}
+            ,CE_DEPSTEP1 = #{ceDepstep1}
+            ,CE_DEPSTEP2 = #{ceDepstep2}
+            ,CE_DEPSTEP3 = #{ceDepstep3}
+            ,CE_DEPSTEP4 = #{ceDepstep4}
+            ,CE_WORKS = #{ceWorks}
+            ,CE_CDIDX = #{ceCdIdx}
+            ,CE_MEET = #{ceMeet}
+            ,CE_DUTY = #{ceDuty}
+		WHERE CE_IDX = #{ceIdx}
+	]]>
+	</update>
+	
+	<!-- 직원정보 등록 -->
+	<insert id="insertEmpUser" parameterType="hashMap">
+	<![CDATA[
+		INSERT INTO EZ_EMPLOYEE(
+			CE_IDX
+	        ,CE_DATE
+	        ,CE_UPDATE
+	        ,CE_SORT
+	        ,CE_NAME
+	        ,CE_MAILID
+	        ,CE_TEL
+	        ,CE_HP
+	        ,CE_USE
+	        ,CE_DEPSTEP1
+	        ,CE_DEPSTEP2
+	        ,CE_DEPSTEP3
+	        ,CE_DEPSTEP4
+	        ,CE_WORKS
+	        ,CE_CDIDX
+	        ,CE_DUTY
+	        )VALUES(
+	       #{ceIdx}
+	        ,#{ceUpdate}
+	        ,#{ceUpdate}
+	        ,#{ceSort}
+	        ,#{ceName}
+	        ,#{ceMailid}
+	        ,#{ceTel}
+	        ,#{ceHp}
+	        ,#{ceUse}
+	        ,#{ceDepstep1}
+	        ,#{ceDepstep2}
+	        ,#{ceDepstep3}
+	        ,#{ceDepstep4}
+	        ,#{ceWorks}
+	        ,#{ceCdIdx}
+	        ,#{ceDuty}
+	        )
+	]]>
+	</insert>
+	
+	<!-- 직원등록여부 수정(Y) -->
+	<update id="updateEmpTempYn" parameterType="int">
+	<![CDATA[
+	 	UPDATE EZ_EMPLOYEE_TEMP
+	 	SET INSERT_YN = 'Y'
+	 	WHERE 	USER_IDX = #{userIdx}
+	]]>
+	</update>
+	
+	<!-- 직원등록여부 수정(Y) -->
+	<update id="updateEmpTempD" parameterType="int">
+	<![CDATA[
+	 	UPDATE EZ_EMPLOYEE_TEMP
+	 	SET USE_YN='0'
+	 	WHERE 	USER_IDX = #{userIdx}
+	]]>
+	</update>
+	
+	<!-- 직원등록여부 수정(N) -->
+	<update id="updateEmpTempYn2" parameterType="int">
+	<![CDATA[
+	 	UPDATE EZ_EMPLOYEE_TEMP
+	 	SET INSERT_YN = 'N'
+	 	WHERE 	USER_IDX = #{userIdx}
+	]]>
+	</update>
+	
+	<!-- 직원 일괄 마크 수정(N) -->
+	<update id="updateEmpTempAllMark" parameterType="int">
+	<![CDATA[
+	 	UPDATE EZ_EMPLOYEE_TEMP
+	 	SET MARK_YN = 'N'
+	 	WHERE 	USER_IDX = #{userIdx}
+	]]>
+	</update>
+	
+	<!-- 부서에 해당한 순서 유무 조회 -->
+	<select id="selectSortYn" parameterType="hashMap" resultType="int">
+	<![CDATA[
+		SELECT COUNT(*)
+		FROM EZ_EMPLOYEE
+		WHERE CE_DEPSTEP1 = #{ceDepstep1}
+		AND CE_DEPSTEP2 = #{ceDepstep2}
+		AND CE_DEPSTEP3 = #{ceDepstep3}
+		AND CE_SORT = #{ceSort}
+		AND CE_IDX <> #{ceIdx}
+	]]>
+	</select>
+	
+	<!-- 해당부서 순서 변경 -->
+	<update id="updateSort" parameterType="hashMap">
+	<![CDATA[
+	 	UPDATE EZ_EMPLOYEE
+	 	SET CE_SORT =
+			  CASE
+			    WHEN CE_SORT < '09' THEN '0'||(CE_SORT + '1')
+			    ELSE TO_CHAR(CE_SORT+1)
+			  END
+	 	WHERE CE_SORT NOT IN('98','99')
+	 	AND CE_SORT >= #{ceSort}
+	 	AND CE_DEPSTEP1 = #{ceDepstep1}
+		AND CE_DEPSTEP2 = #{ceDepstep2}
+		AND CE_DEPSTEP3 = #{ceDepstep3}
+	]]>
+	</update>
+	
+	<!-- 직원정보 수정 -->
+	<update id="updateEmpTemp" parameterType="EmpTempVo">
+	<![CDATA[
+	 	UPDATE EZ_EMPLOYEE_TEMP
+	 	SET USER_NAME = #{userName}
+	 	, RANK_NAME = #{rankName}
+	 	, SECTION_NAME = #{sectionName}
+	 	, DEPT_NAME = #{deptName}
+	 	, TEL = #{tel}
+	 	, MOBILE = #{mobile}
+	 	, MAIL = #{mail}
+	 	, WORK_DIVISION_CONTENTS = #{workDivisionContents}
+	 	, USE_YN = #{useYn}
+	 	, MARK_YN = #{markYn}
+	 	, USER_STATUS = #{userStatus}
+	 	, ODR = #{odr}
+	 	WHERE 	USER_IDX = #{userIdx}
+	 ]]>
+	</update>
+	
+	<resultMap id="EmpTempMap2" type="egovframework.injeinc.boffice.group.emp.vo.EmpTempVo">
+		<result property="userIdx" column="USER_IDX"/>		<!-- idx -->
+		<result property="userId" column="USER_ID"/>		<!-- 아이디 -->
+		<result property="userName" column="USER_NAME"/>		<!-- 이름 -->
+		<result property="sectionId" column="SECTION_ID"/>		<!-- 팀아이디 -->
+		<result property="sectionName" column="SECTION_NAME"/>		<!-- 팀명 -->
+		<result property="deptId" column="DEPT_ID"/>		<!-- 과아이디 -->
+		<result property="deptName" column="DEPT_NAME"/>		<!-- 과이름 -->
+		<result property="rankName" column="RANK_NAME"/>		<!-- 직위 -->
+		<result property="tel" column="TEL"/>		<!-- 전화번호 -->
+		<result property="mobile" column="MOBILE"/>		<!-- 핸드폰번호 -->
+		<result property="mail" column="MAIL"/>		<!-- 이메일 -->
+		<result property="workDivisionContents" column="WORK_DIVISION_CONTENTS"/>		<!-- 업무내용 -->
+		<result property="odr" column="ODR"/>		<!-- 순번 -->
+		<result property="useYn" column="USE_YN"/>		<!-- 사용 -->
+		<result property="markYn" column="MARK_YN"/>		<!-- 표기 -->
+		<result property="userStatus" column="USER_STATUS"/>		<!-- 상태코드 -->
+		<result property="userStatusName" column="USER_STATUS_NAME"/>		<!-- 상태명 -->
+		<result property="insertDate" column="INSERT_DATE"/>		<!-- 등록날짜 -->
+		<result property="insertYn" column="INSERT_YN"/>		<!-- 입력여부 -->
+	</resultMap>
+	
+	<!-- 직원정보 상세보기 -->
+	<select id="selectEmpTempDetail" parameterType="int" resultMap="EmpTempMap2">
+	<![CDATA[
+		SELECT USER_IDX
+				,USER_ID
+				,USER_NAME
+				,SECTION_ID
+				,SECTION_NAME
+				,DEPT_ID
+				,DEPT_NAME
+				,RANK_NAME
+				,TEL
+				,MOBILE
+				,MAIL
+				,WORK_DIVISION_CONTENTS
+				,ODR
+				,USE_YN
+				,MARK_YN
+				,USER_STATUS
+				,USER_STATUS_NAME
+				,INSERT_DATE
+				,INSERT_YN
+		FROM EZ_EMPLOYEE_TEMP
+		WHERE USER_IDX = #{userIdx}
+	]]>
+	</select>
+	
+	<insert id="insertGkEmployee" parameterType="EmpVo">
+	<![CDATA[
+		INSERT INTO GK_EMPLOYEE(
+			MEM_SSN
+			,MEM_NAME
+			,MEM_TASK
+			,MEM_HP
+			,MEM_TEL
+			,MEM_EMAIL
+			,ID
+			,POSITION
+			,TEAM_ID
+			,TEAM_NAME
+			,TEAM_ORDER
+			,SORT_NUM
+			,PHOTO_PATH
+			,MEM_EXT_NUM
+		) VALUES(
+			#{memSsn}
+			,#{memName}
+			,#{memTask}
+			,#{memHp}
+			,#{memTel}
+			,#{memEmail}
+			,#{id}
+			,#{position}
+			,#{teamId}
+			,#{teamName}
+			,#{teamOrder}
+			,#{sortNum}
+			,#{photoPath}
+			,#{memExtNum}
+		)
+	]]>
+	</insert>
+	
+	<delete id="deleteGkEmployee" parameterType="EmpVo">
+	<![CDATA[
+		DELETE FROM GK_EMPLOYEE
+	]]>
+	</delete>
+	
+	<!-- 등록  -->
+	<insert id="insertRenewEmp" parameterType="EmpVo">
+	<![CDATA[	
+			INSERT INTO EZ_EMPLOYEE(
+				CE_IDX
+				,CE_DATE
+				,CE_UPDATE
+				,CE_SORT
+				,CE_NAME
+				,CE_MAILID
+				,CE_TEL
+				,CE_HP
+				,CE_USE
+				,CE_PHOTO
+				,CE_DEPSTEP1
+				,CE_DEPSTEP2
+				,CE_DEPSTEP3
+				,CE_DEPSTEP4
+				,CE_WORKS
+				,CE_CDIDX
+				,CE_USER_ID
+			)
+			SELECT
+				'e'||LPAD((SELECT REPLACE(nvl(MAX(CE_IDX),'e000000000'),'e','') from EZ_EMPLOYEE) + rownum,8,'0')
+				,TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')
+				,TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS')
+				,SORT_NUM
+				,MEM_NAME
+				,MEM_EMAIL
+				,MEM_TEL
+				,MEM_HP
+				,'Y'
+				,PHOTO_PATH
+				,(
+				  SELECT MAX(CD_SUBJECT) FROM EZ_DEPARTMENT WHERE CD_DEPSTEP1=(SELECT MAX(CD_DEPSTEP1) FROM EZ_DEPARTMENT WHERE CD_IDX=A.TEAM_ID)
+				    AND CD_DEPSTEP2='00' 
+				    AND CD_DEPSTEP3='00' AND CD_USE='Y'
+				  ) as CE_DEPSTEP1
+				,(
+				  SELECT MAX(CD_SUBJECT) FROM EZ_DEPARTMENT WHERE CD_DEPSTEP1=(SELECT MAX(CD_DEPSTEP1) FROM EZ_DEPARTMENT WHERE CD_IDX=A.TEAM_ID)
+				    AND CD_DEPSTEP2=(SELECT MAX(CD_DEPSTEP2) FROM EZ_DEPARTMENT WHERE CD_IDX=A.TEAM_ID) 
+				    AND CD_DEPSTEP3='00' AND CD_USE='Y'
+				  ) as CE_DEPSTEP2
+				,TEAM_NAME
+				,POSITION
+				,MEM_TASK
+				,TEAM_ID
+				,ID
+			FROM GK_EMPLOYEE A
+			WHERE ID NOT IN(
+				SELECT CE_USER_ID FROM EZ_EMPLOYEE WHERE CE_USER_ID IS NOT NULL
+			)
+	]]>	
+	</insert>
+	<update id="updateRenewEmp" parameterType="EmpVo">
+	<![CDATA[
+		MERGE INTO EZ_EMPLOYEE T1 USING
+		(
+			SELECT
+				TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS') as CE_UPDATE
+				,SORT_NUM as CE_SORT
+				,MEM_NAME as CE_NAME
+				,MEM_EMAIL as CE_MAILID
+				,MEM_TEL as CE_TEL
+				,MEM_HP as CE_HP
+				,PHOTO_PATH as CE_PHOTO
+				,(
+				  SELECT MAX(CD_SUBJECT) FROM EZ_DEPARTMENT WHERE CD_DEPSTEP1=(SELECT MAX(CD_DEPSTEP1) FROM EZ_DEPARTMENT WHERE CD_IDX=A.TEAM_ID)
+				    AND CD_DEPSTEP2='00' 
+				    AND CD_DEPSTEP3='00' AND CD_USE='Y'
+				  ) as CE_DEPSTEP1
+				,(
+				  SELECT MAX(CD_SUBJECT) FROM EZ_DEPARTMENT WHERE CD_DEPSTEP1=(SELECT MAX(CD_DEPSTEP1) FROM EZ_DEPARTMENT WHERE CD_IDX=A.TEAM_ID)
+				    AND CD_DEPSTEP2=(SELECT MAX(CD_DEPSTEP2) FROM EZ_DEPARTMENT WHERE CD_IDX=A.TEAM_ID) 
+				    AND CD_DEPSTEP3='00' AND CD_USE='Y'
+				  ) as CE_DEPSTEP2
+				,TEAM_NAME as CE_DEPSTEP3
+				,POSITION as CE_DEPSTEP4
+				,MEM_TASK as CE_WORKS
+				,TEAM_ID as CE_CDIDX
+				,ID
+			FROM GK_EMPLOYEE A
+		) T2 ON (T1.CE_USER_ID = T2.ID)
+		WHEN MATCHED THEN
+		  UPDATE
+		  SET 
+			T1.CE_UPDATE = T2.CE_UPDATE
+			,T1.CE_SORT = T2.CE_SORT
+			,T1.CE_NAME = T2.CE_NAME
+			,T1.CE_MAILID = T2.CE_MAILID
+			,T1.CE_TEL = T2.CE_TEL
+			,T1.CE_HP = T2.CE_HP
+			,T1.CE_PHOTO = T2.CE_PHOTO
+			,T1.CE_DEPSTEP1 = T2.CE_DEPSTEP1
+			,T1.CE_DEPSTEP2 = T2.CE_DEPSTEP2
+			,T1.CE_DEPSTEP3 = T2.CE_DEPSTEP3
+			,T1.CE_DEPSTEP4 = T2.CE_DEPSTEP4
+			,T1.CE_WORKS = T2.CE_WORKS
+			,T1.CE_CDIDX = T2.CE_CDIDX
+	]]>
+	</update>
+	
+	<select id="selectDepartmentStep" parameterType="EmpVo" resultType="String">
+	<![CDATA[
+		SELECT 
+			SUBSTR(SYS_CONNECT_BY_PATH(CD_SUBJECT,' > '), INSTR(SYS_CONNECT_BY_PATH(CD_SUBJECT,' > '), ' ', '2'))
+		 FROM EZ_DEPARTMENT
+    	WHERE CD_CODE = (SELECT CD_CODE FROM EZ_DEPARTMENT WHERE CD_IDX = #{selBox})
+		START WITH CD_UPR_CODE = 'D000000'
+		CONNECT BY PRIOR  CD_CODE = CD_UPR_CODE
+	]]>
+	</select>
+</mapper>

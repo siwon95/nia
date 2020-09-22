@@ -1,0 +1,723 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Workflow">
+	
+
+	<resultMap id="workflowStepVO-result" type="egovframework.injeinc.boffice.sy.workflow.vo.WorkflowStepVo">
+		<result property="workflowId" column="WORKFLOW_ID" javaType="java.lang.String"/>
+		<result property="workflowStep" column="WORKFLOW_STEP" javaType="java.lang.String"/>
+		<result property="workflowStepOrder" column="WORKFLOW_STEP_ORDER" javaType="java.lang.String"/>
+		<result property="chargerRoleId" column="CHARGER_ROLE_ID" javaType="java.lang.String"/>
+		<result property="nextWorkflowStep" column="NEXT_WORKFLOW_STEP" javaType="java.lang.String"/>
+		<result property="regId" column="REG_ID" javaType="java.lang.String"/>
+		<result property="regDt" column="REG_DT" javaType="java.lang.String"/>
+		<result property="modId" column="MOD_ID" javaType="java.lang.String"/>
+		<result property="modDt" column="MOD_DT" javaType="java.lang.String"/>
+	</resultMap>
+	
+	<resultMap id="workflowVO-result" type="egovframework.injeinc.boffice.sy.workflow.vo.WorkflowVo">
+		<result property="workflowId" column="WORKFLOW_ID" javaType="java.lang.String"/>
+		<result property="workflowNm" column="WORKFLOW_NM" javaType="java.lang.String"/>
+		<result property="useYn" column="USE_YN" javaType="java.lang.String"/>
+		<result property="regId" column="REG_ID" javaType="java.lang.String"/>
+		<result property="regDt" column="REG_DT" javaType="java.lang.String"/>
+		<result property="modId" column="MOD_ID" javaType="java.lang.String"/>
+		<result property="modDt" column="MOD_DT" javaType="java.lang.String"/>
+	</resultMap>
+	
+	<!-- 워크 플로우 특정단계의 다음 단계의 담당자 역할ID 조회(같은 단계에 여러개가 존재하면 알파벳순 상위 한개만 조회) -->
+	<select id="selectWorkflowNextStepCharger" parameterType="WorkflowStepVo" resultType="HashMap">
+		 <![CDATA[
+			SELECT * FROM (
+				SELECT /*+selectWorkflowNextStepCharger*/ WORKFLOW_STEP_ORDER AS workflowStepOrder
+				     , WORKFLOW_STEP AS workflowStep
+				     , CHARGER_ROLE_ID AS charge
+				  FROM EZ_WORKFLOW_STEP STEP
+				 WHERE WORKFLOW_ID =  #{workflowId}
+				   AND WORKFLOW_STEP_ORDER > (SELECT WORKFLOW_STEP_ORDER
+				       						    FROM EZ_WORKFLOW_STEP
+				 							   WHERE WORKFLOW_ID = #{workflowId}
+				   								 AND WORKFLOW_STEP = #{workflowStep}
+				   								 AND USE_YN = 'Y')
+				   AND USE_YN = 'Y'
+		]]>		
+				<if test="roleIdList != null and roleIdList.size != 0">
+		 <![CDATA[
+		            AND (CASE WHEN  CHARGER_ROLE_ID ='Requester' 
+		              						THEN    (
+			              									SELECT CHARGER_ROLE_ID FROM (
+			              										SELECT CHARGER_ROLE_ID
+				         		  							 	 FROM EZ_WORKFLOW_STEP
+				         										WHERE WORKFLOW_ID = STEP.WORKFLOW_ID
+				         		   								 	AND USE_YN = 'Y'
+				         										ORDER BY WORKFLOW_STEP_ORDER
+					             							) WHERE ROWNUM = 1 
+				             							)        
+		              					ELSE   CHARGER_ROLE_ID END) IN 
+		 ]]>
+			         <foreach collection="roleIdList" item="item" separator="," close=")" open="(">
+					 	 <![CDATA[ #{item} ]]>
+					</foreach>
+				</if>
+		 <![CDATA[        
+				 ORDER BY WORKFLOW_STEP_ORDER, WORKFLOW_STEP
+			 ) WHERE ROWNUM = 1
+		]]>
+	</select>
+	
+	<!-- 워크 플로우 특정단계의 담당역할ID 조회 -->
+	<select id="selectWorkflowStepChargerRoleId" parameterType="WorkflowStepVo" resultType="String">
+	 <![CDATA[	
+		/* selectWorkflowStepChargerRoleId */
+		SELECT CHARGER_ROLE_ID
+		  FROM EZ_WORKFLOW_STEP
+		 WHERE WORKFLOW_ID = #{workflowId}
+ 		   AND USE_YN = 'Y'
+	 ]]>
+		<if test="workflowStep != null and workflowStep != ''">
+		  <![CDATA[  AND WORKFLOW_STEP = #{workflowStep} ]]>
+		</if>
+		<if test="workflowStepOrder != null and workflowStepOrder != ''">
+		   <![CDATA[ AND WORKFLOW_STEP_ORDER = #{workflowStepOrder} ]]>
+		</if>
+	</select>
+	
+	<!-- 워크 플로우 스텝 조회 -->
+	<select id="selectWorkflowStepList" parameterType="WorkflowStepVo" resultMap="workflowStepVO-result">
+		 <![CDATA[
+		SELECT /*+ selectWorkflowStepList */ WORKFLOW_ID
+	         , WORKFLOW_STEP
+	         , (SELECT CODE_NM
+ 	              FROM EZ_SYSTEM_CODE CODE
+ 	             WHERE CODE_GROUP_ID = 'WF_STATUS_CODE'
+ 	               AND CODE.CODE_ID = STEP.WORKFLOW_STEP) AS WORKFLOW_STEP_NAME
+	         , CHARGER_ROLE_ID
+	         , WORKFLOW_STEP_ORDER
+	         , PAGE_ID
+	         , NEXT_WORKFLOW_STEP
+        ]]>	         
+	         <if test="roleIdList != null and roleIdList.size != 0">
+               <![CDATA[
+               , (CASE WHEN
+              			(CASE WHEN  CHARGER_ROLE_ID ='Requester' 
+              						THEN    (
+	              								SELECT CHARGER_ROLE_ID FROM (
+		              								SELECT CHARGER_ROLE_ID
+			         		  						 FROM EZ_WORKFLOW_STEP
+			         								WHERE WORKFLOW_ID = STEP.WORKFLOW_ID
+			         		   							 AND USE_YN = 'Y'
+			         								ORDER BY WORKFLOW_STEP_ORDER
+		         								) WHERE ROWNUM = 1
+		             						)        
+              					ELSE   CHARGER_ROLE_ID END) IN 
+              	]]>
+              	 <foreach collection="roleIdList" item="item" separator="," close=")" open="(">
+				 	 <![CDATA[#{item}]]>
+				</foreach>
+				<if test="curStatusCode != null and curStatusCode != ''">
+				   <![CDATA[AND WORKFLOW_STEP != #{curStatusCode}]]>
+				 </if>
+				 <![CDATA[ THEN 'Y' ELSE 'N' END ) HAS_ROLE ]]>
+			</if>
+			<if test="roleIdList == null and roleIdList.size != 0">
+			 <![CDATA[,'N' HAS_ROLE ]]>
+			</if>
+        	 <![CDATA[	FROM EZ_WORKFLOW_STEP STEP ]]>
+        	<if test="workflowIdList != null and workflowIdList.size != 0">
+        	 <![CDATA[	WHERE WORKFLOW_ID IN ]]>
+         			 <foreach collection="workflowIdList" item="item" separator="," close=")" open="(">
+					  <![CDATA[	#{item} ]]>
+					</foreach>
+        	</if>
+        	<if test="workflowIdList == null">
+        		 <![CDATA[ WHERE WORKFLOW_ID = #{workflowId} ]]>
+        	</if>
+        <if test="curStatusCode != null and curStatusCode != ''">
+         <![CDATA[
+           AND WORKFLOW_STEP_ORDER >= ( SELECT WORKFLOW_STEP_ORDER
+             						    FROM EZ_WORKFLOW_STEP
+ 									    WHERE WORKFLOW_ID = #{workflowId}
+   										  AND WORKFLOW_STEP = #{curStatusCode}
+   										  AND USE_YN = 'Y' )
+   		 ]]>
+        </if>
+         <![CDATA[
+	       AND USE_YN = 'Y'
+	     ORDER BY WORKFLOW_STEP_ORDER
+		]]>
+	</select>
+	
+	
+	
+	<!-- 워크 플로우 스텝 개수 조회 -->
+	<select id="selectWorkflowStepListCnt" parameterType="WorkflowStepVo" resultType="int">
+		 <![CDATA[
+		SELECT /*+ selectWorkflowStepListCnt */
+			COUNT(*)
+		 FROM 
+			(
+				SELECT 
+					WORKFLOW_ID
+					, WORKFLOW_STEP
+					, (SELECT CODE_NM
+		 		 		FROM EZ_SYSTEM_CODE CODE
+		 				WHERE 
+		 						CODE_GROUP_ID = 'WF_STATUS_CODE'
+		 					AND 
+		 						CODE.CODE_ID = STEP.WORKFLOW_STEP
+		 			  ) AS WORKFLOW_STEP_NAME
+					, CHARGER_ROLE_ID
+					, WORKFLOW_STEP_ORDER
+					, NEXT_WORKFLOW_STEP
+			]]>	
+					<if test="roleIdList != null and roleIdList.size != 0">
+					 <![CDATA[
+						, (CASE WHEN
+								(CASE WHEN  CHARGER_ROLE_ID ='Requester' 
+							  						THEN    (
+							  									SELECT CHARGER_ROLE_ID FROM (
+									  								SELECT CHARGER_ROLE_ID
+							 		  							 	FROM EZ_WORKFLOW_STEP
+							 										WHERE WORKFLOW_ID = STEP.WORKFLOW_ID
+							 											 AND USE_YN = 'Y'
+																	ORDER BY WORKFLOW_STEP_ORDER
+																) WHERE ROWNUM = 1 
+															)
+										ELSE   CHARGER_ROLE_ID END) IN 
+						]]>
+						 <foreach collection="roleIdList" item="item" separator="," close=")" open="(">
+							 <![CDATA[#{item}]]>
+						</foreach>
+						<if test="curStatusCode != null and curStatusCode != ''">
+							 <![CDATA[AND WORKFLOW_STEP != #{curStatusCode}]]>
+						</if>
+						 <![CDATA[THEN 'Y' ELSE 'N' END ) HAS_ROLE]]>
+					</if>
+					<if test="roleIdList == null">
+						 <![CDATA[,'N' HAS_ROLE]]>
+					</if>
+				 <![CDATA[ FROM EZ_WORKFLOW_STEP STEP]]>
+				<if test="workflowIdList != null and workflowIdList.size != 0">
+				 	 <![CDATA[WHERE WORKFLOW_ID IN]]>
+						 <foreach collection="workflowIdList" item="item" separator="," close=")" open="(">
+							 <![CDATA[#{item}]]>
+						</foreach>
+				</if>
+				<if test="workflowIdList == null">
+				 	 <![CDATA[WHERE WORKFLOW_ID = #{workflowId}]]>
+				</if>
+				<if test="curStatusCode != null and curStatusCode != ''">
+				 <![CDATA[
+					AND WORKFLOW_STEP_ORDER >= ( 
+										SELECT 
+											WORKFLOW_STEP_ORDER
+										 FROM EZ_WORKFLOW_STEP
+										WHERE 
+												WORKFLOW_ID = #{workflowId}
+											AND 
+												WORKFLOW_STEP = #{curStatusCode}
+											AND 
+												USE_YN = 'Y' 
+										)
+				]]>
+				</if>
+		 <![CDATA[
+					AND USE_YN = 'Y'
+			) A
+		WHERE 
+				HAS_ROLE = 'Y'
+		]]>
+	</select>
+	
+	<!-- 워크 플로우 다음 단계 리스트 조회 -->
+	<select id="selectWorkflowNextStepList" parameterType="WorkflowStepVo" resultMap="workflowStepVO-result">
+		 <![CDATA[
+		SELECT /*+ selectWorkflowNextStepList */ WORKFLOW_ID
+			, WORKFLOW_STEP
+			, CODE.CODE_NM AS WORKFLOW_STEP_NAME
+			, CHARGER_ROLE_ID
+			, WORKFLOW_STEP_ORDER
+			, NEXT_WORKFLOW_STEP
+		]]>
+			<if test="roleIdList != null and roleIdList.size != 0">
+			 <![CDATA[
+				, (CASE WHEN
+							(CASE WHEN  CHARGER_ROLE_ID ='Requester' 
+									THEN    (
+												SELECT CHARGER_ROLE_ID FROM (
+													SELECT CHARGER_ROLE_ID
+					  							 	 FROM EZ_WORKFLOW_STEP
+													WHERE WORKFLOW_ID = STEP.WORKFLOW_ID
+		 										 	AND USE_YN = 'Y'
+													ORDER BY WORKFLOW_STEP_ORDER
+												) WHERE ROWNUM = 1 
+											)        
+								ELSE   CHARGER_ROLE_ID END) IN
+			]]>
+				 <foreach collection="roleIdList" item="item" separator="," close=")" open="("> 
+					 <![CDATA[#{item}]]>
+				</foreach>
+				<if test="curStatusCode != null and curStatusCode != ''">
+					 <![CDATA[AND WORKFLOW_STEP != #{curStatusCode}]]>
+				</if>
+				 <![CDATA[ THEN 'Y' ELSE 'N' END ) HAS_ROLE ]]>
+			</if>
+			<if test="roleIdList == null">
+			 <![CDATA[,'N' HAS_ROLE]]>
+			</if>
+		<![CDATA[
+		 FROM EZ_WORKFLOW_STEP STEP
+			LEFT OUTER JOIN EZ_SYSTEM_CODE CODE
+				ON 
+					STEP.WORKFLOW_STEP = CODE.CODE_ID 
+				AND 
+					CODE.CODE_GROUP_ID = 'WF_STATUS_CODE'
+		WHERE WORKFLOW_ID = #{workflowId}
+		]]>
+		<if test="curStatusCode != null and curStatusCode != ''">
+		 <![CDATA[
+			AND 
+				WORKFLOW_STEP_ORDER = 
+						( 
+							SELECT WORKFLOW_STEP_ORDER FROM (
+								SELECT WORKFLOW_STEP_ORDER
+								 FROM EZ_WORKFLOW_STEP
+								WHERE WORKFLOW_ID = #{workflowId}
+									AND WORKFLOW_STEP_ORDER >= 
+											(
+												SELECT 
+													CASE WHEN NEXT_WORKFLOW_STEP = '' 
+														THEN WORKFLOW_STEP_ORDER
+													ELSE 
+														(
+															SELECT 
+																WORKFLOW_STEP_ORDER 
+															 FROM 
+															 	EZ_WORKFLOW_STEP 
+															 WHERE 
+															 		WORKFLOW_ID = #{workflowId} 
+															 	AND 
+															 		WORKFLOW_STEP = A.NEXT_WORKFLOW_STEP
+														 )
+													END WORKFLOW_STEP_ORDER
+												 FROM 
+													EZ_WORKFLOW_STEP A
+												WHERE 
+														WORKFLOW_ID = #{workflowId}
+													AND 
+														WORKFLOW_STEP = #{curStatusCode}
+													AND
+														USE_YN = 'Y'
+											)
+									AND 
+										CHARGER_ROLE_ID  IN
+								]]>
+		 						
+											 <foreach collection="roleIdList" item="item" separator="," close=")" open="("> 
+												<![CDATA[#{item} ]]>
+											</foreach>
+								<![CDATA[
+									AND 
+										USE_YN = 'Y'
+								ORDER BY 
+									WORKFLOW_STEP_ORDER ASC
+							) WHERE ROWNUM = 1
+						)
+		]]>
+		</if>
+		 <![CDATA[
+			AND 
+				STEP.USE_YN = 'Y'
+		ORDER BY CODE.DISPLAY_ORDER
+		]]>
+	</select>
+	
+	<!-- 워크 플로우 다음 단계 조회 -->
+	<select id="selectWorkflowNextStep" parameterType="WorkflowStepVo" resultType="WorkflowStepVO">
+		 <![CDATA[
+		SELECT /*+ selectWorkflowNextStep */ 
+			WORKFLOW_STEP_ORDER AS workflowStepOrder
+			, WORKFLOW_STEP AS workflowStep
+			, CHARGER_ROLE_ID AS charge
+		 FROM 
+			EZ_WORKFLOW_STEP STEP
+		WHERE 
+				WORKFLOW_ID = #{workflowId}
+		]]>
+		<if test="curStatusCode != null and curStatusCode != ''">
+		 <![CDATA[
+			AND 
+				WORKFLOW_STEP = 
+						( 
+							SELECT 
+								NEXT_WORKFLOW_STEP
+							 FROM 
+								EZ_WORKFLOW_STEP
+							WHERE 
+									WORKFLOW_ID = #{workflowId}
+								AND 
+									WORKFLOW_STEP = #{curStatusCode} 
+						)
+		]]>
+		</if>
+		 <![CDATA[
+			AND 
+				CHARGER_ROLE_ID  IN 
+		]]>
+					 <foreach collection="roleIdList" item="item" separator="," close=")" open="(">
+						#{item}
+					</foreach>
+		 <![CDATA[
+			AND 
+				USE_YN = 'Y'
+		]]>
+	</select>
+	
+	<!-- ########## 워크플로우 관리(신청/승인 프로세스) ########## -->
+	<!-- 워크플로우 관리(신청/승인 프로세스) 목록 조회 -->
+	<select id="selectReqApprProcList" parameterType="WorkflowVo" resultMap="workflowVO-result">
+		 <![CDATA[
+			SELECT 
+				WORKFLOW_ID
+				, WORKFLOW_NM
+				, CASE USE_YN
+				  	WHEN 'Y' THEN '사용'
+				  	WHEN 'N' THEN '미사용'
+				  ELSE USE_YN    END USE_YN
+				, REG_ID
+				, REG_DT
+				, MOD_ID
+				, MOD_DT
+			FROM 
+				EZ_WORKFLOW A
+			WHERE 
+					USE_YN = 'Y'
+			ORDER BY 
+				WORKFLOW_ID
+		]]>
+	</select>
+	
+	<!-- 워크플로우 관리(신청/승인 프로세스) 목록 조회(페이징) -->
+	<select id="selectReqApprProcListCnt" parameterType="WorkflowVo" resultType="int">
+		 <![CDATA[
+			SELECT COUNT(*)
+			FROM EZ_WORKFLOW
+			WHERE USE_YN = 'Y'
+		]]>
+	</select>
+	
+	<!-- 워크플로우 관리(신청/승인 프로세스) 조회 -->
+	<select id="selectReqApprProc" parameterType="WorkflowVo" resultMap="workflowVO-result">
+		 <![CDATA[
+			SELECT WORKFLOW_ID
+						, WORKFLOW_NM
+						, USE_YN
+						, REG_ID
+						, REG_DT
+						, MOD_ID
+						, MOD_DT
+			FROM EZ_WORKFLOW
+			WHERE WORKFLOW_ID = #{workflowId}
+		]]>
+	</select>
+	
+	<!-- 워크플로우 관리(신청/승인 프로세스) ID 중복체크 조회 -->
+	<select id="selectWorkFlowIdChk" parameterType="WorkflowVo" resultType="int">
+         <![CDATA[
+			SELECT COUNT(*)
+			FROM EZ_WORKFLOW
+			WHERE WORKFLOW_ID = #{workflowId}
+		]]>
+	</select>
+	
+	
+	<!-- 워크플로우 관리(신청/승인 프로세스) 스텝 조회 -->
+	<select id="selectReqApprProcStepList" parameterType="WorkflowVo" resultMap="workflowStepVO-result">
+		 <![CDATA[
+			SELECT 
+				WORKFLOW_ID
+				, WORKFLOW_STEP
+				, WORKFLOW_STEP_ORDER
+				, CHARGER_ROLE_ID
+				, NEXT_WORKFLOW_STEP
+				, REG_ID
+				, REG_DT
+				, MOD_ID
+				, MOD_DT
+			FROM EZ_WORKFLOW_STEP
+			WHERE WORKFLOW_ID = #{workflowId}
+			AND USE_YN = 'Y'
+			ORDER BY WORKFLOW_STEP_ORDER
+		]]>
+	</select>
+	
+	<!-- 워크플로우 관리(신청/승인 프로세스) 등록 -->
+	<insert id="insertReqApprProc" parameterType="WorkflowVo">
+		 <![CDATA[
+			INSERT INTO EZ_WORKFLOW (
+					WORKFLOW_ID
+					, WORKFLOW_NM
+					, REG_ID
+					, REG_DT
+			)VALUES(
+					#{workflowId}
+					, #{workflowNm}
+					, #{regId}
+					, SYSDATE
+			)
+		]]>
+	</insert>
+	
+	<!-- 워크플로우 관리(신청/승인 프로세스) 수정 -->
+	<update id="updateReqApprProc" parameterType="WorkflowVo">
+		 <![CDATA[
+			UPDATE EZ_WORKFLOW
+			SET WORKFLOW_NM = #{workflowNm},
+					MOD_ID = #{modId},
+					MOD_DT = SYSDATE
+			WHERE WORKFLOW_ID = #{workflowId}
+		]]>
+	</update>
+	
+	<!-- 워크플로우 관리(신청/승인 프로세스) 등록/수정 (merge) -->
+	<update id="mergeReqApprProc" parameterType="WorkflowVo">
+	 <![CDATA[
+		MERGE INTO EZ_WORKFLOW
+			USING DUAL ON ( 
+				WORKFLOW_ID = #{workflowId}
+			)
+		WHEN MATCHED THEN
+			UPDATE SET 
+				WORKFLOW_NM = #{workflowNm}
+				, USE_YN      = 'Y'
+				, MOD_ID   = #{modId}
+				, MOD_DT = SYSDATE
+		WHEN NOT MATCHED THEN
+				INSERT (
+					WORKFLOW_ID
+					, WORKFLOW_NM
+					, USE_YN
+					, REG_ID
+					, REG_DT
+				) VALUES (
+					#{workflowId}
+					, #{workflowNm}
+					, 'Y'
+					, #{regId}
+					, SYSDATE
+				)
+		]]>
+	</update>
+	
+	<!-- 해당 신청/승인 프로세스를 사용한 신청/승인 프로세스 요청 사용여부  -->
+	<select id="selectReqApprProcDeleteYn" parameterType="WorkflowVo" resultType="int">
+		 <![CDATA[
+			SELECT COUNT(*)
+			FROM EZ_WORKFLOW_REQ
+			WHERE WORKFLOW_ID =#{workflowId}
+		]]>
+	</select>
+	
+	
+	<!-- 워크플로우 관리(신청/승인 프로세스) 삭제 -->
+	<update id="updateReqApprProcUseYn" parameterType="WorkflowVo">
+		 <![CDATA[
+			UPDATE EZ_WORKFLOW
+			SET USE_YN = 'N'
+					, MOD_ID = #{modId}
+					, MOD_DT = SYSDATE
+			WHERE WORKFLOW_ID = #{workflowId}
+		]]>
+	</update>
+	
+	<!-- ############################################# -->
+	
+	
+	
+	
+	
+	<!-- ########## 워크플로우 관리(신청/승인 프로세스) 단계 ########## -->
+	
+	<!-- 워크플로우 관리(신청/승인 프로세스) 단계 전체 삭제 -->
+	<update id="updateReqApprProcStepAllUseYn" parameterType="WorkflowVo">
+		 <![CDATA[
+			UPDATE EZ_WORKFLOW_STEP
+			SET USE_YN = 'N'
+					, MOD_ID = #{modId}
+					, MOD_DT = SYSDATE
+			WHERE WORKFLOW_ID = #{workflowId}
+		]]>
+	</update>
+	
+	<!-- 워크플로우 관리(신청/승인 프로세스) 단계 카운트 조회 -->
+	<select id="selectReqApprProcStepCnt" parameterType="WorkflowStepVo" resultType="int">
+		 <![CDATA[
+			SELECT COUNT(*)
+			FROM EZ_WORKFLOW_STEP
+			WHERE WORKFLOW_ID = #{workflowId}
+			AND WORKFLOW_STEP = #{workflowStep}
+		]]>
+	</select>
+	
+	<!-- 워크플로우 관리(신청/승인 프로세스) 단계 등록 -->
+	<insert id="insertReqApprProcStep" parameterType="WorkflowStepVo">
+		 <![CDATA[
+			INSERT INTO EZ_WORKFLOW_STEP (
+					WORKFLOW_ID
+					, WORKFLOW_STEP
+					, WORKFLOW_STEP_ORDER
+					, CHARGER_ROLE_ID
+					, NEXT_WORKFLOW_STEP
+					, USE_YN
+					, REG_ID
+					, REG_DT
+			)VALUES(
+					#{workflowId}
+					, #{workflowStep}
+					, #{workflowStepOrder}
+					, #{chargerRoleId}
+					, #{nextWorkflowStep}
+					, 'Y'
+					, #{regId}
+					, SYSDATE
+					
+			)
+		]]>
+	</insert>
+	
+	<!-- 워크플로우 관리(신청/승인 프로세스) 단계 수정 -->
+	<update id="updateReqApprProcStep" parameterType="WorkflowStepVo">
+		 <![CDATA[
+			UPDATE EZ_WORKFLOW_STEP
+			SET 
+				CHARGER_ROLE_ID = #{chargerRoleId}
+				, WORKFLOW_STEP_ORDER = #{workflowStepOrder}
+				, NEXT_WORKFLOW_STEP = #{nextWorkflowStep}
+				, USE_YN = 'Y'
+				, MOD_ID = #{modId}
+				, MOD_DT = SYSDATE
+			WHERE WORKFLOW_ID = #{workflowId}
+			AND WORKFLOW_STEP = #{workflowStep}
+		]]>
+	</update>
+	
+	<!-- ############################################# -->
+	
+	
+	<!-- 워크플로우 권한체크 -->
+	<select id="selectWorkflowStepRole" resultMap="workflowStepVO-result">
+		 <![CDATA[
+		   SELECT /*+ selectWorkflowStepRole */ WORKFLOW_ID
+		     , WORKFLOW_STEP
+		     , CHARGER_ROLE_ID 
+		    FROM EZ_WORKFLOW_STEP t
+		   WHERE   NOT EXIXSTS (SELECT 1  
+						      FROM  (SELECT WORKFLOW_ID , MAX(WORKFLOW_STEP_ORDER) LAST_WORKFLOW_STEP_ORDER
+						  	        FROM EZ_WORKFLOW_STEP
+						  	       WHERE NEXT_WORKFLOW_STEP = '' AND USE_YN = 'Y'
+						  	       GROUP BY WORKFLOW_ID ) LAST_STEP
+		   					   WHERE LAST_STEP.WORKFLOW_ID = T.WORKFLOW_ID 
+		   					      AND LAST_STEP.LAST_WORKFLOW_STEP_ORDER = T.WORKFLOW_STEP_ORDER )
+		   AND USE_YN = 'Y'
+		   AND CHARGER_ROLE_ID IS NOT NULL
+		]]>
+		<if test="workflowId != null and workflowId != ''">
+            AND WORKFLOW_ID = #{workflowId}
+        </if>		   
+	</select>
+	
+	<!-- 워크플로우 권한체크 -->
+	<select id="selectWorkflowStepRoleByWorkflow" parameterType="WorkflowStepVo" resultMap="workflowStepVO-result">
+		 <![CDATA[
+		   SELECT /*+ selectWorkflowStepRole */ WORKFLOW_ID
+		     , WORKFLOW_STEP
+		     , CHARGER_ROLE_ID 
+		     , NEXT_WORKFLOW_STEP
+		    FROM EZ_WORKFLOW_STEP T
+		   WHERE   NOT EXIXSTS (SELECT 1  
+						      FROM  (SELECT WORKFLOW_ID , MAX(WORKFLOW_STEP_ORDER) LAST_WORKFLOW_STEP_ORDER
+						  	        FROM EZ_WORKFLOW_STEP
+						  	       WHERE NEXT_WORKFLOW_STEP = '' AND USE_YN = 'Y'
+						  	       GROUP BY WORKFLOW_ID ) LAST_STEP
+		   					   WHERE LAST_STEP.WORKFLOW_ID = T.WORKFLOW_ID 
+		   					      AND LAST_STEP.LAST_WORKFLOW_STEP_ORDER = T.WORKFLOW_STEP_ORDER )
+		   AND USE_YN = 'Y'
+		   AND CHARGER_ROLE_ID IS NOT NULL
+		]]>
+		<if test="workflowId != null and workflowId != ''">
+            AND WORKFLOW_ID = #{workflowId}
+        </if>		   
+	</select>
+	
+	
+		<!-- 워크 플로우 마지막 단계 구하기 -->
+	<select id="selectWorkflowLastStep" parameterType="string" resultMap="workflowStepVO-result">
+		 <![CDATA[
+			SELECT * FROM (
+				SELECT /*+selectWorkflowLastStep */
+					WORKFLOW_STEP_ORDER
+				    , WORKFLOW_STEP
+				    , CHARGER_ROLE_ID
+				 FROM EZ_WORKFLOW_STEP
+				WHERE WORKFLOW_ID =  #{workflowId}
+				 AND USE_YN ='Y'
+				 ORDER BY WORKFLOW_STEP_ORDER desc
+		 	) WHERE ROWNUM = 1
+		]]>
+	</select>
+	
+	
+	
+		<!-- 워크 플로우 마지막 단계 구하기 -->
+	<select id="selectWorkflowFirstStep" parameterType="WorkflowStepVo" resultMap="workflowStepVO-result">
+		
+			SELECT * FROM (
+				SELECT /*+ selectWorkflowFirstStep */
+					WORKFLOW_STEP_ORDER
+				    , WORKFLOW_STEP
+				    , CHARGER_ROLE_ID
+				 FROM EZ_WORKFLOW_STEP
+				WHERE WORKFLOW_ID =  #{workflowId}
+				 AND USE_YN ='Y'
+				 ORDER BY WORKFLOW_STEP_ORDER
+			 ) WHERE ROWNUM = 1
+		
+	</select>
+	
+	
+		<!-- 워크 플로우 요청 리스트 조회 -->
+	<select id="selectCurStatus" parameterType="java.util.Map" resultMap="workflowStepVO-result">
+		
+			SELECT * FROM (
+				SELECT /*+ selectCurStatus*/
+							 WORKFLOW_ID
+							, WORKFLOW_STEP
+							, WORKFLOW_STEP_ORDER
+							, CAST(WORKFLOW_STEP_ORDER AS INTEGER) NUM_ORDER
+							, CHARGER_ROLE_ID
+							, NEXT_WORKFLOW_STEP
+							, AUTO_STATUS_CHANGE_YN
+				FROM EZ_WORKFLOW_STEP
+				WHERE WORKFLOW_ID = #{workflowId}
+				AND WORKFLOW_STEP_ORDER = #{workflowStepOrder}
+				AND USE_YN = 'Y'
+			) WHERE ROWNUM = 1
+		
+	</select>
+	
+	
+		<!-- 워크플로우 관리(신청/승인 프로세스) 다음 단계 존재여부 조회 (CONE 포탈) -->
+	<select id="selectNextStepCnt" parameterType="WorkflowReqVo" resultType="int">
+		
+			SELECT COUNT(*)
+			FROM EZ_WORKFLOW_STEP
+			WHERE WORKFLOW_ID = #{workflowId}
+			AND WORKFLOW_STEP = (SELECT NEXT_WORKFLOW_STEP
+		       						    FROM EZ_WORKFLOW_STEP
+		 							   WHERE WORKFLOW_ID =  #{workflowId}
+		   								 AND WORKFLOW_STEP = #{curStatusCode})
+		   								 AND USE_YN = 'Y'
+		
+	</select>
+</mapper>

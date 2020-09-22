@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserDao">
+	
+	<resultMap id="UserMap" type="egovframework.injeinc.boffice.sy.user.vo.UserVo">
+		<result property="cuIdx" column="CU_IDX"/>		<!--회원키-->
+		<result property="cuId" column="CU_ID"/>		<!--회원아이디-->
+		<result property="cuPwd" column="CU_PWD"/>		<!--패스워드-->
+		<result property="email" column="EMAIL"/>		<!--이메일-->			
+		<result property="zip" column="ZIP"/>		<!--우편번호-->
+		<result property="addr1" column="ADDR1"/>		<!--기본주소-->		
+		<result property="addr2" column="ADDR2"/>		<!--상세주소-->
+		<result property="telNum" column="TEL_NUM"/>		<!--전화번호-->		
+		<result property="hpNum" column="HP_NUM"/>		<!--핸드폰번호-->		
+		<result property="cuName" column="CU_NAME"/>		<!--회원이름-->		
+		<result property="lastLogDt" column="LAST_LOG_DT"/>		<!--마지막로그인일시-->		
+		<result property="ip" column="IP"/>		<!--아이피주소-->		
+		<result property="emailRcvChk" column="EMAIL_RCV_CHK"/>		<!--이메일수신여부-->		
+		<result property="youngAgreeName" column="YOUNG_AGREE_NAME"/>		<!--14세이하_부모동의-->		
+		<result property="piAgreeDt" column="PI_AGREE_DT"/>		<!--개인정보동의일시-->		
+		<result property="piAgreeYn" column="PI_AGREE_YN"/>		<!--개인정보동의여부-->		
+		<result property="smsRcvYn" column="SMS_RCV_YN"/>		<!--sms수신여부-->		
+		<result property="regDt" column="REG_DT"/>		<!--등록일시-->		
+		<result property="regId" column="REG_ID"/>		<!--등록자ID-->		
+		<result property="modDt" column="MOD_DT"/>		<!--수정일시-->		
+		<result property="modId" column="MOD_ID"/>		<!--수정자ID-->		
+		<result property="ownAuth" column="OWN_AUTH"/>		<!--본인확인-->		
+		<result property="pwdChgDt" column="PWD_CHG_DT"/>		<!--비밀번호변경일시-->				
+	</resultMap>
+	
+ 	<resultMap id="UserListMap" type="egovframework.injeinc.boffice.sy.user.vo.UserVo">
+		<result property="cuIdx" column="CU_IDX"/>		<!-- 회원키 -->
+		<result property="cuId" column="CU_ID"/>		<!-- 회원아이디 -->
+		<result property="cuName" column="CU_NAME"/>		<!-- 회원이름 -->	
+		<result property="telNum" column="TEL_NUM"/>		<!-- 전화번호 -->	
+		<result property="hpNum" column="HP_NUM"/>		<!-- 핸드폰번호 -->	
+		<result property="lastLogDt" column="LAST_LOG_DT"/>		<!-- 마지막로그인일시 -->	
+		<result property="regDt" column="REG_DT"/>		<!-- 등록일시(가입일) -->
+		<result property="ownAuth" column="OWN_AUTH"/>		<!-- 본인인증키 -->						
+	</resultMap> 
+	
+	<resultMap id="UserViewMap" type="egovframework.injeinc.boffice.sy.user.vo.UserVo">
+		<result property="cuIdx" column="CU_IDX"/>		<!--회원키-->
+		<result property="cuId" column="CU_ID"/>		<!--회원아이디-->
+		<result property="email1" column="EMAIL1"/>		<!--이메일1-->
+		<result property="email2" column="EMAIL2"/>		<!--이메일2-->
+		<result property="zip" column="ZIP"/>		<!--우편번호-->
+		<result property="addr1" column="ADDR1"/>		<!--기본주소-->		
+		<result property="addr2" column="ADDR2"/>		<!--상세주소-->
+		<result property="telNum" column="TEL_NUM"/>		<!--전화번호-->
+		<result property="hpNum" column="HP_NUM"/>		<!--핸드폰번호-->		
+		<result property="cuName" column="CU_NAME"/>		<!--회원이름-->				
+		<result property="emailRcvChk" column="EMAIL_RCV_CHK"/>		<!--이메일수신여부-->				
+		<result property="smsRcvYn" column="SMS_RCV_YN"/>		<!--sms수신여부-->		
+		<result property="pwdChgDt" column="PWD_CHG_DT"/>		<!--비밀번호변경일시-->
+		<result property="fid" column="FID"/>		<!--확인코드-->
+		<result property="ownAuth" column="OWN_AUTH"/>		<!-- 본인인증키 -->
+		<result property="birthdate" column="BIRTHDATE"/>		<!-- 생년월일 -->
+		<result property="numGubun" column="NUM_GUBUN"/>		
+		<result property="coNum" column="CO_NUM"/>		
+	</resultMap>
+	
+	<resultMap id="UserListSearchMap" type="egovframework.injeinc.boffice.sy.user.vo.UserVo">
+		<result property="cuIdx" column="CU_IDX"/>		<!-- 회원키 -->
+		<result property="cuId" column="CU_ID"/>		<!-- 회원아이디 -->
+		<result property="cuName" column="CU_NAME"/>		<!-- 회원이름 -->
+		<result property="coNum" column="CO_NUM"/>		<!-- 핸드폰번호 -->	
+	</resultMap>
+
+	<sql id="userSearch">
+		<if test="scRegDtSt != null and scRegDtSt != ''">
+			<if test="scRegDtEd != null and scRegDtEd != ''">
+			<![CDATA[
+			and			
+				to_char(to_date(REG_DT, 'yyyymmddhh24miss'),'yyyymmdd')
+				BETWEEN
+				to_char(to_date(replace(#{scRegDtSt},'-',''), 'yyyymmddhh24miss'),'yyyymmdd')
+				AND
+				to_char(to_date(replace(#{scRegDtEd},'-',''), 'yyyymmddhh24miss'),'yyyymmdd')
+			]]>
+			</if>	
+		</if>
+		<if test="scLastLogDtSt != null and scLastLogDtSt != ''">
+			<if test="scLastLogDtEd != null and scLastLogDtEd != ''">
+			<![CDATA[
+				and
+				to_char(to_date(LAST_LOG_DT, 'yyyymmddhh24miss'),'yyyymmdd')
+				BETWEEN
+				to_char(to_date(replace(#{scLastLogDtSt},'-',''), 'yyyymmddhh24miss'),'yyyymmdd')
+				AND
+				to_char(to_date(replace(#{scLastLogDtEd},'-',''), 'yyyymmddhh24miss'),'yyyymmdd')
+			]]>	
+			</if>	
+		</if>
+		<if test="scSmsRcvYn != null and scSmsRcvYn != ''">
+		<![CDATA[
+			and
+			SMS_RCV_YN LIKE '%' || #{scSmsRcvYn} || '%'
+		]]>
+		</if>
+		<if test="scEmailRcvChk != null and scEmailRcvChk != ''">
+		<![CDATA[
+			and
+			EMAIL_RCV_CHK  LIKE '%' || #{scEmailRcvChk} || '%'
+		]]>
+		</if>
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == &quot;&quot;">
+				<![CDATA[
+				and
+				CU_NAME LIKE '%' || #{searchKeyword} || '%'
+				OR
+				CU_ID LIKE '%' || #{searchKeyword} || '%'
+				]]>
+			</if>
+			<if test="searchCondition == &quot;name&quot;">
+			<![CDATA[
+				and
+				CU_NAME LIKE '%' || #{searchKeyword} || '%'
+			]]>
+			</if>
+			<if test="searchCondition == &quot;id&quot;">
+			<![CDATA[
+				and
+				CU_ID LIKE '%' || #{searchKeyword} || '%'
+			]]>		
+			</if>
+			<if test="searchCondition == &quot;hp&quot;">
+			<![CDATA[
+				and
+				REPLACE(HP_NUM,'-','') LIKE '%' || #{searchKeyword} || '%'
+			]]>			
+			</if>
+		</if>
+	</sql>
+	
+	<select id="selectPagUser" parameterType="UserVo" resultType="int">
+		<![CDATA[
+			SELECT 
+				COUNT(*)
+			FROM EZ_CMS_USER
+		]]>
+		<where>
+			<include refid="userSearch"/>
+		</where>
+	</select>
+	
+		
+	
+	<select id="selectListUser" parameterType="UserVo" resultMap="UserListMap">
+			<![CDATA[
+			SELECT 
+				CU_IDX,
+		        CU_ID,
+		        CU_NAME,
+		        TEL_NUM,
+		        HP_NUM,
+		        OWN_AUTH,
+		        to_char(to_date(REG_DT, 'yyyymmddhh24miss'), 'yyyy-mm-dd hh24:mi:ss') AS REG_DT,
+		        to_char(to_date(LAST_LOG_DT, 'yyyymmddhh24miss'), 'yyyy-mm-dd hh24:mi:ss') AS LAST_LOG_DT
+			FROM (SELECT ROWNUM AS RN, TB.* FROM(SELECT CU_IDX,
+			    CU_ID,
+			    CU_NAME,
+			    TEL_NUM,
+			    HP_NUM,
+			    OWN_AUTH,
+			    REG_DT,
+			    LAST_LOG_DT
+			FROM
+			    EZ_CMS_USER
+		  	]]>
+			<where>
+				<include refid="userSearch"/>
+			</where>
+		<![CDATA[	
+			ORDER BY CU_IDX DESC
+			) TB) TBL
+			WHERE RN BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	  	]]>
+	</select>
+		
+	<insert id="insertUser" parameterType="UserVo">
+		<![CDATA[
+			INSERT INTO EZ_CMS_USER(
+				CU_IDX,
+				CU_ID,
+				CU_PWD,
+				EMAIL,
+				ZIP,
+				ADDR1,
+				ADDR2,
+				TEL_NUM,
+				HP_NUM,
+				CU_NAME,
+				LAST_LOG_DT,
+				IP,
+				EMAIL_RCV_CHK,
+				YOUNG_AGREE_NAME,
+				PI_AGREE_DT,
+				PI_AGREE_YN,
+				SMS_RCV_YN,
+				REG_DT,
+				REG_ID,
+				OWN_AUTH
+			)
+			VALUES(
+				(SELECT NVL(MAX(CU_IDX),0)+1 FROM EZ_CMS_USER),
+				#{cuId},
+				#{cuPwd},
+				#{email},
+				#{zip},
+				#{addr1},
+				#{addr2},
+				#{telNum},
+				#{hpNum},
+				#{cuName},
+				to_char(sysdate,'yyyymmddhh24miss'),
+				#{ip},
+				#{emailRcvChk},
+				#{youngAgreeName},
+				to_char(sysdate,'yyyymmddhh24miss'),
+				#{piAgreeYn},
+				#{smsRcvYn},
+				to_char(sysdate,'yyyymmddhh24miss'),
+				#{regId},
+				#{ownAuth}
+			)
+		]]>
+	</insert>
+	
+	<insert id="insertUserHistory" parameterType="UserVo">
+		<![CDATA[
+			/* insertUserHistory */
+			INSERT INTO EZ_CMS_USER_HIS (SEQ, CU_IDX, CU_ID, CU_PWD, EMAIL, ZIP, ADDR1, ADDR2, TEL_NUM, HP_NUM, CU_NAME, LAST_LOG_DT, IP, EMAIL_RCV_CHK, YOUNG_AGREE_NAME, PI_AGREE_DT, PI_AGREE_YN, SMS_RCV_YN, REG_DT, REG_ID, MOD_DT, MOD_ID, OWN_AUTH, PWD_CHG_DT, FID, MOD_REASON)
+				SELECT (SELECT NVL(MAX(SEQ),0)+1 
+								FROM EZ_CMS_USER_HIS), 
+				A.CU_IDX, CU_ID, CU_PWD, EMAIL, ZIP, ADDR1, ADDR2, TEL_NUM, HP_NUM, CU_NAME, LAST_LOG_DT, IP, EMAIL_RCV_CHK, YOUNG_AGREE_NAME, PI_AGREE_DT, PI_AGREE_YN, SMS_RCV_YN, REG_DT, REG_ID, MOD_DT, MOD_ID, OWN_AUTH, PWD_CHG_DT, FID,
+				#{reason}
+			FROM EZ_CMS_USER A
+			WHERE CU_ID = #{cuId}
+		]]>
+	</insert>
+	
+	<select id="userIdCheckAx" parameterType="String" resultType="Integer">
+		<![CDATA[
+			SELECT (A+B) CNT
+            FROM 
+            	(SELECT COUNT(*) AS A FROM EZ_CMS_USER
+					WHERE CU_ID = #{cuId}),
+            	(SELECT COUNT(*) AS B FROM EZ_USER_DROP
+					WHERE CU_ID = #{cuId})
+		]]>
+	</select>
+	
+	<select id="viewUser" parameterType="Integer" resultMap="UserViewMap">
+		<![CDATA[
+			SELECT CU_IDX,
+			    CU_ID,
+				SUBSTR(EMAIL, 0, INSTR(EMAIL, '@', 1, 1)-1) EMAIL1,
+	       		SUBSTR(EMAIL, INSTR(EMAIL, '@', 1, 1)+1, LENGTH(EMAIL)-1) EMAIL2,
+			    ZIP,
+			    ADDR1,
+			    ADDR2,
+			    TEL_NUM,
+			    HP_NUM,
+			    CU_NAME,
+			    EMAIL_RCV_CHK,
+			    SMS_RCV_YN,
+			    to_char(to_date(PWD_CHG_DT, 'yyyymmddhh24miss'),'yyyy-mm-dd') AS PWD_CHG_DT,
+			    FID,
+			    OWN_AUTH,
+			    BIRTHDATE,
+			    NUM_GUBUN,
+			    CO_NUM
+			FROM EZ_CMS_USER
+			    WHERE CU_IDX = #{cuIdx}
+		]]>
+	</select>
+	
+	<update id="updateUser" parameterType="UserVo">
+		<![CDATA[
+			UPDATE EZ_CMS_USER SET
+				EMAIL = #{email},
+				ZIP = #{zip},
+				ADDR1 = #{addr1},
+				ADDR2 = #{addr2},
+				TEL_NUM = #{telNum},
+				HP_NUM = #{hpNum},
+				EMAIL_RCV_CHK = #{emailRcvChk},
+				SMS_RCV_YN = #{smsRcvYn},
+				MOD_DT = to_char(sysdate,'yyyymmddhh24miss'),
+				MOD_ID = #{modId}
+				]]>
+				<if test="cuPwd != null and cuPwd != ''">
+					<![CDATA[
+						,CU_PWD = #{cuPwd}
+						,PWD_CHG_DT = 	to_char(sysdate,'yyyymmddhh24miss')		
+					]]>
+				</if>
+			<![CDATA[	
+			WHERE CU_IDX = #{cuIdx}
+		]]>
+	</update>
+	
+	<select id="selectEmailList" resultType="String">
+		<![CDATA[
+			SELECT CODE_NAME FROM EZ_CMM_CODE
+			WHERE CODE_UPR ='EMAIL_CD'
+		]]>		
+	</select>
+	
+	<update id="userPassModAx" parameterType="UserVo">
+		<![CDATA[
+			UPDATE EZ_CMS_USER SET
+				CU_PWD = #{cuPwd}
+				,PWD_CHG_DT = to_char(sysdate,'yyyymmddhh24miss')
+			WHERE CU_IDX = #{cuIdx}
+		]]>
+	</update>
+	
+	<select id="selectUserByIdAndPwd" parameterType="UserVo" resultMap="UserMap">
+		<![CDATA[
+			SELECT * FROM EZ_CMS_USER
+			WHERE CU_ID = #{cuId}
+			AND CU_PWD = #{cuPwd} 
+		]]>
+	</select>
+	
+	<select id="selectUserByDi" parameterType="UserVo" resultMap="UserMap">
+		<![CDATA[
+			SELECT * FROM EZ_CMS_USER
+			WHERE OWN_AUTH = #{ownAuth}
+		]]>
+	</select>
+	
+	<!-- 회원 탈퇴  -->
+	<update id="deleteUser" parameterType="UserVo">
+		<![CDATA[
+			DECLARE
+				BEGIN
+				
+				INSERT INTO EZ_USER_DROP(CU_ID,IP,REG_DT)VALUES((SELECT CU_ID FROM EZ_CMS_USER WHERE CU_IDX=#{cuIdx}),#{ip},TO_CHAR(SYSDATE,'yyyymmddhh24miss'));
+				
+				DELETE FROM EZ_CMS_USER WHERE CU_IDX = #{cuIdx};
+				
+			END;
+		]]>
+	</update>
+	
+	<!-- 회원관리 로그 등록  -->
+	<insert id="insertUserControlLog" parameterType="UserVo">
+		<![CDATA[
+			INSERT INTO EZ_MGR_USER_LOG(
+			CU_ID
+			,UL_IDX
+			,IP
+			,REG_DT
+			,LOG_KD_CD
+			,DO_SAV
+			)VALUES(
+			#{cuId}
+			,(SELECT NVL(MAX(UL_IDX),0)+1 FROM EZ_MGR_USER_LOG)
+			,#{ip}
+			,TO_CHAR(SYSDATE,'yyyymmddhh24miss')
+			,#{logKdCd}
+			,#{doSav}
+			)
+		]]>
+	</insert>
+	
+	<select id="selectListUserSearch" parameterType="UserVo" resultMap="UserListSearchMap">
+		<![CDATA[
+			SELECT 
+				CU_IDX
+				, CU_ID
+				, CU_NAME
+				, CO_NUM
+			FROM EZ_CMS_USER
+			WHERE 
+		]]>
+		<if test="searchKeyword != null and searchKeyword != ''">
+			<if test="searchCondition == 1">
+				<![CDATA[
+					CU_ID LIKE #{searchKeyword}||'%'
+				]]>
+			</if>
+			<if test="searchCondition == 2">
+				<![CDATA[
+					CU_NAME LIKE #{searchKeyword}||'%'
+				]]>
+			</if>
+		</if>
+		<![CDATA[
+			ORDER BY CU_NAME ASC
+		]]>
+	</select>
+	
+	<resultMap id="RePiAgreeUserListMap" type="egovframework.injeinc.boffice.sy.user.vo.UserVo">
+		<result property="cuName" column="CU_NAME"/>		<!-- 회원이름 -->
+		<result property="hpNum" column="HP_NUM"/>		<!-- 핸드폰번호 -->	
+		<result property="email" column="EMAIL"/>		<!-- 이메일 -->	
+		<result property="piAgreeDt" column="PI_AGREE_DT"/>		<!-- 개인정보동의날짜 -->	
+	</resultMap>
+	
+	<select id="selectRePiAgreeUserList" resultMap="RePiAgreeUserListMap">
+		<![CDATA[
+			/* selectRePiAgreeUserList */
+			SELECT CU_NAME,
+			       HP_NUM,
+			       EMAIL,
+			       PI_AGREE_DT
+			FROM   EZ_CMS_USER
+			WHERE  TO_DATE(PI_AGREE_DT, 'YYYYMMDDHH24MISS') <= SYSDATE - (365*2)
+			AND    PI_AGREE_YN = 'Y'
+		]]>
+	</select>
+
+</mapper>

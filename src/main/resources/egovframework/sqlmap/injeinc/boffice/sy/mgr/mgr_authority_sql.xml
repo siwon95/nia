@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Thu Mar 05 10:20:28 KST 2020-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MgrAuthorityDao">
+		
+	<resultMap id="TreeAuthorityMap" type="egovframework.injeinc.boffice.sy.mgr.vo.TreeAuthorityVo">
+		<result property="id" column="ID"/>
+		<result property="parent" column="PARENT"/>
+		<result property="text" column="TEXT"/>
+		<result property="idx" column="IDX"/>
+		<result property="saveChk" column="SAVE_CHK"/>
+		<result property="depth" column="DEPTH"/>
+	</resultMap>
+	
+	<insert id="insertMgrAuthority" parameterType="MgrAuthorityVo">
+		<![CDATA[	
+			INSERT INTO EZ_MGR_AUTHORITY
+			(
+				MA_MLIDX
+				, MA_TYPE
+				, MA_PKIDX
+				, REG_ID
+			)
+			VALUES
+			(
+				#{maMlidx}
+				, #{maType}
+				, #{maPkidx}
+				, #{regId}
+			)
+		]]>
+	</insert>
+	
+	<insert id="insertMgrAuthorityHistory" parameterType="MgrAuthorityVo">
+		<![CDATA[	
+			INSERT INTO EZ_MGR_AUTHORITY_HIS
+				SELECT * 
+				FROM EZ_MGR_AUTHORITY
+				WHERE MA_MLIDX = #{roleIdx}
+				AND MA_TYPE = #{searchType}
+		]]>
+	</insert>
+	
+	<delete id="deleteMgrAuthority">
+		<![CDATA[	
+			DELETE FROM EZ_MGR_AUTHORITY
+			WHERE MA_MLIDX = #{roleIdx}
+			AND MA_TYPE = #{searchType}
+		]]>
+	</delete>
+	
+	<select id="selectListMgrAuthorityMenu" resultMap="TreeAuthorityMap">
+		<![CDATA[	
+			SELECT
+				A.MM_CD             AS ID 
+				, A.MM_UPR_CD      AS PARENT
+				, A.MM_NAME        AS TEXT
+				, A.MM_IDX            AS IDX
+				, CASE WHEN A.PUBLIC_YN = 'Y' THEN 'Y'
+					ELSE (SELECT CASE WHEN COUNT(*)>0 THEN 'Y' ELSE 'N' END FROM EZ_MGR_AUTHORITY WHERE MA_TYPE = 'menu' AND MA_MLIDX=#{roleIdx} AND MA_PKIDX=A.MM_IDX)
+				END                     AS SAVE_CHK
+				, LEVEL-1                AS DEPTH
+			 FROM EZ_MGR_MENU A
+			WHERE 
+				A.USE_YN = 'Y'
+			START WITH A.MM_UPR_CD                    = '#'
+			CONNECT BY NOCYCLE PRIOR A.MM_CD = A.MM_UPR_CD
+			ORDER SIBLINGS BY A.ORD_NO ASC
+		]]>
+	</select>
+	
+	<select id="selectListMgrAuthorityBoard" resultMap="TreeAuthorityMap">
+		<![CDATA[	
+			SELECT
+				A.CB_CD           AS ID 
+				, A.CB_UPR_CD    AS PARENT
+				, A.CB_NAME      AS TEXT
+				, A.CB_IDX          AS IDX
+				, CASE WHEN A.PUBLIC_YN = 'Y' THEN 'Y'
+					ELSE (SELECT CASE WHEN COUNT(*)>0 THEN 'Y' ELSE 'N' END FROM EZ_MGR_AUTHORITY WHERE MA_TYPE = 'board' AND MA_MLIDX = #{roleIdx} AND MA_PKIDX=A.CB_IDX)
+				END                 AS SAVE_CHK
+				, LEVEL-1            AS DEPTH
+			 FROM 
+			 	EZ_CMS_BBS A
+			WHERE
+				A.USE_YN = 'Y'
+			START WITH A.CB_UPR_CD                    = '#'
+			CONNECT BY NOCYCLE PRIOR A.CB_CD = A.CB_UPR_CD
+			ORDER SIBLINGS BY A.ORD_NO ASC
+		]]>
+	</select>
+	
+	<select id="selectListMgrAuthoritySite" parameterType="MgrAuthorityVo" resultMap="TreeAuthorityMap">
+		<![CDATA[	
+			SELECT 
+				MENU_CODE AS ID,
+				SUBSTR(REPLACE(SYS_CONNECT_BY_PATH(A.MENU_CODE,'>'),'>'||MENU_CODE,''),-23) AS PARENT,
+				A.MENU_NM as TEXT,
+				MENU_CODE AS IDX,
+			 	 MENU_DEPTH AS DEPTH,
+				SAVE_CHK
+			FROM
+			  (SELECT MENU_NM ,
+			    MENU_DEPTH ,
+			    B.MENU_CODE ,
+			    SORT_ORDER ,
+			    MENU_TYPE,
+			    USER_MENU_URL,
+			    NVL2(C.MA_PKIDX,'Y','N') AS SAVE_CHK,
+			    CASE
+			      WHEN MENU_DEPTH = 1
+			      THEN RPAD(SUBSTR(SORT_ORDER, 1, 2), 13, '0')
+			      WHEN MENU_DEPTH = 2
+			      THEN RPAD(SUBSTR(SORT_ORDER, 1, 3), 13, '0')
+			      WHEN MENU_DEPTH = 3
+			      THEN RPAD(SUBSTR(SORT_ORDER, 1, 5), 13, '0')
+			      WHEN MENU_DEPTH = 4
+			      THEN RPAD(SUBSTR(SORT_ORDER, 1, 7), 13, '0')
+			      WHEN MENU_DEPTH = 5
+			      THEN RPAD(SUBSTR(SORT_ORDER, 1, 9), 13, '0')
+			      WHEN MENU_DEPTH = 6
+			      THEN RPAD(SUBSTR(SORT_ORDER, 1, 11), 13, '0')
+			      WHEN MENU_DEPTH = 7
+			      THEN RPAD(SUBSTR(SORT_ORDER, 1, 13), 13, '0')
+			      ELSE '0'
+			    END PARENT
+			    ,B.SITE_CD
+			  FROM EZ_USER_MENU B, EZ_MGR_AUTHORITY C
+			  WHERE B.MENU_CODE = C.MA_PKIDX(+)
+			  AND B.USE_YN='Y'
+			  AND C.MA_TYPE(+)=#{searchType}
+			  AND C.MA_MLIDX(+)= #{roleIdx}
+			  AND B.SITE_CD=#{searchType}
+			  ) A
+			  START WITH A.PARENT                   = '0'
+			  CONNECT BY NOCYCLE PRIOR A.SORT_ORDER = A.PARENT
+			  ORDER BY A.SORT_ORDER
+		 ]]>
+	</select>
+	
+	<select id="selectMgrAuthorityChk" resultType="java.lang.Integer">
+		<![CDATA[	
+			SELECT
+				count(*) as CNT
+			FROM  EZ_MGR_AUTHORITY
+			WHERE MA_MLIDX = #{roleIdx}
+		]]>
+			<if test="maType != null and maType != ''">
+			<![CDATA[	
+			AND MA_TYPE = #{maType}
+			]]>
+			</if>
+			<if test="maPkidx != null and maPkidx != ''">
+			<![CDATA[	
+			AND MA_PKIDX = #{maPkidx}
+			]]>
+			</if> 
+	</select>
+	
+</mapper>

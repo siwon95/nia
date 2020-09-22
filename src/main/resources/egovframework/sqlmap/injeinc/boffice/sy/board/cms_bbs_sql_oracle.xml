@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CmsBbsDao">
+	<resultMap id="TreeBoardMap" type="egovframework.injeinc.boffice.sy.board.vo.TreeBoardVo">
+		<result property="id" column="CB_CD"/>
+		<result property="parent" column="CB_UPR_CD"/>
+		<result property="text" column="CB_NAME"/>
+		<result property="position" column="ORD_NO"/>
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="publicYn" column="PUBLIC_YN"/>
+		<result property="cbUse" column="CB_USE"/>
+		<result property="cbDepth" column="CB_DEPTH"/>
+		<result property="bbsYn" column="BBS_YN"/>
+		<result property="bbsCnt" column="BBS_CNT"/>
+		<result property="type" column="GROUP_YN"/>
+	</resultMap>
+	
+	<resultMap id="CmsBoard" type="egovframework.injeinc.boffice.sy.board.vo.CmsBbsVo">
+		<result property="cbCd" column="CB_CD"/>
+		<result property="cbUprCd" column="CB_UPR_CD"/>
+		<result property="cbName" column="CB_NAME"/>
+		<result property="ordNo" column="ORD_NO"/>
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="publicYn" column="PUBLIC_YN"/>
+		<result property="cbUse" column="CB_USE"/>
+		<result property="cbDepth" column="CB_DEPTH"/>
+		<result property="useYn" column="USE_YN"/>
+		<result property="mgrSiteCd" column="MGR_SITE_CD"/>
+		<result property="groupYn" column="GROUP_YN"/>
+	</resultMap>
+	
+	<insert id="insertCmsBbs" parameterType="CmsBbsVo">
+		<![CDATA[
+			DECLARE 
+			BEGIN
+				]]>
+				<if test="groupYn == &quot;N&quot;">
+				<![CDATA[ 
+				INSERT ALL			
+					INTO EZ_BBS_CONFIG_PROPERTY (CB_IDX,LABEL_ORD_NO,CONTENT_MAPPING,LABEL_NAME,LABEL_PROP_GBN,LABEL_COMP_YN,LABEL_PROV_SIZE,SEARCH_LABEL_USE_YN,SEARCH_CLOB_YN,WEB_USE_YN,MOBILE_USE_YN,VIEW_USE_YN,CONTENT_MAPPING_L,ITEM_CODE,REG_ID,REG_USE_YN) 
+					VALUES ((SELECT NVL(MAX(CB_IDX),0)+1 FROM EZ_CMS_BBS),'1','NO_CONT','번호',NULL,'Y','8','N',NULL,'Y','N','Y','noCont',NULL,#{regId},'Y')
+					INTO EZ_BBS_CONFIG_PROPERTY (CB_IDX,LABEL_ORD_NO,CONTENT_MAPPING,LABEL_NAME,LABEL_PROP_GBN,LABEL_COMP_YN,LABEL_PROV_SIZE,SEARCH_LABEL_USE_YN,SEARCH_CLOB_YN,WEB_USE_YN,MOBILE_USE_YN,VIEW_USE_YN,CONTENT_MAPPING_L,ITEM_CODE,REG_ID,REG_USE_YN) 
+					VALUES ((SELECT NVL(MAX(CB_IDX),0)+1 FROM EZ_CMS_BBS),'2','SUB_CONT','제목','16020100','Y',NULL,'Y',NULL,'Y','Y','Y','subCont',NULL,#{regId},'Y')
+					INTO EZ_BBS_CONFIG_PROPERTY (CB_IDX,LABEL_ORD_NO,CONTENT_MAPPING,LABEL_NAME,LABEL_PROP_GBN,LABEL_COMP_YN,LABEL_PROV_SIZE,SEARCH_LABEL_USE_YN,SEARCH_CLOB_YN,WEB_USE_YN,MOBILE_USE_YN,VIEW_USE_YN,CONTENT_MAPPING_L,ITEM_CODE,REG_ID,REG_USE_YN) 
+					VALUES ((SELECT NVL(MAX(CB_IDX),0)+1 FROM EZ_CMS_BBS),'3','REG_DT','등록일',NULL,'Y','12','N',NULL,'Y','Y','Y','regDt',NULL,#{regId},'Y')
+					INTO EZ_BBS_CONFIG_PROPERTY (CB_IDX,LABEL_ORD_NO,CONTENT_MAPPING,LABEL_NAME,LABEL_PROP_GBN,LABEL_COMP_YN,LABEL_PROV_SIZE,SEARCH_LABEL_USE_YN,SEARCH_CLOB_YN,WEB_USE_YN,MOBILE_USE_YN,VIEW_USE_YN,CONTENT_MAPPING_L,ITEM_CODE,REG_ID,REG_USE_YN) 
+					VALUES ((SELECT NVL(MAX(CB_IDX),0)+1 FROM EZ_CMS_BBS),'4','NAME_CONT','작성자','16021000','Y','12','N',NULL,'Y','N','Y','nameCont',NULL,#{regId},'Y')
+					INTO EZ_BBS_CONFIG_PROPERTY (CB_IDX,LABEL_ORD_NO,CONTENT_MAPPING,LABEL_NAME,LABEL_PROP_GBN,LABEL_COMP_YN,LABEL_PROV_SIZE,SEARCH_LABEL_USE_YN,SEARCH_CLOB_YN,WEB_USE_YN,MOBILE_USE_YN,VIEW_USE_YN,CONTENT_MAPPING_L,ITEM_CODE,REG_ID,REG_USE_YN) 
+					VALUES ((SELECT NVL(MAX(CB_IDX),0)+1 FROM EZ_CMS_BBS),'5','COUNT_CONT','조회수',NULL,'Y','8','N',NULL,'Y','N','Y','countCont',NULL,#{regId},'Y')
+					INTO EZ_BBS_CONFIG_PROPERTY (CB_IDX,LABEL_ORD_NO,CONTENT_MAPPING,LABEL_NAME,LABEL_PROP_GBN,LABEL_COMP_YN,LABEL_PROV_SIZE,SEARCH_LABEL_USE_YN,SEARCH_CLOB_YN,WEB_USE_YN,MOBILE_USE_YN,VIEW_USE_YN,CONTENT_MAPPING_L,ITEM_CODE,REG_ID,REG_USE_YN) 
+					VALUES ((SELECT NVL(MAX(CB_IDX),0)+1 FROM EZ_CMS_BBS),'6','FILE_CONT','첨부파일','16020600','N','8','N',NULL,'Y','N','Y','fileCont',NULL,#{regId},'Y')
+					INTO EZ_BBS_CONFIG_PROPERTY (CB_IDX,LABEL_ORD_NO,CONTENT_MAPPING,LABEL_NAME,LABEL_PROP_GBN,LABEL_COMP_YN,LABEL_PROV_SIZE,SEARCH_LABEL_USE_YN,SEARCH_CLOB_YN,WEB_USE_YN,MOBILE_USE_YN,VIEW_USE_YN,CONTENT_MAPPING_L,ITEM_CODE,REG_ID,REG_USE_YN) 
+					VALUES ((SELECT NVL(MAX(CB_IDX),0)+1 FROM EZ_CMS_BBS),'7','CLOB_CONT','내용','16020200','Y',NULL,'Y',NULL,'N','N','Y','clobCont',NULL,#{regId},'Y')
+				SELECT * FROM DUAL;
+				]]>
+				</if>
+				<![CDATA[
+
+						
+				INSERT INTO EZ_CMS_BBS
+				(
+					CB_IDX
+					, CB_CD
+					, CB_UPR_CD
+					, CB_NAME
+					, ORD_NO
+					, PUBLIC_YN
+					, CB_USE
+					, REG_ID
+					, CB_DEPTH
+					, MGR_SITE_CD
+					, GROUP_YN
+				)
+				VALUES
+				(
+					(SELECT NVL(MAX(CB_IDX),0)+1 FROM EZ_CMS_BBS)
+					, #{cbCd}
+					, #{cbUprCd}
+					, #{cbName}
+					, (SELECT NVL(MAX(ORD_NO),0)+1 FROM EZ_CMS_BBS WHERE CB_UPR_CD=#{cbUprCd})
+					, #{publicYn}
+					, #{cbUse}
+					, #{regId}
+					, #{cbDepth}
+					, #{mgrSiteCd}
+					, #{groupYn}
+				);
+			]]>
+			<selectKey keyColumn="CB_IDX" keyProperty="cbIdx" resultType="java.lang.String" order="AFTER">
+				SELECT NVL(MAX(CB_IDX),0) FROM EZ_CMS_BBS
+			</selectKey>
+			END;
+	</insert>
+	
+	<select id="selectCmsBbs" parameterType="CmsBbsVo" resultMap="CmsBoard">
+		<![CDATA[
+			SELECT
+				CB_IDX
+				, CB_CD
+				, CB_UPR_CD
+				, CB_NAME
+				, ORD_NO
+				, PUBLIC_YN
+				, CB_USE
+				, REG_ID
+				, CB_DEPTH
+				, USE_YN
+				, MGR_SITE_CD
+				, GROUP_YN
+			FROM EZ_CMS_BBS
+			WHERE USE_YN ='Y'
+		]]>
+			<if test="cbIdx != null and cbIdx != ''">
+			<![CDATA[ AND CB_IDX=#{cbIdx} ]]>
+			</if>
+			<if test="cbIdx == null or cbIdx == ''">
+				<if test="cbCd != null and cbCd != ''">
+				<![CDATA[ AND CB_CD=#{cbCd} ]]>
+				</if>
+			</if>
+	</select>
+	
+	<update id="updateCmsBbs" parameterType="CmsBbsVo">
+		<![CDATA[
+			UPDATE EZ_CMS_BBS 
+			SET CB_CD = #{cbCd}
+				, CB_UPR_CD = #{cbUprCd}
+				, CB_NAME = #{cbName}
+				, ORD_NO = #{ordNo}
+				, PUBLIC_YN = #{publicYn}
+				, CB_USE = #{cbUse}
+		]]>
+			<if test="useYn != null and useYn != ''">
+				<![CDATA[ , USE_YN = #{useYn} ]]>
+			</if>
+		<![CDATA[
+				, MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+				, CB_DEPTH = #{cbDepth}
+			WHERE CB_IDX = #{cbIdx} 
+		]]>
+	</update>
+	
+	<update id="deleteCmsBbsList" parameterType="CmsBbsVo">
+		<![CDATA[
+			UPDATE EZ_CMS_BBS 
+			SET 
+				USE_YN = 'N'
+				, MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+			WHERE CB_IDX IN (SELECT CB_IDX FROM EZ_CMS_BBS START WITH CB_CD = #{cbCd} CONNECT BY PRIOR CB_CD = CB_UPR_CD) 
+		]]>
+	</update>
+	
+	<delete id="deleteCmsBbs" parameterType="CmsBbsVo">
+		<![CDATA[
+			UPDATE EZ_CMS_BBS
+			SET 
+				ORD_NO = 9999
+				, USE_YN = 'N'
+				, MOD_DT = SYSDATE
+				, MOD_ID = #{modId}
+			WHERE USE_YN = 'Y'
+		]]>
+	</delete>
+	
+	<select id="selectCmsBbsCnt" parameterType="CmsBbsVo" resultType="java.lang.Integer">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM EZ_CMS_BBS
+			WHERE CB_CD = #{cbCd}
+			AND USE_YN = 'Y'
+		]]>
+	</select>
+	
+	<select id="selectListCmsBbs" resultMap="TreeBoardMap">
+		<![CDATA[
+			 SELECT 
+			 		CB_CD
+					, CB_UPR_CD
+					, CB_NAME
+					, ORD_NO
+					, TO_CHAR(CB_IDX) AS CB_IDX
+					, PUBLIC_YN
+					, CB_USE
+					, CB_DEPTH
+					, CASE WHEN (GROUP_YN = 'Y') THEN 'group' ELSE 'default' END AS GROUP_YN
+					, CASE WHEN (SELECT COUNT(*) FROM EZ_BBS_CONFIG WHERE CB_IDX=A.CB_IDX)>0 THEN 'Y' ELSE 'N' END as BBS_YN
+					, (SELECT COUNT(*) FROM EZ_BBS_CONTENT WHERE CB_IDX=A.CB_IDX AND BC_DEL_YN = 'N') as BBS_CNT
+             FROM EZ_CMS_BBS A
+             WHERE USE_YN = 'Y'
+          	 START WITH CB_UPR_CD = '#'
+             CONNECT BY NOCYCLE PRIOR CB_CD = CB_UPR_CD
+	   		 ORDER SIBLINGS BY ORD_NO ASC
+		]]>
+	</select>
+	
+	<select id="selectListCmsBbsSite" parameterType="CmsBbsVo" resultMap="TreeBoardMap">
+		<![CDATA[
+			 SELECT 
+			 		CB_CD
+					, CB_UPR_CD
+					, CB_NAME
+					, ORD_NO
+					, TO_CHAR(CB_IDX) AS CB_IDX
+					, PUBLIC_YN
+					, CB_USE
+					, CB_DEPTH
+					, CASE WHEN (GROUP_YN = 'Y') THEN 'group' ELSE 'default' END AS GROUP_YN
+					, CASE WHEN (SELECT COUNT(*) FROM EZ_BBS_CONFIG WHERE CB_IDX=A.CB_IDX)>0 THEN 'Y' ELSE 'N' END as BBS_YN
+					, (SELECT COUNT(*) FROM EZ_BBS_CONTENT WHERE CB_IDX=A.CB_IDX and BC_DEL_YN ='N') as BBS_CNT
+             FROM EZ_CMS_BBS A
+             WHERE USE_YN = 'Y'
+           ]]>  
+             <if test="mgrSiteCd != null and mgrSiteCd != ''">
+             <![CDATA[
+             	AND MGR_SITE_CD = #{mgrSiteCd}
+             ]]>
+             </if>
+       <![CDATA[
+          	 START WITH CB_UPR_CD = '#'
+             CONNECT BY NOCYCLE PRIOR CB_CD = CB_UPR_CD
+	   		 ORDER SIBLINGS BY ORD_NO ASC
+		]]>
+	</select>
+	
+	<select id="selectCmsBbsMypage" parameterType="CmsBbsVo" resultMap="CmsBoard">
+		<![CDATA[
+			SELECT
+				CB_IDX
+				, CB_CD
+				, CB_UPR_CD
+				, CB_NAME
+				, ORD_NO
+				, PUBLIC_YN
+				, CB_USE
+				, REG_ID
+				, CB_DEPTH
+				, USE_YN
+				, MGR_SITE_CD
+				, GROUP_YN
+			FROM EZ_CMS_BBS
+			WHERE USE_YN ='Y'
+		]]>
+		<if test="regId == null or regId == ''">
+			<![CDATA[ AND 1=2 ]]>
+		</if>
+		<if test="regId != null and regId != ''">
+			<![CDATA[ AND CB_IDX IN(SELECT CB_IDX FROM EZ_BBS_CONTENT WHERE REG_ID=#{regId}) ]]>
+		</if>
+	</select>
+	
+	<select id="selectSiteCd" parameterType="java.lang.String" resultType="java.lang.String">
+		<![CDATA[ 
+		SELECT  CB_CD 
+		  FROM  EZ_CMS_BBS
+		 WHERE  USE_YN = 'Y'
+		   AND  CB_DEPTH = 1
+		 START  WITH CB_CD = #{searchCbCd}
+	   CONNECT  BY NOCYCLE PRIOR CB_UPR_CD = CB_CD
+	   ]]>
+	</select>	
+	
+	<select id="selectGroup" parameterType="java.lang.String" resultType="java.lang.String">
+	<![CDATA[ 
+		SELECT  CASE WHEN CNT=0 THEN ( SELECT CB_UPR_CD FROM EZ_CMS_BBS WHERE CB_CD = #{searchCbCd} AND USE_YN = 'Y')
+       		         ELSE #{searchCbCd}
+                END CASE
+          FROM  (
+                SELECT  COUNT(1) AS CNT
+                  FROM  EZ_CMS_BBS
+                 WHERE  CB_UPR_CD = #{searchCbCd}   
+                 AND USE_YN ='Y'
+          )
+    ]]>
+	</select>
+	
+	<select id="selectCbIdx" parameterType="java.lang.String" resultType="java.lang.String">
+	<![CDATA[ 
+		SELECT  CASE WHEN CNT=0 THEN ( SELECT TO_CHAR(CB_IDX) FROM EZ_CMS_BBS WHERE CB_CD = #{searchCbCd} AND USE_YN = 'Y')
+       		         ELSE ''
+                END CASE
+          FROM  (
+                SELECT COUNT(1) AS CNT
+                  FROM EZ_CMS_BBS
+                 WHERE CB_UPR_CD = #{searchCbCd}  
+                 AND USE_YN ='Y'
+          )
+    ]]>
+	</select>	
+	
+	<select id="selectGroupYn" parameterType="java.lang.String" resultType="java.lang.String">
+	<![CDATA[ 
+		SELECT  GROUP_YN
+          FROM  EZ_CMS_BBS
+                 WHERE CB_CD = #{searchCbCd}  
+                 AND USE_YN ='Y'
+    ]]>
+	</select>
+	
+</mapper>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserStatisticsDao">
+	
+	<resultMap id="UserStatisticsMap" type="egovframework.injeinc.boffice.sy.userstatistics.vo.UserStatisticsVo">
+		<result property="memberCnt" column="MEMBERCNT"/>		<!--회원수-->
+		<result property="resultDate" column="RESULTDATE"/>		<!--통계기준날짜--> 
+	</resultMap>
+	
+	<select id="selectListUserStatisticsYear" parameterType="UserStatisticsVo" resultMap="UserStatisticsMap">
+		<![CDATA[
+		SELECT RESULTDATE,
+			COUNT(*) MEMBERCNT
+		FROM(
+			SELECT
+			DATE_FORMAT(STR_TO_DATE(replace(REG_DT,'-',''),'%Y%m%d%H%i%s'),'%Y%m%d') A_REG_DATE,
+			DATE_FORMAT(STR_TO_DATE(replace(REG_DT,'-',''), '%Y%m%d%H%i%s'),'%Y') RESULTDATE,
+			DATE_FORMAT(STR_TO_DATE(replace(REG_DT,'-',''), '%Y%m%d%H%i%s'),'%m') A_MONTH,
+			DATE_FORMAT(STR_TO_DATE(replace(REG_DT,'-',''), '%Y%m%d%H%i%s'),'%d') A_DAY,
+			ADDR1,
+			SMS_RCV_YN
+			FROM EZ_CMS_USER) A
+		GROUP BY RESULTDATE ORDER BY RESULTDATE
+		]]>
+	</select>
+	
+	<select id="selectListUserStatisticsMonth" parameterType="UserStatisticsVo" resultMap="UserStatisticsMap">
+	<![CDATA[
+		SELECT RESULTDATE,
+			COUNT(*) MEMBERCNT
+		FROM(
+			SELECT
+			DATE_FORMAT(STR_TO_DATE(replace(REG_DT,'-',''),'%Y%m%d%H%i%s'),'%Y%m%d') A_REG_DATE,
+			DATE_FORMAT(STR_TO_DATE(replace(REG_DT,'-',''), '%Y%m%d%H%i%s'),'%Y') A_YEAR,
+			DATE_FORMAT(STR_TO_DATE(replace(REG_DT,'-',''), '%Y%m%d%H%i%s'),'%m') RESULTDATE,
+			DATE_FORMAT(STR_TO_DATE(replace(REG_DT,'-',''), '%Y%m%d%H%i%s'),'%d') A_DAY,
+			ADDR1,
+			SMS_RCV_YN
+			FROM EZ_CMS_USER) A
+				WHERE A_YEAR = #{scYear} 			
+			GROUP BY RESULTDATE ORDER BY RESULTDATE
+	]]>
+	</select>
+		
+	<select id="selectListUserStatisticsDay" parameterType="UserStatisticsVo" resultMap="UserStatisticsMap">
+	<![CDATA[
+		SELECT RESULTDATE,
+			COUNT(*) MEMBERCNT
+		FROM(
+			SELECT
+			DATE_FORMAT(STR_TO_DATE(replace(REG_DT,'-',''),'%Y%m%d%H%i%s'),'%Y%m%d') A_REG_DATE,
+			DATE_FORMAT(STR_TO_DATE(replace(REG_DT,'-',''), '%Y%m%d%H%i%s'),'%Y') A_YEAR,
+			DATE_FORMAT(STR_TO_DATE(replace(REG_DT,'-',''), '%Y%m%d%H%i%s'),'%m') A_MONTH,
+			DATE_FORMAT(STR_TO_DATE(replace(REG_DT,'-',''), '%Y%m%d%H%i%s'),'%d') RESULTDATE,
+			ADDR1,
+			SMS_RCV_YN
+			FROM EZ_CMS_USER) A
+				WHERE A_YEAR = #{scYear} AND A_MONTH = #{scMonth}
+			GROUP BY RESULTDATE ORDER BY RESULTDATE
+	]]>
+	</select>		
+		
+
+</mapper>

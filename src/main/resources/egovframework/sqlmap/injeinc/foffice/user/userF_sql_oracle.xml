@@ -1,0 +1,1059 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserFDao">	
+	<resultMap id="UserFMap" type="egovframework.injeinc.foffice.user.vo.UserFVo">
+		<result property="cuIdx" column="CU_IDX"/>
+		<result property="cuId" column="CU_ID"/>
+	    <result property="cuPwd" column="CU_PWD"/>
+	    <result property="email" column="EMAIL"/>
+	    <result property="zip" column="ZIP"/>
+	    <result property="addr1" column="ADDR1"/>
+	    <result property="addr2" column="ADDR2"/>
+	    <result property="telNum" column="TEL_NUM"/>
+	    <result property="hpNum" column="HP_NUM"/>
+	    <result property="coNum" column="CO_NUM"/>
+	    <result property="cuName" column="CU_NAME"/>
+	    <result property="lastLogDt" column="LAST_LOG_DT"/>
+	    <result property="ip" column="IP"/>
+	    <result property="emailRcvChk" column="EMAIL_RCV_CHK"/>
+	    <result property="youngAgreeName" column="YOUNG_AGREE_NAME"/>
+	    <result property="piAgreeDt" column="PI_AGREE_DT"/>
+	    <result property="piAgreeYn" column="PI_AGREE_YN"/>
+	    <result property="smsRcvYn" column="SMS_RCV_YN"/>
+	    <result property="regDt" column="REG_DT"/>
+	    <result property="regId" column="REG_ID"/>
+	    <result property="modDt" column="MOD_DT"/>
+	    <result property="modId" column="MOD_ID"/>
+	    <result property="ownAuth" column="OWN_AUTH"/>
+	    <result property="pwdChgDt" column="PWD_CHG_DT"/>
+	    <result property="pHomepage" column="P_HOMEPAGE"/>
+	    <result property="selectConf" column="SELECT_CONF"/>
+	    <result property="numGubun" column="NUM_GUBUN"/>
+	    <result property="birthDate" column="BIRTHDATE"/>
+	</resultMap>
+	
+	<resultMap id="MyIntegBoardMap" type="egovframework.injeinc.foffice.ex.bbs.vo.BbsFVo">
+		<result property="rnum" column="RNUM"/>
+		<result property="cbName" column="CB_NAME"/>
+	    <result property="subCont" column="SUB_CONT"/>
+	    <result property="regDt" column="REG_DT"/>
+	    <result property="countCont" column="COUNT_CONT"/>
+	    <result property="cbIdx" column="CB_IDX"/>
+	    <result property="bcIdx" column="BC_IDX"/>
+	</resultMap>
+	
+	<resultMap id="MyIntegMinwonBoardMap" type="egovframework.injeinc.foffice.ex.bbs.vo.BbsFVo">
+		<result property="rnum" column="RNUM"/>
+		<result property="cbName" column="CB_NAME"/>
+		<result property="subCont" column="SUB_CONT"/>
+		<result property="mcEndDay" column="MC_END_DAY"/>
+		<result property="mcDelayDay" column="MC_DELAY_DAY"/>
+		<result property="regDt" column="REG_DT"/>
+		<result property="countCont" column="COUNT_CONT"/>
+		<result property="clobCont" column="CLOB_CONT"/>
+		<result property="openYnCont" column="OPEN_YN_CONT"/>
+		<result property="mwStatusCont" column="MW_STATUS_CONT"/>
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="bcIdx" column="BC_IDX"/>
+	</resultMap>
+	
+	<resultMap id="MileageMap" type="egovframework.injeinc.foffice.user.vo.UserFVo">
+		<result property="seq" column="SEQ"/>
+		<result property="id" column="ID"/>
+		<result property="title" column="TITLE"/>
+		<result property="act" column="ACT"/>
+		<result property="usePoint" column="USE_POINT"/>
+		<result property="insdat" column="INSDAT"/>
+		<result property="nowPoint" column="NOW_POINT"/>
+		<result property="tag" column="TAG"/>
+	</resultMap>
+	
+	<resultMap id="UserChkMap" type="egovframework.injeinc.foffice.user.vo.UserFVo">	
+		<result property="cuIdx" column="CU_IDX"/>	
+		<result property="cuId" column="CU_ID"/>
+		<result property="homepageType" column="HOMEPAGE_TYPE"/>
+	</resultMap>
+	
+	<!-- 기존 사용자 여부 조회 -->
+	<select id="selectUserFCnt" parameterType="String" resultType="int">
+		<![CDATA[
+				SELECT COUNT(CU_IDX)
+				FROM EZ_CMS_USER
+				WHERE OWN_AUTH=#{dupkey}
+		]]>
+	</select>
+	
+	<!-- 아이디 사용 여부 조회 -->
+	<select id="selectCuIdCnt" parameterType="hashMap" resultType="int">
+		<![CDATA[
+				SELECT COUNT(CU_ID)
+				FROM EZ_CMS_USER
+				WHERE CU_ID=#{cuId}
+		]]>
+	</select>
+	
+	<!-- 아이디 사용 여부 조회(탈퇴회원) -->
+	<select id="selectCuIdCnt2" parameterType="hashMap" resultType="int">
+		<![CDATA[
+				SELECT COUNT(CU_ID)
+				FROM EZ_USER_DROP
+				WHERE CU_ID=#{cuId}
+		]]>
+	</select>
+	
+	<!-- 회원가입 등록 -->
+	<insert id="insertUserF" parameterType="UserFVo">
+		<![CDATA[
+			INSERT INTO EZ_CMS_USER(
+			CU_IDX
+			,CU_ID
+			,CU_PWD
+			,EMAIL
+			,ZIP
+			,ADDR1
+			,ADDR2
+			,TEL_NUM
+			,HP_NUM
+			,CU_NAME
+			,IP
+			,EMAIL_RCV_CHK
+			,YOUNG_AGREE_NAME
+			,PI_AGREE_DT
+			,PI_AGREE_YN
+			,SMS_RCV_YN
+			,REG_DT
+			,REG_ID
+			,OWN_AUTH
+			,ENEWS_RCV_YN
+			,SELECT_CONF
+			,NUM_GUBUN
+			,CO_NUM
+			,BIRTHDATE
+			,SLIBNO
+			,SEX
+			)VALUES(
+			(SELECT MAX(CU_IDX)+1 FROM EZ_CMS_USER)
+			,#{cuId}
+			,#{cuPwd}
+			,#{email}
+			,#{zip}
+			,#{addr1}
+			,#{addr2}
+			,NVL(#{telNum},'')
+			,#{hpNum}
+			,#{cuName}
+			,#{ip}
+			,#{emailRcvChk}
+			,#{youngAgreeName}
+			,TO_CHAR(SYSDATE,'yyyymmddhh24miss')
+			,'Y'
+			,#{smsRcvYn}
+			,TO_CHAR(SYSDATE,'yyyymmddhh24miss')
+			,#{cuId}
+			,#{ownAuth}
+			,#{enewsRcvYn}
+			,#{selectConf}
+			,#{numGubun}
+			,#{coNum}
+			,#{birthDate}
+			,#{slibno}
+			,#{sex}
+			)
+		]]>
+	</insert>
+	
+	<!-- 비밀번호 일치여부 확인 -->
+	<select id="selectUserFPwd" parameterType="UserFVo" resultType="String">
+		<![CDATA[
+			SELECT CU_PWD
+			FROM EZ_CMS_USER
+			WHERE CU_ID = #{cuId}
+		]]>
+	</select>
+	
+	<select id="selectUserFPwd2" parameterType="UserFVo" resultType="String">
+		<![CDATA[
+			SELECT CU_PWD
+			FROM EZ_CMS_USER
+			WHERE CU_ID = #{cuId}
+			AND OWN_AUTH = #{ownAuth}
+		]]>
+	</select>
+	
+	<!-- 회원 상세조회 -->
+	<select id="selectUserF" parameterType="UserFVo" resultMap="UserFMap">
+		<![CDATA[
+			SELECT CU_IDX
+				,CU_ID
+				,CU_PWD
+				,SUBSTR(EMAIL, 0, INSTR(EMAIL, '@', 1, 1)-1) emailid
+				,SUBSTR(EMAIL, INSTR(EMAIL, '@', 1, 1)+1, LENGTH(EMAIL)-1) emaildomain
+				,ZIP
+				,ADDR1
+				,ADDR2
+				,TEL_NUM
+				,HP_NUM
+				,CU_NAME
+				,LAST_LOG_DT
+				,IP
+				,EMAIL_RCV_CHK
+				,YOUNG_AGREE_NAME
+				,PI_AGREE_DT
+				,PI_AGREE_YN
+				,SMS_RCV_YN
+				,REG_DT
+				,REG_ID
+				,MOD_DT
+				,MOD_ID
+				,OWN_AUTH
+				,PWD_CHG_DT
+				,CO_NUM
+				,P_HOMEPAGE
+				,SELECT_CONF
+				,NUM_GUBUN
+				,BIRTHDATE
+			FROM EZ_CMS_USER
+			WHERE CU_ID = #{cuId}			
+		]]>
+	</select>
+	
+	<select id="selectUserListF" parameterType="UserFVo" resultMap="UserFMap">
+		<![CDATA[
+			SELECT CU_IDX
+				,CU_ID
+				,CU_PWD
+				,EMAIL
+				,ZIP
+				,ADDR1
+				,ADDR2
+				,TEL_NUM
+				,HP_NUM
+				,CU_NAME
+				,LAST_LOG_DT
+				,IP
+				,EMAIL_RCV_CHK
+				,YOUNG_AGREE_NAME
+				,PI_AGREE_DT
+				,PI_AGREE_YN
+				,SMS_RCV_YN
+				,REG_DT
+				,REG_ID
+				,MOD_DT
+				,MOD_ID
+				,OWN_AUTH
+				,PWD_CHG_DT
+				,CO_NUM
+				,P_HOMEPAGE
+				,SELECT_CONF
+				,NUM_GUBUN
+				,BIRTHDATE
+			FROM EZ_CMS_USER
+			WHERE OWN_AUTH = #{ownAuth}
+		]]>
+	</select>
+	
+	<!-- 회원 탈퇴 -->
+	<delete id="deleteUserF" parameterType="UserFVo">
+		<![CDATA[
+			DELETE 
+			FROM EZ_CMS_USER
+			WHERE CU_IDX = #{cuIdx}
+		]]>
+	</delete>
+	
+	<!-- 회원 정보 수정 -->
+	<update id="updateUserF" parameterType="UserFVo">
+		<![CDATA[
+			UPDATE EZ_CMS_USER
+			SET EMAIL = #{email}
+				,ZIP = #{zip}
+				,ADDR1 = #{addr1}
+				,ADDR2 = #{addr2}
+				,TEL_NUM = #{telNum}
+				,HP_NUM = #{hpNum}
+				,IP = #{ip}				
+				,EMAIL_RCV_CHK = #{emailRcvChk}
+				,SMS_RCV_YN = #{smsRcvYn}
+				,NUM_GUBUN = #{numGubun}
+				,MOD_DT = TO_CHAR(SYSDATE,'yyyymmddhh24miss')
+				,MOD_ID = #{cuId}
+				]]>
+				<if test="newpwd != null and newpwd != ''">
+					<![CDATA[
+						,CU_PWD = #{newpwd}
+						,PWD_CHG_DT = 	to_char(sysdate,'yyyymmddhh24miss')		
+					]]>
+				</if>
+			<![CDATA[	
+			WHERE CU_ID = #{cuId}
+		]]>
+	</update>
+	
+	<!-- 회원 정보 수정 -->
+	<update id="updateUserFSelectConf" parameterType="UserFVo">
+		<![CDATA[
+			UPDATE EZ_CMS_USER
+			SET SELECT_CONF = #{selectConf}
+				,MOD_DT = TO_CHAR(SYSDATE,'yyyymmddhh24miss')
+				,MOD_ID = #{cuId}
+			WHERE CU_ID = #{cuId}
+		]]>
+	</update>
+	
+	<!-- 회원탈퇴테이블 insert -->
+	<insert id="insertUserFDrop" parameterType="UserFVo">
+		<![CDATA[
+			INSERT INTO 
+			EZ_USER_DROP(
+			CU_ID
+			,IP	
+			,REG_DT
+			)VALUES(
+			#{cuId}
+			,#{ip}
+			,TO_CHAR(SYSDATE,'yyyymmddhh24miss')
+			)
+		]]>
+	</insert>
+	
+	<!-- 회원탈퇴테이블 insert -->
+	<insert id="insertUserFDrop2" parameterType="UserFVo">
+		<![CDATA[
+			INSERT INTO 
+			EZ_USER_DROP(
+			CU_ID
+			,IP	
+			,REG_DT
+			,HOMEPAGE_TYPE
+			,REASON_TYPE
+			,REASON
+			)VALUES(
+			#{cuId}
+			,#{ip}
+			,TO_CHAR(SYSDATE,'yyyymmddhh24miss')
+			,#{homepageType}
+			,#{reasonType}
+			,#{reason}
+			)
+		]]>
+	</insert>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="updateUserFPwd" parameterType="UserFVo">
+		<![CDATA[
+			UPDATE EZ_CMS_USER
+			SET CU_PWD = #{newpwd}
+			,PWD_CHG_DT = TO_CHAR(SYSDATE,'yyyymmddhh24miss')
+			WHERE CU_ID = #{cuId}
+		]]>
+	</update>
+	
+	<update id="updateUserFPwdAgree" parameterType="UserFVo">
+		<![CDATA[
+			UPDATE EZ_CMS_USER
+			SET CU_PWD = #{newpwd}
+			,PI_AGREE_DT = TO_CHAR(SYSDATE,'yyyymmddhh24miss')
+			,PWD_CHG_DT = TO_CHAR(SYSDATE,'yyyymmddhh24miss')
+			WHERE CU_ID = #{cuId}
+		]]>
+	</update>
+	
+	<!-- 회원조회(id찾기햇을경우) -->
+	<select id="selectUserFId" parameterType="String" resultType="String">
+		<![CDATA[
+			SELECT CU_ID
+			FROM EZ_CMS_USER
+			WHERE OWN_AUTH = #{ownAuth}
+		]]>
+	</select>
+	
+	
+	<select id="selectUserFIds" parameterType="String" resultMap="UserChkMap">
+		<![CDATA[
+			SELECT CU_ID ,P_HOMEPAGE as HOMEPAGE_TYPE,CU_IDX
+			    FROM EZ_CMS_USER
+			    WHERE OWN_AUTH = #{ownAuth}			
+		]]>
+	</select>
+	
+	<!-- 마이페이지 > 나의게시글 리스트 -->
+	<select id="selectMyIntegBoardList" parameterType="BbsFVo" resultMap="MyIntegBoardMap">
+		SELECT *
+		  FROM (    
+		        SELECT ROWNUM RNUM
+		             , CB_NAME
+		             , SUB_CONT
+		             , CLOB_CONT
+		             , REG_DT
+		             , COUNT_CONT
+		             , CB_IDX
+		             , BC_IDX
+		          FROM 
+		              ( 
+		                SELECT A.CB_NAME
+		                     , C.SUB_CONT
+		                     , TO_CHAR(C.REG_DT,'YYYY.MM.DD') AS REG_DT
+		                     , C.COUNT_CONT
+		                     , C.CLOB_CONT
+		                     , C.CB_IDX
+		                     , C.BC_IDX
+		                  FROM EZ_CMS_BBS A
+		                     , EZ_BBS_CONFIG B 
+		                     , EZ_BBS_CONTENT C
+		                 WHERE A.CB_IDX = B.CB_IDX
+		                   AND B.CB_IDX = C.CB_IDX
+		                   AND B.BBS_TEMPLET_GBN IN ('16050100','16050200','16050300','16050400','16050600')
+		                   AND C.BC_DEL_YN = 'N'
+		                   AND C.DUPCODE = #{dupcode}
+		                   AND A.USE_YN = 'Y'
+		                   <if test="searchKey != null and searchKey != ''">
+								<if test="tgtTypeCd != null and tgtTypeCd != ''">
+									<if test="tgtTypeCd == &quot;NO_CONT&quot;">
+										AND NO_CONT LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;CATE_CONT&quot;">
+										AND CATE_CONT LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;SUB_CONT&quot;">
+										AND SUB_CONT LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;NAME_CONT&quot;">
+										AND NAME_CONT LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;ADDR_CONT&quot;">
+										AND ADDR_CONT LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;EMAIL_CONT&quot;">
+										AND EMAIL_CONT LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;TEL_CONT&quot;">
+										AND TEL_CONT LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;PHONE_CONT&quot;">
+										AND PHONE_CONT LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;REG_DT&quot;">
+										AND REG_DT LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;COUNT_CONT&quot;">
+										AND COUNT_CONT LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;CLOB_CONT&quot;">
+										AND CLOB_CONT LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;M_LINK_CONT&quot;">
+										AND M_LINK_CONT LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;THUMNAIL_CONT&quot;">
+										AND THUMNAIL_CONT LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;CAPTION_CONT&quot;">
+										AND CAPTION_CONT LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;SUB_LINK_CONT&quot;">
+										AND SUB_LINK_CONT LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;OPEN_YN_CONT&quot;">
+										AND OPEN_YN_CONT LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;ANS_YN_CONT&quot;">
+										AND ANS_YN_CONT LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;ANS_COMP_CONT&quot;">
+										AND ANS_COMP_CONT LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;MW_STATUS_CONT&quot;">
+										AND MW_STATUS_CONT LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;EXT1&quot;">
+										AND EXT1 LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;EXT2&quot;">
+										AND EXT2 LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;EXT3&quot;">
+										AND EXT3 LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;EXT4&quot;">
+										AND EXT4 LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;EXT5&quot;">
+										AND EXT5 LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;EXT6&quot;">
+										AND EXT6 LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;EXT7&quot;">
+										AND EXT7 LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;EXT8&quot;">
+										AND EXT8 LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;EXT9&quot;">
+										AND EXT9 LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;EXT10&quot;">
+										AND EXT10 LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;FILE_CONT&quot;">
+										AND FILE_CONT LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;CHARGE_NAME_CONT&quot;">
+										AND CHARGE_NAME_CONT LIKE '%'||#{searchKey}||'%'
+									</if>
+									<if test="tgtTypeCd == &quot;CHARGE_TEL_CONT&quot;">
+										AND CHARGE_TEL_CONT LIKE '%'||#{searchKey}||'%'
+									</if>
+								</if>
+							</if>
+		                 ORDER BY C.REG_DT DESC
+		                )
+		      WHERE 1=1
+		        )
+		WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	</select>
+	
+	<!-- 마이페이지 > 나의게시글 리스트 갯수 -->
+	<select id="selectMyIntegBoardCnt" parameterType="BbsFVo" resultType="int">   
+		SELECT COUNT(*)
+          FROM EZ_CMS_BBS A
+             , EZ_BBS_CONFIG B
+             , EZ_BBS_CONTENT C
+         WHERE A.CB_IDX = B.CB_IDX
+           AND B.CB_IDX = C.CB_IDX
+           AND B.BBS_TEMPLET_GBN IN ('16050100','16050200','16050300','16050400','16050600')
+           AND C.BC_DEL_YN = 'N'
+           AND C.DUPCODE = #{dupcode}
+           AND A.USE_YN = 'Y'
+           <if test="searchKey != null and searchKey != ''">
+				<if test="tgtTypeCd != null and tgtTypeCd != ''">
+					<if test="tgtTypeCd == &quot;NO_CONT&quot;">
+						AND NO_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;CATE_CONT&quot;">
+						AND CATE_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;SUB_CONT&quot;">
+						AND SUB_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;NAME_CONT&quot;">
+						AND NAME_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;ADDR_CONT&quot;">
+						AND ADDR_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;EMAIL_CONT&quot;">
+						AND EMAIL_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;TEL_CONT&quot;">
+						AND TEL_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;PHONE_CONT&quot;">
+						AND PHONE_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;REG_DT&quot;">
+						AND REG_DT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;COUNT_CONT&quot;">
+						AND COUNT_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;CLOB_CONT&quot;">
+						AND CLOB_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;M_LINK_CONT&quot;">
+						AND M_LINK_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;THUMNAIL_CONT&quot;">
+						AND THUMNAIL_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;CAPTION_CONT&quot;">
+						AND CAPTION_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;SUB_LINK_CONT&quot;">
+						AND SUB_LINK_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;OPEN_YN_CONT&quot;">
+						AND OPEN_YN_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;ANS_YN_CONT&quot;">
+						AND ANS_YN_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;ANS_COMP_CONT&quot;">
+						AND ANS_COMP_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;MW_STATUS_CONT&quot;">
+						AND MW_STATUS_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;EXT1&quot;">
+						AND EXT1 LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;EXT2&quot;">
+						AND EXT2 LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;EXT3&quot;">
+						AND EXT3 LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;EXT4&quot;">
+						AND EXT4 LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;EXT5&quot;">
+						AND EXT5 LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;EXT6&quot;">
+						AND EXT6 LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;EXT7&quot;">
+						AND EXT7 LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;EXT8&quot;">
+						AND EXT8 LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;EXT9&quot;">
+						AND EXT9 LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;EXT10&quot;">
+						AND EXT10 LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;FILE_CONT&quot;">
+						AND FILE_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;CHARGE_NAME_CONT&quot;">
+						AND CHARGE_NAME_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;CHARGE_TEL_CONT&quot;">
+						AND CHARGE_TEL_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+				</if>
+			</if>
+	</select>
+	
+	<!-- 마이페이지 > 나의민원 리스트 -->
+	<select id="selectMyIntegMinwonBoardList" parameterType="BbsFVo" resultMap="MyIntegMinwonBoardMap">
+		SELECT *
+		  FROM (    
+		        SELECT ROWNUM RNUM
+		             , CB_NAME
+		             , SUB_CONT
+		             , CASE WHEN A.MW_STATUS_CONT = '20000800'
+                           AND 
+                               0 <![CDATA[<]]> (
+                                   SELECT COUNT(MC_IDX) 
+                                     FROM EZ_CONTENT_MINWON_RESULT CMR
+                                    WHERE CMR.CB_IDX = A.CB_IDX
+                                      AND CMR.BC_IDX = A.BC_IDX
+                                  ) 
+                          THEN 
+                              (
+                              SELECT TO_CHAR(MAX(TO_DATE(A.REG_DT,'YYYYMMDDHH24MISS')+RN),'YYYY.MM.DD') DDATE 
+                                FROM 
+                                     (SELECT LEVEL RN 
+                                       FROM DUAL CONNECT BY LEVEL <![CDATA[<]]>= 30 
+                                     ) 
+                               WHERE TO_CHAR(TO_DATE(A.REG_DT,'YYYYMMDDHH24MISS')+RN-1,'D') IN (1,2,3,4,5) 
+                                     AND TO_CHAR(TO_DATE(A.REG_DT,'YYYYMMDDHH24MISS')+RN,'YYYYMMDD') <![CDATA[<>]]> ANY 
+                                     (SELECT TO_CHAR(TO_DATE(HOL_DATE, 'YYYY-MM-DD'), 'YYYYMMDD') AS SDATE 
+                                       FROM EZ_HOLIDAY
+                                      WHERE TO_DATE(HOL_DATE, 'YYYY-MM-DD') <![CDATA[>]]> SYSDATE 
+                                     )
+                                     AND ROWNUM <![CDATA[<]]>= 2 
+                              ) ELSE NULL END AS MC_END_DAY
+                     , CASE WHEN A.MW_STATUS_CONT = '20000800'
+                            THEN 
+                                (
+                                SELECT MAX(TO_CHAR(TO_DATE(MC_DELAY_DAY,'YYYYMMDDHH24MISS'),'YYYY.MM.DD'))
+                                  FROM EZ_CONTENT_MINWON_RESULT CMR
+                                 WHERE CMR.CB_IDX = A.CB_IDX
+                                   AND CMR.BC_IDX = A.BC_IDX
+                                ) ELSE NULL END AS MC_DELAY_DAY
+		             , TO_CHAR(REG_DT, 'YYYY.MM.DD') AS REG_DT
+		             , COUNT_CONT
+		             , CLOB_CONT
+		             , OPEN_YN_CONT
+		             , MW_STATUS_CONT
+		             , CB_IDX
+		             , BC_IDX
+		          FROM 
+		              ( 
+		                SELECT CB_NAME
+		                     , SUB_CONT
+		                     <!-- , TO_CHAR(TO_DATE(REG_DT,'YYYYMMDDHH24MISS'),'YYYY.MM.DD') AS REG_DT -->
+		                     , REG_DT
+		                     , COUNT_CONT
+		                     , CLOB_CONT
+                             , CASE WHEN MW_AD_OPEN_YN = 'Y' THEN 'AD_Y' ELSE  OPEN_YN_CONT END OPEN_YN_CONT
+                             , CASE WHEN ANS_YN_CONT = '22000200' THEN '22000200' <!-- 답변없음 -->
+	                              WHEN 0 <![CDATA[<]]> (
+	                                          SELECT COUNT(MC_IDX) 
+	                                            FROM EZ_CONTENT_MINWON_RESULT CMR
+	                                           WHERE CMR.CB_IDX = C.CB_IDX
+	                                             AND CMR.BC_IDX = C.BC_IDX
+	                                             AND CMR.AUDIT_YN IN ('27000100','27000200','27000300')
+	                                        ) THEN '20000500'					<!-- 답변완료 -->
+	                              WHEN 1 = (
+	                                          SELECT COUNT(MC_IDX) 
+	                                            FROM EZ_CONTENT_MINWON_RESULT CMR
+	                                           WHERE CMR.CB_IDX = C.CB_IDX
+	                                             AND CMR.BC_IDX = C.BC_IDX
+	                                        )
+	                               AND 
+	                               		1 = (
+	                                          SELECT COUNT(MC_IDX) 
+	                                            FROM EZ_CONTENT_MINWON_RESULT CMR
+	                                           WHERE CMR.CB_IDX = C.CB_IDX
+	                                             AND CMR.BC_IDX = C.BC_IDX
+	                                             AND CMR.TEMP_YN = 'Y'
+	                                        ) THEN '20000500'					<!-- 답변완료 -->
+	                               ELSE '20000800'					<!-- 처리중 -->            
+	                          END AS MW_STATUS_CONT
+		                     , CB_IDX
+		                     , BC_IDX
+                        FROM
+                             (
+                              SELECT A.CB_NAME
+                                   , C.SUB_CONT
+                                   , C.REG_DT
+                                   , C.COUNT_CONT
+                                   , C.CLOB_CONT
+                                   , C.MW_AD_OPEN_YN
+                                   , C.OPEN_YN_CONT
+                                   , C.ANS_YN_CONT
+                                   , C.MW_STATUS_CONT
+                                   , C.CB_IDX
+		                     	   , C.BC_IDX
+                                FROM EZ_CMS_BBS A
+                                   , EZ_BBS_CONFIG B 
+                                   , EZ_BBS_CONTENT C
+                               WHERE A.CB_IDX = B.CB_IDX
+                                 AND B.CB_IDX = C.CB_IDX
+                                 AND B.BBS_TEMPLET_GBN = '16050700'
+                                 AND C.BC_DEL_YN = 'N'
+                                 AND C.DUPCODE = #{dupcode}
+                                 AND A.USE_YN = 'Y'
+                                 <if test="searchKey != null and searchKey != ''">
+									<if test="tgtTypeCd != null and tgtTypeCd != ''">
+										<if test="tgtTypeCd == &quot;NO_CONT&quot;">
+											AND NO_CONT LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;CATE_CONT&quot;">
+											AND CATE_CONT LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;SUB_CONT&quot;">
+											AND SUB_CONT LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;NAME_CONT&quot;">
+											AND NAME_CONT LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;ADDR_CONT&quot;">
+											AND ADDR_CONT LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;EMAIL_CONT&quot;">
+											AND EMAIL_CONT LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;TEL_CONT&quot;">
+											AND TEL_CONT LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;PHONE_CONT&quot;">
+											AND PHONE_CONT LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;REG_DT&quot;">
+											AND REG_DT LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;COUNT_CONT&quot;">
+											AND COUNT_CONT LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;CLOB_CONT&quot;">
+											AND CLOB_CONT LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;M_LINK_CONT&quot;">
+											AND M_LINK_CONT LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;THUMNAIL_CONT&quot;">
+											AND THUMNAIL_CONT LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;CAPTION_CONT&quot;">
+											AND CAPTION_CONT LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;SUB_LINK_CONT&quot;">
+											AND SUB_LINK_CONT LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;OPEN_YN_CONT&quot;">
+											AND OPEN_YN_CONT LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;ANS_YN_CONT&quot;">
+											AND ANS_YN_CONT LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;ANS_COMP_CONT&quot;">
+											AND ANS_COMP_CONT LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;MW_STATUS_CONT&quot;">
+											AND MW_STATUS_CONT LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;EXT1&quot;">
+											AND EXT1 LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;EXT2&quot;">
+											AND EXT2 LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;EXT3&quot;">
+											AND EXT3 LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;EXT4&quot;">
+											AND EXT4 LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;EXT5&quot;">
+											AND EXT5 LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;EXT6&quot;">
+											AND EXT6 LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;EXT7&quot;">
+											AND EXT7 LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;EXT8&quot;">
+											AND EXT8 LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;EXT9&quot;">
+											AND EXT9 LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;EXT10&quot;">
+											AND EXT10 LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;FILE_CONT&quot;">
+											AND FILE_CONT LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;CHARGE_NAME_CONT&quot;">
+											AND CHARGE_NAME_CONT LIKE '%'||#{searchKey}||'%'
+										</if>
+										<if test="tgtTypeCd == &quot;CHARGE_TEL_CONT&quot;">
+											AND CHARGE_TEL_CONT LIKE '%'||#{searchKey}||'%'
+										</if>
+									</if>
+								</if>
+                               ORDER BY C.REG_DT DESC
+                         	)C
+		                )A
+		      WHERE 1=1
+		        )
+		WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	</select>
+	
+	<!-- 마이페이지 > 나의민원 리스트 갯수 -->
+	<select id="selectMyIntegMinwonBoardCnt" parameterType="BbsFVo" resultType="int">
+          SELECT COUNT(*)
+            FROM EZ_CMS_BBS A
+               , EZ_BBS_CONFIG B
+               , EZ_BBS_CONTENT C
+           WHERE A.CB_IDX = B.CB_IDX
+             AND B.CB_IDX = C.CB_IDX
+             AND B.BBS_TEMPLET_GBN = '16050700'
+             AND C.BC_DEL_YN = 'N'
+             AND C.DUPCODE = #{dupcode}
+             AND A.USE_YN = 'Y'
+             <if test="searchKey != null and searchKey != ''">
+				<if test="tgtTypeCd != null and tgtTypeCd != ''">
+					<if test="tgtTypeCd == &quot;NO_CONT&quot;">
+						AND NO_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;CATE_CONT&quot;">
+						AND CATE_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;SUB_CONT&quot;">
+						AND SUB_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;NAME_CONT&quot;">
+						AND NAME_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;ADDR_CONT&quot;">
+						AND ADDR_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;EMAIL_CONT&quot;">
+						AND EMAIL_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;TEL_CONT&quot;">
+						AND TEL_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;PHONE_CONT&quot;">
+						AND PHONE_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;REG_DT&quot;">
+						AND REG_DT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;COUNT_CONT&quot;">
+						AND COUNT_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;CLOB_CONT&quot;">
+						AND CLOB_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;M_LINK_CONT&quot;">
+						AND M_LINK_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;THUMNAIL_CONT&quot;">
+						AND THUMNAIL_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;CAPTION_CONT&quot;">
+						AND CAPTION_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;SUB_LINK_CONT&quot;">
+						AND SUB_LINK_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;OPEN_YN_CONT&quot;">
+						AND OPEN_YN_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;ANS_YN_CONT&quot;">
+						AND ANS_YN_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;ANS_COMP_CONT&quot;">
+						AND ANS_COMP_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;MW_STATUS_CONT&quot;">
+						AND MW_STATUS_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;EXT1&quot;">
+						AND EXT1 LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;EXT2&quot;">
+						AND EXT2 LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;EXT3&quot;">
+						AND EXT3 LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;EXT4&quot;">
+						AND EXT4 LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;EXT5&quot;">
+						AND EXT5 LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;EXT6&quot;">
+						AND EXT6 LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;EXT7&quot;">
+						AND EXT7 LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;EXT8&quot;">
+						AND EXT8 LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;EXT9&quot;">
+						AND EXT9 LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;EXT10&quot;">
+						AND EXT10 LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;FILE_CONT&quot;">
+						AND FILE_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;CHARGE_NAME_CONT&quot;">
+						AND CHARGE_NAME_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+					<if test="tgtTypeCd == &quot;CHARGE_TEL_CONT&quot;">
+						AND CHARGE_TEL_CONT LIKE '%'||#{searchKey}||'%'
+					</if>
+				</if>
+			</if>
+	</select>
+	
+	<!-- 마이페이지 > 나의민원 리스트 갯수 -->
+	<select id="selectListMileage" parameterType="UserFVo" resultMap="MileageMap">
+		SELECT * FROM(
+			SELECT ROWNUM RN, A.* FROM(
+			SELECT SEQ
+			,ID
+			,TITLE
+			,ACT
+			,USE_POINT
+			,TO_CHAR(INSDAT,'YYYY/MM/DD') INSDAT
+			,NOW_POINT
+			,TAG
+			FROM SCHOME.USEPOINT
+			WHERE ID = #{id}
+			ORDER BY SEQ DESC
+			) A )
+		WHERE RN BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	</select>
+	
+	<!-- 마이페이지 > 나의민원 리스트 갯수 -->
+	<select id="selectListMileageCnt" parameterType="String" resultType="int">
+			SELECT COUNT(*)
+			FROM SCHOME.USEPOINT
+			WHERE ID = #{id}
+	</select>
+	
+	<select id="selectListSingoCnt" parameterType="String" resultType="int">
+			SELECT SUM(CNT) FROM(
+			SELECT COUNT(*) CNT FROM TB_SINGO_AUDIT
+			WHERE AUDIT_DELETED = '0'
+			AND GPINDUPCODE = #{ownAuth}
+			UNION ALL
+			SELECT COUNT(*) CNT FROM TB_SINGO_DANGER
+			WHERE DAN_DELETED = '0'
+			AND GPINDUPCODE = #{ownAuth}
+			UNION ALL
+			SELECT COUNT(*) CNT FROM TB_SINGO_ENV
+			WHERE ENV_DELETED = '0'
+			AND GPINDUPCODE = #{ownAuth}
+			UNION ALL
+			SELECT COUNT(*) CNT FROM TB_SINGO_HADOGB
+			WHERE HADOGB_DELETED = '0'
+			AND GPINDUPCODE = #{ownAuth}
+			UNION ALL
+			SELECT COUNT(*) CNT FROM TB_SINGO_REGULATION
+			WHERE IDEA_DELETED = '0'
+			AND GPINDUPCODE = #{ownAuth})
+	</select>
+	<select id="selectListScrapCnt" parameterType="String" resultType="int">
+			SELECT COUNT(*)
+			FROM TB_BBS_SCRAP WHERE user_id_v = #{cuId}
+	</select>
+	
+	<select id="selectListReserveCnt" parameterType="String" resultType="int">
+			select count(*)
+			from   (select 1
+			        from   lecture_member
+			        where  OWN_AUTH = #{ownAuth}
+			        union all
+			        select 1
+			        FROM   RESERVATION_USER_INFO A,
+				           EZ_RESERVATION_INDEX B
+				    WHERE  A.RI_IDX = B.RI_IDX
+	        		AND    RU_DUPKEY = #{ownAuth} 
+	       			AND    RI_TYPE IN ('F','T','E')
+	       )
+	</select>
+	
+	<select id="selectListPollCnt" parameterType="String" resultType="int">
+			SELECT COUNT(*)
+			FROM EZ_POLL_USER
+			WHERE USE_YN = 'Y'			
+			AND REG_DI = #{ownAuth}
+	</select>
+	
+	
+	<select id="selectLimmitDt" parameterType="String" resultType="int">
+			SELECT PI_LIMMIT_DT - TO_DATE(TO_CHAR(SYSDATE,'YYYYMMDD') )AS LIMMIT_DT FROM(
+			SELECT TO_DATE(SUBSTR(PI_AGREE_DT,0,8),'YYYYMMDD') AS PI_AGREE_DT,TO_DATE(SUBSTR(PI_AGREE_DT,0,8),'YYYYMMDD')+730 AS PI_LIMMIT_DT FROM EZ_CMS_USER 
+			WHERE CU_ID= #{cuId})
+	</select>	
+	
+	<select id="selectMemberList" parameterType="UserFVo" resultMap="UserFMap">
+		SELECT
+			C.CU_IDX, C.CU_ID, C.CU_PWD,
+			C.EMAIL, C.ZIP, C.ADDR1,
+			C.ADDR2, C.TEL_NUM, C.HP_NUM,
+			C.CU_NAME, C.LAST_LOG_DT, C.IP,
+			C.EMAIL_RCV_CHK, C.YOUNG_AGREE_NAME, C.PI_AGREE_DT,
+			C.PI_AGREE_YN, C.SMS_RCV_YN, C.REG_DT,
+			C.REG_ID, C.MOD_DT, C.MOD_ID,
+			C.OWN_AUTH, C.PWD_CHG_DT, C.FID,C.P_HOMEPAGE,C.SELECT_CONF,C.NUM_GUBUN,C.BIRTHDATE
+		FROM EZ_CMS_USER C
+		WHERE C.FID = #{fid}
+		ORDER BY C.REG_DT DESC
+	</select>
+	
+	<select id="selectEmailList" resultType="String">
+		<![CDATA[
+			SELECT CODE_NAME FROM EZ_CMM_CODE
+			WHERE CODE_UPR ='EMAIL_CD'
+		]]>		
+	</select>
+	
+</mapper>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu><menu-layout>
+  <site-cd>search</site-cd>
+  <site-nm>통합검색</site-nm>
+  <menu-code>10000000000000000000000</menu-code>
+  <sort-order>1000000000000</sort-order>
+  <menu-nm>HOME</menu-nm>
+  <menu-title>HOME</menu-title>
+  <satisfy-show-yn>Y</satisfy-show-yn>
+  <charger-show-yn>Y</charger-show-yn>
+  <social-show-yn>N</social-show-yn>
+  <menu-path>HOME</menu-path>
+  <user-menu-url>/site/search/main.jsp</user-menu-url>
+  <search-engine>null</search-engine>
+  <layout-url>/WEB-INF/common/decorator/web/search/search_a.jsp</layout-url>
+  <menu-type>link</menu-type>
+  <dept-info>null</dept-info>
+  <head-content><![CDATA[null]]></head-content>
+  <show-yn>Y</show-yn>
+</menu-layout>
+<menu-layout>
+  <site-cd>search</site-cd>
+  <site-nm>통합검색</site-nm>
+  <menu-code>10100000000002016101110</menu-code>
+  <sort-order>1010000000000</sort-order>
+  <menu-nm>통합검색</menu-nm>
+  <menu-title>통합검색</menu-title>
+  <satisfy-show-yn>Y</satisfy-show-yn>
+  <charger-show-yn>Y</charger-show-yn>
+  <social-show-yn>N</social-show-yn>
+  <menu-path>HOME > 통합검색</menu-path>
+  <user-menu-url>/site/search/main.jsp</user-menu-url>
+  <search-engine>null</search-engine>
+  <layout-url>/WEB-INF/common/decorator/web/search/search_a.jsp</layout-url>
+  <menu-type>program</menu-type>
+  <dept-info>null</dept-info>
+  <head-content><![CDATA[null]]></head-content>
+  <show-yn>Y</show-yn>
+</menu-layout>
+<menu-layout>
+  <site-cd>search</site-cd>
+  <site-nm>통합검색</site-nm>
+  <menu-code>10200000000002016101110</menu-code>
+  <sort-order>1020000000000</sort-order>
+  <menu-nm>메뉴검색</menu-nm>
+  <menu-title>메뉴검색</menu-title>
+  <satisfy-show-yn>Y</satisfy-show-yn>
+  <charger-show-yn>Y</charger-show-yn>
+  <social-show-yn>N</social-show-yn>
+  <menu-path>HOME > 메뉴검색</menu-path>
+  <user-menu-url>/site/search/sub/menu.jsp</user-menu-url>
+  <search-engine>null</search-engine>
+  <layout-url>/WEB-INF/common/decorator/web/search/search_a.jsp</layout-url>
+  <menu-type>program</menu-type>
+  <dept-info>null</dept-info>
+  <head-content><![CDATA[null]]></head-content>
+  <show-yn>Y</show-yn>
+</menu-layout>
+<menu-layout>
+  <site-cd>search</site-cd>
+  <site-nm>통합검색</site-nm>
+  <menu-code>10300000000002016101110</menu-code>
+  <sort-order>1030000000000</sort-order>
+  <menu-nm>직원/업무</menu-nm>
+  <menu-title>직원/업무</menu-title>
+  <satisfy-show-yn>Y</satisfy-show-yn>
+  <charger-show-yn>Y</charger-show-yn>
+  <social-show-yn>N</social-show-yn>
+  <menu-path>HOME > 직원/업무</menu-path>
+  <user-menu-url>/site/search/sub/employee.jsp</user-menu-url>
+  <search-engine>null</search-engine>
+  <layout-url>/WEB-INF/common/decorator/web/search/search_a.jsp</layout-url>
+  <menu-type>program</menu-type>
+  <dept-info>null</dept-info>
+  <head-content><![CDATA[null]]></head-content>
+  <show-yn>Y</show-yn>
+</menu-layout>
+<menu-layout>
+  <site-cd>search</site-cd>
+  <site-nm>통합검색</site-nm>
+  <menu-code>10400000000002016101110</menu-code>
+  <sort-order>1040000000000</sort-order>
+  <menu-nm>민원사무편람</menu-nm>
+  <menu-title>민원사무편람</menu-title>
+  <satisfy-show-yn>Y</satisfy-show-yn>
+  <charger-show-yn>Y</charger-show-yn>
+  <social-show-yn>N</social-show-yn>
+  <menu-path>HOME > 민원사무편람</menu-path>
+  <user-menu-url>/site/search/sub/minwon.jsp</user-menu-url>
+  <search-engine>null</search-engine>
+  <layout-url>/WEB-INF/common/decorator/web/search/search_a.jsp</layout-url>
+  <menu-type>program</menu-type>
+  <dept-info>null</dept-info>
+  <head-content><![CDATA[null]]></head-content>
+  <show-yn>Y</show-yn>
+</menu-layout>
+<menu-layout>
+  <site-cd>search</site-cd>
+  <site-nm>통합검색</site-nm>
+  <menu-code>10500000000002016101110</menu-code>
+  <sort-order>1050000000000</sort-order>
+  <menu-nm>웹페이지</menu-nm>
+  <menu-title>웹페이지</menu-title>
+  <satisfy-show-yn>Y</satisfy-show-yn>
+  <charger-show-yn>Y</charger-show-yn>
+  <social-show-yn>N</social-show-yn>
+  <menu-path>HOME > 웹페이지</menu-path>
+  <user-menu-url>/site/search/sub/contents.jsp</user-menu-url>
+  <search-engine>null</search-engine>
+  <layout-url>/WEB-INF/common/decorator/web/search/search_a.jsp</layout-url>
+  <menu-type>program</menu-type>
+  <dept-info>null</dept-info>
+  <head-content><![CDATA[null]]></head-content>
+  <show-yn>Y</show-yn>
+</menu-layout>
+<menu-layout>
+  <site-cd>search</site-cd>
+  <site-nm>통합검색</site-nm>
+  <menu-code>10600000000002016101110</menu-code>
+  <sort-order>1060000000000</sort-order>
+  <menu-nm>게시판</menu-nm>
+  <menu-title>게시판</menu-title>
+  <satisfy-show-yn>Y</satisfy-show-yn>
+  <charger-show-yn>Y</charger-show-yn>
+  <social-show-yn>N</social-show-yn>
+  <menu-path>HOME > 게시판</menu-path>
+  <user-menu-url>/site/search/sub/bbs.jsp</user-menu-url>
+  <search-engine>null</search-engine>
+  <layout-url>/WEB-INF/common/decorator/web/search/search_a.jsp</layout-url>
+  <menu-type>program</menu-type>
+  <dept-info>null</dept-info>
+  <head-content><![CDATA[null]]></head-content>
+  <show-yn>Y</show-yn>
+</menu-layout>
+<menu-layout>
+  <site-cd>search</site-cd>
+  <site-nm>통합검색</site-nm>
+  <menu-code>10700000000002016101110</menu-code>
+  <sort-order>1070000000000</sort-order>
+  <menu-nm>이미지</menu-nm>
+  <menu-title>이미지</menu-title>
+  <satisfy-show-yn>Y</satisfy-show-yn>
+  <charger-show-yn>Y</charger-show-yn>
+  <social-show-yn>N</social-show-yn>
+  <menu-path>HOME > 이미지</menu-path>
+  <user-menu-url>/site/search/sub/image.jsp</user-menu-url>
+  <search-engine>null</search-engine>
+  <layout-url>/WEB-INF/common/decorator/web/search/search_a.jsp</layout-url>
+  <menu-type>program</menu-type>
+  <dept-info>null</dept-info>
+  <head-content><![CDATA[null]]></head-content>
+  <show-yn>Y</show-yn>
+</menu-layout>
+<menu-layout>
+  <site-cd>search</site-cd>
+  <site-nm>통합검색</site-nm>
+  <menu-code>10800000000002016101110</menu-code>
+  <sort-order>1080000000000</sort-order>
+  <menu-nm>통합예약</menu-nm>
+  <menu-title>통합예약</menu-title>
+  <satisfy-show-yn>Y</satisfy-show-yn>
+  <charger-show-yn>Y</charger-show-yn>
+  <social-show-yn>N</social-show-yn>
+  <menu-path>HOME > 통합예약</menu-path>
+  <user-menu-url>/site/search/sub/reservation.jsp</user-menu-url>
+  <search-engine>null</search-engine>
+  <layout-url>/WEB-INF/common/decorator/web/search/search_a.jsp</layout-url>
+  <menu-type>program</menu-type>
+  <dept-info>null</dept-info>
+  <head-content><![CDATA[null]]></head-content>
+  <show-yn>Y</show-yn>
+</menu-layout>
+</menu>

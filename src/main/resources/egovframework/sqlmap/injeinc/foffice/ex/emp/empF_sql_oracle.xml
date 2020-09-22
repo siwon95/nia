@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed Mar 11 17:10:22 KST 2020-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EmpFDao">
+	
+	<resultMap id="EmpFMap" type="egovframework.injeinc.boffice.group.emp.vo.EmpVo">
+		<result property="cdIdx" column="CD_IDX"/>		<!--idx-->
+		<result property="cdSubject" column="CD_SUBJECT"/>		<!--이름-->
+		<result property="cdDepstep1" column="CD_DEPSTEP1"/>		<!--국코드-->
+		<result property="cdDepstep2" column="CD_DEPSTEP2"/>		<!--과코드-->
+		<result property="cdDepstep3" column="CD_DEPSTEP3"/>		<!--과코드-->
+	</resultMap>
+	
+	<resultMap id="TreeBoardMap" type="egovframework.injeinc.boffice.sy.board.vo.TreeBoardVo">
+		<result property="id" column="CB_CD"/>
+		<result property="parent" column="CB_UPR_CD"/>
+		<result property="text" column="CB_NAME"/>
+		<result property="position" column="ORD_NO"/>
+		<result property="cbIdx" column="CB_IDX"/>
+		<result property="publicYn" column="PUBLIC_YN"/>
+		<result property="cbUse" column="CB_USE"/>
+	</resultMap>
+	
+	<!-- 셀렉트박스 리스트 출력 -->
+	<select id="selectListDepartment" resultMap="EmpFMap">
+		<![CDATA[	
+			SELECT CD_IDX
+			,CD_SUBJECT
+			,CD_DEPSTEP1
+			,CD_DEPSTEP2
+			,CD_DEPSTEP3
+			FROM EZ_DEPARTMENT
+			WHERE CD_DEPSTEP3 = '00'
+			AND CD_USE = 'Y'
+			ORDER BY CD_DEPSTEP1, CD_DEPSTEP2
+	  	]]>
+	</select>
+	
+	<resultMap id="Emp" type="egovframework.injeinc.boffice.group.emp.vo.EmpVo">
+		<result property="ceIdx" column="CE_IDX"/>		<!--idx-->
+		<result property="ceDate" column="CE_DATE"/>		<!--등록일-->
+		<result property="ceUpdate" column="CE_UPDATE"/>		<!--수정일-->
+		<result property="ceSort" column="CE_SORT"/>		<!--순위-->
+		<result property="ceName" column="CE_NAME"/>		<!--이름-->
+		<result property="ceMailid" column="CE_MAILID"/>		<!--이메일-->
+		<result property="ceTel" column="CE_TEL"/>		<!--전화번호-->
+		<result property="ceHp" column="CE_HP"/>		<!--핸드폰번호-->
+		<result property="ceUse" column="CE_USE"/>		<!--사용유무-->
+		<result property="cePhoto" column="CE_PHOTO"/>		<!--사진 파일-->
+		<result property="ceDepstep1" column="CE_DEPSTEP1"/>		<!--국명-->
+		<result property="ceDepstep2" column="CE_DEPSTEP2"/>		<!--과명-->
+		<result property="ceDepstep3" column="CE_DEPSTEP3"/>		<!--팀명-->
+		<result property="ceDepstep4" column="CE_DEPSTEP4"/>		<!--직위-->
+		<result property="ceWorks" column="CE_WORKS"/>		<!--업무-->
+		<result property="ceCdIdx" column="CE_CDIDX"/>		<!--EZ_DEPARTMENT fk-->
+		<result property="ceMeet" column="CE_MEET"/>		<!--방문예약 사용여부-->
+		<result property="ceDuty" column="CE_DUTY"/>		<!--EZ_EMPLOYEE_TEMP fk-->
+		<result property="cdDepstep1" column="CD_DEPSTEP1"/>		<!--국 코드-->
+		<result property="cdDepstep2" column="CD_DEPSTEP2"/>		<!--과 코드-->
+		<result property="cdDepstep3" column="CD_DEPSTEP3"/>		<!--팀 코드-->
+	</resultMap>
+	
+	<!-- 리스트 조회 -->
+	<select id="selectListEmp" parameterType="EmpVo" resultMap="Emp">
+		<![CDATA[	
+		SELECT * FROM (
+			SELECT CE_IDX
+					,CE_DATE
+					,CE_UPDATE
+					,CE_SORT
+					,CE_NAME
+					,CE_MAILID
+					,CE_TEL
+					,CE_HP
+					,CE_USE
+					,CE_PHOTO
+					,(SELECT MAX(CD_SUBJECT) FROM EZ_DEPARTMENT WHERE CD_DEPSTEP1=A.CD_DEPSTEP1 AND CD_DEPSTEP2='00' AND CD_DEPSTEP3='00') as CE_DEPSTEP1
+					,CASE WHEN A.CD_DEPSTEP2!='00' then (SELECT MAX(CD_SUBJECT) FROM EZ_DEPARTMENT WHERE CD_DEPSTEP1=A.CD_DEPSTEP1 AND CD_DEPSTEP2=A.CD_DEPSTEP2 AND CD_DEPSTEP3='00') end as CE_DEPSTEP2
+					,CASE WHEN A.CD_DEPSTEP3!='00' then (SELECT MAX(CD_SUBJECT) FROM EZ_DEPARTMENT WHERE CD_DEPSTEP1=A.CD_DEPSTEP1 AND CD_DEPSTEP2=A.CD_DEPSTEP2 AND CD_DEPSTEP3=A.CD_DEPSTEP3) end as CE_DEPSTEP3
+					,CASE WHEN FAKE_DEPT_ID IS NOT NULL AND CE_DEPSTEP4 IS NULL THEN '방문간호사' ELSE CE_DEPSTEP4 END as CE_DEPSTEP4
+					,CE_WORKS
+					,CE_CDIDX
+					,CE_MEET
+					,CE_DUTY
+					,CD_DEPSTEP1
+					,CD_DEPSTEP2
+					,CD_DEPSTEP3
+			FROM EZ_EMPLOYEE, EZ_DEPARTMENT A
+			WHERE
+			(
+				CD_IDX=CE_CDIDX
+				OR CD_IDX=FAKE_TEAM_CODE
+			)
+			AND CE_USE = 'Y'
+			AND CE_SORT != '99'
+			]]>
+			<if test="searchKeyword != null and searchKeyword != ''">
+			 	<if test="searchCondition == &quot;name&quot;">
+			 	<![CDATA[	
+			 		AND
+						CE_NAME LIKE '%'||#{searchKeyword}||'%'
+				]]>
+			 	</if>
+			 	<if test="searchCondition == &quot;work&quot;">
+			 	<![CDATA[	
+			 		AND
+						CE_WORKS LIKE '%'||#{searchKeyword}||'%'
+				]]>
+			 	</if>
+			</if>
+			
+			<if test="cdDepstep1 != null and cdDepstep1 != ''">
+				<![CDATA[	AND CD_DEPSTEP1 = #{cdDepstep1} ]]>
+			</if>
+			<if test="cdDepstep2 != null and cdDepstep2 != ''">
+				<if test="cdDepstep2 != &quot;00&quot;">
+			     <![CDATA[	
+			    		and CD_DEPSTEP2 = #{cdDepstep2}
+			     ]]>
+			     </if>
+		    </if>
+		    <if test="cdDepstep3 != null and cdDepstep3 != ''">
+			  <if test="cdDepstep3 != &quot;00&quot;">
+			     <![CDATA[	
+			    		and CD_DEPSTEP3 = #{cdDepstep3}
+			     ]]>
+			   </if>
+		    </if>
+			<![CDATA[	
+			), EZ_EMPLOYEE_SORT
+			WHERE CE_DEPSTEP4 = JIGWEE(+)
+			ORDER BY CD_DEPSTEP1, CD_DEPSTEP2, CD_DEPSTEP3, CE_DEPSTEP2, CE_DEPSTEP3, SUNWEE, CE_SORT
+			]]>
+	</select>
+    
+    <!--  부서 조회 -->
+	<select id="selectCdCode" resultMap="EmpFMap">
+		<![CDATA[	
+			SELECT CD_IDX
+			,CD_SUBJECT
+			,CD_DEPSTEP1
+			,CD_DEPSTEP2
+			,CD_DEPSTEP3
+			FROM EZ_DEPARTMENT
+			WHERE CD_IDX = #{cdIdx}
+	  	]]>
+	</select>
+</mapper>

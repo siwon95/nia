@@ -1,0 +1,59 @@
+
+
+테스트 url
+https://www.w3schools.com/html/tryit.asp?filename=tryhtml5_video
+
+
+
+실행 코드
+<!DOCTYPE html> 
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(function(){
+    // 재생시작시간 설정		
+    $("video")[0].currentTime = 3;
+    
+    $("#btn").click(function(){
+    	console.dir($("video")[0].buffered);
+        $("#currentTime").html($("video")[0].currentTime);
+        $("#duration").html($("video")[0].duration);
+        $("#ended").html($("video")[0].ended);
+        $("#paused").html($("video")[0].paused);
+        $("#currentTime").html($("video")[0].currentTime);
+    });
+});
+</script>
+</head>
+<body> 
+<!-- autoplay 설정시 자동재생 -->
+<!-- loop 설정시 자동재생 -->
+<video width="400" controls autoplay loop>
+  <source src="mov_bbb.mp4" type="video/mp4">
+  <source src="mov_bbb.ogg" type="video/ogg">
+  Your browser does not support HTML video.
+</video>
+
+<p>
+Video courtesy of 
+<a href="https://www.bigbuckbunny.org/" target="_blank">Big Buck Bunny</a>.
+</p>
+
+<a href="#" id="btn">button</a><br/>
+
+/*현재위치*/
+<p id="currentTime"></p>
+
+/*전체길이*/
+<p id="duration"></p>
+
+/*종료확인*/
+<p id="ended"></p>
+
+/*(일시)정지확인*/
+<p id="paused"></p>
+
+
+</body> 
+</html>

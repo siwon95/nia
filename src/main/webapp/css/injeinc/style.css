@@ -1,0 +1,195 @@
+/* ==============================================================================================================
+= v1.0 - 20190411
+============================================================================================================== */
+
+@charset "utf-8";
+@import "./font.css";
+@import "./base.css";
+
+
+/* ==============================================================================================================
+= Layout 기본스타일 지정
+============================================================================================================== */
+
+/*상단*/
+.header{position:relative;border-bottom:1px #ddd solid;}
+.header .topBar{height:30px;border-bottom:1px #ddd solid;}
+.header .topLeft{position:absolute;top:0;left:0;border-left:1px #ddd solid;}
+.header .topLeft li{float:left;position:relative;line-height:30px;border-right:1px #ddd solid;}
+.header .topLeft li a{display:block;padding:0 10px;height:30px;font-size:0.85em;}
+.header .topRight{position:absolute;top:0;right:0;overflow:hidden;}
+.header .topRight li{float:left;position:relative;line-height:30px;}
+.header .topRight li a{display:block;padding:0 10px;height:30px;font-size:0.85em;}
+.header .topRight li:after{display:block;content:'';position:absolute;top:50%;right:-1px;margin-top:-5px;height:10px;border-right:1px #ddd solid;}
+.header h1{height:80px;line-height:80px;text-align:center;}
+.header #gnb{height:50px;line-height:50px;border-top:1px #ddd solid;}
+.header #gnb > ul,
+.header #gnb .inner > ul{padding-right:100px;}
+.header #gnb > ul:after,
+.header #gnb .inner > ul:after{display:block;content:'';clear:both;}
+.header #gnb > ul > li,
+.header #gnb > .inner > ul > li{float:left;width:14.2857%;}/* 4:25%, 5:20%, 6:16.6666%, 7:14.2857, 8:12.5*/
+.header #gnb > ul > li > a,
+.header #gnb .inner > ul > li > a{display:block;font-size:1.15em;font-weight:bold;color:#333;text-align:center;}
+.header #gnb > ul > li > ul{display:none;position:relative;background:#fff;border:1px solid #ddd;border-top:0;padding:0 0 10px 10px;z-index:2}
+.header #gnb > ul > li > ul > li {display:block;line-height:30px;}
+.header #gnb > ul > li.active > ul{display:block;}
+
+#allMenu{display:none;position:absolute;top:130px;left:0;right:0;z-index:2;background:#f8f8f8;border-top:1px solid #ddd;border-bottom:1px solid #ddd;padding:20px 0;}
+#allMenu.active{display:block;}
+#allMenu .depth01 > li{line-height:40px;padding-left:10px;box-sizing:border-box;float:left;width:14.2857%;}
+
+#gnb.third .subMenu{display:none;position:absolute;top:50px;left:-200px;right:0;z-index:2;background:#f8f8f8;border-top:1px solid #ddd;border-bottom:1px solid #ddd;}
+#gnb.third .subMenu.active{display:block;}
+#gnb.third .subMenu > .inner > .depth02{float:left;padding:25px 20px;width:14.285714%;height:300px;background:#fff;border-right:1px solid #ddd;box-sizing:border-box;text-align:left;}
+#gnb.third .subMenu > .inner > .depth02.first{border-left:1px solid #ddd;}
+#gnb.third .subMenu > .inner > .depth02 > li{line-height:25px;}
+#gnb.third .subMenu > .inner > .depth02 > li > a{display:block;margin-bottom:5px;height:32px;line-height:32px;font-size:1.05em;font-weight:bold;}
+
+.header .gnbBar{height:80px;}
+.header .gnbBar h1{position:absolute;top:50%;left:0;margin-top:-30px;height:60px;line-height:60px;text-align:left;}
+.header .gnbBar #gnb{position:absolute;bottom:0;left:200px;right:0;border-top:0px none;}
+.header .btn_searchToggle{position:absolute;bottom:0;right:50px;width:50px;height:50px;border:1px #ccc solid;box-sizing:border-box;}
+.header .btn_navToggle{position:absolute;bottom:0;right:0;width:50px;height:50px;border:1px #ccc solid;box-sizing:border-box;}
+
+/*하단*/
+.footer{background:#ededed;border-top:1px solid #c2c2c2;}
+.footer > .inner{margin-top:30px;padding:0 0 40px;}
+.footer.useLogo > .inner{padding:0 0 40px 150px;}
+.footer .footerNavBar{background:#343434;}
+.footer .footerNavBar .inner{padding:0;border-left:1px #717171 solid;}
+.footer .footerNavBar ul:after{display:block;content:'';clear:both;}
+.footer .footerNavBar ul > li{float:left;width:14.2857%;border-right:1px #717171 solid;box-sizing:border-box;}/* 4:25%, 5:20%, 6:16.6666%, 7:14.2857, 8:12.5*/
+.footer .footerNavBar ul > li > a{display:block;height:40px;color:#fff;line-height:40px;text-align:center;}
+.footer .footerLogo{position:absolute;top:0;left:0;}
+.footer .footerNav{margin:0 0 10px -20px;float:left;overflow:hidden;clear:both;}
+.footer .footerNav li{position:relative;float:left;}
+.footer .footerNav li a{display:block;padding:0 20px;font-size:0.9em;}
+.footer .footerNav li:after{display:block;content:'';position:absolute;top:50%;right:-1px;margin-top:-5px;height:10px;border-right:1px #aaa solid;}
+.footer .footerCopyright{font-size:0.85em;color:#444;line-height:140%;clear:both;}
+.footer .footerLink{position:absolute;top:0;right:0;}
+.footer .footerLink a{display:block;float:left;margin-left:10px;}
+
+#container{margin:60px 20px;}
+
+/*Guide*/
+p{margin:10px 0;}
+.exampleBox{display:block;position:relative;margin:10px 0;padding:20px;margin-bottom:20px;border:1px #111 solid;}
+
+/* ************* board ************ */
+.icon_bbsFile{display:inline-block;width:21px;height:21px;text-indent:-9999em;background:url(/images/cms/icon/icon_file.png) no-repeat center;vertical-align:middle;}
+.icon_bbsFile.hwp{background:url(/images/cms/icon/icon_file_hwp.png) no-repeat center;}
+.icon_bbsFile.pdf{background:url(/images/cms/icon/icon_file_pdf.png) no-repeat center;}
+.icon_bbsFile.pptx,
+.icon_bbsFile.ppt{background:url(/images/cms/icon/icon_file_ppt.png) no-repeat center;}
+.icon_bbsFile.xls,
+.icon_bbsFile.xlsx{background:url(/images/cms/icon/icon_file_xls.png) no-repeat center;}
+.icon_bbsFile.doc,
+.icon_bbsFile.docx{background:url(/images/cms/icon/icon_file_doc.png) no-repeat center;}
+.icon_bbsFile.zip,
+.icon_bbsFile.alz,
+.icon_bbsFile.rar,
+.icon_bbsFile.gz,
+.icon_bbsFile.tar{background:url(/images/cms/icon/icon_file_zip.png) no-repeat center;}
+.icon_bbsFile.jpg,
+.icon_bbsFile.jpeg,
+.icon_bbsFile.gif,
+.icon_bbsFile.png,
+.icon_bbsFile.bmp{background:url(/images/cms/icon/icon_file_jpg.png) no-repeat center;}
+
+/*게시판검색*/
+.bbsSearch{margin-bottom:40px;padding:20px 30px;background:#f0f0f0;border:1px solid #e5e5e5;border-top:2px solid #162b58;box-sizing:border-box;}
+.bbsSearch .total{display:inline-block;margin-right:70px;font-size:17px;color:#555;vertical-align:middle;}
+.bbsSearch select,
+.bbsSearch input[type='text']{margin:5px 0;padding:0 12px;height:42px;font-size:15px;color:#555;border:0px none;box-sizing:border-box;width: 200px;}
+.bbsSearch select{padding-right:0px; width: 130px;}
+.bbsSearch input[type='submit']{width:80px;height:42px;line-height:42px;font-size:15px;color:#fff;text-align:center;background:#162b58;border:0px none;}
+.bbsSearch .btnAll{display:inline-block;margin-left:2px;width:80px;height:42px;line-height:42px;font-size:15px;color:#162b58;text-align:center;border:1px solid #162b58;vertical-align:middle;box-sizing:border-box;}
+
+/*공통게시판 > 목록 */
+.tableBox{border-top:2px #162b58 solid;}
+.tableBox table{width:100%;font-size:16px;border:0 none;}
+.tableBox table thead th{border-bottom:1px solid #929bad;}
+.tableBox table th,
+.tableBox table td{color:#181818;border-bottom:1px #e5e5e5 solid;border-right:0 none;}
+.tableBox table th{color:#162b58;background:#fff;}
+.tableBox table.list th,
+.tableBox table.list td{padding:20px 5px;}
+.tableBox table.list .title{text-align:left;}
+.tableBox table.list .title a{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.tableBox table.list .title a:hover{text-decoration:underline;}
+
+/*포토게시판 > 목록*/
+.bbsListThumb{position:relative;}
+.bbsListThumb > ul{display:block;margin:-10px;}
+.bbsListThumb > ul:after{display:block;content:'';clear:both;}
+.bbsListThumb > ul > li{display:block;float:left;padding:10px;width:20%;box-sizing:border-box;}
+.bbsListThumb > ul > li > a{display:block;}
+.bbsListThumb > ul > li > a .thumb{display:table-cell;width:999px;height:200px;text-align:center;background:#f6f6f6 url(/images/injeinc/noimage.png);border:1px #e1e1e1 solid;vertical-align:middle;}
+.bbsListThumb > ul > li > a .thumb > img{max-width:100%;max-height:100%;vertical-align:middle;}
+.bbsListThumb > ul > li > a .desc{margin-top:10px;}
+.bbsListThumb > ul > li > a .category{display:block;text-align:center;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
+.bbsListThumb > ul > li > a .title{display:block;font-size:1.1em;font-weight:bold;text-align:center;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
+.bbsListThumb > ul > li > a .name{display:block;margin-top:5px;text-align:center;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
+.bbsListThumb.bordered > ul > li > a{display:block;padding:10px;border:1px #ddd solid;}
+.bbsListThumb.cols2 > ul > li{width:50%;}
+.bbsListThumb.cols2 > ul > li > a .thumb{height:300px;}
+.bbsListThumb.cols3 > ul > li{width:33.3333%;}
+.bbsListThumb.cols3 > ul > li > a .thumb{height:250px;}
+.bbsListThumb.cols4 > ul > li{width:25%;}
+.bbsListThumb.cols4 > ul > li > a .thumb{height:200px;}
+.bbsListThumb.cols5 > ul > li{width:20%;}
+.bbsListThumb.cols5 > ul > li > a .thumb{height:180px;}
+.bbsListThumb.cols6 > ul > li{width:16.6666%;}
+.bbsListThumb.cols6 > ul > li > a .thumb{height:160px;}
+
+/*문서게시판 > 목록*/
+.bbsListDocument{position:relative;}
+.bbsListDocument > ul{display:block;margin:-10px;}
+.bbsListDocument > ul:after{display:block;content:'';clear:both;}
+.bbsListDocument > ul > li{display:block;float:left;padding:10px;width:20%;box-sizing:border-box;}
+.bbsListDocument > ul > li > div{border:1px #ddd solid;}
+.bbsListDocument > ul > li .thumb{display:table-cell;width:999px;height:200px;text-align:center;background:#f6f6f6 url(/images/injeinc/noimage.png);border:1px #e1e1e1 solid;vertical-align:middle;}
+.bbsListDocument > ul > li .thumb > img{max-width:100%;max-height:100%;vertical-align:middle;}
+.bbsListDocument > ul > li .desc{padding:15px 10px;}
+.bbsListDocument > ul > li .title{display:block;font-size:1.1em;font-weight:bold;text-align:center;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}
+.bbsListDocument > ul > li .btnArea{margin:0;padding:10px;background:#efefef;}
+
+/*문서게시판 > 자주묻는질문*/
+.bbsListFaq{position:relative;}
+.bbsListFaq > dl{display:block;border:1px #e1e1e1 solid;border-bottom:0px none;}
+.bbsListFaq > dl > dt{display:block;position:relative;padding:10px 15px 10px 60px;font-size:20px;font-weight:bold;background:#f6f6f6;border-bottom:1px #e1e1e1 solid;}
+.bbsListFaq > dl > dt:after{display:block;content:'Q';position:absolute;top:50%;left:20px;margin-top:-15px;font-size:25px;font-weight:bold;color:#888;line-height:30px;line-height:30px;}
+.bbsListFaq > dl > dd{display:block;position:relative;padding:20px 25px 20px 60px;min-height:50px;border-bottom:1px #e1e1e1 solid;}
+.bbsListFaq > dl > dd:after{display:block;content:'A';position:absolute;top:10px;left:20px;font-size:25px;font-weight:bold;color:#888;line-height:30px;}
+
+/*공통게시판 > 상세*/
+.bbsView{border-top:2px #444 solid;}
+.bbsViewTitle{display:block;padding:20px 30px 10px;background:#efefef;border-bottom:1px #ddd solid;}
+.bbsViewTitle b{display:block;margin-bottom:5px;font-size:1.5em;}
+.bbsViewTitle ul{display:block;margin-right:-10px;padding:5px 0;text-align:right;overflow:hidden;}
+.bbsViewTitle ul li{display:inline-block;position:relative;padding:0 10px;}
+.bbsViewTitle ul li:after{display:block;content:'';position:absolute;top:50%;right:-1px;margin-top:-5px;height:10px;border-right:1px #ddd solid;}
+.bbsViewContent{margin-bottom:20px;border-bottom:1px #aaa solid;}
+.bbsViewInfo{display:block;}
+.bbsViewInfo ul{display:block;}
+.bbsViewInfo ul li{display:block;position:relative;padding:15px 30px 15px 150px;min-height:20px;line-height:20px;border-bottom:1px #ddd solid;}
+.bbsViewInfo ul li .title{display:block;position:absolute;top:15px;left:30px;width:100px;min-height:20px;line-height:20px;font-weight:bold;}
+.bbsViewInfo ul li .title:after{display:block;content:'';position:absolute;top:50%;right:-1px;margin-top:-5px;height:10px;border-right:1px #ddd solid;}
+.bbsViewFile{display:block;}
+.bbsViewFile ul{display:block;}
+.bbsViewFile ul li{display:block;position:relative;padding:15px 30px;min-height:20px;line-height:20px;border-bottom:1px #ddd solid;}
+.bbsViewFile ul li a{margin-left:5px;}
+.bbsViewEditor{padding:30px 50px;min-height:450px;}
+.bbsViewLink{display:block;}
+.bbsViewLink ul{display:block;}
+.bbsViewLink ul li{display:block;position:relative;padding:15px 30px 15px 150px;min-height:20px;line-height:20px;border-top:1px #ddd solid;}
+.bbsViewLink ul li .title{display:block;position:absolute;top:15px;left:30px;width:100px;min-height:20px;line-height:20px;font-weight:bold;}
+.bbsViewLink ul li .title:after{display:block;content:'';position:absolute;top:50%;right:-1px;margin-top:-5px;height:10px;border-right:1px #ddd solid;}
+
+@media all and (max-width:1200px){
+}
+@media all and (max-width:960px){
+}
+@media all and (max-width:639px){
+}
