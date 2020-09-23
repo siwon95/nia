@@ -71,7 +71,7 @@ span.onlyDesktop{display:inline;}
 = 폼 아이템별 기본스타일 지정
 ============================================================================================================== */
 input[type='text'],input[type='password'],input[type='number'],select{height:30px;max-width:100%;text-indent:5px;border:1px #ddd solid;box-sizing:border-box;}
-select.useStyle{padding-right:20px;background:#fff url(../../images/injeinc/bg_selectBox.png) no-repeat right center;-webkit-appearance:none;}
+select.useStyle{padding-right:20px;background:#fff url(../../images/nia/injeinc/bg_selectBox.png) no-repeat right center;-webkit-appearance:none;}
 textarea{padding:5px;border:1px #ddd solid;box-sizing:border-box;resize:vertical;}
 *:disabled{color:#777 !important;background-color:#eee !important;}
 input:-moz-read-only{color:#777 !important;background-color:#eee !important;}
@@ -86,8 +86,8 @@ input[type='checkbox'],input[type='radio']{margin-right:5px;}
 = Datepicker를 사용중인 입력박스, 달력형태 스타일 지정
 = 사용방법 : 입력박스에 useDatepicker / useMonthpicker 클래스를 추가하여 사용함
 ============================================================================================================== */
-input.useDatepicker{width:105px;background:#fff url(../../images/injeinc/bg_inputDate.png) no-repeat 95% center;}
-input.useMonthpicker{width:90px;background:#fff url(../../images/injeinc/bg_inputDate.png) no-repeat 95% center;}
+input.useDatepicker{width:105px;background:#fff url(../../images/nia/injeinc/bg_inputDate.png) no-repeat 95% center;}
+input.useMonthpicker{width:90px;background:#fff url(../../images/nia/injeinc/bg_inputDate.png) no-repeat 95% center;}
 #ui-datepicker-div{display:none;width:180px;background:#fff;border:1px #ccc solid;z-index:102 !important;}
 .ui-datepicker{position:relative;padding:5px;}
 .ui-datepicker table{width:100%;font-size:12px;}
@@ -105,8 +105,8 @@ input.useMonthpicker{width:90px;background:#fff url(../../images/injeinc/bg_inpu
 .ui-datepicker .ui-datepicker-title{margin:0;height:30px;line-height:30px;font-size:14px;font-weight:normal;color:#242424;letter-spacing:-1px;text-align:center;}
 .ui-datepicker .ui-datepicker-prev,
 .ui-datepicker .ui-datepicker-next{position:absolute;left:50%;top:5px;width:20px;height:20px;line-height:26px;border-radius:2px;border:1px solid #d9d9d9;text-indent:-9999em;cursor:pointer;}
-.ui-datepicker .ui-datepicker-prev{margin-left:-66px;background:url(../../images/injeinc/btn_calendarPrev.png) no-repeat center center;}
-.ui-datepicker .ui-datepicker-next{margin-left:44px;background:url(../../images/injeinc/btn_calendarNext.png) no-repeat center center;}
+.ui-datepicker .ui-datepicker-prev{margin-left:-66px;background:url(../../images/nia/injeinc/btn_calendarPrev.png) no-repeat center center;}
+.ui-datepicker .ui-datepicker-next{margin-left:44px;background:url(../../images/nia/injeinc/btn_calendarNext.png) no-repeat center center;}
 #ui-monthpicker-div.ui-datepicker{display:none;width:200px;background:#fff;border:1px #ccc solid;z-index:10 !important;box-sizing:border-box;}
 #ui-monthpicker-div.ui-datepicker td{height:28px;}
 #ui-monthpicker-div.ui-datepicker td a{cursor:pointer;}
@@ -165,10 +165,10 @@ input.useMonthpicker{width:90px;background:#fff url(../../images/injeinc/bg_inpu
 .paging{margin-bottom:20px;min-height:27px;font-size:0;text-align:center;}
 .paging > a{display:inline-block;margin:0 2px;padding:0 3px;min-width:27px;height:27px;line-height:25px;font-size:13px;text-align:center;color:#888888;border:1px solid #d9d9d9;box-sizing:border-box;}
 .paging > a.active{background-color:#143046 ;border:1px solid #143046 ;color:#fff;}
-.paging > a.first{background:url(../../images/injeinc/btn_pageFirst.png) no-repeat center center;text-indent:-9999px;}
-.paging > a.prev{background:url(../../images/injeinc/btn_pagePrev.png) no-repeat center center;text-indent:-9999px;}
-.paging > a.next{background:url(../../images/injeinc/btn_pageNext.png) no-repeat center center;text-indent:-9999px;}
-.paging > a.last{background:url(../../images/injeinc/btn_pageLast.png) no-repeat center center;text-indent:-9999px;}
+.paging > a.first{background:url(../../images/nia/injeinc/btn_pageFirst.png) no-repeat center center;text-indent:-9999px;}
+.paging > a.prev{background:url(../../images/nia/injeinc/btn_pagePrev.png) no-repeat center center;text-indent:-9999px;}
+.paging > a.next{background:url(../../images/nia/injeinc/btn_pageNext.png) no-repeat center center;text-indent:-9999px;}
+.paging > a.last{background:url(../../images/nia/injeinc/btn_pageLast.png) no-repeat center center;text-indent:-9999px;}
 .paging > select{margin-left:5px;height:27px;line-height:27px;font-size:13px;color:#888888;vertical-align:top;border:1px solid #d9d9d9}
 
 
@@ -219,7 +219,7 @@ input.useMonthpicker{width:90px;background:#fff url(../../images/injeinc/bg_inpu
 .modalWrap.window .modalTitle{position:fixed;top:0;left:0;right:0;}
 .modalWrap .modalTitle{position:relative;padding:0 65px 0 20px;height:46px;background:#484c51;}
 .modalWrap .modalTitle h2{display:block;font-size:16px;font-weight:bold;color:#fff;line-height:46px;}
-.modalWrap .modalTitle .btn_modalClose{display:block;position:absolute;top:0;right:0;width:46px;height:46px;text-indent:-9999em;background:url(../../images/injeinc/btn_modalClose.png) no-repeat center center;}
+.modalWrap .modalTitle .btn_modalClose{display:block;position:absolute;top:0;right:0;width:46px;height:46px;text-indent:-9999em;background:url(../../images/nia/injeinc/btn_modalClose.png) no-repeat center center;}
 .modalWrap .modalContent{padding:20px;}
 .modalWrap .modalContent .btnArea{margin:0;}
 .modalWrap .modalContent .btnArea + *{margin-top:20px;}

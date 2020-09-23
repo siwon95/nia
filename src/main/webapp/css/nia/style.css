@@ -133,7 +133,7 @@ p{margin:10px 0;}
 .effectSection .gnb .deaph1 > li.menu4:hover > a:before{right:0;}
 .effectSection .gnb .deaph1 > li.menu4:hover > a:after{left:0;}
 
-.effectSection .btnGnbAll{display:block;width:50px;height:50px;background:#fff url(../../images/injeinc/icon_btnGnbAll.png) no-repeat center center;position:absolute;right:0;bottom:10px;z-index:8;text-indent:-9999px;transition-duration:0.2s;}
+.effectSection .btnGnbAll{display:block;width:50px;height:50px;background:#fff url(../../images/nia/injeinc/icon_btnGnbAll.png) no-repeat center center;position:absolute;right:0;bottom:10px;z-index:8;text-indent:-9999px;transition-duration:0.2s;}
 .effectSection .btnGnbAll:hover{transform:rotate(45deg);}
 
 .effectSection .slider{position:relative;}
@@ -143,8 +143,8 @@ p{margin:10px 0;}
 .effectSection .slider .sliderCtrl > a:before{display:block;content:'';clear:both;width:50px;height:50px;position:absolute;top:0;border-bottom:1px solid rgba(255,255,255,0);transition-delay:0.1s;transition-duration:0.2s;}
 .effectSection .slider .sliderCtrl > a.btn_slidePrev{left:10%;}
 .effectSection .slider .sliderCtrl > a.btn_slidenext{right:10%;}
-.effectSection .slider .sliderCtrl > a.btn_slidePrev:before{left:50px;background:url(../../images/injeinc/icon_btnSlidePrev.png) no-repeat left top;}
-.effectSection .slider .sliderCtrl > a.btn_slidenext:before{right:50px;background:url(../../images/injeinc/icon_btnSlideNext.png) no-repeat right top;}
+.effectSection .slider .sliderCtrl > a.btn_slidePrev:before{left:50px;background:url(../../images/nia/injeinc/icon_btnSlidePrev.png) no-repeat left top;}
+.effectSection .slider .sliderCtrl > a.btn_slidenext:before{right:50px;background:url(../../images/nia/injeinc/icon_btnSlideNext.png) no-repeat right top;}
 .effectSection .slider .sliderCtrl > a:hover:before{width:100px;height:23px;border-bottom:1px solid rgba(0,0,0,1);}
 .effectSection .slider .sliderCtrl > a.btn_slidePrev:hover:before{left:0;}
 .effectSection .slider .sliderCtrl > a.btn_slidenext:hover:before{right:0;}
@@ -188,7 +188,7 @@ p{margin:10px 0;}
 .effectSection .maskBanner > li .box.type8 .mask:hover{background-color:#000;}
 
 .effectSection .btnMore{display:inline-block;height:11px;line-height:11px;padding-right:16px;position:absolute;top:-10px;right:10px;font-size:12px;overflow:hidden;}
-.effectSection .btnMore:after{display:block;content:'';clear:both;width:11px;height:11px;position:absolute;top:0px;right:0;background:url(../../images/injeinc/icon_more.png) no-repeat 0 0;transition-duration:0.1s;}
+.effectSection .btnMore:after{display:block;content:'';clear:both;width:11px;height:11px;position:absolute;top:0px;right:0;background:url(../../images/nia/injeinc/icon_more.png) no-repeat 0 0;transition-duration:0.1s;}
 .effectSection .btnMore:hover:after{right:-5px;transform:rotate(45deg);}
 
 .effectSection .accordion.horizontal{float:left;width:595px;height:200px;margin-right:5px;position:relative;overflow:hidden;}
@@ -212,8 +212,8 @@ p{margin:10px 0;}
 .effectSection .iconLinkGup > li{float:left;padding:5px;overflow:hidden;box-sizing:border-box;}
 .effectSection .iconLinkGup > li .icon{display:block;width:34px;height:34px;text-indent:-9999px;}
 .effectSection .iconLinkGup > li:hover .icon{transition-duration:0.5s;transform:rotateY(360deg);}
-.effectSection .iconLinkGup > li .icon.icon1{background:url(../../images/injeinc/icon_sns.png) no-repeat 0 -34px;}
-.effectSection .iconLinkGup > li .icon.icon2{background:url(../../images/injeinc/icon_sns.png) no-repeat 0 -68px;}
+.effectSection .iconLinkGup > li .icon.icon1{background:url(../../images/nia/injeinc/icon_sns.png) no-repeat 0 -34px;}
+.effectSection .iconLinkGup > li .icon.icon2{background:url(../../images/nia/injeinc/icon_sns.png) no-repeat 0 -68px;}
 
 
 /* ==============================================================================================================

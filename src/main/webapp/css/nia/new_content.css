@@ -1,13 +1,13 @@
-/* °øÅë */
+/* ï¿½ï¿½ï¿½ï¿½ */
 
 .containerTop{margin-bottom:36px;padding-top:185px;height:320px;box-sizing:border-box;}
-.containerTop.type1{background:url(/images/sub/img_containerTop_01.jpg) no-repeat center bottom;}
-.containerTop.type2{background:url(/images/sub/img_containerTop_02.png) no-repeat center bottom;}
-.containerTop.type3{padding-top:156px;background:url(/images/sub/img_containerTop_03.jpg) no-repeat center bottom;}
+.containerTop.type1{background:url(/images/nia/sub/img_containerTop_01.jpg) no-repeat center bottom;}
+.containerTop.type2{background:url(/images/nia/sub/img_containerTop_02.png) no-repeat center bottom;}
+.containerTop.type3{padding-top:156px;background:url(/images/nia/sub/img_containerTop_03.jpg) no-repeat center bottom;}
 .containerTop h3{text-indent:-9999px;}
-.containerTop.type1 h3{width:242px;height:46px;background:url(/images/sub/bg_containerTop_txt_01.png) no-repeat center bottom;}
-.containerTop.type2 h3{width:140px;height:47px;background:url(/images/sub/bg_containerTop_txt_02.png) no-repeat center bottom;}
-.containerTop.type3 h3{width:272px;height:106px;background:url(/images/sub/bg_containerTop_txt_03.png) no-repeat center bottom;}
+.containerTop.type1 h3{width:242px;height:46px;background:url(/images/nia/sub/bg_containerTop_txt_01.png) no-repeat center bottom;}
+.containerTop.type2 h3{width:140px;height:47px;background:url(/images/nia/sub/bg_containerTop_txt_02.png) no-repeat center bottom;}
+.containerTop.type3 h3{width:272px;height:106px;background:url(/images/nia/sub/bg_containerTop_txt_03.png) no-repeat center bottom;}
 
 #contents{margin-bottom:100px;min-height:400px;}
 
@@ -28,7 +28,7 @@
 .searchBox select{width:104px;height:32px;border:1px solid #c7c7c7;border-radius:5px;}
 .searchBox.search_txt{position:relative;}
 .searchBox input[type="text"]{padding-right:32px;width:196px;height:32px;border:1px solid #c7c7c7;box-sizing:border-box;border-radius:5px;}
-.searchBox input[type="submit"]{position:absolute;top:0;right:2px;width:30px;height:30px;text-indent:-9999px;background:transparent url(/images/sub/icon_search.png) no-repeat center center;border:0px none;}
+.searchBox input[type="submit"]{position:absolute;top:0;right:2px;width:30px;height:30px;text-indent:-9999px;background:transparent url(/images/nia/sub/icon_search.png) no-repeat center center;border:0px none;}
 
 /* table */
 .tableBox{border-top:1px solid #666;}
@@ -76,10 +76,10 @@ span.eduBtnState.gray{background:#9f9f9f;}
 .paging .btn_prev,
 .paging .btn_next,
 .paging .btn_last{width:32px;height:32px;line-height:32px;text-indent:-9999px;border:1px solid #c7c7c7;border-radius:2px;box-sizing:border-box;background-position:center center;background-repeat:no-repeat;}
-.paging .btn_first{background-image:url(/images/sub/icon_first_page.png);}
-.paging .btn_prev{margin-right:15px;background-image:url(/images/sub/icon_prev.png);}
-.paging .btn_next{margin-left:15px;background-image:url(/images/sub/icon_next.png);}
-.paging .btn_last{background-image:url(/images/sub/icon_last_page.png);}
+.paging .btn_first{background-image:url(/images/nia/sub/icon_first_page.png);}
+.paging .btn_prev{margin-right:15px;background-image:url(/images/nia/sub/icon_prev.png);}
+.paging .btn_next{margin-left:15px;background-image:url(/images/nia/sub/icon_next.png);}
+.paging .btn_last{background-image:url(/images/nia/sub/icon_last_page.png);}
 .paging a.num{width:32px;height:32px;line-height:32px;text-align:center;color:#000;background:#fff;border:0px none;}
 .paging a.active{width:32px;height:32px;line-height:32px;text-align:center;color:#000;background:#83ddff;border:0px none;}
 
@@ -99,7 +99,7 @@ span.eduBtnState.gray{background:#9f9f9f;}
 /* content */
 .top_info{margin-bottom:30px;color:#555;}
 
-/* ºñ¹Ð¹øÈ£ È®ÀÎ */
+/* ï¿½ï¿½Ð¹ï¿½È£ È®ï¿½ï¿½ */
 #password_box{padding:30px 64px;}
 #password_box p{margin-bottom:20px;text-align:center;}
 #password_box input{height:35px;line-height:35px;border:1px solid #b0afaf;}
