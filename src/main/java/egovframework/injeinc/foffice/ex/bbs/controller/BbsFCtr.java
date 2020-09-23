@@ -321,7 +321,7 @@ public class BbsFCtr extends CmmLogCtr{
 			
 			returnUrl = "/injeinc/foffice/ex/bbs/"+ezBbsTempletVo.getListCode();
 			
-			//로그인이 필요한 page 
+			/*//로그인이 필요한 page 
 			StringBuffer b = request.getRequestURL();
 			String loginReferer = b.toString() +"?"+ request.getQueryString();
 			
@@ -335,7 +335,7 @@ public class BbsFCtr extends CmmLogCtr{
 				}else {
 					returnUrl = "/injeinc/foffice/ex/bbs/"+ezBbsTempletVo.getListCode();
 				}
-			}
+			}*/
 			contentCnt = bbsFSvc.boardcontentCnt(bbsFVo);
 			
 			//페이징

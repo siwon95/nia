@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu><menu-layout>
+  <site-cd>nia</site-cd>
+  <site-nm>디지털 배움터</site-nm>
+  <menu-code>10000000000000000000000</menu-code>
+  <sort-order>1000000000000</sort-order>
+  <menu-nm>HOME</menu-nm>
+  <menu-title>HOME</menu-title>
+  <satisfy-show-yn>N</satisfy-show-yn>
+  <charger-show-yn>Y</charger-show-yn>
+  <social-show-yn>N</social-show-yn>
+  <menu-path>HOME</menu-path>
+  <user-menu-url>/site/nia/main.do</user-menu-url>
+  <layout-url>/WEB-INF/jsp/injeinc/site/nia/nia_main.jsp</layout-url>
+  <menu-type>contents</menu-type>
+  <dept-info></dept-info>
+  <head-content><![CDATA[]]></head-content>
+  <metatag-content><![CDATA[<meta name='Description' content='디지털 역량교육 사전모집'>
+]]></metatag-content>
+  <show-yn>Y</show-yn>
+</menu-layout>
+<menu-layout>
+  <site-cd>nia</site-cd>
+  <site-nm>디지털 배움터</site-nm>
+  <menu-code>10100000000002020092216</menu-code>
+  <sort-order>1010000000000</sort-order>
+  <menu-nm>디지털배움터 안내</menu-nm>
+  <menu-title>디지털배움터 안내</menu-title>
+  <satisfy-show-yn>N</satisfy-show-yn>
+  <charger-show-yn>Y</charger-show-yn>
+  <social-show-yn>N</social-show-yn>
+  <menu-path>디지털 배움터 > 디지털배움터 안내</menu-path>
+  <user-menu-url></user-menu-url>
+  <layout-url>/WEB-INF/jsp/injeinc/site/nia/nia_sub.jsp</layout-url>
+  <menu-type>contents</menu-type>
+  <dept-info></dept-info>
+  <head-content><![CDATA[]]></head-content>
+  <metatag-content><![CDATA[]]></metatag-content>
+  <show-yn>Y</show-yn>
+</menu-layout>
+<menu-layout>
+  <site-cd>nia</site-cd>
+  <site-nm>디지털 배움터</site-nm>
+  <menu-code>10200000000002020092216</menu-code>
+  <sort-order>1020000000000</sort-order>
+  <menu-nm>디지털배움터 찾아보기</menu-nm>
+  <menu-title>디지털배움터 찾아보기</menu-title>
+  <satisfy-show-yn>N</satisfy-show-yn>
+  <charger-show-yn>Y</charger-show-yn>
+  <social-show-yn>N</social-show-yn>
+  <menu-path>디지털 배움터 > 디지털배움터 찾아보기</menu-path>
+  <user-menu-url></user-menu-url>
+  <layout-url>/WEB-INF/jsp/injeinc/site/nia/nia_sub.jsp</layout-url>
+  <menu-type>contents</menu-type>
+  <dept-info></dept-info>
+  <head-content><![CDATA[]]></head-content>
+  <metatag-content><![CDATA[]]></metatag-content>
+  <show-yn>Y</show-yn>
+</menu-layout>
+<menu-layout>
+  <site-cd>nia</site-cd>
+  <site-nm>디지털 배움터</site-nm>
+  <menu-code>10300000000002020092216</menu-code>
+  <sort-order>1030000000000</sort-order>
+  <menu-nm>교육 신청하기</menu-nm>
+  <menu-title>교육 신청하기</menu-title>
+  <satisfy-show-yn>N</satisfy-show-yn>
+  <charger-show-yn>Y</charger-show-yn>
+  <social-show-yn>N</social-show-yn>
+  <menu-path>디지털 배움터 > 교육 신청하기</menu-path>
+  <user-menu-url></user-menu-url>
+  <layout-url>/WEB-INF/jsp/injeinc/site/nia/nia_sub.jsp</layout-url>
+  <menu-type>contents</menu-type>
+  <dept-info></dept-info>
+  <head-content><![CDATA[]]></head-content>
+  <metatag-content><![CDATA[]]></metatag-content>
+  <show-yn>Y</show-yn>
+</menu-layout>
+<menu-layout>
+  <site-cd>nia</site-cd>
+  <site-nm>디지털 배움터</site-nm>
+  <menu-code>10400000000002020092216</menu-code>
+  <sort-order>1040000000000</sort-order>
+  <menu-nm>강사-서포터즈 신청하기</menu-nm>
+  <menu-title>강사-서포터즈 신청하기</menu-title>
+  <satisfy-show-yn>N</satisfy-show-yn>
+  <charger-show-yn>Y</charger-show-yn>
+  <social-show-yn>N</social-show-yn>
+  <menu-path>디지털 배움터 > 강사-서포터즈 신청하기</menu-path>
+  <user-menu-url></user-menu-url>
+  <layout-url>/WEB-INF/jsp/injeinc/site/nia/nia_sub.jsp</layout-url>
+  <menu-type>contents</menu-type>
+  <dept-info></dept-info>
+  <head-content><![CDATA[]]></head-content>
+  <metatag-content><![CDATA[]]></metatag-content>
+  <show-yn>Y</show-yn>
+</menu-layout>
+<menu-layout>
+  <site-cd>nia</site-cd>
+  <site-nm>디지털 배움터</site-nm>
+  <menu-code>10500000000002020092216</menu-code>
+  <sort-order>1050000000000</sort-order>
+  <menu-nm>소통게시판</menu-nm>
+  <menu-title>소통게시판</menu-title>
+  <satisfy-show-yn>N</satisfy-show-yn>
+  <charger-show-yn>Y</charger-show-yn>
+  <social-show-yn>N</social-show-yn>
+  <menu-path>디지털 배움터 > 소통게시판</menu-path>
+  <user-menu-url>/site/nia/ex/bbs/List.do?cbIdx=1188</user-menu-url>
+  <layout-url>/WEB-INF/jsp/injeinc/site/nia/nia_sub.jsp</layout-url>
+  <menu-type>program</menu-type>
+  <dept-info></dept-info>
+  <head-content><![CDATA[]]></head-content>
+  <metatag-content><![CDATA[]]></metatag-content>
+  <show-yn>Y</show-yn>
+</menu-layout>
+<menu-layout>
+  <site-cd>nia</site-cd>
+  <site-nm>디지털 배움터</site-nm>
+  <menu-code>10600000000002020092216</menu-code>
+  <sort-order>1060000000000</sort-order>
+  <menu-nm>홍보관</menu-nm>
+  <menu-title>홍보관</menu-title>
+  <satisfy-show-yn>N</satisfy-show-yn>
+  <charger-show-yn>Y</charger-show-yn>
+  <social-show-yn>N</social-show-yn>
+  <menu-path>디지털 배움터 > 홍보관</menu-path>
+  <user-menu-url>/site/nia/ex/bbs/List.do?cbIdx=1189</user-menu-url>
+  <layout-url>/WEB-INF/jsp/injeinc/site/nia/nia_sub.jsp</layout-url>
+  <menu-type>program</menu-type>
+  <dept-info></dept-info>
+  <head-content><![CDATA[]]></head-content>
+  <metatag-content><![CDATA[]]></metatag-content>
+  <show-yn>Y</show-yn>
+</menu-layout>
+<menu-layout>
+  <site-cd>nia</site-cd>
+  <site-nm>디지털 배움터</site-nm>
+  <menu-code>10500000000002020092216</menu-code>
+  <sort-order>1050000000000</sort-order>
+  <menu-nm>소통게시판_상세보기</menu-nm>
+  <menu-title>소통게시판</menu-title>
+  <satisfy-show-yn>N</satisfy-show-yn>
+  <charger-show-yn>Y</charger-show-yn>
+  <social-show-yn>N</social-show-yn>
+  <menu-path>디지털 배움터 > 소통게시판</menu-path>
+  <user-menu-url>/site/nia/ex/bbs/View.do?cbIdx=1188</user-menu-url>
+  <layout-url>/WEB-INF/jsp/injeinc/site/nia/nia_sub.jsp</layout-url>
+  <menu-type>program</menu-type>
+  <dept-info></dept-info>
+  <head-content><![CDATA[]]></head-content>
+  <metatag-content><![CDATA[]]></metatag-content>
+  <show-yn>Y</show-yn>
+</menu-layout>
+<menu-layout>
+  <site-cd>nia</site-cd>
+  <site-nm>디지털 배움터</site-nm>
+  <menu-code>10500000000002020092216</menu-code>
+  <sort-order>1050000000000</sort-order>
+  <menu-nm>소통게시판_글쓰기</menu-nm>
+  <menu-title>소통게시판</menu-title>
+  <satisfy-show-yn>N</satisfy-show-yn>
+  <charger-show-yn>Y</charger-show-yn>
+  <social-show-yn>N</social-show-yn>
+  <menu-path>디지털 배움터 > 소통게시판</menu-path>
+  <user-menu-url>/site/nia/ex/bbs/Regist.do?cbIdx=1188</user-menu-url>
+  <layout-url>/WEB-INF/jsp/injeinc/site/nia/nia_sub.jsp</layout-url>
+  <menu-type>program</menu-type>
+  <dept-info></dept-info>
+  <head-content><![CDATA[]]></head-content>
+  <metatag-content><![CDATA[]]></metatag-content>
+  <show-yn>Y</show-yn>
+</menu-layout>
+<menu-layout>
+  <site-cd>nia</site-cd>
+  <site-nm>디지털 배움터</site-nm>
+  <menu-code>10600000000002020092216</menu-code>
+  <sort-order>1060000000000</sort-order>
+  <menu-nm>홍보관_상세보기</menu-nm>
+  <menu-title>홍보관</menu-title>
+  <satisfy-show-yn>N</satisfy-show-yn>
+  <charger-show-yn>Y</charger-show-yn>
+  <social-show-yn>N</social-show-yn>
+  <menu-path>디지털 배움터 > 홍보관</menu-path>
+  <user-menu-url>/site/nia/ex/bbs/View.do?cbIdx=1189</user-menu-url>
+  <layout-url>/WEB-INF/jsp/injeinc/site/nia/nia_sub.jsp</layout-url>
+  <menu-type>program</menu-type>
+  <dept-info></dept-info>
+  <head-content><![CDATA[]]></head-content>
+  <metatag-content><![CDATA[]]></metatag-content>
+  <show-yn>Y</show-yn>
+</menu-layout>
+</menu>

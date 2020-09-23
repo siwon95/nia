@@ -1,0 +1,110 @@
+/* 공통 */
+
+.containerTop{margin-bottom:36px;padding-top:185px;height:320px;box-sizing:border-box;}
+.containerTop.type1{background:url(/images/sub/img_containerTop_01.jpg) no-repeat center bottom;}
+.containerTop.type2{background:url(/images/sub/img_containerTop_02.png) no-repeat center bottom;}
+.containerTop.type3{padding-top:156px;background:url(/images/sub/img_containerTop_03.jpg) no-repeat center bottom;}
+.containerTop h3{text-indent:-9999px;}
+.containerTop.type1 h3{width:242px;height:46px;background:url(/images/sub/bg_containerTop_txt_01.png) no-repeat center bottom;}
+.containerTop.type2 h3{width:140px;height:47px;background:url(/images/sub/bg_containerTop_txt_02.png) no-repeat center bottom;}
+.containerTop.type3 h3{width:272px;height:106px;background:url(/images/sub/bg_containerTop_txt_03.png) no-repeat center bottom;}
+
+#contents{margin-bottom:100px;min-height:400px;}
+
+#contents h4{margin-bottom:20px;font-size:23px;color:#000;}
+
+/* serch */
+.searchBox{margin-bottom:10px;}
+.searchBox:after{display:block;content:'';clear:both;}
+.searchBox > div.left{float:left;}
+.searchBox > div.right{float:right;}
+.searchBox .list_page{margin:0 -8px;}
+.searchBox .list_page:after{display:block;content:'';clear:both;}
+.searchBox .list_page li{float:left;padding:0 8px;font-size:15px;line-height:32px;color:#555;}
+.searchBox .list_page li:first-child{position:relative;}
+.searchBox .list_page li:first-child:before{position:absolute;display:block;content:'';top:50%;right:0;margin-top:-5px;width:1px;height:12px;background:#d6d6d6;}
+.searchBox .list_page li b{font-family:'NanumGothic';color:#000;}
+.searchBox .list_page li b span{color:#00968e;}
+.searchBox select{width:104px;height:32px;border:1px solid #c7c7c7;border-radius:5px;}
+.searchBox.search_txt{position:relative;}
+.searchBox input[type="text"]{padding-right:32px;width:196px;height:32px;border:1px solid #c7c7c7;box-sizing:border-box;border-radius:5px;}
+.searchBox input[type="submit"]{position:absolute;top:0;right:2px;width:30px;height:30px;text-indent:-9999px;background:transparent url(/images/sub/icon_search.png) no-repeat center center;border:0px none;}
+
+/* table */
+.tableBox{border-top:1px solid #666;}
+.tableBox table{font-family:'NanumGothic';border-collapse:collapse;border-left:0px none;}
+.tableBox table thead th,
+.tableBox table tbody th,
+.tableBox table tbody td{padding:15px 20px;font-size:14px;border-right:1px solid #c7c7c7;border-bottom:1px solid #c7c7c7;}
+.tableBox table thead th{background:#f8f8f8;}
+.tableBox table tr th:last-child,
+.tableBox table tr td:last-child{border-right:0px none;}
+.tableBox table tbody tr th{border-right:0px none;}
+.tableBox table input,
+.tableBox table select{height:26px;line-height:26px;border:1px solid #b0afaf;}
+.tableBox table textarea{border:1px solid #b0afaf;}
+.tableBox table .b_top{border-top:1px solid #c7c7c7 !important;}
+
+/* list */
+.tableBox table.list tr th{padding:15px 20px;}
+.tableBox table.list tr td{padding:10px 20px;}
+.tableBox table.list tr td a{display:inline-block;width:95%;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;vertical-align:middle;}
+.tableBox table.list tr td a.subject{text-align:left;}
+.tableBox table.list tr td a.subject:hover{text-decoration:underline;}
+.tableBox table.list tr td.img img{width:120px;height:127px;border:1px solid #d8d9d9;}
+
+span.eduBtnState{display:inline-block;padding:0 13px;width:83px;height:26px;line-height:26px;font-size:12px;color:#fff;border-radius:3px;box-sizing:border-box;}
+span.eduBtnState.blue{background:#0089cf;}
+span.eduBtnState.gray{background:#9f9f9f;}
+
+/* write */
+.tableBox table.write th{font-weight:normal;color:#666;background:#f0f0f0;}
+.tableBox table.write td{text-align:left;border-right:none;}
+
+/* view */
+.tableBox table.view thead th{background:#fff;color:#666;}
+.tableBox table.view th{padding:10px 20px;font-weight:normal;color:#666;background:#f0f0f0;}
+.tableBox table.view td{padding:10px 20px;text-align:left;border-right:none;}
+.tableBox table.view.list_go{margin-top:30px;border-top:1px solid #666;}
+.tableBox table.view td.content{padding:40px 60px;}
+.tableBox table.view td.content img{display:block;margin:0 auto 20px;}
+.tableBox table.view td.content div.text{text-align:left;line-height:150%;}
+
+
+/* paging */
+.paging .btn_first,
+.paging .btn_prev,
+.paging .btn_next,
+.paging .btn_last{width:32px;height:32px;line-height:32px;text-indent:-9999px;border:1px solid #c7c7c7;border-radius:2px;box-sizing:border-box;background-position:center center;background-repeat:no-repeat;}
+.paging .btn_first{background-image:url(/images/sub/icon_first_page.png);}
+.paging .btn_prev{margin-right:15px;background-image:url(/images/sub/icon_prev.png);}
+.paging .btn_next{margin-left:15px;background-image:url(/images/sub/icon_next.png);}
+.paging .btn_last{background-image:url(/images/sub/icon_last_page.png);}
+.paging a.num{width:32px;height:32px;line-height:32px;text-align:center;color:#000;background:#fff;border:0px none;}
+.paging a.active{width:32px;height:32px;line-height:32px;text-align:center;color:#000;background:#83ddff;border:0px none;}
+
+/* btn */
+.btnArea{margin:30px 0;}
+.btnArea.left{text-align:left;}
+.btnArea.right{text-align:right;}
+.btnArea.center{text-align:center;}
+.btnArea a{margin:0 5px;}
+.btnArea a:last-child{margin-right:0;}
+.btn_l{padding:11px 45px;line-height:130%;font-size:13px;color:#fff;background:#00cfc4;border:0px none;border-radius:50px;}
+.btn_l.focus{background:#053863;}
+.btn_l.gray{background:#b5b3ba;}
+.btn_l.blue{background:#0089cf;}
+.btn_l.btn_pop{padding:0px 24px;height:30px;line-height:30px;}
+
+/* content */
+.top_info{margin-bottom:30px;color:#555;}
+
+/* 비밀번호 확인 */
+#password_box{padding:30px 64px;}
+#password_box p{margin-bottom:20px;text-align:center;}
+#password_box input{height:35px;line-height:35px;border:1px solid #b0afaf;}
+#password_box.type2{margin:0 auto;padding:60px;width:500px;border:1px solid #d4d4d4;text-align:center;}
+#password_box.type2 p{margin-bottom:30px;font-size:20px;}
+#password_box.type2 input{margin-bottom:30px;width:300px;}
+
+.mobilePaging{display:none;}
