@@ -17,9 +17,9 @@ var default_Slick = {
 var sliderItem = [];
 
 $(function(){
-	injeinc.init(); //ÆäÀÌÁö±âº»ÀÌº¥Æ®
-	injeinc.modal(); //¸ğ´Ş°ü·ÃÇÔ¼ö
-	injeinc.slider(); //½½¶óÀÌµå°ü·ÃÇÔ¼ö
+	injeinc.init(); //í˜ì´ì§€ê¸°ë³¸ì´ë²¤íŠ¸
+	injeinc.modal(); //ëª¨ë‹¬ê´€ë ¨í•¨ìˆ˜
+	injeinc.slider(); //ìŠ¬ë¼ì´ë“œê´€ë ¨í•¨ìˆ˜
 });
 
 $(document).ready(function(){
@@ -104,7 +104,7 @@ var injeinc = {
 					tabBar.children("li").eq(0).addClass("active");
 					tabPage.eq(0).addClass("active");
 				}
-				tabBar.children("li").children("a").unbind("click").click(function(e){ //ÅÇ¹öÆ° Å¬¸¯ÀÌº¥Æ®
+				tabBar.children("li").children("a").unbind("click").click(function(e){ //íƒ­ë²„íŠ¼ í´ë¦­ì´ë²¤íŠ¸
 					if(!$(this).hasClass("useLink")){
 						e.preventDefault();
 						injeinc.tabReset($(this));
@@ -146,7 +146,7 @@ var injeinc = {
 		});
 		$(".tabPage").each(function(){
 			if(!$(this).parent(".tabContent").hasClass("notUsed")){
-				var focusItem = injeinc.findFocusItem($(this)); //ÅÇÆäÀÌÁö Æ÷Ä¿½º ÀÌµ¿
+				var focusItem = injeinc.findFocusItem($(this)); //íƒ­í˜ì´ì§€ í¬ì»¤ìŠ¤ ì´ë™
 				if(focusItem.length > 0){
 					focusItem.last().unbind("keydown").keydown(function(e){
 						var inTabPage = $(this).parents(".tabPage").eq(0);
@@ -183,15 +183,15 @@ var injeinc = {
 	},
 	'datepicker':function(){
 		var holidayData = [
-			{'mmdd':'1-1','title':'½ÅÁ¤'},
-			{'mmdd':'3-1','title':'3.1Àı'},
-			{'mmdd':'5-5','title':'¾î¸°ÀÌ³¯'},
-			{'mmdd':'5-10','title':'¼®°¡Åº½ÅÀÏ'},
-			{'mmdd':'6-6','title':'ÇöÃæÀÏ'},
-			{'mmdd':'8-15','title':'±¤º¹Àı'},
-			{'mmdd':'10-3','title':'°³ÃµÀı'},
-			{'mmdd':'10-9','title':'ÇÑ±Û³¯'},
-			{'mmdd':'12-25','title':'Å©¸®½º¸¶½º'}
+			{'mmdd':'1-1','title':'ì‹ ì •'},
+			{'mmdd':'3-1','title':'3.1ì ˆ'},
+			{'mmdd':'5-5','title':'ì–´ë¦°ì´ë‚ '},
+			{'mmdd':'5-10','title':'ì„ê°€íƒ„ì‹ ì¼'},
+			{'mmdd':'6-6','title':'í˜„ì¶©ì¼'},
+			{'mmdd':'8-15','title':'ê´‘ë³µì ˆ'},
+			{'mmdd':'10-3','title':'ê°œì²œì ˆ'},
+			{'mmdd':'10-9','title':'í•œê¸€ë‚ '},
+			{'mmdd':'12-25','title':'í¬ë¦¬ìŠ¤ë§ˆìŠ¤'}
 		];
 
 		$(".useDatepicker").each(function(){
@@ -203,13 +203,13 @@ var injeinc = {
 					dateFormat = $(this).attr("data-format");
 				}
 				$(this).datepicker({
-					prevText: 'ÀÌÀü ´Ş',
-					nextText: '´ÙÀ½ ´Ş',
+					prevText: 'ì´ì „ ë‹¬',
+					nextText: 'ë‹¤ìŒ ë‹¬',
 					monthNames: ['01','02','03','04','05','06','07','08','09','10','11','12'],
 					monthNamesShort: ['01','02','03','04','05','06','07','08','09','10','11','12'],
-					dayNames: ['ÀÏ¿äÀÏ','¿ù¿äÀÏ','È­¿äÀÏ','¼ö¿äÀÏ','¸ñ¿äÀÏ','±İ¿äÀÏ','Åä¿äÀÏ'],
-					dayNamesShort: ['ÀÏ','¿ù','È­','¼ö','¸ñ','±İ','Åä'],
-					dayNamesMin: ['ÀÏ','¿ù','È­','¼ö','¸ñ','±İ','Åä'],
+					dayNames: ['ì¼ìš”ì¼','ì›”ìš”ì¼','í™”ìš”ì¼','ìˆ˜ìš”ì¼','ëª©ìš”ì¼','ê¸ˆìš”ì¼','í† ìš”ì¼'],
+					dayNamesShort: ['ì¼','ì›”','í™”','ìˆ˜','ëª©','ê¸ˆ','í† '],
+					dayNamesMin: ['ì¼','ì›”','í™”','ìˆ˜','ëª©','ê¸ˆ','í† '],
 					dateFormat: dateFormat,
 					showMonthAfterYear: true,
 					yearSuffix: '&nbsp;/',
@@ -240,7 +240,7 @@ var injeinc = {
 						if($(this).hasClass("dateFrom")) {
 							if(selectedDate != "" && $(this).parent().children(".dateTo").val() != ""){
 								if(selectedDate >= $(this).parent().children(".dateTo").val()){
-									alert("½ÃÀÛ³¯Â¥´Â Á¾·á³¯Â¥º¸´Ù ÀÛ¾Æ¾ß ÇÕ´Ï´Ù.");
+									alert("ì‹œì‘ë‚ ì§œëŠ” ì¢…ë£Œë‚ ì§œë³´ë‹¤ ì‘ì•„ì•¼ í•©ë‹ˆë‹¤.");
 									$(this).val("");
 									return;
 								}
@@ -248,7 +248,7 @@ var injeinc = {
 						}else if($(this).hasClass("dateTo")) {
 							if(selectedDate != "" && $(this).parent().children(".dataFrom").val() != ""){
 								if($(this).parent().children(".dateFrom").val() >= selectedDate){
-									alert("Á¾·á³¯Â¥´Â ½ÃÀÛ³¯Â¥º¸´Ù Ä¿¾ß ÇÕ´Ï´Ù.");
+									alert("ì¢…ë£Œë‚ ì§œëŠ” ì‹œì‘ë‚ ì§œë³´ë‹¤ ì»¤ì•¼ í•©ë‹ˆë‹¤.");
 									$(this).val("");
 									return;
 								}
@@ -261,8 +261,8 @@ var injeinc = {
 		$(".useMonthpicker").each(function(){
 			$(this).monthpicker({
 				showOn: "focus",
-				monthNames: ['1¿ù','2¿ù','3¿ù','4¿ù','5¿ù','6¿ù', '7¿ù','8¿ù','9¿ù','10¿ù','11¿ù','12¿ù'],
-				monthNamesShort: ['1¿ù','2¿ù','3¿ù','4¿ù','5¿ù','6¿ù', '7¿ù','8¿ù','9¿ù','10¿ù','11¿ù','12¿ù'],
+				monthNames: ['1ì›”','2ì›”','3ì›”','4ì›”','5ì›”','6ì›”', '7ì›”','8ì›”','9ì›”','10ì›”','11ì›”','12ì›”'],
+				monthNamesShort: ['1ì›”','2ì›”','3ì›”','4ì›”','5ì›”','6ì›”', '7ì›”','8ì›”','9ì›”','10ì›”','11ì›”','12ì›”'],
 				changeYear: false,
 				yearRange: 'c-2:c+2',
 				dateFormat: 'yy-mm',
@@ -272,8 +272,8 @@ var injeinc = {
 					if($(this).hasClass("dateFrom")) {
 						if(selectedMonth != "" && $(this).parent().children(".dateTo").val() != ""){
 							if(selectedMonth > $(this).parent().children(".dateTo").val()){
-								//inputCaptionOpen($("#monthTo"), "½ÃÀÛ¿ùÀº Á¾·á¿ùº¸´Ù ÀÛ¾Æ¾ß ÇÕ´Ï´Ù.");
-								alert("½ÃÀÛ¿ùÀº Á¾·á¿ùº¸´Ù ÀÛ¾Æ¾ß ÇÕ´Ï´Ù.");
+								//inputCaptionOpen($("#monthTo"), "ì‹œì‘ì›”ì€ ì¢…ë£Œì›”ë³´ë‹¤ ì‘ì•„ì•¼ í•©ë‹ˆë‹¤.");
+								alert("ì‹œì‘ì›”ì€ ì¢…ë£Œì›”ë³´ë‹¤ ì‘ì•„ì•¼ í•©ë‹ˆë‹¤.");
 								$("#monthFrom").val("");
 								return;
 							}
@@ -281,8 +281,8 @@ var injeinc = {
 					}else if($(this).hasClass("dateTo")) {
 						if(selectedMonth != "" && $(this).parent().children(".dataFrom").val() != ""){
 							if($(this).parent().children(".dateFrom").val() > selectedMonth){
-								//inputCaptionOpen($("#monthTo"), "Á¾·á¿ùÀº ½ÃÀÛ¿ùº¸´Ù Ä¿¾ß ÇÕ´Ï´Ù.");
-								alert("Á¾·á¿ùÀº ½ÃÀÛ¿ùº¸´Ù Ä¿¾ß ÇÕ´Ï´Ù.");
+								//inputCaptionOpen($("#monthTo"), "ì¢…ë£Œì›”ì€ ì‹œì‘ì›”ë³´ë‹¤ ì»¤ì•¼ í•©ë‹ˆë‹¤.");
+								alert("ì¢…ë£Œì›”ì€ ì‹œì‘ì›”ë³´ë‹¤ ì»¤ì•¼ í•©ë‹ˆë‹¤.");
 								$("#monthTo").val("");
 								return;
 							}
@@ -297,7 +297,7 @@ var injeinc = {
 			if($(this).css("display") != "none"){
 				var file_name = $(this).attr("id");
 				var file_class = $(this).attr("class").replace("fileBtn","");
-				$(this).after('<span id="for_'+file_name+'"><input type="text" class="'+file_class+'" value="" title="»çÁø"> <a href="#" class="btn_inline for_fileBtn">Ã£¾Æº¸±â</a></span>');
+				$(this).after('<span id="for_'+file_name+'"><input type="text" class="'+file_class+'" value="" title="ì‚¬ì§„"> <a href="#" class="btn_inline for_fileBtn">ì°¾ì•„ë³´ê¸°</a></span>');
 				$(this).hide();
 				$(this).change(function(){
 					$("#for_"+file_name+" input[type='text']").val($(this).val());
@@ -433,7 +433,7 @@ var injeinc = {
 		if(option) sliderOption = option;
 		var sliderNo = sliderItem.length + 1;
 		sliderItem[sliderNo] = ul.slick(sliderOption);
-		ul.append('<div class="slick-control"><a href="#" class="btn_slickStart">Àç»ı</a><a href="#" class="btn_slickStop">Á¤Áö</a></div>');
+		ul.append('<div class="slick-control"><a href="#" class="btn_slickStart">ì¬ìƒ</a><a href="#" class="btn_slickStop">ì •ì§€</a></div>');
 		var btn_slickStart = ul.find(".btn_slickStart");
 		var btn_slickStop = ul.find(".btn_slickStop");
 		if(sliderOption['autoplay'] == false){

@@ -159,16 +159,18 @@ input.useMonthpicker{width:90px;background:#fff url(../../images/nia/injeinc/bg_
 .tableBox table.view td textarea{max-width:100%;}
 
 
-/* ==============================================================================================================
-= Paging 기본스타일 지정
-============================================================================================================== */
+/* Paging */
 .paging{margin-bottom:20px;min-height:27px;font-size:0;text-align:center;}
-.paging > a{display:inline-block;margin:0 2px;padding:0 3px;min-width:27px;height:27px;line-height:25px;font-size:13px;text-align:center;color:#888888;border:1px solid #d9d9d9;box-sizing:border-box;}
-.paging > a.active{background-color:#143046 ;border:1px solid #143046 ;color:#fff;}
-.paging > a.first{background:url(../../images/nia/injeinc/btn_pageFirst.png) no-repeat center center;text-indent:-9999px;}
-.paging > a.prev{background:url(../../images/nia/injeinc/btn_pagePrev.png) no-repeat center center;text-indent:-9999px;}
-.paging > a.next{background:url(../../images/nia/injeinc/btn_pageNext.png) no-repeat center center;text-indent:-9999px;}
-.paging > a.last{background:url(../../images/nia/injeinc/btn_pageLast.png) no-repeat center center;text-indent:-9999px;}
+.paging > a,
+.paging > span{display:inline-block;margin:0 2px;padding:0 3px;min-width:27px;height:27px;line-height:25px;font-size:13px;text-align:center;color:#888888;border:1px solid #d9d9d9;box-sizing:border-box;}
+.paging > a > span,
+.paging > span > span{position:absolute;top:-9999px;}
+.paging > a.active,
+.paging > span.active{background-color:#143046;border:1px solid #143046;color:#fff;}
+.paging > a.first{background:url(/images/cms/btn_pagingFirst.png) no-repeat center center;text-indent:-9999px;}
+.paging > a.prev{background:url(/images/cms/btn_pagingPrev.png) no-repeat center center;text-indent:-9999px;}
+.paging > a.next{background:url(/images/cms/btn_pagingNext.png) no-repeat center center;text-indent:-9999px;}
+.paging > a.last{background:url(/images/cms/btn_pagingLast.png) no-repeat center center;text-indent:-9999px;}
 .paging > select{margin-left:5px;height:27px;line-height:27px;font-size:13px;color:#888888;vertical-align:top;border:1px solid #d9d9d9}
 
 
