@@ -30,7 +30,7 @@
   <charger-show-yn>Y</charger-show-yn>
   <social-show-yn>N</social-show-yn>
   <menu-path>디지털 배움터 > 디지털배움터 안내</menu-path>
-  <user-menu-url></user-menu-url>
+  <user-menu-url>/site/nia/01/10100000000002020092216.jsp</user-menu-url>
   <layout-url>/WEB-INF/jsp/injeinc/site/nia/nia_sub.jsp</layout-url>
   <menu-type>contents</menu-type>
   <dept-info></dept-info>
