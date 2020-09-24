@@ -49,9 +49,9 @@
   <charger-show-yn>Y</charger-show-yn>
   <social-show-yn>N</social-show-yn>
   <menu-path>디지털 배움터 > 디지털배움터 찾아보기</menu-path>
-  <user-menu-url></user-menu-url>
+  <user-menu-url>/site/nia/search/searchList.do</user-menu-url>
   <layout-url>/WEB-INF/jsp/injeinc/site/nia/nia_sub.jsp</layout-url>
-  <menu-type>contents</menu-type>
+  <menu-type>program</menu-type>
   <dept-info></dept-info>
   <head-content><![CDATA[]]></head-content>
   <metatag-content><![CDATA[]]></metatag-content>
