@@ -1,0 +1,34 @@
+
+/* CSS Document */
+
+.map {position: relative; width: 455px; height: 560px; line-height:18px;}
+.nbcolor { color: #599f0e; font-weight: 700;}
+
+.map_img {position: absolute; top:0; left: 0; z-index: 10;}
+
+.map_gangwondo {position: absolute; top: 84px;left: 250px; z-index: 9;}
+.map_gyeonggido {position: absolute; top: 122px;left: 178px; z-index: 9;}
+.map_gyeongsangnamdo {position: absolute; top: 335px;left: 245px; z-index: 9;}
+.map_gyeongsangbukdo {position: absolute; top: 224px;left: 292px; z-index: 9;}
+.map_daegu {position: absolute; top: 240px; left: 376px; z-index: 9;}
+.map_gwangju {position: absolute; top: 336px; right: 366px; z-index: 9; text-align:right;}
+
+.map_daejeon {position: absolute; top: 268px; right: 340px; z-index: 9; text-align:right;}
+.map_busan {position: absolute; top: 395px;left: 320px; z-index: 9;}
+.map_seoul {position: absolute; top: 70px; right: 350px; z-index: 9; text-align:right;}
+.map_saison {position: absolute; top: 215px; right: 358px; z-index: 9; text-align:right;}
+.map_ulsan {position: absolute; top: 328px;left: 390px; z-index: 9;}
+
+.map_Incheon {position: absolute; top: 130px; right: 342px; z-index: 9; text-align:right;}
+.map_jeollanamdo {position: absolute; top: 383px;left: 154px; z-index: 9;}
+.map_jeollabukdo {position: absolute; top: 302px;left: 162px; z-index: 9;}
+.map_cheju {position: absolute; top: 492px;left: 173px; z-index: 9;}
+.map_chungcheongnamdo {position: absolute; top: 188px;left: 120px; z-index: 9;}
+.map_chungcheongbukdo {position: absolute; top: 180px;left: 200px; z-index: 9;}
+
+
+
+
+
+
+

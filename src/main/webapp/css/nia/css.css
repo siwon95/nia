@@ -1,0 +1,80 @@
+/* base */
+html,body	{width:100%;height:100%;font-size:13px;font-family:'Nanum Gothic', NanumGothic, Dotum, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, "Microsoft Yahei", simsun, "Apple SD Gothic Neo", "새굴림", sans-serif; margin: 0;padding:0;color: #666666; line-height:24px; background-color:#ffffff; }
+html,body,div,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,pre,form,p,blockquote,fieldset,input { margin: 0; padding: 0;}
+h1,h2,h3,h4,h5,h6,pre,code,address,caption,cite,code,em,th { font-size: 100%; font-weight: normal; font-style: normal;font-size:13px; }
+ul,ol,li { list-style: none; }
+fieldset,img { border: none; vertical-align:middle}
+caption,th { text-align: center; }
+table { border-collapse: collapse; border-spacing: 0;}
+#accessibility, skip, .skip, legend, hr	{ position:absolute;width:0;height:0;font-size:0;line-height:0;overflow:hidden;visibility:hidden; }
+caption	{ width:0;height:0;font-size:0;line-height:0;overflow:hidden;visibility:hidden; }
+body.main_scroll	{ overflow-y:auto; overflow-x:hidden; }
+select {font-size:0.95em;color: #666;}
+input, textarea{ font-size:13px; height: 20px; COLOR: #666; FONT-FAMILY: 'Nanum Gothic', NanumGothic, Dotum, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, "Microsoft Yahei", simsun, "Apple SD Gothic Neo", "새굴림", sans-serif;  line-height:20px; TEXT-DECORATION: none; border:1px solid #B0AFAF; vertical-align:middle;}
+select{ font-size:13px; height: 22px; COLOR: #666; FONT-FAMILY: 'Nanum Gothic', NanumGothic, Dotum, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, "Microsoft Yahei", simsun, "Apple SD Gothic Neo", "새굴림", sans-serif;  line-height:20px; TEXT-DECORATION: none; border:1px solid #B0AFAF;}
+
+/* Default link */
+a { selector-dummy : expression(this.hideFocus=true);}  
+a:link {font-size:12px; color:#333333; text-decoration:none;}
+a:visited {font-size:12px; color:#333333; text-decoration:none;}
+
+/* box*/
+.input_01 {width:688px; height: 80px; border:1px solid #B0AFAF; padding:15px;}
+.border0 {border:0px; }
+
+/* 글자칼라*/
+.text01 {font-size: 19px; color:#666; line-height:34px; }
+.text02 {font-size: 14px; color:#333; line-height:28px;  font-weight: 700; }
+.text03 {color:#1cbed7;}
+.text04 {color:#0089cf;}
+.text05 {font-size: 24px; color:#333; line-height:34px; font-weight: 700; }
+.text06 {font-size: 16px; color:#666; line-height:30px; }
+.text07 { color:#ff6600; font-weight: 700; }
+
+/* 게시판 리스트 타입1 */
+.type01 {}
+.type01 td {border:1px solid #c7c7c7; padding:7px 10px;}
+.type01 td.gray {border:1px solid #c7c7c7; padding:7px 10px; background-color:#f0f0f0; text-align:center;}
+.type01 td.center{text-align:center;}
+.type01 th {border:1px solid #a0d8e5; padding:7px 10px;  background-color:#ecf7fa; }
+.type01 th.left {text-align:left; }
+
+/* 게시판 리스트 타입2 */
+.type02 {border-top:1px solid #c7c7c7; }
+.type02 td {border-bottom:1px solid #c7c7c7; padding:7px 10px;  text-align:center; }
+.type02 td.line {border-right:1px solid #c7c7c7; }
+.type02 td.left {text-align:left;}
+.type02 th {border-bottom:1px solid #c7c7c7; padding:7px 10px;  background-color:#f0f0f0; }
+
+
+/* 게시판 리스트 타입3 */
+.type03 {}
+.type03 td {border:1px solid #c7c7c7; padding:7px 10px;}
+.type03 td.gray {border:1px solid #c7c7c7; padding:7px 10px; background-color:#f0f0f0; text-align:center;}
+.type03 td.center{text-align:center;}
+.type03 th {border:1px solid #80b5e7; padding:7px 10px;  background-color:#0089cf; color:#fff;}
+.type03 th.left {text-align:left; }
+
+
+
+/* 게시판 리스트 타입4 */
+.type04 {}
+.type04 td {border:1px solid #c7c7c7; padding:5px 2px; font-size: 12px; text-align:center;}
+.type04 td.gray {border:1px solid #c7c7c7; padding:5px 2px; background-color:#ecf7fa; text-align:center;}
+.type04 td.center{text-align:center;}
+.type04 th {border:1px solid #a0d8e5; padding:5px 2px;  background-color:#ecf7fa; font-size: 12px;text-align:center; color: #0089cf;}
+
+
+/* 게시판 리스트 타입5 */
+.type05 {}
+.type05 td {border:1px solid #c7c7c7; padding:7px 5px; line-height:18px;}
+.type05 td.gray {border:1px solid #c7c7c7; padding:7px 5px; background-color:#f0f0f0; text-align:center;}
+.type05 td.center{text-align:center;}
+.type05 th {border:1px solid #b8d38e; padding:7px 5px;  background-color:#ecfaca; }
+.type05 th.left {text-align:left; }
+
+
+
+
+
+
