@@ -23,25 +23,25 @@
 					<li class="type1">
 						<div>
 							<b>디지털배움터 찾아보기</b>
-							<a href="/search.asp">바로가기</a>
+							<a href="/site/nia/01/10100000000002020092216.jsp">바로가기</a>
 						</div>
 					</li>
 					<li class="type2">
 						<div>
 							<b>교육 신청하기</b>
-							<a href="/private.asp?gtype=1">바로가기</a>
+							<a href="#">바로가기</a>
 						</div>
 					</li>
 					<li class="type3">
 						<div>
 							<b>강사·서포터즈 신청하기</b>
-							<a href="/private.asp?gtype=2">바로가기</a>
+							<a href="#">바로가기</a>
 						</div>
 					</li>
 					<li class="type4">
 						<div>
 							<b>소통게시판</b>
-							<a href="communicate.asp">바로가기</a>
+							<a href="/site/nia/ex/bbs/List.do?cbIdx=1188">바로가기</a>
 						</div>
 					</li>
 				</ul>
