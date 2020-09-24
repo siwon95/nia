@@ -40,7 +40,7 @@
     <menu-title>디지털배움터 찾아보기</menu-title>
     <menu-depth>1</menu-depth>
     <menu-path>디지털 배움터 > 디지털배움터 찾아보기</menu-path>
-    <user-menu-url></user-menu-url>
+    <user-menu-url>/site/nia/search/searchList.do</user-menu-url>
     <head-content></head-content>
     <layout-url>/WEB-INF/jsp/injeinc/site/nia/nia_sub.jsp</layout-url>
     <link-type>normal</link-type>
