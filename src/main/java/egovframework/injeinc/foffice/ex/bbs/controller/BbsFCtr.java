@@ -321,7 +321,7 @@ public class BbsFCtr extends CmmLogCtr{
 			
 			returnUrl = "/injeinc/foffice/ex/bbs/"+ezBbsTempletVo.getListCode();
 			
-			/*//로그인이 필요한 page 
+			//로그인이 필요한 page 
 			StringBuffer b = request.getRequestURL();
 			String loginReferer = b.toString() +"?"+ request.getQueryString();
 			
@@ -335,7 +335,7 @@ public class BbsFCtr extends CmmLogCtr{
 				}else {
 					returnUrl = "/injeinc/foffice/ex/bbs/"+ezBbsTempletVo.getListCode();
 				}
-			}*/
+			}
 			contentCnt = bbsFSvc.boardcontentCnt(bbsFVo);
 			
 			//페이징
@@ -375,7 +375,7 @@ public class BbsFCtr extends CmmLogCtr{
 			bbsFVo.setSearchBcIdxArr(arrBcIdx);
 			
 			//게시글 파일 조회
-			//List fileList = bbsFSvc.boardFileList(bbsFVo);
+			List fileList = bbsFSvc.boardFileList(bbsFVo);
 			
 			//게시글 파일 조회2 -- 리스트에서 다운가능
 			//List fileBoardList = bbsFSvc.boardFileList2(bbsFVo);
@@ -406,7 +406,7 @@ public class BbsFCtr extends CmmLogCtr{
 			model.addAttribute("categoryList", categoryList);
 			model.addAttribute("searchList", searchList);
 			model.addAttribute("strDomain", strDomain);
-			//model.addAttribute("fileList", fileList);
+			model.addAttribute("fileList", fileList);
 			//model.addAttribute("fileBoardList", fileBoardList);
 			model.addAttribute("departList", groupDeptSvc.retrieveListCmsDepartGroup3());
 			//전체조회 20200831-전진형 통합검색 전체조회, 통합검색 전체카운트조회

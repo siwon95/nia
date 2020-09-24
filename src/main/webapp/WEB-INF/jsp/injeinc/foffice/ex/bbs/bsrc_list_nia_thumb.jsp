@@ -90,7 +90,6 @@ function doBbsFPag(pageIndex) {
 						<div class="right">
 							<c:if test="${bbsFVo.categoryUseYn eq 'Y'}">
 							<form:select title="조건선택" path="cateTypeCd" class="board-top-select">
-								<option value="">선택하세요</option>
 								<c:forEach items="${searchList}" var="searchList">
 									<form:option value="${searchList.CONTENT_MAPPING}" label="${searchList.LABEL_NAME}" />
 								</c:forEach>
@@ -137,7 +136,7 @@ function doBbsFPag(pageIndex) {
 							</c:when>
 							<c:when test="${contMappList.CONTENT_MAPPING eq 'CATE_CONT'}"><td><c:out value="${contentList.CATE_NAME}" /></td></c:when>
 							<c:when test="${contMappList.CONTENT_MAPPING eq 'SUB_CONT'}">
-								<td class="title">
+								<td class="left">
 									<c:choose>
 										<c:when test="${(contentList.OPEN_YN_CONT eq 'AD_Y' || contentList.OPEN_YN_CONT eq '21000100') && bbsFVo.dupcode ne contentList.DUPCODE}">
 											<c:out value="${fn:replace(fn:replace(fn:replace(contentList.SUB_CONT,'&','&amp;'),'<','&lt;'),'>','&gt;')}" escapeXml="false"/>
@@ -175,16 +174,15 @@ function doBbsFPag(pageIndex) {
 							</c:when>
 							<%--  --%>
 							<c:when test="${contMappList.LABEL_PROP_GBN eq '16020600' || contMappList.LABEL_PROP_GBN eq '16021300'}"><%-- 파일 다운로드 & 확장자 구분으로 이미지 뿌리기 시작--%>
-								<td>
-									<c:if test="${contentList.FILE_YN eq 'Y'}">
-										<!-- <c:forEach items="${fileBoardList}" var="fileBoardList">
-											<c:if test="${contentList.BC_IDX eq fileBoardList.bcIdx }">
-												<a href="/common/board/Download.do?bcIdx=<c:out value="${fileBoardList.bcIdx}"/>&amp;cbIdx=<c:out value="${fileBoardList.cbIdx}"/>&amp;streFileNm=<c:out value="${fileBoardList.streFileNm}"/>" target="_blank" title="파일다운로드">
-													<span class="icon_bbsFile ${fileBoardList.fileExtsn}"></span>
-												</a>
-											</c:if>
-										</c:forEach> -->
-										<span class="icon_bbsFile ${fileBoardList.fileExtsn}"></span>
+								<td class="img">
+									<c:if test="${contentList.FILE_YN eq 'Y' and contentList.NOTI_YN eq 'N'}">
+										<c:if test="${fileList ne null}">
+											<c:forEach var="fileList" items="${fileList}">
+												<c:if test="${fileList.bcIdx eq contentList.BC_IDX and fileList.fileNo eq '1'}">
+													<img src="/common/board/Download.do?bcIdx=<c:out value="${fileList.bcIdx}"/>&amp;cbIdx=<c:out value="${fileList.cbIdx}"/>&amp;streFileNm=<c:out value="${fileList.streFileNm}"/>" alt="섬네일이미지(<c:out value="${fileList.streFileNm}"/>)">
+												</c:if>
+											</c:forEach>
+										</c:if>
 									</c:if>
 								</td>
 							</c:when>
@@ -205,13 +203,13 @@ function doBbsFPag(pageIndex) {
 							</c:when>
 							<c:when test="${contMappList.CONTENT_MAPPING eq 'EXT1'}">
 								<c:choose>
-									<c:when test="${bbsFVo.cbIdx eq '1188' and contentList.NOTI_YN eq 'Y'}">
+									<c:when test="${bbsFVo.cbIdx eq '1189' and contentList.NOTI_YN eq 'Y'}">
 										<td>
 											<span class="icon_notice">관리자 공지</span>
 										</td>
 									</c:when>
 									<c:otherwise>
-										<td><c:out value="${contentList.EXT1}" /></td>
+										<td><c:out value="${cmm:getCodeName(contentList.EXT1)}" /></td>
 									</c:otherwise>
 								</c:choose>
 							</c:when>

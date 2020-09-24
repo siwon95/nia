@@ -330,7 +330,7 @@ function setAddrValue(addr1, addr2, zip) {
 
 <!-- ============================== 모달영역 ============================== -->
 <div class="modalTitle">
-	<h3>게시물 등록/수정</h3>
+	<h3>게시물 등록/수정ddd</h3>
 	<a href="#" class="btn_modalClose">모달팝업닫기</a>
 </div>
 <div class="modalContent">
@@ -385,42 +385,83 @@ function setAddrValue(addr1, addr2, zip) {
 				<c:when test="${contentMapping eq 'COUNT_CONT'}">
 				</c:when>
 				<c:when test="${contentMapping eq 'FILE_CONT'}">
-				<c:if test="${BoardVo.bbsFileCnt > 0}">
-				<c:forEach begin="0" varStatus="status" end="${BoardVo.bbsFileCnt-1}">
-				<tr>
-					<c:if test="${status.first}">
-					<th scope="row" rowspan="<c:out value="${BoardVo.bbsFileCnt}" />"><c:if test="${labelCompYn eq 'Y'}"><span class='required'>*</span></c:if><c:out value="${labelName}" /></th>
+					<c:if test="${BoardVo.bbsFileCnt > 0}">
+						<c:choose>
+							<c:when test="${BbsContentVo.cbIdx eq '1189'}">
+								<tr>
+									<th scope="row"><c:if test="${labelCompYn eq 'Y'}"><span class='required'>*</span></c:if>썸네일</th>
+									<td>
+										<c:if test="${fn:length(fileList) > 0}">
+											<p><a href="/common/board/Download.do?bcIdx=<c:out value="${fileList[0].bcIdx}"/>&cbIdx=<c:out value="${fileList[0].cbIdx}"/>&streFileNm=<c:out value="${fileList[0].streFileNm}"/>" class="file">
+											<img src="/images/egovframework/com/cmm/fileicon/<c:out value="${fileList[0].fileExtsn}"/>.gif" alt="<c:out value="${fileList[0].fileExtsn}"/> 아이콘" /> <c:out value="${fileList[0].orignlFileNm }" /> [<c:out value="${bbs:byteCalculation(fileList[0].fileSize)}" />]</a> 
+											<a href="#" data-bcIdx="<c:out value="${fileList[0].bcIdx}"/>" data-cbIdx="<c:out value="${fileList[0].cbIdx}"/>" data-streFileNm="<c:out value="${fileList[0].streFileNm}"/>" class="btn_inline btn_delFile">삭제</a></p>
+										</c:if>
+										<c:if test="${fn:length(fileList) <= 0}">
+											<input type="file" id="dataFile0" name="dataFile0" class="w200" title="첨부파일0" />
+											<br /><span class="captionText">※파일 1개당 최대 용량은<c:out value="${BoardVo.fileMaxSize}"/>MB 입니다.</span> 
+										</c:if>
+									</td>
+								</tr>
+								<c:forEach begin="1" varStatus="status" end="${BoardVo.bbsFileCnt-1}">
+									<tr>
+										<c:if test="${status.first}">
+										<th scope="row" rowspan="<c:out value="${BoardVo.bbsFileCnt-1}" />"><c:if test="${labelCompYn eq 'Y'}"><span class='required'>*</span></c:if><c:out value="${labelName}" /></th>
+										</c:if>
+										<td>
+											<c:if test="${fn:length(fileList) > status.index}">
+											<p><a href="/common/board/Download.do?bcIdx=<c:out value="${fileList[status.index].bcIdx}"/>&cbIdx=<c:out value="${fileList[status.index].cbIdx}"/>&streFileNm=<c:out value="${fileList[status.index].streFileNm}"/>" class="file">
+											<img src="/images/egovframework/com/cmm/fileicon/<c:out value="${fileList[status.index].fileExtsn}"/>.gif" alt="<c:out value="${fileList[status.index].fileExtsn}"/> 아이콘" /> <c:out value="${fileList[status.index].orignlFileNm }" /> [<c:out value="${bbs:byteCalculation(fileList[status.index].fileSize)}" />]</a> 
+											<a href="#" data-bcIdx="<c:out value="${fileList[status.index].bcIdx}"/>" data-cbIdx="<c:out value="${fileList[status.index].cbIdx}"/>" data-streFileNm="<c:out value="${fileList[status.index].streFileNm}"/>" class="btn_inline btn_delFile">삭제</a></p>
+											</c:if>
+											<c:if test="${fn:length(fileList) <= status.index}">
+											<input type="file" id="dataFile<c:out value="${status.index}"/>" name="dataFile<c:out value="${status.index}"/>" class="w200" title="첨부파일<c:out value="${status.index}"/>" />
+											
+											<c:if test="${status.last }">
+												<br /><span class="captionText">※파일 1개당 최대 용량은<c:out value="${BoardVo.fileMaxSize}"/>MB 입니다.</span>
+											</c:if> 
+											</c:if>
+										</td>
+									</tr>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<c:forEach begin="0" varStatus="status" end="${BoardVo.bbsFileCnt-1}">
+									<tr>
+										<c:if test="${status.first}">
+										<th scope="row" rowspan="<c:out value="${BoardVo.bbsFileCnt}" />"><c:if test="${labelCompYn eq 'Y'}"><span class='required'>*</span></c:if><c:out value="${labelName}" /></th>
+										</c:if>
+										<td>
+											<!--<c:if test="${fn:length(fileList) > status.index && BoardVo.nasYn eq 'N'}">
+											<p><a href="/common/board/Download.do?bcIdx=<c:out value="${fileList[status.index].bcIdx}"/>&cbIdx=<c:out value="${fileList[status.index].cbIdx}"/>&streFileNm=<c:out value="${fileList[status.index].streFileNm}"/>" class="file">
+											<img src="/images/egovframework/com/cmm/fileicon/<c:out value="${fileList[status.index].fileExtsn}"/>.gif" alt="<c:out value="${fileList[status.index].fileExtsn}"/> 아이콘" /> <c:out value="${fileList[status.index].orignlFileNm }" /> [<c:out value="${bbs:byteCalculation(fileList[status.index].fileSize)}" />]</a> 
+											<a href="#" data-bcIdx="<c:out value="${fileList[status.index].bcIdx}"/>" data-cbIdx="<c:out value="${fileList[status.index].cbIdx}"/>" data-streFileNm="<c:out value="${fileList[status.index].streFileNm}"/>" class="btn_inline btn_delFile">삭제</a></p>
+											</c:if>
+											<c:if test="${fn:length(fileList) <= status.index || BoardVo.nasYn eq 'Y'}">
+											<input type="file" id="dataFile<c:out value="${status.index}"/>" name="dataFile<c:out value="${status.index}"/>" class="w200" title="첨부파일<c:out value="${status.index}"/>" />
+											
+											<c:if test="${status.last }">
+												<br /><span class="captionText">※파일 1개당 최대 용량은<c:out value="${BoardVo.fileMaxSize}"/>MB 입니다.</span>
+											</c:if> 
+											</c:if>
+											-->
+											<c:if test="${fn:length(fileList) > status.index}">
+											<p><a href="/common/board/Download.do?bcIdx=<c:out value="${fileList[status.index].bcIdx}"/>&cbIdx=<c:out value="${fileList[status.index].cbIdx}"/>&streFileNm=<c:out value="${fileList[status.index].streFileNm}"/>" class="file">
+											<img src="/images/egovframework/com/cmm/fileicon/<c:out value="${fileList[status.index].fileExtsn}"/>.gif" alt="<c:out value="${fileList[status.index].fileExtsn}"/> 아이콘" /> <c:out value="${fileList[status.index].orignlFileNm }" /> [<c:out value="${bbs:byteCalculation(fileList[status.index].fileSize)}" />]</a> 
+											<a href="#" data-bcIdx="<c:out value="${fileList[status.index].bcIdx}"/>" data-cbIdx="<c:out value="${fileList[status.index].cbIdx}"/>" data-streFileNm="<c:out value="${fileList[status.index].streFileNm}"/>" class="btn_inline btn_delFile">삭제</a></p>
+											</c:if>
+											<c:if test="${fn:length(fileList) <= status.index}">
+											<input type="file" id="dataFile<c:out value="${status.index}"/>" name="dataFile<c:out value="${status.index}"/>" class="w200" title="첨부파일<c:out value="${status.index}"/>" />
+											
+											<c:if test="${status.last }">
+												<br /><span class="captionText">※파일 1개당 최대 용량은<c:out value="${BoardVo.fileMaxSize}"/>MB 입니다.</span>
+											</c:if> 
+											</c:if>
+										</td>
+									</tr>
+								</c:forEach>
+							</c:otherwise>
+						</c:choose>
 					</c:if>
-					<td>
-						<!--<c:if test="${fn:length(fileList) > status.index && BoardVo.nasYn eq 'N'}">
-						<p><a href="/common/board/Download.do?bcIdx=<c:out value="${fileList[status.index].bcIdx}"/>&cbIdx=<c:out value="${fileList[status.index].cbIdx}"/>&streFileNm=<c:out value="${fileList[status.index].streFileNm}"/>" class="file">
-						<img src="/images/egovframework/com/cmm/fileicon/<c:out value="${fileList[status.index].fileExtsn}"/>.gif" alt="<c:out value="${fileList[status.index].fileExtsn}"/> 아이콘" /> <c:out value="${fileList[status.index].orignlFileNm }" /> [<c:out value="${bbs:byteCalculation(fileList[status.index].fileSize)}" />]</a> 
-						<a href="#" data-bcIdx="<c:out value="${fileList[status.index].bcIdx}"/>" data-cbIdx="<c:out value="${fileList[status.index].cbIdx}"/>" data-streFileNm="<c:out value="${fileList[status.index].streFileNm}"/>" class="btn_inline btn_delFile">삭제</a></p>
-						</c:if>
-						<c:if test="${fn:length(fileList) <= status.index || BoardVo.nasYn eq 'Y'}">
-						<input type="file" id="dataFile<c:out value="${status.index}"/>" name="dataFile<c:out value="${status.index}"/>" class="w200" title="첨부파일<c:out value="${status.index}"/>" />
-						
-						<c:if test="${status.last }">
-							<br /><span class="captionText">※파일 1개당 최대 용량은<c:out value="${BoardVo.fileMaxSize}"/>MB 입니다.</span>
-						</c:if> 
-						</c:if>
-						-->
-						<c:if test="${fn:length(fileList) > status.index}">
-						<p><a href="/common/board/Download.do?bcIdx=<c:out value="${fileList[status.index].bcIdx}"/>&cbIdx=<c:out value="${fileList[status.index].cbIdx}"/>&streFileNm=<c:out value="${fileList[status.index].streFileNm}"/>" class="file">
-						<img src="/images/egovframework/com/cmm/fileicon/<c:out value="${fileList[status.index].fileExtsn}"/>.gif" alt="<c:out value="${fileList[status.index].fileExtsn}"/> 아이콘" /> <c:out value="${fileList[status.index].orignlFileNm }" /> [<c:out value="${bbs:byteCalculation(fileList[status.index].fileSize)}" />]</a> 
-						<a href="#" data-bcIdx="<c:out value="${fileList[status.index].bcIdx}"/>" data-cbIdx="<c:out value="${fileList[status.index].cbIdx}"/>" data-streFileNm="<c:out value="${fileList[status.index].streFileNm}"/>" class="btn_inline btn_delFile">삭제</a></p>
-						</c:if>
-						<c:if test="${fn:length(fileList) <= status.index}">
-						<input type="file" id="dataFile<c:out value="${status.index}"/>" name="dataFile<c:out value="${status.index}"/>" class="w200" title="첨부파일<c:out value="${status.index}"/>" />
-						
-						<c:if test="${status.last }">
-							<br /><span class="captionText">※파일 1개당 최대 용량은<c:out value="${BoardVo.fileMaxSize}"/>MB 입니다.</span>
-						</c:if> 
-						</c:if>
-					</td>
-				</tr>
-				</c:forEach>
-				</c:if>
 				</c:when>
 				<c:when test="${contentMapping eq 'MULTI_FILE_CONT'}">						
 				<tr>							

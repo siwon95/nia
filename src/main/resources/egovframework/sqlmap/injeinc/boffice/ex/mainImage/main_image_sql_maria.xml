@@ -30,6 +30,19 @@
         <result property="fileStreCours" column="FILE_STRE_COURS"/>
         <result property="streFileNm" column="STRE_FILE_NM"/>
     </resultMap>
+    
+    <resultMap id="mainFileMap" type="egovframework.injeinc.foffice.ex.bbs.vo.BbsFVo">
+    	<result property="bcIdx" column="BC_IDX"/>
+        <result property="cbIdx" column="CB_IDX"/>
+        <result property="fileNo" column="FILE_NO"/>
+        <result property="fileStreCours" column="FILE_STRE_COURS"/>
+        <result property="streFileNm" column="STRE_FILE_NM"/>
+        <result property="orignlFileNm" column="ORIGNL_FILE_NM"/>
+        <result property="fileExtsn" column="FILE_EXTSN"/>
+        <result property="fileCn" column="FILE_CN"/>
+        <result property="fileSize" column="FILE_SIZE"/>
+        <result property="mcIdx" column="MC_IDX"/>
+    </resultMap>
 
     <select id="selectMainImageList" parameterType="MainImageVO" resultMap="mainImage">
         <![CDATA[
@@ -390,6 +403,28 @@
         AND NTCE_ENDDE >= TO_CHAR(sysdate, 'yyyymmddhh24mi')
         ORDER BY REG_DT DESC
     ]]>    
+    </select>
+    
+    <select id="selectListNiaMainRelation" parameterType="String" resultMap="mainFileMap">
+    	<![CDATA[
+    		SELECT
+				BC_IDX,
+				CB_IDX,
+				FILE_NO,
+				FILE_STRE_COURS,
+				STRE_FILE_NM,
+				ORIGNL_FILE_NM,
+				FILE_EXTSN,
+				FILE_CN,
+				FILE_SIZE,
+				MC_IDX
+			FROM EZ_CONTENT_FILE CF
+			WHERE FILE_NO = 1
+			 AND EXISTS (SELECT	1 FROM EZ_BBS_CONTENT WHERE	BC_DEL_YN = 'N'	AND CB_IDX = CF.CB_IDX AND BC_IDX = CF.BC_IDX)
+			 AND USE_YN = 'Y'
+			 AND CB_IDX = #{cbIdx}
+			LIMIT 5
+    	]]>
     </select>
 
 </mapper>

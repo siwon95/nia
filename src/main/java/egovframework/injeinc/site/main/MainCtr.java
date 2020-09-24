@@ -147,6 +147,13 @@ public class MainCtr extends CmmLogCtr {
 		cbIdx = "750";
 		boardCommonList = bbsFSvc.boardNewRecordNoCache(cbIdx);
 		
+		//디지털배움터 메인 홍보관 이미지목록 조회
+		if(strDomain.equals("nia")) {
+			cbIdx = "1189";
+			List mainRelationList = mainImageService.selectListNiaMainRelation(cbIdx);
+			model.addAttribute("mainRelationList", mainRelationList);
+		}
+		
 		model.addAttribute("noticeBoard", boardCommonList);
 		
 		model.addAttribute("sitePath", strSitePath);
@@ -154,6 +161,7 @@ public class MainCtr extends CmmLogCtr {
 		
 		model.addAttribute("newList", boardNewContentList);
 		model.addAttribute("newNoticeList", boardNewNoticeList); //20200902 전진형 공지사항 최신글 추가
+		
 		
 		return "injeinc/site/"+strDomain+"/main";
 	}

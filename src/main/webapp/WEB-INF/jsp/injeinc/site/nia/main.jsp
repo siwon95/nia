@@ -14,9 +14,17 @@
 			<div id="mainPopup">
 				<h3>홍보관</h3>
 				<ul>
-				<li><%-- <a href="/relations_view.asp?sn=<%=sn%>&BoardID=0001"><img src="/board_upload/board/blog/<%=thumbnail%>" alt="<%=title%>"></a> --%></li>
+					<c:if test="${not empty mainRelationList}">
+						<c:forEach var="rlList" items="${mainRelationList}">
+							<li>
+								<a href="<c:url value='/site/${strDomain}/ex/bbs/View.do?cbIdx=${rlList.cbIdx }&bcIdx=${rlList.bcIdx }'/>">
+									<img src="/common/board/Download.do?bcIdx=<c:out value="${rlList.bcIdx}"/>&amp;cbIdx=<c:out value="${rlList.cbIdx}"/>&amp;streFileNm=<c:out value="${rlList.streFileNm}"/>" alt="섬네일이미지(<c:out value="${rlList.streFileNm}"/>)">
+								</a>
+							</li>
+						</c:forEach>
+					</c:if>
 				</ul>
-				<a href="/relations.asp" class="more">더보기</a>
+				<a href="/site/nia/ex/bbs/List.do?cbIdx=1189" class="more">더보기</a>
 			</div>
 			<div id="mainQuick">
 				<ul>

@@ -90,7 +90,6 @@ function doBbsFPag(pageIndex) {
 						<div class="right">
 							<c:if test="${bbsFVo.categoryUseYn eq 'Y'}">
 							<form:select title="조건선택" path="cateTypeCd" class="board-top-select">
-								<option value="">선택하세요</option>
 								<c:forEach items="${searchList}" var="searchList">
 									<form:option value="${searchList.CONTENT_MAPPING}" label="${searchList.LABEL_NAME}" />
 								</c:forEach>

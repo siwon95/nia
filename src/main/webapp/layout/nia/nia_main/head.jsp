@@ -31,8 +31,8 @@
 <link href="/css/nia/style.css" rel="stylesheet" type="text/css">
 <link href="/css/nia/base.css" rel="stylesheet" type="text/css">
 <link href="/css/nia/new_base.css" rel="stylesheet" type="text/css">
+<script src="/js/nia/injeinc/common.js"></script>
+<script src="/js/nia/injeinc/jquery.min.js"></script>
+<script src="/js/nia/injeinc/jquery-ui.min.js"></script>
+<script src="/js/nia/injeinc/jquery.plugin.js"></script>
 <script src="/js/nia/common.js"></script>
-<script src="/js/nia/jquery.min.js"></script>
-<script src="/js/nia/jquery-ui.min.js"></script>
-<script src="/js/nia/jquery.plugin.js"></script>
-<script src="/js/injeinc/common.js"></script>

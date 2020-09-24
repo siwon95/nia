@@ -17,6 +17,7 @@ import egovframework.injeinc.boffice.ex.mainImage.dao.MainImageDao;
 import egovframework.injeinc.boffice.ex.mainImage.service.MainImageSvc;
 import egovframework.injeinc.boffice.ex.mainImage.vo.MainImage;
 import egovframework.injeinc.boffice.ex.mainImage.vo.MainImageVO;
+import egovframework.injeinc.foffice.ex.bbs.vo.BbsFVo;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 @Service("mainImageService")
@@ -170,5 +171,14 @@ public class MainImageImpl extends EgovAbstractServiceImpl implements MainImageS
 
 	public List<MainImageVO> retrieveListMainImageAll() throws Exception {
 		return mainImageDAO.selectListMainImageAll();		//팝업존 전체 조회
+	}
+	
+	/**
+	 * 디지털 배움터 메인 홍보관 이미지 조회
+	 * @param cbIdx - 홍보관 게시판 번호
+	 * @return BbsFVo - 게시물 VO
+	 */
+	public List<BbsFVo> selectListNiaMainRelation(String cbIdx) throws Exception{
+		return mainImageDAO.selectListNiaMainRelation(cbIdx);
 	}
 }

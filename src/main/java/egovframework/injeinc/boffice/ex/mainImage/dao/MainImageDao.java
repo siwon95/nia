@@ -17,10 +17,10 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import egovframework.cmm.service.FileVO;
-import egovframework.rte.psl.dataaccess.EgovAbstractDAO;
-import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 import egovframework.injeinc.boffice.ex.mainImage.vo.MainImage;
 import egovframework.injeinc.boffice.ex.mainImage.vo.MainImageVO;
+import egovframework.injeinc.foffice.ex.bbs.vo.BbsFVo;
+import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 
 @Repository("mainImageDAO")
 public class MainImageDao extends EgovAbstractMapper {
@@ -154,5 +154,14 @@ public class MainImageDao extends EgovAbstractMapper {
 	@SuppressWarnings("unchecked")
 	public List<MainImageVO> selectListMainImageAll() throws Exception {
 		return selectList("mainImageDAO.selectListMainImageAll", null);
+	}
+	
+	/**
+	 * 디지털 배움터 메인 홍보관 이미지 조회
+	 * @param cbIdx - 홍보관 게시판 번호
+	 * @return BbsFVo - 게시물 VO
+	 */
+	public List<BbsFVo> selectListNiaMainRelation(String cbIdx) throws Exception{
+		return selectList("mainImageDAO.selectListNiaMainRelation", cbIdx);
 	}
 }

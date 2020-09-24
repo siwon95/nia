@@ -29,16 +29,18 @@
 </title>
 <link href="/css/nia/font.css" rel="stylesheet" type="text/css">
 <link href="/css/nia/style.css" rel="stylesheet" type="text/css">
-<!-- <link href="/css/nia/base.css" rel="stylesheet" type="text/css"> -->
+<c:if test="${ssMenuNm ne '디지털배움터 찾아보기'}">
+	<link href="/css/nia/base.css" rel="stylesheet" type="text/css">
+</c:if>
 <link href="/css/nia/new_base.css" rel="stylesheet" type="text/css">
 <link href="/css/nia/new_content.css" rel="stylesheet" type="text/css">
 <link href="/css/nia/css.css" rel="stylesheet" type="text/css">
 <link href="/css/nia/map.css" rel="stylesheet" type="text/css">
 
+<script src="/js/nia/injeinc/common.js"></script>
+<script src="/js/nia/injeinc/jquery.min.js"></script>
+<script src="/js/nia/injeinc/jquery-ui.min.js"></script>
+<script src="/js/nia/injeinc/jquery.plugin.js"></script>
 <script src="/js/nia/common.js"></script>
-<script src="/js/nia/jquery.min.js"></script>
-<script src="/js/nia/jquery-ui.min.js"></script>
-<script src="/js/nia/jquery.plugin.js"></script>
-<script src="/js/injeinc/common.js"></script>
 <script type="text/javascript" src="/js/nia/sojaeji.js"></script>
 <script src="//code.jquery.com/jquery-latest.js"></script>
