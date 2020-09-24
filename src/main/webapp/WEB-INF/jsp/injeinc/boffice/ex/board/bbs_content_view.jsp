@@ -119,19 +119,51 @@ function commentList(param){
 				</c:when>
 				<c:when test="${propertyInfo.contentMapping eq 'FILE_CONT'}">
 				<c:if test="${fn:length(fileList) > 0}">
-				<tr><!-- FILE_CONT  -->
-					<th scope="row"><c:out value="${propertyInfo.labelName}" /></th>
-					<td>
-						<c:forEach var="fileInfo" items="${fileList}">
-						<c:if test="${fn:trim(fileInfo.thumbnail) ne ''}">
-							<p><img src="/common/board/DownloadThumbnail.do?bcIdx=<c:out value="${fileInfo.bcIdx}"/>&cbIdx=<c:out value="${fileInfo.cbIdx}"/>&streFileNm=<c:out value="${fileInfo.streFileNm}"/>"/></p>
-						</c:if>
-						<p><a href="/common/board/Download.do?bcIdx=<c:out value="${fileInfo.bcIdx}"/>&cbIdx=<c:out value="${fileInfo.cbIdx}"/>&streFileNm=<c:out value="${fileInfo.streFileNm}"/>" class="file">
-						<img src="/images/egovframework/com/cmm/fileicon/<c:out value="${fileInfo.fileExtsn}"/>.gif" alt="<c:out value="${fileInfo.fileExtsn}"/> 아이콘" /> <c:out value="${fileInfo.orignlFileNm }" />  [<c:out value="${bbs:byteCalculation(fileInfo.fileSize)}" />]
-						</a><%-- <a href="/common/docuzen/preImageFromDoc.do?filePath=<c:out value='${fileInfo.fileStreCours }' /><c:out value='${fileInfo.streFileNm }' />&filename=<c:out value='${fileInfo.streFileNm }' />" target="_blank" title="새창" class="btn">바로보기</a> --%></p>
-						</c:forEach>
-					</td>
-				</tr>
+					<c:choose>
+						<c:when test="${BbsContentVo.cbIdx eq '1189'}">
+							<tr><!-- THUMBNAIL  -->
+								<th scope="row">썸네일</th>
+								<td>
+									<c:if test="${fn:trim(fileList[0].thumbnail) ne ''}">
+										<p><img src="/common/board/DownloadThumbnail.do?bcIdx=<c:out value="${fileList[0].bcIdx}"/>&cbIdx=<c:out value="${fileList[0].cbIdx}"/>&streFileNm=<c:out value="${fileList[0].streFileNm}"/>"/></p>
+									</c:if>
+									<p>
+										<a href="/common/board/Download.do?bcIdx=<c:out value="${fileList[0].bcIdx}"/>&cbIdx=<c:out value="${fileList[0].cbIdx}"/>&streFileNm=<c:out value="${fileList[0].streFileNm}"/>" class="file">
+											<img src="/images/egovframework/com/cmm/fileicon/<c:out value="${fileList[0].fileExtsn}"/>.gif" alt="<c:out value="${fileList[0].fileExtsn}"/> 아이콘" /> <c:out value="${fileList[0].orignlFileNm }" />  [<c:out value="${bbs:byteCalculation(fileList[0].fileSize)}" />]
+										</a>
+									</p>
+								</td>
+							</tr>
+							<tr><!-- FILE_CONT  -->
+								<th scope="row"><c:out value="${propertyInfo.labelName}" /></th>
+								<td>
+									<c:forEach var="fileInfo" items="${fileList}" begin="1">
+									<c:if test="${fn:trim(fileInfo.thumbnail) ne ''}">
+										<p><img src="/common/board/DownloadThumbnail.do?bcIdx=<c:out value="${fileInfo.bcIdx}"/>&cbIdx=<c:out value="${fileInfo.cbIdx}"/>&streFileNm=<c:out value="${fileInfo.streFileNm}"/>"/></p>
+									</c:if>
+									<p><a href="/common/board/Download.do?bcIdx=<c:out value="${fileInfo.bcIdx}"/>&cbIdx=<c:out value="${fileInfo.cbIdx}"/>&streFileNm=<c:out value="${fileInfo.streFileNm}"/>" class="file">
+									<img src="/images/egovframework/com/cmm/fileicon/<c:out value="${fileInfo.fileExtsn}"/>.gif" alt="<c:out value="${fileInfo.fileExtsn}"/> 아이콘" /> <c:out value="${fileInfo.orignlFileNm }" />  [<c:out value="${bbs:byteCalculation(fileInfo.fileSize)}" />]
+									</a><%-- <a href="/common/docuzen/preImageFromDoc.do?filePath=<c:out value='${fileInfo.fileStreCours }' /><c:out value='${fileInfo.streFileNm }' />&filename=<c:out value='${fileInfo.streFileNm }' />" target="_blank" title="새창" class="btn">바로보기</a> --%></p>
+									</c:forEach>
+								</td>
+							</tr>
+						</c:when>
+						<c:otherwise>
+							<tr><!-- FILE_CONT  -->
+								<th scope="row"><c:out value="${propertyInfo.labelName}" /></th>
+								<td>
+									<c:forEach var="fileInfo" items="${fileList}">
+									<c:if test="${fn:trim(fileInfo.thumbnail) ne ''}">
+										<p><img src="/common/board/DownloadThumbnail.do?bcIdx=<c:out value="${fileInfo.bcIdx}"/>&cbIdx=<c:out value="${fileInfo.cbIdx}"/>&streFileNm=<c:out value="${fileInfo.streFileNm}"/>"/></p>
+									</c:if>
+									<p><a href="/common/board/Download.do?bcIdx=<c:out value="${fileInfo.bcIdx}"/>&cbIdx=<c:out value="${fileInfo.cbIdx}"/>&streFileNm=<c:out value="${fileInfo.streFileNm}"/>" class="file">
+									<img src="/images/egovframework/com/cmm/fileicon/<c:out value="${fileInfo.fileExtsn}"/>.gif" alt="<c:out value="${fileInfo.fileExtsn}"/> 아이콘" /> <c:out value="${fileInfo.orignlFileNm }" />  [<c:out value="${bbs:byteCalculation(fileInfo.fileSize)}" />]
+									</a><%-- <a href="/common/docuzen/preImageFromDoc.do?filePath=<c:out value='${fileInfo.fileStreCours }' /><c:out value='${fileInfo.streFileNm }' />&filename=<c:out value='${fileInfo.streFileNm }' />" target="_blank" title="새창" class="btn">바로보기</a> --%></p>
+									</c:forEach>
+								</td>
+							</tr>
+						</c:otherwise>
+					</c:choose>
 				</c:if>
 				</c:when>
 				<c:when test="${propertyInfo.contentMapping eq 'MULTI_FILE_CONT'}">				
@@ -231,7 +263,6 @@ function commentList(param){
 					<c:choose>
 						
 						<c:when test="${propertyInfo.labelPropGbn eq '16020700' || propertyInfo.labelPropGbn eq '16020800'}">
-						<c:out value ="${ propertyInfo.contentMappingL}" />
 						<tr><!-- RADIOBOX 및 SELECTBOX-->
 							<th scope="row"><c:out value="${propertyInfo.labelName}" /></th>
 								<td><c:out value="${cmm:getCodeName(bbs:getValue(BbsContentVo, propertyInfo.contentMappingL))}" />

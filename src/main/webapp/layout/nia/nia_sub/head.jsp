@@ -41,6 +41,5 @@
 <script src="/js/nia/injeinc/jquery.min.js"></script>
 <script src="/js/nia/injeinc/jquery-ui.min.js"></script>
 <script src="/js/nia/injeinc/jquery.plugin.js"></script>
-<script src="/js/nia/common.js"></script>
 <script type="text/javascript" src="/js/nia/sojaeji.js"></script>
 <script src="//code.jquery.com/jquery-latest.js"></script>

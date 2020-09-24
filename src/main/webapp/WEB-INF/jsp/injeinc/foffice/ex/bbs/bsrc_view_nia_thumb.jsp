@@ -90,12 +90,12 @@ function bbsPasswordForm(f){
 <div id="container">
 	<div class="containerTop type2">
 		<div class="inner">
-			<h3><c:out value=""${bbsFVo.cbName}"/></h3>
+			<h3><c:out value="${bbsFVo.cbName}"/></h3>
 		</div>
 	</div>
 	<div id="contents">
-		<h4><c:out value=""${bbsFVo.cbName}"/></h4>
 		<div class="inner">
+			<h4><c:out value="${bbsFVo.cbName}"/></h4>
 			<div class="tableBox">
 				<table class="view mgb20">
 					<colgroup>
@@ -117,15 +117,17 @@ function bbsPasswordForm(f){
 							</td>
 						<tr>
 							<td>
-								<c:forEach items="${fileList}" statr var="fileList" begin="1">		
-								<c:if test="${fileList ne null}">
-									<img src="/images/nia/sub/icon_file.png" alt="첨부파일">&nbsp;&nbsp;&nbsp;<c:out value="${fileList.streFileNm}"/> &nbsp;
-									<a href="/common/board/Download.do?bcIdx=<c:out value="${fileList.bcIdx}"/>&amp;cbIdx=<c:out value="${fileList.cbIdx}"/>&amp;streFileNm=<c:out value="${fileList.streFileNm}"/>" target="_blank" class="filedown btn_m">
-										다운받기
-									</a>
-									<br>
-								</c:if>
-							</c:forEach>
+								<c:forEach items="${fileList}" var="fileList">		
+									<c:if test="${fileList ne null}">
+										<c:if test="${fileList.fileNo ne '1'}">
+											<img src="/images/nia/sub/icon_file.png" alt="첨부파일">&nbsp;&nbsp;&nbsp;<c:out value="${fileList.orignlFileNm}"/> &nbsp;
+											<a href="/common/board/Download.do?bcIdx=<c:out value="${fileList.bcIdx}"/>&amp;cbIdx=<c:out value="${fileList.cbIdx}"/>&amp;streFileNm=<c:out value="${fileList.streFileNm}"/>" target="_blank" class="filedown btn_m">
+												다운받기
+											</a>
+											<br>
+										</c:if>
+									</c:if>
+								</c:forEach>
 							</td>
 						</tr>
 					</tbody>
