@@ -15,8 +15,8 @@ select{ font-size:13px; height: 22px; COLOR: #666; FONT-FAMILY: 'Nanum Gothic', 
 
 /* Default link */
 a { selector-dummy : expression(this.hideFocus=true);}  
-a:link {font-size:12px; color:#333333; text-decoration:none;}
-a:visited {font-size:12px; color:#333333; text-decoration:none;}
+/*a:link {font-size:12px; color:#333333; text-decoration:none;}
+a:visited {font-size:12px; color:#333333; text-decoration:none;}*/
 
 /* box*/
 .input_01 {width:688px; height: 80px; border:1px solid #B0AFAF; padding:15px;}

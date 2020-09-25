@@ -65,7 +65,7 @@ function doBbsFPag(pageIndex) {
 
 <body>
 
-<form:form commandName="bbsFVo" name="bbsFVo" method="post" onsubmit="return doSearch(this);">
+<form:form commandName="bbsFVo" name="bbsFVo" method="post">
 <form:hidden path="pageIndex" />
 <form:hidden path="cbIdx" />
 <form:hidden path="bcIdx" />
@@ -198,8 +198,8 @@ function doBbsFPag(pageIndex) {
 							<c:when test="${contMappList.CONTENT_MAPPING eq 'PHONE_CONT'}"><td><c:out value="${contentList.PHONE_CONT}" /></td></c:when>
 							<c:when test="${contMappList.CONTENT_MAPPING eq 'ANS_YN_CONT'}">
 								<td>
-									<c:if test="${contentList.ANS_YN_CONT eq '22000100' }"><span class='eduBtnState blue'>답변준비중</span></c:if>
-									<c:if test="${contentList.ANS_YN_CONT eq '22000200' }"><span class='eduBtnState gray'>상담완료</span></c:if>
+									<c:if test="${contentList.ANS_YN_CONT eq '22000100' }"><span class='eduBtnState blue'><c:out value="${cmm:getCodeName(contentList.ANS_YN_CONT)}"/></span></c:if>
+									<c:if test="${contentList.ANS_YN_CONT eq '22000200' }"><span class='eduBtnState gray'><c:out value="${cmm:getCodeName(contentList.ANS_YN_CONT)}"/></span></c:if>
 								</td>
 							</c:when>
 							<c:when test="${contMappList.CONTENT_MAPPING eq 'EXT1'}">
@@ -210,7 +210,7 @@ function doBbsFPag(pageIndex) {
 										</td>
 									</c:when>
 									<c:otherwise>
-										<td><c:out value="${contentList.EXT1}" /></td>
+										<td><c:out value="${cmm:getCodeName(contentList.EXT1)}"/></td>
 									</c:otherwise>
 								</c:choose>
 							</c:when>

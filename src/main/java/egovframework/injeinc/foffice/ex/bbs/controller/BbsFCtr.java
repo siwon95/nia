@@ -1321,6 +1321,7 @@ public class BbsFCtr extends CmmLogCtr{
 		
 		String strMsg = "";
 		String returnUrl = "";
+		boolean urlChng = true;
 		try {
 			int strBcIdx = 0;
 			int strCbIdx = 0;
@@ -1437,6 +1438,23 @@ public class BbsFCtr extends CmmLogCtr{
 			Map detailMap = bbsFSvc.boardUpdateDetail(bbsFVo);
 			System.out.println("abType : "+bbsFVo.getAbType());
 			System.out.println("rqabType : "+request.getParameter("abType"));
+			
+			//소통게시판 게시물 비밀번호 확인절차
+			if(strCbIdx == 1188){
+				String gubPassword = (String) detailMap.get("gubPassword");
+				String chkPwd = request.getParameter("gubPassword");
+				model.addAttribute("bbsFVo", bbsFVo);
+				
+				if(chkPwd != null) {
+					if(!gubPassword.equals(chkPwd)) {
+						return alert("/site/"+strDomain+"/ex/bbs/View.do?cbIdx="+strCbIdx+"&bcIdx="+strBcIdx, "비밀번호가 다릅니다.", model);
+					}
+				}else {
+					returnUrl = "/injeinc/foffice/ex/bbs/passwordChk";
+					urlChng = false;
+				}					
+			}
+			
 			if (cnt != null) {
 				if (cnt.equals("2")) {
 					bbsFVo.setBcIdx(strBcIdx+1);
@@ -1612,7 +1630,10 @@ public class BbsFCtr extends CmmLogCtr{
 				model.addAttribute("paginationInfo", paginationInfo);
 				model.addAttribute("BbsCommentVo", bbsCommentFVo);
 			}
-			returnUrl = "/injeinc/foffice/ex/bbs/"+ezBbsTempletVo.getViewCode();
+			
+			if(urlChng) {
+				returnUrl = "/injeinc/foffice/ex/bbs/"+ezBbsTempletVo.getViewCode();
+			}
 			
 		} catch (Exception e) {
 			strMsg = Message.getMessage("901.code");	//에러
@@ -1787,9 +1808,9 @@ public class BbsFCtr extends CmmLogCtr{
 				flag = false;
 			}
 			
-		}else if("16010200".equals(Gbn) && ssLevel == null && request.getAttribute("gubPassword") != null && type.equals("mod")){//비회원 비밀번호 맞을시 수정가능 20200602
+		}else if("16010200".equals(Gbn) && ssLevel == null && request.getParameter("gubPassword") != null && type.equals("mod")){//비회원 비밀번호 맞을시 수정가능 20200602
 			flag = false;
-			String gubPassword = (String) request.getAttribute("gubPassword");
+			String gubPassword = (String) request.getParameter("gubPassword");
 			BbsFVo bbsFVo = new BbsFVo();
 			Map result=null;
 			if(request.getAttribute("bcIdx") != null && request.getAttribute("cbIdx") != null) {

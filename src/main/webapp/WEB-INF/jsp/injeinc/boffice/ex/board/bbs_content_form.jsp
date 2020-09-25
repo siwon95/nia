@@ -330,7 +330,7 @@ function setAddrValue(addr1, addr2, zip) {
 
 <!-- ============================== 모달영역 ============================== -->
 <div class="modalTitle">
-	<h3>게시물 등록/수정ddd</h3>
+	<h3>게시물 등록/수정</h3>
 	<a href="#" class="btn_modalClose">모달팝업닫기</a>
 </div>
 <div class="modalContent">
